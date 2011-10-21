@@ -38,5 +38,5 @@ build9615() {
   bitbake pkgconfig-native gtk-doc-native gettext-native external-toolchain-csl
   bitbake glib-2.0
   bitbake virtual/bootloader virtual/kernel mkbootimg-native 9615-cdp-image
-  $WS/build/qcom-recipes/make_bbimg.sh
+  $WS/build/conf/make_bbimg.sh
 }
