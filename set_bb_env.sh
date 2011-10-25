@@ -27,7 +27,7 @@ unset BBPATH # Needed for transition to BB layers
 #dynamically set BBLAYERS
 for i in `find ${WORKSPACE} -name layer.conf`
 do
-  BBLAYERS="${i/\/conf\/layer.conf/} ${BBLAYERS}"
+  BBLAYERS="${BBLAYERS} ${i/\/conf\/layer.conf/}"
 done
 export BBLAYERS
 
