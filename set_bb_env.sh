@@ -25,10 +25,10 @@ export PATH=${CSPATH}:${PATH}
 unset BBPATH # Needed for transition to BB layers
 
 #dynamically set BBLAYERS
-for i in `find ${WORKSPACE} -name layer.conf`
-do
-  BBLAYERS="${BBLAYERS} ${i/\/conf\/layer.conf/}"
-done
+BBLAYERS="${WS}/build/recipes ${WS}/build/openembedded"
+if [ -d "${WS}/build/qcom-recipes" ]; then
+BBLAYERS="${WS}/build/qcom-recipes ${BBLAYERS}"
+fi
 export BBLAYERS
 
 #let bb use the $WORKSPACE, $DL_TOOL, and $TOOLCHAIN_PATH var
