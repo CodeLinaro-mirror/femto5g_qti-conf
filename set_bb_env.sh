@@ -24,8 +24,15 @@ CSPATH=${TOOLCHAIN_PATH}/bin
 export PATH=${CSPATH}:${PATH}
 unset BBPATH # Needed for transition to BB layers
 
+#dynamically set BBLAYERS
+for i in `find ${WORKSPACE} -name layer.conf`
+do
+  BBLAYERS="${i/\/conf\/layer.conf/} ${BBLAYERS}"
+done
+export BBLAYERS
+
 #let bb use the $WORKSPACE, $DL_TOOL, and $TOOLCHAIN_PATH var
-export BB_ENV_EXTRAWHITE="WORKSPACE DL_TOOL TOOLCHAIN_PATH"
+export BB_ENV_EXTRAWHITE="WORKSPACE DL_TOOL TOOLCHAIN_PATH BBLAYERS"
 umask 022
 
 bitbake() {
