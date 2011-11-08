@@ -8,7 +8,7 @@ kernel="${WORKSPACE}/build/tmp/work/9615-cdp-none-linux-gnueabi/linux-quic-3.0-r
 
 set -x
 
-output=${WORKSPACE}/boot-oe-msm9615.img
+output=${WORKSPACE}/build/tmp/deploy/images/9615-cdp/boot-oe-msm9615.img
 
 kernelsize=`awk --non-decimal-data '/ _end/ {end="0x" $1} /_stext/ {beg="0x" $1} END {size1=end-beg+4096; size=and(size1,compl(4095)); printf("%#x",size)}' ${kernel}/System.map`
 
