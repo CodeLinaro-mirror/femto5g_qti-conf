@@ -5,14 +5,8 @@ devlist=${bbroot}/geninit
 
 mkbootpath="${WORKSPACE}/build/tmp/sysroots/x86_64-linux/bin"
 kernel="${WORKSPACE}/build/tmp/work/9615-cdp-none-linux-gnueabi/linux-quic-3.0-r0/kernel"
-gencpio="${kernel}/usr/gen_init_cpio"
 
 set -x
-
-cd $bbroot
-$gencpio $devlist | gzip -n -9 > initrd.gz
-#find ${bbroot}/bb-initrd | cpio -o -H newc | gzip > ${bbroot}/bb-initrd.img.gz
-cd -
 
 output=${WORKSPACE}/boot-oe-msm9615.img
 
