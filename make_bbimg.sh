@@ -14,7 +14,7 @@ kernelsize=`awk --non-decimal-data '/ _end/ {end="0x" $1} /_stext/ {beg="0x" $1}
 
 ${mkbootpath}/mkbootimg --kernel ${kernel}/arch/arm/boot/Image \
 		--ramdisk /dev/null \
-		--cmdline "noinitrd root=/dev/mtdblock1 rw rootfstype=yaffs2 console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.hardware=qcom" \
+		--cmdline "noinitrd root=/dev/mtdblock9 rw rootfstype=yaffs2 console=ttyHSL0,115200,n8 no_console_suspend=1 androidboot.hardware=qcom" \
 		--base 0x40800000 \
 		--ramdisk_offset $kernelsize \
 		--output $output
