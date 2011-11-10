@@ -4,8 +4,8 @@ export WORKSPACE=$(readlink -f $scriptdir/../..)
 WS=${WORKSPACE}
 echo WORKSPACE set to: ${WS}
 
-EXISTING_TOOLCHAIN_PATH="/afs/qualcomm.com/amd64_linux24/usr/local/packages/asw/compilers/codesourcery/arm-2011.03"
-DL_TOOLCHAIN_PATH="${WS}/build/tmp/work/armv7-none-linux-gnueabi/external-toolchain-csl-1.0-r11/arm-2011.03"
+EXISTING_TOOLCHAIN_PATH="/afs/qualcomm.com/amd64_linux24/usr/local/packages/asw/compilers/gnu/codesourcery/arm-2009q1-203"
+DL_TOOLCHAIN_PATH="${WS}/build/tmp/work/armv7-none-linux-gnueabi/external-toolchain-csl-1.0-r11/arm-2009q1"
 
 #0 = dont download toolchain, use EXISTING_ setting
 #1 = download toolchain, use DL_ setting
