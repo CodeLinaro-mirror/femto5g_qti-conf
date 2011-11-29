@@ -4,24 +4,11 @@ export WORKSPACE=$(readlink -f $scriptdir/../..)
 WS=${WORKSPACE}
 echo WORKSPACE set to: ${WS}
 
-EXISTING_TOOLCHAIN_PATH="/afs/qualcomm.com/amd64_linux24/usr/local/packages/asw/compilers/gnu/codesourcery/arm-2009q1-203"
-DL_TOOLCHAIN_PATH="${WS}/build/tmp/work/armv7-none-linux-gnueabi/external-toolchain-csl-1.0-r11/arm-2009q1"
+# Extend the path a bit to allow us to transparently do "external" toolchains as
+# a recipe, by referring to a specific path within tmp/ that will be where we will
+# always drop it, no matter what version that might be...
+export PATH="${WS}/build/tmp/sysroots/armv7-none-linux-gnueabi/ext_toolchain/bin:$PATH"
 
-#0 = dont download toolchain, use EXISTING_ setting
-#1 = download toolchain, use DL_ setting
-DL_TOOL="0"
-
-if [ -e ${EXISTING_TOOLCHAIN_PATH} ];then
-  export TOOLCHAIN_PATH=${EXISTING_TOOLCHAIN_PATH}
-else
-  export TOOLCHAIN_PATH=${DL_TOOLCHAIN_PATH}
-  DL_TOOL="1"
-fi
-
-export DL_TOOL
-
-CSPATH=${TOOLCHAIN_PATH}/bin
-export PATH=${CSPATH}:${PATH}
 unset BBPATH # Needed for transition to BB layers
 
 #dynamically set BBLAYERS
