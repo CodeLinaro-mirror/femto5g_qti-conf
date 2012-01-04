@@ -19,13 +19,15 @@ fi
 export BBLAYERS
 
 #let bb use the $WORKSPACE, $DL_TOOL, and $TOOLCHAIN_PATH var
-export BB_ENV_EXTRAWHITE="WORKSPACE DL_TOOL DL_DIR TOOLCHAIN_PATH BBLAYERS http_proxy"
+export BB_ENV_EXTRAWHITE="WORKSPACE DL_TOOL DL_DIR TOOLCHAIN_PATH BBLAYERS http_proxy MACHINE DISTRO"
 umask 022
 
 bitbake() {
   pushd $WS/build
   $WS/build/bitbake/bin/bitbake $*
+  ERRCODE=$?
   popd
+  return ${ERRCODE}
 }
 
 build9615() {
