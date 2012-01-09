@@ -11,15 +11,16 @@ export PATH="${WS}/build/tmp/sysroots/armv7-none-linux-gnueabi/ext_toolchain/bin
 
 unset BBPATH # Needed for transition to BB layers
 
-#dynamically set BBLAYERS
-BBLAYERS="${WS}/build/recipes ${WS}/build/openembedded"
-if [ -d "${WS}/build/qcom-recipes" ]; then
-BBLAYERS="${WS}/build/qcom-recipes ${BBLAYERS}"
-fi
+# Dynamically set BBLAYERS, based on what's in the directory using a 
+# *-recipes naming convention to determine what layer directories we
+# have in our metadata set that extend the base metadata (build/recipes 
+# and build/openembedded are that...).
+BBLAYERS=`python $scriptdir/get_bblayers.py ${WS}/build \"*recipes\"`
+BBLAYERS+=" ${WS}/build/openembedded"
 export BBLAYERS
 
 #let bb use the $WORKSPACE, $DL_TOOL, and $TOOLCHAIN_PATH var
-export BB_ENV_EXTRAWHITE="WORKSPACE DL_TOOL DL_DIR TOOLCHAIN_PATH BBLAYERS http_proxy MACHINE DISTRO"
+export BB_ENV_EXTRAWHITE="WORKSPACE DL_DIR MACHINE DISTRO BBLAYERS http_proxy"
 umask 022
 
 bitbake() {
