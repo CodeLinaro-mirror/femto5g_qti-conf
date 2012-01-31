@@ -1,36 +1,29 @@
-#WORKSPACE is the parent directory of this script
-scriptdir="$(dirname "${BASH_SOURCE}")"
-export WORKSPACE=$(readlink -f $scriptdir/../..)
-WS=${WORKSPACE}
-echo WORKSPACE set to: ${WS}
-
-# Extend the path a bit to allow us to transparently do "external" toolchains as
-# a recipe, by referring to a specific path within tmp/ that will be where we will
-# always drop it, no matter what version that might be...
-export PATH="${WS}/build/tmp/sysroots/armv7-none-linux-gnueabi/ext_toolchain/bin:$PATH"
-
-unset BBPATH # Needed for transition to BB layers
-
-# Dynamically set BBLAYERS, based on what's in the directory using a 
-# *-recipes naming convention to determine what layer directories we
-# have in our metadata set that extend the base metadata (build/recipes 
-# and build/openembedded are that...).
-BBLAYERS=`python $scriptdir/get_bblayers.py ${WS}/build \"*recipes\"`
-BBLAYERS+=" ${WS}/build/openembedded"
-export BBLAYERS
-
-#let bb use the $WORKSPACE, $DL_TOOL, and $TOOLCHAIN_PATH var
-export BB_ENV_EXTRAWHITE="WORKSPACE DL_DIR MACHINE DISTRO BBLAYERS http_proxy"
+# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
+# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
+export BB_ENV_EXTRAWHITE="http_proxy MACHINE DISTRO DL_DIR"
 umask 022
 
-bitbake() {
-  pushd $WS/build
-  $WS/build/bitbake/bin/bitbake $*
-  ERRCODE=$?
-  popd
-  return ${ERRCODE}
-}
+# Find where the global conf directory is...
+scriptdir="$(dirname "${BASH_SOURCE}")"
+# Find where the workspace is...
+WS=$(readlink -f $scriptdir/../../..)
 
+# Dynamically generate our bblayers.conf since we effectively can't whitelist
+# BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
+# dynamic workspace layer functionality.
+python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.conf
+
+# Convienence function provided for backwards compat with the
+# earlier versions of the QuIC provided OE Linux distro.
 build9615() {
   bitbake 9615-cdp-image
 }
+
+# Yocto/OE-core works a bit differently than OE-classic so we're
+# going to source the OE build environment setup script they provided.  
+# This will dump the user in ${WS}/yocto/build, ready to run the 
+# convienence function or straight up bitbake commands.
+. ${WS}/oe-core/oe-init-build-env
+
+
+
