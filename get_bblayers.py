@@ -43,7 +43,6 @@ print "# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT."
 print "#--------------------------------------------------------------"
 print "LCONF_VERSION = \"4\""
 print
-print "export TOP_DIR := \"${@os.path.abspath(os.path.join(os.path.dirname(bb.data.getVar('FILE', d)),'../..'))}\""
 print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(bb.data.getVar('FILE', d)),'../../..'))}\""
 print 
 print "BBFILES ?= \"\""
