@@ -26,6 +26,7 @@ python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.
 # earlier versions of the QuIC provided OE Linux distro.
 build9615() {
   bitbake 9615-cdp-image
+  bitbake 9615-cdp-recovery-image
 }
 
 build8655() {
