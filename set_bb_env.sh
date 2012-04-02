@@ -1,6 +1,15 @@
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 export BB_ENV_EXTRAWHITE="http_proxy MACHINE DISTRO DL_DIR"
+if [[ ! $(readlink $(which sh)) =~ bash ]]
+then
+  echo ""
+  echo "### Please Change your /bin/sh symlink to point to bash. ### "
+  echo ""
+  echo "### sudo ln -sf /bin/bash /bin/sh ### "
+  echo ""
+  export SHELL=/bin/bash
+fi
 umask 022
 
 # Find where the global conf directory is...
