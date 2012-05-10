@@ -11,6 +11,7 @@ then
   export SHELL=/bin/bash
 fi
 umask 022
+unset MACHINE
 
 # Find where the global conf directory is...
 scriptdir="$(dirname "${BASH_SOURCE}")"
@@ -25,8 +26,14 @@ python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.
 # Convienence function provided for backwards compat with the
 # earlier versions of the QuIC provided OE Linux distro.
 build9615() {
-  bitbake 9615-cdp-image
+  export MACHINE=9615-cdp
+  bitbake 9615-cdp-image && \
   bitbake 9615-cdp-recovery-image
+}
+
+build9625() {
+  export MACHINE=mdm9625
+  bitbake mdm-image
 }
 
 build8655() {
