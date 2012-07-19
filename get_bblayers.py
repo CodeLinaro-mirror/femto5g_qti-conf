@@ -9,7 +9,7 @@ from operator import itemgetter
 def getLayerPaths(target,  fnexpr) :
     retList = []
     for file in os.listdir(target) :
-        if fnmatch.fnmatch(file, fnexpr) :
+        if fnmatch.fnmatch(file, fnexpr) and not (fnmatch.fnmatch(file, "meta-hob") or fnmatch.fnmatch(file, "meta-skeleton")) :
             # Found what might be a metadata layer...
             layerPath = target + "/" + file
             layerConfPath = layerPath + "/conf/layer.conf"
