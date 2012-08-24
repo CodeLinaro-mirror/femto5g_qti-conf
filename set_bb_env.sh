@@ -33,7 +33,8 @@ build9615() {
 
 build9625() {
   export MACHINE=mdm9625
-  bitbake mdm-image
+  bitbake mdm-image && \
+  bitbake mdm-recovery-image
 }
 
 build8655() {
