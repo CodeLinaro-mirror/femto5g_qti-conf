@@ -47,6 +47,11 @@ build7627a() {
   bitbake msm-x11-image
 }
 
+build8960() {
+  export MACHINE=msm8960
+  bitbake msm-x11-image
+}
+
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.  
 # This will dump the user in ${WS}/yocto/build, ready to run the 
