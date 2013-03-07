@@ -37,6 +37,12 @@ build9625() {
   bitbake mdm-recovery-image
 }
 
+buildperf9625() {
+  build9625 && \
+  bitbake -c cleanall virtual/kernel && \
+  bitbake mdm-perf-image
+}
+
 build8655() {
   export MACHINE=msm8655
   bitbake msm-x11-image
@@ -57,6 +63,4 @@ build8960() {
 # This will dump the user in ${WS}/yocto/build, ready to run the 
 # convienence function or straight up bitbake commands.
 . ${WS}/oe-core/oe-init-build-env
-
-
 
