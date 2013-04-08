@@ -1,6 +1,5 @@
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-export BB_ENV_EXTRAWHITE="http_proxy MACHINE DISTRO DL_DIR"
 if [[ ! $(readlink $(which sh)) =~ bash ]]
 then
   echo ""
@@ -22,6 +21,10 @@ WS=$(readlink -f $scriptdir/../../..)
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
 python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.conf
+
+# Edit the upstream .gitignore to ignore the build and bitbake dirs
+echo build   >> ${WS}/oe-core/.gitignore
+echo bitbake >> ${WS}/oe-core/.gitignore
 
 # Convienence function provided for backwards compat with the
 # earlier versions of the QuIC provided OE Linux distro.
@@ -58,9 +61,24 @@ build8960() {
   bitbake msm-x11-image
 }
 
+buildclean() {
+  set -x
+  cd ${WS}/oe-core/build
+  rm -rf bitbake.lock pseudodone sstate-cache tmp-eglibc && cd - || cd -
+  set +x
+}
+
+cdbitbake() {
+  cd ${WS}/oe-core/build
+  bitbake $@ && cd - || cd -
+}
+
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.  
 # This will dump the user in ${WS}/yocto/build, ready to run the 
 # convienence function or straight up bitbake commands.
 . ${WS}/oe-core/oe-init-build-env
 
+# oe-init-build-env calls oe-buildenv-internal which sets
+# BB_ENV_EXTRAWHITE, append our vars to the list
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR"
