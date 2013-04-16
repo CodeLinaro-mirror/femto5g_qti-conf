@@ -30,35 +30,39 @@ echo bitbake >> ${WS}/oe-core/.gitignore
 # earlier versions of the QuIC provided OE Linux distro.
 build9615() {
   export MACHINE=9615-cdp
-  bitbake 9615-cdp-image && \
-  bitbake 9615-cdp-recovery-image
+  cdbitbake 9615-cdp-image && \
+  cdbitbake 9615-cdp-recovery-image
 }
 
 build9625() {
   export MACHINE=mdm9625
-  bitbake mdm-image && \
-  bitbake mdm-recovery-image
+  cdbitbake mdm-image && \
+  cdbitbake mdm-recovery-image
 }
 
 buildperf9625() {
+  export MACHINE=mdm9625-perf
+  cdbitbake mdm-perf-image
+}
+
+buildboth9625() {
   build9625 && \
-  bitbake -c cleanall virtual/kernel && \
-  bitbake mdm-perf-image
+  buildperf9625
 }
 
 build8655() {
   export MACHINE=msm8655
-  bitbake msm-x11-image
+  cdbitbake msm-x11-image
 }
 
 build7627a() {
   export MACHINE=msm7627a
-  bitbake msm-x11-image
+  cdbitbake msm-x11-image
 }
 
 build8960() {
   export MACHINE=msm8960
-  bitbake msm-x11-image
+  cdbitbake msm-x11-image
 }
 
 buildclean() {
