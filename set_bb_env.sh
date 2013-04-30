@@ -65,6 +65,17 @@ build8960() {
   cdbitbake msm-x11-image
 }
 
+buildperf8960() {
+  export MACHINE=msm8960-perf
+  cdbitbake msm-x11-image
+}
+
+buildboth8960() {
+  build8960 && \
+  buildperf8960
+}
+
+
 buildclean() {
   set -x
   cd ${WS}/oe-core/build
