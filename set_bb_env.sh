@@ -75,6 +75,10 @@ buildboth8960() {
   buildperf8960
 }
 
+buildperf8974() {
+  export MACHINE=msm8974-perf
+  cdbitbake msm-x11-image
+}
 
 buildclean() {
   set -x
