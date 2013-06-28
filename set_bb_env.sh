@@ -40,6 +40,12 @@ build9625() {
   cdbitbake mdm-recovery-image
 }
 
+
+buildkrypton() {
+  export MACHINE=mdmkrypton
+  cdbitbake mdm-image
+}
+
 buildperf9625() {
   export MACHINE=mdm9625-perf
   cdbitbake mdm-perf-image
