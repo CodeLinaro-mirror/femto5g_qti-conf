@@ -83,7 +83,13 @@ buildboth8960() {
 
 buildperf8974() {
   export MACHINE=msm8974-perf
+  setmakeoptions
   cdbitbake msm-x11-image
+}
+
+setmakeoptions() {
+  export BB_NUMBER_THREADS=20
+  export PARALLEL_MAKE="-j 20"
 }
 
 buildclean() {
