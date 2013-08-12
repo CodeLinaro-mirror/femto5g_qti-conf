@@ -81,10 +81,21 @@ buildboth8960() {
   buildperf8960
 }
 
+build8974() {
+  export MACHINE=msm8974
+  setmakeoptions
+  cdbitbake msm-x11-image
+}
+
 buildperf8974() {
   export MACHINE=msm8974-perf
   setmakeoptions
   cdbitbake msm-x11-image
+}
+
+buildboth8974() {
+  build8974 && \
+  buildperf8974
 }
 
 setmakeoptions() {
