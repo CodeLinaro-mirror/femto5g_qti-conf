@@ -98,6 +98,23 @@ buildboth8974() {
   buildperf8974
 }
 
+build8610() {
+  export MACHINE=msm8610
+  setmakeoptions
+  cdbitbake msm-x11-image
+}
+
+buildperf8610() {
+  export MACHINE=msm8610-perf
+  setmakeoptions
+  cdbitbake msm-x11-image
+}
+
+buildboth8610() {
+  build8610 && \
+  buildperf8610
+}
+
 setmakeoptions() {
   export BB_NUMBER_THREADS=20
   export PARALLEL_MAKE="-j 20"
