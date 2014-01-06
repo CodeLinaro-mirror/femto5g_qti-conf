@@ -115,6 +115,23 @@ buildboth8610() {
   buildperf8610
 }
 
+build8226() {
+  export MACHINE=msm8226
+  setmakeoptions
+  cdbitbake msm-x11-image
+}
+
+buildperf8226() {
+  export MACHINE=msm8226-perf
+  setmakeoptions
+  cdbitbake msm-x11-image
+}
+
+buildboth8226() {
+  build8226 && \
+  buildperf8226
+}
+
 setmakeoptions() {
   export BB_NUMBER_THREADS=20
   export PARALLEL_MAKE="-j 20"
