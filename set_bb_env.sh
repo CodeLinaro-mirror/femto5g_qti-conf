@@ -55,9 +55,16 @@ build9635() {
   cdbitbake mdm-image
 }
 
+buildperf9635() {
+  export MACHINE=mdm9635-perf
+  cdbitbake mdm-perf-image
+}
+
 buildboth9635() {
   build9635
+  buildperf9635
 }
+
 build8655() {
   export MACHINE=msm8655
   cdbitbake msm-x11-image
