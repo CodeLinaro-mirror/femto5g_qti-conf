@@ -155,7 +155,8 @@ buildclean() {
 
 cdbitbake() {
   cd ${WS}/oe-core/build
-  bitbake $@ && cd - || cd -
+  bitbake $@ && cd - || ret=$? && cd -
+  return $ret
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
