@@ -65,6 +65,15 @@ buildboth9635() {
   buildperf9635
 }
 
+buildzirc() {
+  export MACHINE=mdmzirc
+  cdbitbake mdm-image
+}
+
+buildbothzirc() {
+  buildzirc 
+}
+
 build8655() {
   export MACHINE=msm8655
   cdbitbake msm-x11-image
