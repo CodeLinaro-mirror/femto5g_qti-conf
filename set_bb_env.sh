@@ -155,10 +155,43 @@ setmakeoptions() {
   export PARALLEL_MAKE="-j 20"
 }
 
+#function to save mcm related tmp-eglibc entries before deleting sstate-cache and tmp-eglibc folders
+save_mcm_tmp_entries() {
+  TMP_DIR=${WS}/oe-core/build/tmp-eglibc/work/armv7a-vfp-neon-oe-linux-gnueabi
+  mcm_directories=$(ls -d ${TMP_DIR}/*mcm-core* 2> /dev/null | wc -l)
+
+  if [[ ! -d ${WS}/mcm-core && "$mcm_directories" != "0" && ! -d tmp-mcm-package ]]
+  then
+      mkdir tmp-mcm-package
+      cp -rf ${TMP_DIR}/loc-mcm-type-conv-git* tmp-mcm-package
+      cp -rf ${TMP_DIR}/loc-mcm-test-shim-git* tmp-mcm-package
+      cp -rf ${TMP_DIR}/loc-mcm-qmi-test-shim-git* tmp-mcm-package
+      cp -rf ${TMP_DIR}/mcmlocserver-git* tmp-mcm-package
+      cp -rf ${TMP_DIR}/mcm-core-git* tmp-mcm-package
+  fi
+}
+
+#function to restore mcm related tmp-eglibc entries after deleting sstate-cache and tmp-eglibc folders
+restore_mcm_tmp_entries() {
+  cd ${WS}/oe-core/build
+  if [[ ! -d ${WS}/mcm-core && -d tmp-mcm-package ]]
+  then
+      mkdir -p tmp-eglibc/work/armv7a-vfp-neon-oe-linux-gnueabi
+      cp -rf tmp-mcm-package/* tmp-eglibc/work/armv7a-vfp-neon-oe-linux-gnueabi/
+      set +x
+      echo "MCM related tmp-eglibc entries have been restored"
+  fi
+}
+
 buildclean() {
   set -x
   cd ${WS}/oe-core/build
+
+  save_mcm_tmp_entries
+
   rm -rf bitbake.lock pseudodone sstate-cache tmp-eglibc && cd - || cd -
+
+  restore_mcm_tmp_entries
   set +x
 }
 
@@ -169,7 +202,7 @@ cdbitbake() {
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
-# going to source the OE build environment setup script they provided.  
+# going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the 
 # convienence function or straight up bitbake commands.
 . ${WS}/oe-core/oe-init-build-env
