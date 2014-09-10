@@ -22,9 +22,44 @@ WS=$(readlink -f $scriptdir/../../..)
 # dynamic workspace layer functionality.
 python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.conf
 
-# Edit the upstream .gitignore to ignore the build and bitbake dirs
-echo build   >> ${WS}/oe-core/.gitignore
-echo bitbake >> ${WS}/oe-core/.gitignore
+
+# Add the no-op siggen fix to the bitbake library
+# [YOCTO #5741]
+if [[ ! -f ${WS}/oe-core/$scriptdir/siggen.patch ]]
+then
+   echo
+   cat << EOF > ${WS}/oe-core/$scriptdir/siggen.patch
+diff --git a/bitbake/lib/bb/siggen.py b/bitbake/lib/bb/siggen.py
+index 9db29a2..a54357a 100644
+--- a/bitbake/lib/bb/siggen.py
++++ b/bitbake/lib/bb/siggen.py
+@@ -34,7 +34,9 @@  class SignatureGenerator(object):
+     name = "noop"
+
+     def __init__(self, data):
+-        return
++        self.taskhash = {}
++        self.runtaskdeps = {}
++        self.file_checksum_values = {}
+
+     def finalise(self, fn, d, varient):
+         return
+@@ -42,7 +44,7 @@  class SignatureGenerator(object):
+     def get_taskhash(self, fn, task, deps, dataCache):
+         return "0"
+
+-    def set_taskdata(self, hashes, deps):
++    def set_taskdata(self, hashes, deps, checksum):
+         return
+
+     def stampfile(self, stampbase, file_name, taskname, extrainfo):
+EOF
+   cd ${WS}/oe-core/bitbake
+   git apply -p2 ${WS}/oe-core/$scriptdir/siggen.patch
+   echo "Siggen patch applied"
+   echo
+   cd -
+fi
 
 # Convienence function provided for backwards compat with the
 # earlier versions of the QuIC provided OE Linux distro.
@@ -199,16 +234,22 @@ buildclean() {
 
   save_mcm_tmp_entries
 
-  rm -rf bitbake.lock pseudodone sstate-cache tmp-eglibc && cd - || cd -
+  rm -rf bitbake.lock pseudodone sstate-cache tmp-eglibc cache && cd - || cd -
 
   restore_mcm_tmp_entries
   set +x
 }
 
 cdbitbake() {
+  local ret=0
   cd ${WS}/oe-core/build
   bitbake $@ && cd - || ret=$? && cd -
   return $ret
+}
+
+rebake() {
+  cdbitbake -c cleanall $@ && \
+  cdbitbake $@
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
