@@ -103,7 +103,8 @@ buildboth9635() {
 
 build9640() {
   export MACHINE=mdm9640
-  cdbitbake mdm-image
+  cdbitbake mdm-image && \
+  cdbitbake mdm-recovery-image
 }
 
 buildperf9640() {
