@@ -3,11 +3,11 @@
 if [[ ! $(readlink $(which sh)) =~ bash ]]
 then
   echo ""
-  echo "### Please Change your /bin/sh symlink to point to bash. ### "
+  echo "### ERROR: Please Change your /bin/sh symlink to point to bash. ### "
   echo ""
   echo "### sudo ln -sf /bin/bash /bin/sh ### "
   echo ""
-  export SHELL=/bin/bash
+  exit 1
 fi
 umask 022
 unset MACHINE
