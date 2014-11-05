@@ -106,8 +106,14 @@ buildzirc() {
   cdbitbake mdm-image
 }
 
+buildperfzirc() {
+  export MACHINE=mdmzirc-perf
+  cdbitbake mdm-perf-image
+}
+
 buildbothzirc() {
   buildzirc 
+  buildperfzirc
 }
 
 buildferrum() {
