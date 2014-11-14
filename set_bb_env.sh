@@ -206,29 +206,29 @@ setmakeoptions() {
   export PARALLEL_MAKE="-j 20"
 }
 
-#function to save mcm related tmp-eglibc entries before deleting sstate-cache and tmp-eglibc folders
+#function to save mcm related sstate entries before deleting sstate-cache and tmp-eglibc folders
 save_mcm_tmp_entries() {
-  TMP_DIR=${WS}/oe-core/build/tmp-eglibc/work/armv7a-vfp-neon-oe-linux-gnueabi
+  TMP_DIR=${WS}/oe-core/build/sstate-cache/0
   mcm_directories=$(ls -d ${TMP_DIR}/*mcm-core* 2> /dev/null | wc -l)
 
   if [[ ! -d ${WS}/mcm-core && "$mcm_directories" != "0" && ! -d tmp-mcm-package ]]
   then
       mkdir tmp-mcm-package
-      cp -rf ${TMP_DIR}/loc-mcm-type-conv-git* tmp-mcm-package
-      cp -rf ${TMP_DIR}/loc-mcm-test-shim-git* tmp-mcm-package
-      cp -rf ${TMP_DIR}/loc-mcm-qmi-test-shim-git* tmp-mcm-package
-      cp -rf ${TMP_DIR}/mcmlocserver-git* tmp-mcm-package
-      cp -rf ${TMP_DIR}/mcm-core-git* tmp-mcm-package
+      cp -rf ${TMP_DIR}/sstate-*loc-mcm-type-conv* tmp-mcm-package
+      cp -rf ${TMP_DIR}/sstate-*loc-mcm-test-shim* tmp-mcm-package
+      cp -rf ${TMP_DIR}/sstate-*loc-mcm-qmi-test-shim* tmp-mcm-package
+      cp -rf ${TMP_DIR}/sstate-*mcmlocserver* tmp-mcm-package
+      cp -rf ${TMP_DIR}/sstate-*mcm-core* tmp-mcm-package
   fi
 }
 
-#function to restore mcm related tmp-eglibc entries after deleting sstate-cache and tmp-eglibc folders
+#function to restore mcm related sstate entries after deleting sstate-cache and tmp-eglibc folders
 restore_mcm_tmp_entries() {
   cd ${WS}/oe-core/build
   if [[ ! -d ${WS}/mcm-core && -d tmp-mcm-package ]]
   then
-      mkdir -p tmp-eglibc/work/armv7a-vfp-neon-oe-linux-gnueabi
-      cp -rf tmp-mcm-package/* tmp-eglibc/work/armv7a-vfp-neon-oe-linux-gnueabi/
+      mkdir -p sstate-cache/0
+      cp -rf tmp-mcm-package/* sstate-cache/0
       set +x
       echo "MCM related tmp-eglibc entries have been restored"
   fi
