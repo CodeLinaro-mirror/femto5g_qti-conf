@@ -101,19 +101,19 @@ buildboth9635() {
   buildperf9635
 }
 
-buildzirc() {
-  export MACHINE=mdmzirc
+build9640() {
+  export MACHINE=mdm9640
   cdbitbake mdm-image
 }
 
-buildperfzirc() {
-  export MACHINE=mdmzirc-perf
+buildperf9640() {
+  export MACHINE=mdm9640-perf
   cdbitbake mdm-perf-image
 }
 
-buildbothzirc() {
-  buildzirc 
-  buildperfzirc
+buildboth9640() {
+  build9640
+  buildperf9640
 }
 
 buildferrum() {
