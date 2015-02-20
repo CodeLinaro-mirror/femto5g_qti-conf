@@ -54,11 +54,37 @@ index 9db29a2..a54357a 100644
 
      def stampfile(self, stampbase, file_name, taskname, extrainfo):
 EOF
-   cd ${WS}/oe-core/bitbake
+   pushd ${WS}/oe-core/bitbake 1>/dev/null
    git apply -p2 ${WS}/oe-core/$scriptdir/siggen.patch
    echo "Siggen patch applied"
+   popd 1>/dev/null
+fi
+
+# sstate.bbclass: fix parallel building issue with error pattern:
+# tar: ARCH/usr/share/aclocal/file.m4: file changed as we read it
+# [YOCTO #5122]
+if [[ ! -f ${WS}/oe-core/$scriptdir/tarch.patch ]]
+then
    echo
-   cd -
+   cat <<EOF > ${WS}/oe-core/$scriptdir/tarch.patch
+diff --git a/meta/classes/sstate.bbclass b/meta/classes/sstate.bbclass
+index 28dc312..32cc98c 100644
+--- a/meta/classes/sstate.bbclass
++++ b/meta/classes/sstate.bbclass
+@@ -560,7 +560,7 @@ sstate_create_package () {
+ 	TFILE=\`mktemp \${SSTATE_PKG}.XXXXXXXX\`
+ 	# Need to handle empty directories
+ 	if [ "\$(ls -A)" ]; then
+-		tar -czf \$TFILE *
++		tar --ignore-failed-read -czf \$TFILE *
+ 	else
+ 		tar -cz --file=\$TFILE --files-from=/dev/null
+ 	fi
+EOF
+   pushd ${WS}/oe-core/meta 1>/dev/null
+   git apply -p1 ${WS}/oe-core/$scriptdir/tarch.patch
+   echo "Tar patch applied"
+   popd 1>/dev/null
 fi
 
 # Convienence function provided for backwards compat with the
