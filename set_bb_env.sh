@@ -54,10 +54,7 @@ index 9db29a2..a54357a 100644
 
      def stampfile(self, stampbase, file_name, taskname, extrainfo):
 EOF
-   pushd ${WS}/oe-core/bitbake 1>/dev/null
-   git apply -p2 ${WS}/oe-core/$scriptdir/siggen.patch
-   echo "Siggen patch applied"
-   popd 1>/dev/null
+   git apply -p2 --directory=${WS}/oe-core/bitbake ${WS}/oe-core/$scriptdir/siggen.patch && echo "Siggen patch applied"
 fi
 
 # sstate.bbclass: fix parallel building issue with error pattern:
@@ -68,23 +65,24 @@ then
    echo
    cat <<EOF > ${WS}/oe-core/$scriptdir/tarch.patch
 diff --git a/meta/classes/sstate.bbclass b/meta/classes/sstate.bbclass
-index 28dc312..32cc98c 100644
+index 28dc312..590ce3c 100644
 --- a/meta/classes/sstate.bbclass
 +++ b/meta/classes/sstate.bbclass
-@@ -560,7 +560,7 @@ sstate_create_package () {
+@@ -560,7 +560,12 @@ sstate_create_package () {
  	TFILE=\`mktemp \${SSTATE_PKG}.XXXXXXXX\`
  	# Need to handle empty directories
  	if [ "\$(ls -A)" ]; then
--		tar -czf \$TFILE *
-+		tar --ignore-failed-read -czf \$TFILE *
++		set +e
+ 		tar -czf \$TFILE *
++		if [ \$? -ne 0 ] && [ \$? -ne 1 ]; then
++			exit 1
++		fi
++		set -e
  	else
  		tar -cz --file=\$TFILE --files-from=/dev/null
  	fi
 EOF
-   pushd ${WS}/oe-core/meta 1>/dev/null
-   git apply -p1 ${WS}/oe-core/$scriptdir/tarch.patch
-   echo "Tar patch applied"
-   popd 1>/dev/null
+   git apply -p1 --directory=${WS}/oe-core ${WS}/oe-core/$scriptdir/tarch.patch && echo "Tar patch applied"
 fi
 
 # Convienence function provided for backwards compat with the
