@@ -74,7 +74,7 @@ index 28dc312..590ce3c 100644
  	if [ "\$(ls -A)" ]; then
 +		set +e
  		tar -czf \$TFILE *
-+		if [ \$? -ne 0 ] && [ \$? -ne 1 ]; then
++		if [ \$? -ne 0 -a \$? -ne 1 ]; then
 +			exit 1
 +		fi
 +		set -e
