@@ -141,15 +141,6 @@ buildboth9640() {
   buildperf9640
 }
 
-buildferrum() {
-  export MACHINE=mdmferrum
-  cdbitbake mdm-image
-}
-
-buildbothferrum() {
-  buildferrum
-}
-
 build8655() {
   export MACHINE=msm8655
   cdbitbake msm-x11-image
