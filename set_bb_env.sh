@@ -141,6 +141,21 @@ buildboth9640() {
   buildperf9640
 }
 
+buildfermium() {
+  export MACHINE=mdmfermium
+  cdbitbake mdm-image
+}
+
+buildperffermium() {
+  export MACHINE=mdmfermium-perf
+  cdbitbake mdm-perf-image
+}
+
+buildbothfermium() {
+  buildfermium
+  buildperffermium
+}
+
 build8655() {
   export MACHINE=msm8655
   cdbitbake msm-x11-image
