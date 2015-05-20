@@ -73,6 +73,15 @@ build8009() {
   cdbitbake mdm-image
 }
 
+buildcalifornium() {
+  export MACHINE=mdmcalifornium
+  cdbitbake mdm-image
+}
+
+buildbothcalifornium() {
+  buildcalifornium
+}
+
 buildclean() {
   set -x
   cd ${WS}/oe-core/build
