@@ -9,7 +9,10 @@ from operator import itemgetter
 def getLayerPaths(target,  fnexpr) :
     retList = []
     for file in os.listdir(target) :
-        if fnmatch.fnmatch(file, fnexpr) and not (fnmatch.fnmatch(file, "meta-hob") or fnmatch.fnmatch(file, "meta-skeleton")) :
+        if (fnmatch.fnmatch(file, fnexpr) and not
+            (fnmatch.fnmatch(file, "meta-hob") or
+             fnmatch.fnmatch(file, "meta-skeleton") or
+             fnmatch.fnmatch(file, "meta-selftest"))):
             # Found what might be a metadata layer...
             layerPath = target + "/" + file
             layerConfPath = layerPath + "/conf/layer.conf"
@@ -41,9 +44,11 @@ def generatePathString ( pathList ):
 print "# This configuration file is dynamically generated every time" 
 print "# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT."
 print "#--------------------------------------------------------------"
-print "LCONF_VERSION = \"5\""
+print "LCONF_VERSION = \"6\""
 print
 print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(bb.data.getVar('FILE', d)),'../../..'))}\""
+#print "# Make sure WORKSPACE isn't exported"
+#print "WORKSPACE[unexport] = \"1\""
 print 
 print "BBPATH = \"${TOPDIR}\""
 print "BBFILES ?= \"\""

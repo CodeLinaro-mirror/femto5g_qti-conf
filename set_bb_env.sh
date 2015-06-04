@@ -1,5 +1,8 @@
-# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
-# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
+# set_bb_env.sh 
+# Define macros for build targets.
+# Generate bblayers.conf from get_bblayers.py.
+# Some convenience macros are defined to save some typing.
+# Set the build environement
 if [[ ! $(readlink $(which sh)) =~ bash ]]
 then
   echo ""
@@ -12,6 +15,17 @@ fi
 umask 022
 unset MACHINE
 
+# OE doesn't want a set-gid directory for its tmpdir
+BT="./build/tmp-glibc"
+if [ ! -d ${BT} ]
+then
+  mkdir -m u=rwx,g=rx,g-s,o=  ${BT}
+elif [ -g ${BT} ]
+then
+  chmod -R g-s ${BT}
+fi
+unset BT
+
 # Find where the global conf directory is...
 scriptdir="$(dirname "${BASH_SOURCE}")"
 # Find where the workspace is...
@@ -22,109 +36,7 @@ WS=$(readlink -f $scriptdir/../../..)
 # dynamic workspace layer functionality.
 python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.conf
 
-
-# Add the no-op siggen fix to the bitbake library
-# [YOCTO #5741]
-if [[ ! -f ${WS}/oe-core/$scriptdir/siggen.patch ]]
-then
-   echo
-   cat << EOF > ${WS}/oe-core/$scriptdir/siggen.patch
-diff --git a/bitbake/lib/bb/siggen.py b/bitbake/lib/bb/siggen.py
-index 9db29a2..a54357a 100644
---- a/bitbake/lib/bb/siggen.py
-+++ b/bitbake/lib/bb/siggen.py
-@@ -34,7 +34,9 @@  class SignatureGenerator(object):
-     name = "noop"
-
-     def __init__(self, data):
--        return
-+        self.taskhash = {}
-+        self.runtaskdeps = {}
-+        self.file_checksum_values = {}
-
-     def finalise(self, fn, d, varient):
-         return
-@@ -42,7 +44,7 @@  class SignatureGenerator(object):
-     def get_taskhash(self, fn, task, deps, dataCache):
-         return "0"
-
--    def set_taskdata(self, hashes, deps):
-+    def set_taskdata(self, hashes, deps, checksum):
-         return
-
-     def stampfile(self, stampbase, file_name, taskname, extrainfo):
-EOF
-   git apply -p2 --directory=${WS}/oe-core/bitbake ${WS}/oe-core/$scriptdir/siggen.patch && echo "Siggen patch applied"
-fi
-
-# sstate.bbclass: fix parallel building issue with error pattern:
-# tar: ARCH/usr/share/aclocal/file.m4: file changed as we read it
-# [YOCTO #5122]
-if [[ ! -f ${WS}/oe-core/$scriptdir/tarch.patch ]]
-then
-   echo
-   cat <<EOF > ${WS}/oe-core/$scriptdir/tarch.patch
-diff --git a/meta/classes/sstate.bbclass b/meta/classes/sstate.bbclass
-index 28dc312..590ce3c 100644
---- a/meta/classes/sstate.bbclass
-+++ b/meta/classes/sstate.bbclass
-@@ -560,7 +560,12 @@ sstate_create_package () {
- 	TFILE=\`mktemp \${SSTATE_PKG}.XXXXXXXX\`
- 	# Need to handle empty directories
- 	if [ "\$(ls -A)" ]; then
-+		set +e
- 		tar -czf \$TFILE *
-+		if [ \$? -ne 0 -a \$? -ne 1 ]; then
-+			exit 1
-+		fi
-+		set -e
- 	else
- 		tar -cz --file=\$TFILE --files-from=/dev/null
- 	fi
-EOF
-   git apply -p1 --directory=${WS}/oe-core ${WS}/oe-core/$scriptdir/tarch.patch && echo "Tar patch applied"
-fi
-
-# Convienence function provided for backwards compat with the
-# earlier versions of the QuIC provided OE Linux distro.
-build9615() {
-  export MACHINE=9615-cdp
-  cdbitbake 9615-cdp-image && \
-  cdbitbake 9615-cdp-recovery-image
-}
-
-build9625() {
-  export MACHINE=mdm9625
-  cdbitbake mdm-image && \
-  cdbitbake mdm-recovery-image
-}
-
-buildperf9625() {
-  export MACHINE=mdm9625-perf
-  cdbitbake mdm-perf-image
-}
-
-buildboth9625() {
-  build9625 && \
-  buildperf9625
-}
-
-build9635() {
-  export MACHINE=mdm9635
-  cdbitbake mdm-image && \
-  cdbitbake mdm-recovery-image
-}
-
-buildperf9635() {
-  export MACHINE=mdm9635-perf
-  cdbitbake mdm-perf-image
-}
-
-buildboth9635() {
-  build9635
-  buildperf9635
-}
-
+# Convienence function provided for the QuIC provided OE Linux distro.
 build9640() {
   export MACHINE=mdm9640
   cdbitbake mdm-image && \
@@ -156,124 +68,11 @@ buildbothfermium() {
   buildperffermium
 }
 
-build8655() {
-  export MACHINE=msm8655
-  cdbitbake msm-x11-image
-}
-
-build7627a() {
-  export MACHINE=msm7627a
-  cdbitbake msm-x11-image
-}
-
-build8960() {
-  export MACHINE=msm8960
-  cdbitbake msm-x11-image
-}
-
-buildperf8960() {
-  export MACHINE=msm8960-perf
-  cdbitbake msm-x11-image
-}
-
-buildboth8960() {
-  build8960 && \
-  buildperf8960
-}
-
-build8974() {
-  export MACHINE=msm8974
-  setmakeoptions
-  cdbitbake msm-x11-image
-}
-
-buildperf8974() {
-  export MACHINE=msm8974-perf
-  setmakeoptions
-  cdbitbake msm-x11-image
-}
-
-buildboth8974() {
-  build8974 && \
-  buildperf8974
-}
-
-build8610() {
-  export MACHINE=msm8610
-  setmakeoptions
-  cdbitbake msm-x11-image
-}
-
-buildperf8610() {
-  export MACHINE=msm8610-perf
-  setmakeoptions
-  cdbitbake msm-x11-image
-}
-
-buildboth8610() {
-  build8610 && \
-  buildperf8610
-}
-
-build8226() {
-  export MACHINE=msm8226
-  setmakeoptions
-  cdbitbake msm-x11-image
-}
-
-buildperf8226() {
-  export MACHINE=msm8226-perf
-  setmakeoptions
-  cdbitbake msm-x11-image
-}
-
-buildboth8226() {
-  build8226 && \
-  buildperf8226
-}
-
-setmakeoptions() {
-  export BB_NUMBER_THREADS=20
-  export PARALLEL_MAKE="-j 20"
-}
-
-#function to save mcm related sstate entries before deleting sstate-cache and tmp-eglibc folders
-save_mcm_tmp_entries() {
-  TMP_DIR=${WS}/oe-core/build/sstate-cache/0
-  mcm_directories=$(ls -d ${TMP_DIR}/*mcm-core* 2> /dev/null | wc -l)
-
-  if [[ ! -d ${WS}/mcm-core && "$mcm_directories" != "0" && ! -d tmp-mcm-package ]]
-  then
-      mkdir tmp-mcm-package
-      cp -rf ${TMP_DIR}/sstate-*loc-mcm-type-conv* tmp-mcm-package
-      cp -rf ${TMP_DIR}/sstate-*loc-mcm-test-shim* tmp-mcm-package
-      cp -rf ${TMP_DIR}/sstate-*loc-mcm-qmi-test-shim* tmp-mcm-package
-      cp -rf ${TMP_DIR}/sstate-*mcmlocserver* tmp-mcm-package
-      cp -rf ${TMP_DIR}/sstate-*mcm-core* tmp-mcm-package
-  fi
-}
-
-#function to restore mcm related sstate entries after deleting sstate-cache and tmp-eglibc folders
-restore_mcm_tmp_entries() {
-  cd ${WS}/oe-core/build
-  if [[ ! -d ${WS}/mcm-core && -d tmp-mcm-package ]]
-  then
-      mkdir -p sstate-cache/0
-      cp -rf tmp-mcm-package/* sstate-cache/0
-      set +x
-      echo "MCM related tmp-eglibc entries have been restored"
-  fi
-}
-
 buildclean() {
   set -x
   cd ${WS}/oe-core/build
 
-  save_mcm_tmp_entries
-
-  rm -rf bitbake.lock pseudodone sstate-cache tmp-eglibc cache && cd - || cd -
-
-  restore_mcm_tmp_entries
+  rm -rf bitbake.lock pseudodone sstate-cache tmp-glibc/* cache && cd - || cd -
   set +x
 }
 
@@ -295,6 +94,8 @@ rebake() {
 # convienence function or straight up bitbake commands.
 . ${WS}/oe-core/oe-init-build-env
 
+# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
+# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR"
