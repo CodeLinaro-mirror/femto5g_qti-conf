@@ -68,6 +68,11 @@ buildbothfermium() {
   buildperffermium
 }
 
+build8009() {
+  export MACHINE=apq8009
+  cdbitbake mdm-image
+}
+
 buildclean() {
   set -x
   cd ${WS}/oe-core/build
