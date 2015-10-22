@@ -75,7 +75,8 @@ build8009() {
 
 buildcalifornium() {
   export MACHINE=mdmcalifornium
-  cdbitbake mdm-image
+  cdbitbake mdm-image && \
+  cdbitbake mdm-recovery-image
 }
 
 buildbothcalifornium() {
