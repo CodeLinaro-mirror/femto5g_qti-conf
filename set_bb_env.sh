@@ -55,8 +55,7 @@ buildboth9640() {
 
 buildfermium() {
   export MACHINE=mdmfermium
-  cdbitbake mdm-image && \
-  cdbitbake mdm-recovery-image
+  cdbitbake mdm-image
 }
 
 buildperffermium() {
