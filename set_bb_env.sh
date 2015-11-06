@@ -53,21 +53,20 @@ buildboth9640() {
   buildperf9640
 }
 
-buildfermium() {
-  export MACHINE=mdmfermium
-  cdbitbake mdm-image && \
+build9607() {
+  export MACHINE=mdm9607
+  cdbitbake mdm-image
   cdbitbake mdm-recovery-image
-
 }
 
-buildperffermium() {
-  export MACHINE=mdmfermium-perf
+buildperf9607() {
+  export MACHINE=mdm9607-perf
   cdbitbake mdm-perf-image
 }
 
-buildbothfermium() {
-  buildfermium
-  buildperffermium
+buildboth9607() {
+  build9607
+  buildperf9607
 }
 
 build8009() {
