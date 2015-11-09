@@ -73,6 +73,10 @@ build8009() {
   cdbitbake mdm-image
 }
 
+buildperfcalifornium() {
+  export MACHINE=mdmcalifornium-perf
+  cdbitbake mdm-perf-image
+}
 buildcalifornium() {
   export MACHINE=mdmcalifornium
   cdbitbake mdm-image
@@ -80,6 +84,7 @@ buildcalifornium() {
 
 buildbothcalifornium() {
   buildcalifornium
+  buildperfcalifornium
 }
 
 buildclean() {
