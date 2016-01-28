@@ -12,6 +12,19 @@ then
   echo ""
   exit 1
 fi
+
+# The SHELL variable also needs to be set to /bin/bash otherwise the build
+# will fail, use chsh to change it to bash.
+if [[ ! $SHELL =~ bash ]]
+then
+  echo ""
+  echo "### ERROR: Please Change your shell to bash using chsh. ### "
+  echo ""
+  echo "### Make sure that the SHELL variable points to /bin/bash ### "
+  echo ""
+  exit 1
+fi
+
 umask 022
 unset MACHINE
 
