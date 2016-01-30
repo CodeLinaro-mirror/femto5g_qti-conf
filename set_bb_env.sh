@@ -1,4 +1,4 @@
-# set_bb_env.sh 
+# set_bb_env.sh
 # Define macros for build targets.
 # Generate bblayers.conf from get_bblayers.py.
 # Some convenience macros are defined to save some typing.
@@ -93,7 +93,8 @@ buildperfcalifornium() {
 }
 buildcalifornium() {
   export MACHINE=mdmcalifornium
-  cdbitbake mdm-image
+  cdbitbake mdm-image && \
+  cdbitbake mdm-recovery-image
 }
 
 buildbothcalifornium() {
