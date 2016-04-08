@@ -47,7 +47,7 @@ WS=$(readlink -f $scriptdir/../../..)
 # Dynamically generate our bblayers.conf since we effectively can't whitelist
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-python $scriptdir/get_bblayers.py ${WS}/oe-core \"meta*\" > $scriptdir/bblayers.conf
+python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.conf
 
 # Convienence function provided for the QuIC provided OE Linux distro.
 build9640() {
@@ -104,7 +104,7 @@ buildbothcalifornium() {
 
 buildclean() {
   set -x
-  cd ${WS}/oe-core/build
+  cd ${WS}/poky/build
 
   rm -rf bitbake.lock pseudodone sstate-cache tmp-glibc/* cache && cd - || cd -
   set +x
@@ -112,7 +112,7 @@ buildclean() {
 
 cdbitbake() {
   local ret=0
-  cd ${WS}/oe-core/build
+  cd ${WS}/poky/build
   bitbake $@ && cd - || ret=$? && cd -
   return $ret
 }
@@ -126,7 +126,7 @@ rebake() {
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the 
 # convienence function or straight up bitbake commands.
-. ${WS}/oe-core/oe-init-build-env
+. ${WS}/poky/oe-init-build-env
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
