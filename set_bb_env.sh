@@ -50,56 +50,18 @@ WS=$(readlink -f $scriptdir/../../..)
 python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.conf
 
 # Convienence function provided for the QuIC provided OE Linux distro.
-build9640() {
-  export MACHINE=mdm9640
-  cdbitbake mdm-image && \
-  cdbitbake mdm-recovery-image
-}
-
-buildperf9640() {
-  export MACHINE=mdm9640-perf
-  cdbitbake mdm-perf-image
-}
-
-buildboth9640() {
-  build9640
-  buildperf9640
-}
-
-build9607() {
-  export MACHINE=mdm9607
-  cdbitbake mdm-image
-  cdbitbake mdm-recovery-image
-}
-
-buildperf9607() {
-  export MACHINE=mdm9607-perf
-  cdbitbake mdm-perf-image
-}
-
-buildboth9607() {
-  build9607
-  buildperf9607
-}
-
-build8009() {
-  export MACHINE=apq8009
-  cdbitbake mdm-image
-}
-
-buildperfcalifornium() {
+build-californium-perf-image() {
   export MACHINE=mdmcalifornium-perf
   cdbitbake mdm-perf-image
 }
-buildcalifornium() {
+build-californium-image() {
   export MACHINE=mdmcalifornium
-  cdbitbake mdm-image && \
-  cdbitbake mdm-recovery-image
+  cdbitbake machine-image && \
+  cdbitbake machine-recovery-image
 }
 
-buildbothcalifornium() {
-  buildcalifornium
-  buildperfcalifornium
+build-californium-perf-debug-image() {
+  build-californium-image
 }
 
 buildclean() {
