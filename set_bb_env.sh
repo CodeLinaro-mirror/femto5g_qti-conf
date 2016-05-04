@@ -64,6 +64,12 @@ build-californium-perf-debug-image() {
   build-californium-image
 }
 
+
+build-8053-camera-image() {
+  export MACHINE=apq8053
+  export PRODUCT=camera
+  cdbitbake machine-image
+}
 buildclean() {
   set -x
   cd ${WS}/poky/build
@@ -94,4 +100,4 @@ rebake() {
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT"
