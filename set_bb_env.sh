@@ -64,12 +64,12 @@ build-californium-perf-debug-image() {
   build-californium-image
 }
 
-
-build-8053-camera-image() {
+build-8053-image() {
   export MACHINE=apq8053
   export PRODUCT=camera
   cdbitbake machine-image
 }
+
 buildclean() {
   set -x
   cd ${WS}/poky/build
