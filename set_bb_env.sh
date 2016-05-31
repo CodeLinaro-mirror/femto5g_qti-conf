@@ -69,6 +69,11 @@ build-8053-image() {
   cdbitbake machine-image
 }
 
+build-8096-image() {
+  export MACHINE=apq8096
+  cdbitbake machine-image
+}
+
 buildclean() {
   set -x
   cd ${WS}/poky/build
