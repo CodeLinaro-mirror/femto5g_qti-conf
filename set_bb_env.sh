@@ -56,8 +56,7 @@ build-californium-perf-image() {
 }
 build-californium-image() {
   export MACHINE=mdmcalifornium
-  cdbitbake machine-image && \
-  cdbitbake machine-recovery-image
+  cdbitbake machine-image
 }
 
 build-californium-perf-debug-image() {
