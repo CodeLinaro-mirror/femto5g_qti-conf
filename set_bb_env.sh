@@ -63,6 +63,18 @@ build-californium-perf-debug-image() {
   build-californium-image
 }
 
+build-9607-perf-image() {
+  export MACHINE=mdm9607-perf
+  cdbitbake machine-perf-image
+}
+build-9607-image() {
+  export MACHINE=mdm9607
+  cdbitbake machine-image
+}
+build-9607-perf-debug-image() {
+  build-9607-image
+}
+
 build-8053-image() {
   export MACHINE=apq8053
   export PRODUCT=camera
