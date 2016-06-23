@@ -62,6 +62,11 @@ build-californium-image() {
 build-californium-perf-debug-image() {
   build-californium-image
 }
+build-8009-image() {
+  export MACHINE=apq8009
+  cdbitbake machine-image
+}
+
 
 build-8053-image() {
   export MACHINE=apq8053
@@ -96,7 +101,7 @@ buildclean() {
 cdbitbake() {
   local ret=0
   cd ${WS}/poky/build
-  bitbake $@ && cd - || ret=$? && cd -
+  bitbake  $@ && cd - || ret=$? && cd -
   return $ret
 }
 
