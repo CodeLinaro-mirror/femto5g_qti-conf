@@ -69,6 +69,17 @@ build-8053-image() {
   cdbitbake machine-image
 }
 
+build-8053-perf-image() {
+  export MACHINE=apq8053-perf
+  export PRODUCT=camera
+  cdbitbake mdm-perf-image
+}
+
+build-both-8053-images() {
+  build-8053-image
+  build-8053-perf-image
+}
+
 build-8096-image() {
   export MACHINE=apq8096
   cdbitbake machine-image
