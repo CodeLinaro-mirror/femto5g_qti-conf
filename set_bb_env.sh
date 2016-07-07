@@ -56,6 +56,7 @@ build-californium-perf-image() {
 }
 build-californium-image() {
   export MACHINE=mdmcalifornium
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
@@ -90,6 +91,12 @@ build-9607-image() {
 }
 build-9607-perf-debug-image() {
   build-9607-image
+}
+
+build-californium-psm-image() {
+  export MACHINE=mdmcalifornium
+  export PRODUCT=psm
+  cdbitbake machine-${PRODUCT}-image
 }
 
 build-8053-image() {
