@@ -70,6 +70,7 @@ build-8009-perf-image() {
 build-8009-image() {
   export MACHINE=apq8009
   cdbitbake machine-image
+  cdbitbake apq8009-persist-image
 }
 
 build-both-8009-images() {
