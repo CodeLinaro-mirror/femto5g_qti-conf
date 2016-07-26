@@ -65,6 +65,7 @@ build-californium-perf-debug-image() {
 build-8009-perf-image() {
   export MACHINE=apq8009-perf
   cdbitbake mdm-perf-image
+  cdbitbake apq8009-perf-persist-image
 }
 
 build-8009-image() {
