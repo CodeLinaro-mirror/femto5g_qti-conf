@@ -80,6 +80,12 @@ build-both-8009-images() {
   build-8009-perf-image
 }
 
+build-8009-drone-image() {
+  export MACHINE=apq8009
+  export PRODUCT=drone
+  cdbitbake machine-${PRODUCT}-image
+}
+
 build-9607-perf-image() {
   export MACHINE=mdm9607-perf
   cdbitbake machine-perf-image
