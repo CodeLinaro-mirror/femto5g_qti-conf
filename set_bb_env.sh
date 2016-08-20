@@ -164,6 +164,22 @@ rebake() {
   cdbitbake $@
 }
 
+cgrep() {
+  find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f \
+                    \( -name '*.c' -o -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) -print0 | \
+                    xargs -0 grep --color -n "$@"
+}
+
+bbgrep() {
+  find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f \
+                    \( -name '*.inc' -o -name '*.bb' -o -name '*.conf' \) -print0 | \
+                    xargs -0 grep --color -n "$@"
+}
+
+pygrep() {
+  find . -name .repo -prune -o -name .git -prune -o -name out -prune -o -type f \
+                    \( -name '*.py' -o -name '*.pyc' \) -print0 | xargs -0 grep --color -n "$@"
+}
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the 
