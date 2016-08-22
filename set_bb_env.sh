@@ -144,6 +144,12 @@ build-8096-image() {
   cdbitbake machine-image
 }
 
+build-8096-drone-image() {
+  export MACHINE=apq8096
+  export PRODUCT=drone
+  cdbitbake machine-${PRODUCT}-image
+}
+
 buildclean() {
   set -x
   cd ${WS}/poky/build
