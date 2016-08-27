@@ -84,6 +84,7 @@ build-8009-drone-image() {
   export MACHINE=apq8009
   export PRODUCT=drone
   cdbitbake machine-${PRODUCT}-image
+  cdbitbake apq8009-persist-image
 }
 
 build-8017-perf-image() {
