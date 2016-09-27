@@ -66,13 +66,11 @@ build-californium-perf-debug-image() {
 build-8009-perf-image() {
   export MACHINE=apq8009-perf
   cdbitbake mdm-perf-image
-  cdbitbake apq8009-perf-persist-image
 }
 
 build-8009-image() {
   export MACHINE=apq8009
   cdbitbake machine-image
-  cdbitbake apq8009-persist-image
 }
 
 build-both-8009-images() {
@@ -84,19 +82,16 @@ build-8009-drone-image() {
   export MACHINE=apq8009
   export PRODUCT=drone
   cdbitbake machine-${PRODUCT}-image
-  cdbitbake apq8009-persist-image
 }
 
 build-8017-perf-image() {
   export MACHINE=apq8017-perf
   cdbitbake mdm-perf-image
-  cdbitbake apq8017-perf-persist-image
 }
 
 build-8017-image() {
   export MACHINE=apq8017
   cdbitbake machine-image
-  cdbitbake apq8017-persist-image
 }
 
 build-both-8017-images() {
