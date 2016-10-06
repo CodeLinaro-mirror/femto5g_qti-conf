@@ -123,6 +123,16 @@ build-californium-psm-image() {
   cdbitbake machine-${PRODUCT}-image
 }
 
+build-8009-image() {
+  export MACHINE=apq8009
+  cdbitbake machine-image
+}
+
+build-8909w-image() {
+  export MACHINE=msm8909w
+  cdbitbake machine-image
+}
+
 build-8053-image() {
   export MACHINE=apq8053
   export PRODUCT=camera
