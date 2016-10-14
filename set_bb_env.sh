@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset MACHINE
+unset MACHINE PRODUCT VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -49,12 +49,17 @@ WS=$(readlink -f $scriptdir/../../..)
 # dynamic workspace layer functionality.
 python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.conf
 
-# Convienence function provided for the QuIC provided OE Linux distro.
+# Convienence functions provided for the QuIC provided OE Linux distro.
+
+# californium commands
 build-californium-perf-image() {
+  unset_bb_env
   export MACHINE=mdmcalifornium-perf
   cdbitbake mdm-perf-image
 }
+
 build-californium-image() {
+  unset_bb_env
   export MACHINE=mdmcalifornium
   export PRODUCT=base
   cdbitbake machine-image
@@ -63,120 +68,206 @@ build-californium-image() {
 build-californium-perf-debug-image() {
   build-californium-image
 }
-build-8009-perf-image() {
-  export MACHINE=apq8009-perf
-  cdbitbake mdm-perf-image
-}
-
-build-8009-image() {
-  export MACHINE=apq8009
-  cdbitbake machine-image
-}
-
-build-both-8009-images() {
-  build-8009-image
-  build-8009-perf-image
-}
-
-build-8009-drone-image() {
-  export MACHINE=apq8009
-  export PRODUCT=drone
-  cdbitbake machine-${PRODUCT}-image
-}
-
-build-8017-perf-image() {
-  export MACHINE=apq8017-perf
-  cdbitbake mdm-perf-image
-}
-
-build-8017-image() {
-  export MACHINE=apq8017
-  cdbitbake machine-image
-}
-
-build-both-8017-images() {
-  build-8017-image
-  build-8017-perf-image
-}
-
-build-9607-perf-image() {
-  export MACHINE=mdm9607-perf
-  cdbitbake machine-perf-image
-}
-
-build-9607-image() {
-  export MACHINE=mdm9607
-  cdbitbake machine-image
-}
-build-9607-perf-debug-image() {
-  build-9607-image
-}
 
 build-californium-psm-image() {
+  unset_bb_env
   export MACHINE=mdmcalifornium
   export PRODUCT=psm
   cdbitbake machine-${PRODUCT}-image
 }
 
+build-all-californium-images() {
+  build-californium-image
+  build-californium-perf-image
+  build-californium-psm-image
+}
+
+# 8009 commands
+build-8009-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009-perf
+  cdbitbake mdm-perf-image
+}
+
 build-8009-image() {
+  unset_bb_env
   export MACHINE=apq8009
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
+build-8009-snap-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export PRODUCT=snap
+  cdbitbake machine-image
+}
+
+build-8009-drone-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export PRODUCT=drone
+  cdbitbake machine-${PRODUCT}-image
+}
+
+build-all-8009-images() {
+  build-8009-image
+  build-8009-perf-image
+  build-8009-snap-image
+  build-8009-drone-image
+}
+
+# 8017 commands
+build-8017-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8017-perf
+  cdbitbake mdm-perf-image
+}
+
+build-8017-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+build-8017-snap-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8017-perf
+  export PRODUCT=snap
+  cdbitbake machine-image
+}
+
+build-all-8017-images() {
+  build-8017-image
+  build-8017-perf-image
+  build-8017-snap-perf-image
+}
+
+# 9607 commands
+build-9607-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9607-perf
+  cdbitbake mdm-perf-image
+}
+
+build-9607-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+build-9607-perf-debug-image() {
+  build-9607-image
+}
+
+build-all-9607-images() {
+  build-9607-image
+  build-9607-perf-image
+}
+
+# 8909w commands
 build-8909w-image() {
+  unset_bb_env
   export MACHINE=msm8909w
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
+# 8053 commands
 build-8053-image() {
+  unset_bb_env
   export MACHINE=apq8053
-  export PRODUCT=camera
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
 build-8053-perf-image() {
+  unset_bb_env
   export MACHINE=apq8053-perf
-  export PRODUCT=camera
   cdbitbake mdm-perf-image
 }
 
-build-both-8053-images() {
-  build-8053-image
-  build-8053-perf-image
+build-8053-concam-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-perf
+  export PRODUCT=concam
+  cdbitbake mdm-perf-image
 }
 
+build-all-8053-images() {
+  build-8053-image
+  build-8053-perf-image
+  build-8053-concam-perf-image
+}
+
+# 8096 commands
 build-8096-image() {
+  unset_bb_env
   export MACHINE=apq8096
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
+build-8096-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8096-perf
+  cdbitbake mdm-perf-image
+}
+
 build-8096-drone-image() {
+  unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=drone
   cdbitbake machine-${PRODUCT}-image
 }
 
-build-both-hedgehog-image() {
-    build-hedgehog-image
-    build-hedgehog-perf-image
+build-all-8096-images() {
+  build-8096-image
+  build-8096-perf-image
+  build-8096-drone-image
 }
 
+# hedgehog commands
 build-hedgehog-perf-image() {
+  unset_bb_env
   export MACHINE=sdxhedgehog-perf
   cdbitbake mdm-perf-image
 }
 
 build-hedgehog-image() {
+  unset_bb_env
   export MACHINE=sdxhedgehog
   export PRODUCT=base
   cdbitbake machine-image
 }
 
+build-all-hedgehog-images() {
+  build-hedgehog-image
+  build-hedgehog-perf-image
+}
+
+# 8098 commands
 build-8098-image() {
+  unset_bb_env
   export MACHINE=apq8098
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
+build-8098-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8098-perf
+  cdbitbake mdm-perf-image
+}
+
+build-all-8098-images() {
+  build-8098-image
+  build-8098-perf-image
+}
+
+# Utility commands
 buildclean() {
   set -x
   cd ${WS}/poky/build
@@ -195,6 +286,10 @@ cdbitbake() {
 rebake() {
   cdbitbake -c cleanall $@ && \
   cdbitbake $@
+}
+
+unset_bb_env() {
+  unset MACHINE PRODUCT VARIANT
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
