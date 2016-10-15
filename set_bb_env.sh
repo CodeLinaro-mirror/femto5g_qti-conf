@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset MACHINE PRODUCT VARIANT
+unset MACHINE DEFCONF PRODUCT VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -54,8 +54,9 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 # californium commands
 build-californium-perf-image() {
   unset_bb_env
-  export MACHINE=mdmcalifornium-perf
-  cdbitbake mdm-perf-image
+  export MACHINE=mdmcalifornium
+  export DEFCONF=perf
+  cdbitbake machine-image
 }
 
 build-californium-image() {
@@ -85,8 +86,9 @@ build-all-californium-images() {
 # 8009 commands
 build-8009-perf-image() {
   unset_bb_env
-  export MACHINE=apq8009-perf
-  cdbitbake mdm-perf-image
+  export MACHINE=apq8009
+  export DEFCONF=perf
+  cdbitbake machine-image
 }
 
 build-8009-image() {
@@ -120,8 +122,9 @@ build-all-8009-images() {
 # 8017 commands
 build-8017-perf-image() {
   unset_bb_env
-  export MACHINE=apq8017-perf
-  cdbitbake mdm-perf-image
+  export MACHINE=apq8017
+  export DEFCONF=perf
+  cdbitbake machine-image
 }
 
 build-8017-image() {
@@ -133,7 +136,8 @@ build-8017-image() {
 
 build-8017-snap-perf-image() {
   unset_bb_env
-  export MACHINE=apq8017-perf
+  export MACHINE=apq8017
+  export DEFCONF=perf
   export PRODUCT=snap
   cdbitbake machine-image
 }
@@ -147,8 +151,9 @@ build-all-8017-images() {
 # 9607 commands
 build-9607-perf-image() {
   unset_bb_env
-  export MACHINE=mdm9607-perf
-  cdbitbake mdm-perf-image
+  export MACHINE=mdm9607
+  export DEFCONF=perf
+  cdbitbake machine-image
 }
 
 build-9607-image() {
@@ -185,15 +190,17 @@ build-8053-image() {
 
 build-8053-perf-image() {
   unset_bb_env
-  export MACHINE=apq8053-perf
-  cdbitbake mdm-perf-image
+  export MACHINE=apq8053
+  export DEFCONF=perf
+  cdbitbake machine-image
 }
 
 build-8053-concam-perf-image() {
   unset_bb_env
-  export MACHINE=apq8053-perf
+  export MACHINE=apq8053
+  export DEFCONF=perf
   export PRODUCT=concam
-  cdbitbake mdm-perf-image
+  cdbitbake machine-image
 }
 
 build-all-8053-images() {
@@ -212,8 +219,9 @@ build-8096-image() {
 
 build-8096-perf-image() {
   unset_bb_env
-  export MACHINE=apq8096-perf
-  cdbitbake mdm-perf-image
+  export MACHINE=apq8096
+  export DEFCONF=perf
+  cdbitbake machine-image
 }
 
 build-8096-drone-image() {
@@ -232,7 +240,8 @@ build-all-8096-images() {
 # hedgehog commands
 build-hedgehog-perf-image() {
   unset_bb_env
-  export MACHINE=sdxhedgehog-perf
+  export MACHINE=sdxhedgehog
+  export DEFCONF=perf
   cdbitbake mdm-perf-image
 }
 
@@ -258,7 +267,8 @@ build-8098-image() {
 
 build-8098-perf-image() {
   unset_bb_env
-  export MACHINE=apq8098-perf
+  export MACHINE=apq8098
+  export DEFCONF=perf
   cdbitbake mdm-perf-image
 }
 
@@ -289,7 +299,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset MACHINE PRODUCT VARIANT
+  unset MACHINE DEFCONF PRODUCT VARIANT
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
@@ -302,4 +312,4 @@ unset_bb_env() {
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR DEFCONF PRODUCT VARIANT"
