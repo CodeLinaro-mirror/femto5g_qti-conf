@@ -156,6 +156,23 @@ build-8096-drone-image() {
   cdbitbake machine-${PRODUCT}-image
 }
 
+
+build-both-hedgehog-image() {
+    build-hedgehog-image
+    build-hedgehog-perf-image
+}
+
+build-hedgehog-perf-image() {
+  export MACHINE=sdxhedgehog-perf
+  cdbitbake mdm-perf-image
+}
+
+build-hedgehog-image() {
+  export MACHINE=sdxhedgehog
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
 buildclean() {
   set -x
   cd ${WS}/poky/build
