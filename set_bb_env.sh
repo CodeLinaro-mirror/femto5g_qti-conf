@@ -156,6 +156,7 @@ build-8096-drone-image() {
   cdbitbake machine-${PRODUCT}-image
 }
 
+
 build-both-hedgehog-image() {
     build-hedgehog-image
     build-hedgehog-perf-image
@@ -172,11 +173,6 @@ build-hedgehog-image() {
   cdbitbake machine-image
 }
 
-build-8098-image() {
-  export MACHINE=apq8098
-  cdbitbake machine-image
-}
-
 buildclean() {
   set -x
   cd ${WS}/poky/build
@@ -188,7 +184,7 @@ buildclean() {
 cdbitbake() {
   local ret=0
   cd ${WS}/poky/build
-  bitbake $@ && cd - || ret=$? && cd -
+  bitbake  $@ && cd - || ret=$? && cd -
   return $ret
 }
 
