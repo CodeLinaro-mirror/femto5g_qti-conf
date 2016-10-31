@@ -10,7 +10,7 @@ then
   echo ""
   echo "### sudo ln -sf /bin/bash /bin/sh ### "
   echo ""
-  exit 1
+  return 1
 fi
 
 # The SHELL variable also needs to be set to /bin/bash otherwise the build
@@ -22,7 +22,7 @@ then
   echo ""
   echo "### Make sure that the SHELL variable points to /bin/bash ### "
   echo ""
-  exit 1
+  return 1
 fi
 
 umask 022
