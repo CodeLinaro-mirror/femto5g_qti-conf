@@ -242,7 +242,7 @@ build-hedgehog-perf-image() {
   unset_bb_env
   export MACHINE=sdxhedgehog
   export DEFCONF=perf
-  cdbitbake mdm-perf-image
+  cdbitbake machine-image
 }
 
 build-hedgehog-image() {
@@ -269,7 +269,7 @@ build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
   export DEFCONF=perf
-  cdbitbake mdm-perf-image
+  cdbitbake machine-image
 }
 
 build-all-8098-images() {
