@@ -74,7 +74,7 @@ build-californium-psm-image() {
   unset_bb_env
   export MACHINE=mdmcalifornium
   export PRODUCT=psm
-  cdbitbake machine-${PRODUCT}-image
+  cdbitbake machine-psm-image
 }
 
 build-all-californium-images() {
@@ -100,16 +100,16 @@ build-8009-image() {
 
 build-8009-snap-image() {
   unset_bb_env
-  export MACHINE=apq8009
+  export MACHINE=apq8009-snap
   export PRODUCT=snap
-  cdbitbake machine-image
+  cdbitbake machine-snap-image
 }
 
 build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
   export PRODUCT=drone
-  cdbitbake machine-${PRODUCT}-image
+  cdbitbake machine-drone-image
 }
 
 build-all-8009-images() {
@@ -197,10 +197,10 @@ build-8053-perf-image() {
 
 build-8053-concam-perf-image() {
   unset_bb_env
-  export MACHINE=apq8053
+  export MACHINE=apq8053-iot-mtp
   export DEFCONF=perf
   export PRODUCT=concam
-  cdbitbake machine-image
+  cdbitbake machine-concam-image
 }
 
 build-all-8053-images() {
@@ -228,7 +228,7 @@ build-8096-drone-image() {
   unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=drone
-  cdbitbake machine-${PRODUCT}-image
+  cdbitbake machine-drone-image
 }
 
 build-all-8096-images() {
