@@ -96,6 +96,7 @@ build-8009-image() {
   export MACHINE=apq8009
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-8009-snap-image() {
