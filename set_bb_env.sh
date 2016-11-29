@@ -232,6 +232,14 @@ build-8096-drone-image() {
   cdbitbake machine-drone-image
 }
 
+build-8096-drone-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8096
+  export PRODUCT=drone
+  export DEFCONF=perf
+  cdbitbake machine-${PRODUCT}-image
+}
+
 build-all-8096-images() {
   build-8096-image
   build-8096-perf-image
