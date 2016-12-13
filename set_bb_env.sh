@@ -144,12 +144,19 @@ build-8017-image() {
   cdbitbake machine-image
 }
 
+build-8017-snap-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export PRODUCT=snap
+  cdbitbake machine-snap-image
+}
+
 build-8017-snap-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-perf
   export PRODUCT=snap
-  cdbitbake machine-image
+  cdbitbake machine-snap-image
 }
 
 build-all-8017-images() {
