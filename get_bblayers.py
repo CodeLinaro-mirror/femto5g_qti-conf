@@ -11,7 +11,6 @@ def getLayerPaths(target,  fnexpr) :
     for file in os.listdir(target) :
         if (fnmatch.fnmatch(file, fnexpr) and not
             (fnmatch.fnmatch(file, "meta-hob") or
-             fnmatch.fnmatch(file, "meta-selinux") or
              fnmatch.fnmatch(file, "meta-skeleton") or
              fnmatch.fnmatch(file, "meta-selftest"))):
             # Found what might be a metadata layer...
