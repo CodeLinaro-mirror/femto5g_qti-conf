@@ -204,6 +204,7 @@ function build-8053-image() {
   export MACHINE=apq8053
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-perf-image() {
