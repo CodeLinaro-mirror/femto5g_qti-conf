@@ -49,6 +49,33 @@ WS=$(readlink -f $scriptdir/../../..)
 # dynamic workspace layer functionality.
 python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.conf
 
+export ENV_BBLAYERS_CONF="${WS}/poky/build/conf/bblayers.conf"
+export ENV_PREPATH="$(readlink -f ${WS}/)"
+if [ -d "${ENV_PREPATH}/meta-agl/meta-ivi-common" ]; then
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-ivi-common\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-agl\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-agl-bsp\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl-extra/meta-app-framework\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-intel-iot-security/meta-security-framework\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-intel-iot-security/meta-security-smack\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-oe\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-multimedia\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-ruby\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-efl\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-networking\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-python\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl-demo\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-qt5\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-amb\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-rust\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-security-isafw\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-ivi/meta-ivi\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-genivi-demo/meta-genivi-demo\"" >> ${ENV_BBLAYERS_CONF};
+
+    cat ${WS}/poky/build/conf/agl_bbmask.conf >> ${ENV_BBLAYERS_CONF};
+fi
+unset ENV_BBLAYERS_CONF ENV_PREPATH
+
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
 # californium commands
@@ -306,6 +333,28 @@ function build-8098-perf-image() {
 build-all-8098-images() {
   build-8098-image
   build-8098-perf-image
+}
+
+# 8996 commands
+build-8x96auto-image() {
+  unset_bb_env
+  export MACHINE=8x96auto
+  export DISTRO=poky-agl
+  cdbitbake automotive-image
+}
+
+build-8x96autofusion-image() {
+  unset_bb_env
+  export MACHINE=8x96autofusion
+  export DISTRO=poky-agl
+  cdbitbake automotive-image
+}
+
+build_8x96autohyp-image() {
+  unset_bb_env
+  export MACHINE=8x96autohyp
+  export DISTRO=poky-agl
+  cdbitbake automotive-image
 }
 
 # Utility commands
