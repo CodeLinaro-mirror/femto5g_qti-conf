@@ -100,11 +100,11 @@ function build-8009-image() {
   cdbitbake machine-recovery-image
 }
 
-function build-8009-snap-image() {
+function build-8009-qsap-image() {
   unset_bb_env
-  export MACHINE=apq8009-snap
-  export PRODUCT=snap
-  cdbitbake machine-snap-image
+  export MACHINE=apq8009-qsap
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
 }
 
 function build-8009-drone-image() {
@@ -125,7 +125,7 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
-  build-8009-snap-image
+  build-8009-qsap-image
   build-8009-drone-image
   build-8009-drone-perf-image
 }
@@ -146,24 +146,28 @@ function build-8017-image() {
 }
 
 function build-8017-snap-image() {
-  unset_bb_env
-  export MACHINE=apq8017
-  export PRODUCT=snap
-  cdbitbake machine-snap-image
+  build-8017-qsap-image
 }
 
-function build-8017-snap-perf-image() {
+function build-8017-qsap-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
+}
+
+function build-8017-qsap-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-perf
-  export PRODUCT=snap
-  cdbitbake machine-snap-image
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
 }
 
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
-  build-8017-snap-perf-image
+  build-8017-qsap-perf-image
 }
 
 # 9607 commands
