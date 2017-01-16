@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset MACHINE PRODUCT VARIANT
+unset DISTRO MACHINE PRODUCT VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -64,6 +64,7 @@ build-californium-image() {
   export MACHINE=mdmcalifornium
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-californium-perf-debug-image() {
@@ -325,7 +326,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset MACHINE PRODUCT VARIANT
+  unset DISTRO MACHINE PRODUCT VARIANT
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
