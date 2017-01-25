@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset MACHINE PRODUCT VARIANT
+unset DISTRO MACHINE PRODUCT VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -52,14 +52,14 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
 # californium commands
-build-californium-perf-image() {
+function build-californium-perf-image() {
   unset_bb_env
   export MACHINE=mdmcalifornium
   export DISTRO=mdm-perf
   cdbitbake machine-image
 }
 
-build-californium-image() {
+function build-californium-image() {
   unset_bb_env
   export MACHINE=mdmcalifornium
   export PRODUCT=base
@@ -67,11 +67,11 @@ build-californium-image() {
   cdbitbake machine-recovery-image
 }
 
-build-californium-perf-debug-image() {
+function build-californium-perf-debug-image() {
   build-californium-image
 }
 
-build-californium-psm-image() {
+function build-californium-psm-image() {
   unset_bb_env
   export MACHINE=mdmcalifornium
   export PRODUCT=psm
@@ -85,14 +85,14 @@ build-all-californium-images() {
 }
 
 # 8009 commands
-build-8009-perf-image() {
+function build-8009-perf-image() {
   unset_bb_env
   export MACHINE=apq8009
   export DISTRO=msm-perf
   cdbitbake machine-image
 }
 
-build-8009-image() {
+function build-8009-image() {
   unset_bb_env
   export MACHINE=apq8009
   export PRODUCT=base
@@ -100,21 +100,21 @@ build-8009-image() {
   cdbitbake machine-recovery-image
 }
 
-build-8009-snap-image() {
+function build-8009-qsap-image() {
   unset_bb_env
-  export MACHINE=apq8009-snap
-  export PRODUCT=snap
-  cdbitbake machine-snap-image
+  export MACHINE=apq8009-qsap
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
 }
 
-build-8009-drone-image() {
+function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
   export PRODUCT=drone
   cdbitbake machine-drone-image
 }
 
-build-8009-drone-perf-image() {
+function build-8009-drone-perf-image() {
   unset_bb_env
   export MACHINE=apq8009
   export DISTRO=msm-perf
@@ -125,56 +125,60 @@ build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
-  build-8009-snap-image
+  build-8009-qsap-image
   build-8009-drone-image
   build-8009-drone-perf-image
 }
 
 # 8017 commands
-build-8017-perf-image() {
+function build-8017-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-perf
   cdbitbake machine-image
 }
 
-build-8017-image() {
+function build-8017-image() {
   unset_bb_env
   export MACHINE=apq8017
   export PRODUCT=base
   cdbitbake machine-image
 }
 
-build-8017-snap-image() {
-  unset_bb_env
-  export MACHINE=apq8017
-  export PRODUCT=snap
-  cdbitbake machine-snap-image
+function build-8017-snap-image() {
+  build-8017-qsap-image
 }
 
-build-8017-snap-perf-image() {
+function build-8017-qsap-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
+}
+
+function build-8017-qsap-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-perf
-  export PRODUCT=snap
-  cdbitbake machine-snap-image
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
 }
 
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
-  build-8017-snap-perf-image
+  build-8017-qsap-perf-image
 }
 
 # 9607 commands
-build-9607-perf-image() {
+function build-9607-perf-image() {
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm-perf
   cdbitbake machine-image
 }
 
-build-9607-image() {
+function build-9607-image() {
   unset_bb_env
   export MACHINE=mdm9607
   export PRODUCT=base
@@ -191,7 +195,7 @@ build-all-9607-images() {
 }
 
 # 8909w commands
-build-8909w-image() {
+function build-8909w-image() {
   unset_bb_env
   export MACHINE=msm8909w
   export PRODUCT=base
@@ -199,21 +203,21 @@ build-8909w-image() {
 }
 
 # 8053 commands
-build-8053-image() {
+function build-8053-image() {
   unset_bb_env
   export MACHINE=apq8053
   export PRODUCT=base
   cdbitbake machine-image
 }
 
-build-8053-perf-image() {
+function build-8053-perf-image() {
   unset_bb_env
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
 }
 
-build-8053-concam-perf-image() {
+function build-8053-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-iot-mtp
   export DISTRO=msm-perf
@@ -228,28 +232,28 @@ build-all-8053-images() {
 }
 
 # 8096 commands
-build-8096-image() {
+function build-8096-image() {
   unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=base
   cdbitbake machine-image
 }
 
-build-8096-perf-image() {
+function build-8096-perf-image() {
   unset_bb_env
   export MACHINE=apq8096
   export DISTRO=msm-perf
   cdbitbake machine-image
 }
 
-build-8096-drone-image() {
+function build-8096-drone-image() {
   unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=drone
   cdbitbake machine-drone-image
 }
 
-build-8096-drone-perf-image() {
+function build-8096-drone-perf-image() {
   unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=drone
@@ -265,14 +269,14 @@ build-all-8096-images() {
 }
 
 # hedgehog commands
-build-hedgehog-perf-image() {
+function build-hedgehog-perf-image() {
   unset_bb_env
   export MACHINE=sdxhedgehog
   export DISTRO=mdm-perf
   cdbitbake machine-image
 }
 
-build-hedgehog-image() {
+function build-hedgehog-image() {
   unset_bb_env
   export MACHINE=sdxhedgehog
   export PRODUCT=base
@@ -285,14 +289,14 @@ build-all-hedgehog-images() {
 }
 
 # 8098 commands
-build-8098-image() {
+function build-8098-image() {
   unset_bb_env
   export MACHINE=apq8098
   export PRODUCT=base
   cdbitbake machine-image
 }
 
-build-8098-perf-image() {
+function build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
   export DISTRO=msm-perf
@@ -313,6 +317,28 @@ buildclean() {
   set +x
 }
 
+# Lists only those build commands that are:
+#   * prefixed with function keyword
+#   * name starts with build-
+
+list-build-commands()
+{
+    echo
+    echo "Convenience commands for building images:"
+    local script_file="$WS/poky/build/conf/set_bb_env.sh"
+
+    while IFS= read line; do
+        if echo $line | grep -q "^function[[:blank:]][[:blank:]]*build-"; then
+            local delim_string=$(echo $line | cut -d'(' -f1)
+            echo "   $(echo $delim_string|awk -F "[[:blank:]]*" '{print $2}')"
+        fi
+    done < $script_file
+
+    echo
+    echo "Use 'list-build-commands' to see this list again."
+    echo
+}
+
 cdbitbake() {
   local ret=0
   cd ${WS}/poky/build
@@ -326,7 +352,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset MACHINE PRODUCT VARIANT
+  unset DISTRO MACHINE PRODUCT VARIANT
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
@@ -340,3 +366,5 @@ unset_bb_env() {
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+
+list-build-commands
