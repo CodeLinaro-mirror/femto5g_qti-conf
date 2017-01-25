@@ -336,21 +336,21 @@ build-all-8098-images() {
 }
 
 # 8996 commands
-build-8x96auto-image() {
+function build-8x96auto-image() {
   unset_bb_env
   export MACHINE=8x96auto
   export DISTRO=poky-agl
   cdbitbake automotive-image
 }
 
-build-8x96autofusion-image() {
+function build-8x96autofusion-image() {
   unset_bb_env
   export MACHINE=8x96autofusion
   export DISTRO=poky-agl
   cdbitbake automotive-image
 }
 
-build_8x96autohyp-image() {
+function build_8x96autohyp-image() {
   unset_bb_env
   export MACHINE=8x96autohyp
   export DISTRO=poky-agl
