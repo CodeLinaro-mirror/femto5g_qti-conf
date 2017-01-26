@@ -341,21 +341,28 @@ build-all-8098-images() {
 function build-8x96auto-image() {
   unset_bb_env
   export MACHINE=8x96auto
-  export DISTRO=poky-agl
+  export DISTRO=auto
+  cdbitbake automotive-image
+}
+
+function build-8x96auto-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96auto
+  export DISTRO=auto-perf
   cdbitbake automotive-image
 }
 
 function build-8x96autofusion-image() {
   unset_bb_env
   export MACHINE=8x96autofusion
-  export DISTRO=poky-agl
+  export DISTRO=auto
   cdbitbake automotive-image
 }
 
 function build_8x96autohyp-image() {
   unset_bb_env
   export MACHINE=8x96autohyp
-  export DISTRO=poky-agl
+  export DISTRO=auto
   cdbitbake automotive-image
 }
 
