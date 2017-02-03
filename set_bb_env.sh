@@ -44,6 +44,24 @@ scriptdir="$(dirname "${BASH_SOURCE}")"
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../../..)
 
+# Add a few helpful shortcuts
+# Go to root of workspace
+alias croot='cd $WS'
+
+# Go to the directory from where you can kick off the build(workspace/poky/build)
+# from wherever you are
+alias gobuilddir='CUR_DIR=`pwd` && cd $WS/poky/build'
+
+# Go back to the directory you were working in before you ran gobuild
+alias goback='cd $CUR_DIR'
+
+#Build recipe X for target Y
+function build_x_for_y() { gobuilddir && MACHINE=$2 rebake $1 && goback; }
+
+#Go to OUT directory
+alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
+
+
 # Dynamically generate our bblayers.conf since we effectively can't whitelist
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
