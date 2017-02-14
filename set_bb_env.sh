@@ -179,6 +179,7 @@ function build-9607-image() {
   export MACHINE=mdm9607
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-9607-perf-debug-image() {
