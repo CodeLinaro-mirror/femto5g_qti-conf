@@ -353,6 +353,9 @@ unset_bb_env() {
   unset DISTRO MACHINE PRODUCT VARIANT
 }
 
+# Find build templates from qti meta layer.
+export TEMPLATECONF="meta-qti-bsp/conf"
+
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the 
