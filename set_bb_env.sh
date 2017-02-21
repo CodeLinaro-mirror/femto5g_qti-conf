@@ -145,10 +145,6 @@ function build-8017-image() {
   cdbitbake machine-image
 }
 
-function build-8017-snap-image() {
-  build-8017-qsap-image
-}
-
 function build-8017-qsap-image() {
   unset_bb_env
   export MACHINE=apq8017
@@ -183,6 +179,7 @@ function build-9607-image() {
   export MACHINE=mdm9607
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-9607-perf-debug-image() {
@@ -208,6 +205,7 @@ function build-8053-image() {
   export MACHINE=apq8053
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-perf-image() {
