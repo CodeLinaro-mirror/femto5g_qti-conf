@@ -73,6 +73,7 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 function build-9650-perf-image() {
   unset_bb_env
   export MACHINE=mdm9650
+  export PRODUCT=base
   export DISTRO=mdm-perf
   cdbitbake machine-image
 }
@@ -85,8 +86,12 @@ function build-9650-image() {
   cdbitbake machine-recovery-image
 }
 
-function build-9650-perf-debug-image() {
-  build-9650-image
+function build-9650-psm-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export DISTRO=msm-perf
+  export PRODUCT=psm
+  cdbitbake machine-psm-image
 }
 
 function build-9650-psm-image() {
@@ -99,7 +104,11 @@ function build-9650-psm-image() {
 build-all-9650-images() {
   build-9650-image
   build-9650-perf-image
+}
+
+build-all-9650-psm-images() {
   build-9650-psm-image
+  build-9650-psm-perf-image
 }
 
 # 8009 commands
@@ -125,6 +134,14 @@ function build-8009-qsap-image() {
   cdbitbake machine-qsap-image
 }
 
+function build-8009-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009-qsap
+  export DISTRO=msm-perf
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
+}
+
 function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -143,7 +160,14 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+}
+
+build-all-8009-qsap-images() {
   build-8009-qsap-image
+  build-8009-qsap-perf-image
+}
+
+build-all-8009-drone-images() {
   build-8009-drone-image
   build-8009-drone-perf-image
 }
@@ -181,6 +205,10 @@ function build-8017-qsap-perf-image() {
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
+}
+
+build-all-8017-qsap-images() {
+  build-8017-qsap-image
   build-8017-qsap-perf-image
 }
 
@@ -244,6 +272,10 @@ function build-8053-concam-perf-image() {
 build-all-8053-images() {
   build-8053-image
   build-8053-perf-image
+}
+
+build-all-8053-concam-images() {
+  build-8053-concam-image
   build-8053-concam-perf-image
 }
 
@@ -280,6 +312,9 @@ function build-8096-drone-perf-image() {
 build-all-8096-images() {
   build-8096-image
   build-8096-perf-image
+}
+
+build-all-8096-drone-images() {
   build-8096-drone-image
   build-8096-drone-perf-image
 }
