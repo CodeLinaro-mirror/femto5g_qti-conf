@@ -142,6 +142,21 @@ function build-8009-qsap-perf-image() {
   cdbitbake machine-qsap-image
 }
 
+function build-8009-robot-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export PRODUCT=robot
+  cdbitbake machine-robot-image
+}
+
+function build-8009-robot-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export DISTRO=msm-perf
+  export PRODUCT=robot
+  cdbitbake machine-robot-image
+}
+
 function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -165,6 +180,11 @@ build-all-8009-images() {
 build-all-8009-qsap-images() {
   build-8009-qsap-image
   build-8009-qsap-perf-image
+}
+
+build-all-8009-robot-images() {
+  build-8009-robot-image
+  build-8009-robot-perf-image
 }
 
 build-all-8009-drone-images() {
