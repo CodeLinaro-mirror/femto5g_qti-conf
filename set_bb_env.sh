@@ -352,6 +352,7 @@ function build-hedgehog-image() {
   export MACHINE=sdxhedgehog
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-all-hedgehog-images() {
