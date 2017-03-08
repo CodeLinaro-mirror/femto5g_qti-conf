@@ -287,6 +287,7 @@ function build-8053-concam-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=concam
   cdbitbake machine-concam-image
+  cdbitbake machine-concam-recovery-image
 }
 
 build-all-8053-images() {
