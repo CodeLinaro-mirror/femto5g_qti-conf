@@ -343,6 +343,7 @@ function build-8x96auto-image() {
   export MACHINE=8x96auto
   export DISTRO=auto
   cdbitbake automotive-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8x96auto-perf-image() {
