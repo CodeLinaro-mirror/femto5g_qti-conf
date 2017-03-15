@@ -366,17 +366,25 @@ function build-8x96autofusion-image() {
   cdbitbake automotive-image
 }
 
-function build_8x96autohyp-image() {
-  unset_bb_env
-  export MACHINE=8x96autohyp
-  export DISTRO=auto
-  cdbitbake automotive-image
-}
-
 function build-8x96auto44-image() {
   unset_bb_env
   export MACHINE=8x96auto44
   export DISTRO=poky-agl
+  cdbitbake automotive-image
+}
+
+# 8996 GVM commands
+function build-8x96autogvmquin-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmquin
+  export DISTRO=auto
+  cdbitbake automotive-image
+}
+
+function build-8x96autogvmred-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmred
+  export DISTRO=auto
   cdbitbake automotive-image
 }
 
