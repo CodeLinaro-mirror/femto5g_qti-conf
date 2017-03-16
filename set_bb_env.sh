@@ -279,6 +279,7 @@ function build-8053-perf-image() {
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-perf-image() {
