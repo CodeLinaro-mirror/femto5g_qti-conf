@@ -108,9 +108,22 @@ function build-8009-qsap-image() {
 }
 
 function build-8009-drone-image() {
+  build-8009-nand-image
+}
+
+function build-8009-emmc-image() {
   unset_bb_env
   export MACHINE=apq8009
   export PRODUCT=drone
+  export STORAGE_TYPE=emmc
+  cdbitbake machine-drone-image
+}
+
+function build-8009-nand-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export PRODUCT=drone
+  export STORAGE_TYPE=nand
   cdbitbake machine-drone-image
 }
 
@@ -363,6 +376,6 @@ unset_bb_env() {
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT STORAGE_TYPE"
 
 list-build-commands
