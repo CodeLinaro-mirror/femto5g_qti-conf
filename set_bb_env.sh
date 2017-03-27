@@ -358,7 +358,6 @@ build-all-8x96auto-images() {
   build-8x96auto-perf-image
 }
 
-
 function build-8x96autofusion-image() {
   unset_bb_env
   export MACHINE=8x96autofusion
@@ -384,6 +383,13 @@ function build-8x96autogvmquin-image() {
 function build-8x96autogvmred-image() {
   unset_bb_env
   export MACHINE=8x96autogvmred
+  export DISTRO=auto
+  cdbitbake automotive-image
+}
+
+function build-8x96autonapier-image() {
+  unset_bb_env
+  export MACHINE=8x96autonapier
   export DISTRO=auto
   cdbitbake automotive-image
 }
