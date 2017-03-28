@@ -44,6 +44,24 @@ scriptdir="$(dirname "${BASH_SOURCE}")"
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../../..)
 
+# Add a few helpful shortcuts
+# Go to root of workspace
+alias croot='cd $WS'
+
+# Go to the directory from where you can kick off the build(workspace/poky/build)
+# from wherever you are
+alias gobuilddir='CUR_DIR=`pwd` && cd $WS/poky/build'
+
+# Go back to the directory you were working in before you ran gobuild
+alias goback='cd $CUR_DIR'
+
+#Build recipe X for target Y
+function build_x_for_y() { gobuilddir && MACHINE=$2 rebake $1 && goback; }
+
+#Go to OUT directory
+alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
+
+
 # Dynamically generate our bblayers.conf since we effectively can't whitelist
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
@@ -55,6 +73,7 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 function build-9650-perf-image() {
   unset_bb_env
   export MACHINE=mdm9650
+  export PRODUCT=base
   export DISTRO=mdm-perf
   cdbitbake machine-image
 }
@@ -67,8 +86,12 @@ function build-9650-image() {
   cdbitbake machine-recovery-image
 }
 
-function build-9650-perf-debug-image() {
-  build-9650-image
+function build-9650-psm-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export DISTRO=msm-perf
+  export PRODUCT=psm
+  cdbitbake machine-psm-image
 }
 
 function build-9650-psm-image() {
@@ -81,7 +104,11 @@ function build-9650-psm-image() {
 build-all-9650-images() {
   build-9650-image
   build-9650-perf-image
+}
+
+build-all-9650-psm-images() {
   build-9650-psm-image
+  build-9650-psm-perf-image
 }
 
 # 8009 commands
@@ -107,6 +134,30 @@ function build-8009-qsap-image() {
   cdbitbake machine-qsap-image
 }
 
+function build-8009-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009-qsap
+  export DISTRO=msm-perf
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
+}
+
+function build-8009-robot-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export PRODUCT=robot
+  cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
+}
+
+function build-8009-robot-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export DISTRO=msm-perf
+  export PRODUCT=robot
+  cdbitbake machine-robot-image
+}
+
 function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -125,7 +176,19 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+}
+
+build-all-8009-qsap-images() {
   build-8009-qsap-image
+  build-8009-qsap-perf-image
+}
+
+build-all-8009-robot-images() {
+  build-8009-robot-image
+  build-8009-robot-perf-image
+}
+
+build-all-8009-drone-images() {
   build-8009-drone-image
   build-8009-drone-perf-image
 }
@@ -163,6 +226,10 @@ function build-8017-qsap-perf-image() {
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
+}
+
+build-all-8017-qsap-images() {
+  build-8017-qsap-image
   build-8017-qsap-perf-image
 }
 
@@ -213,6 +280,7 @@ function build-8053-perf-image() {
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-perf-image() {
@@ -221,11 +289,16 @@ function build-8053-concam-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=concam
   cdbitbake machine-concam-image
+  cdbitbake machine-concam-recovery-image
 }
 
 build-all-8053-images() {
   build-8053-image
   build-8053-perf-image
+}
+
+build-all-8053-concam-images() {
+  build-8053-concam-image
   build-8053-concam-perf-image
 }
 
@@ -262,6 +335,9 @@ function build-8096-drone-perf-image() {
 build-all-8096-images() {
   build-8096-image
   build-8096-perf-image
+}
+
+build-all-8096-drone-images() {
   build-8096-drone-image
   build-8096-drone-perf-image
 }
@@ -279,6 +355,7 @@ function build-hedgehog-image() {
   export MACHINE=sdxhedgehog
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-all-hedgehog-images() {
