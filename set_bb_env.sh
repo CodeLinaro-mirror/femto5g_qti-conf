@@ -147,6 +147,7 @@ function build-8009-robot-image() {
   export MACHINE=apq8009-robot
   export PRODUCT=robot
   cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-robot-perf-image() {
@@ -279,6 +280,7 @@ function build-8053-perf-image() {
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-perf-image() {
@@ -287,6 +289,7 @@ function build-8053-concam-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=concam
   cdbitbake machine-concam-image
+  cdbitbake machine-concam-recovery-image
 }
 
 build-all-8053-images() {
@@ -352,6 +355,7 @@ function build-hedgehog-image() {
   export MACHINE=sdxhedgehog
   export PRODUCT=base
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 build-all-hedgehog-images() {
