@@ -147,6 +147,7 @@ function build-8009-robot-image() {
   export MACHINE=apq8009-robot
   export PRODUCT=robot
   cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-robot-perf-image() {
@@ -279,6 +280,7 @@ function build-8053-perf-image() {
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-perf-image() {
