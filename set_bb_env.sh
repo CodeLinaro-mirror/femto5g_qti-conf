@@ -342,25 +342,25 @@ build-all-8096-drone-images() {
   build-8096-drone-perf-image
 }
 
-# hedgehog commands
-function build-hedgehog-perf-image() {
+# sdx20 commands
+function build-sdx20-perf-image() {
   unset_bb_env
-  export MACHINE=sdxhedgehog
+  export MACHINE=sdx20
   export DISTRO=mdm-perf
   cdbitbake machine-image
 }
 
-function build-hedgehog-image() {
+function build-sdx20-image() {
   unset_bb_env
-  export MACHINE=sdxhedgehog
+  export MACHINE=sdx20
   export PRODUCT=base
   cdbitbake machine-image
   cdbitbake machine-recovery-image
 }
 
-build-all-hedgehog-images() {
-  build-hedgehog-image
-  build-hedgehog-perf-image
+build-all-sdx20-images() {
+  build-sdx20-image
+  build-sdx20-perf-image
 }
 
 # 8098 commands
