@@ -369,6 +369,13 @@ function build-8x96autofusion-image() {
   cdbitbake automotive-image
 }
 
+function build-8x96autofusion-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96autofusion
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+}
+
 function build-8x96auto44-image() {
   unset_bb_env
   export MACHINE=8x96auto44
