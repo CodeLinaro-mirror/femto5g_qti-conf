@@ -282,6 +282,23 @@ function build-8053-perf-image() {
   cdbitbake machine-recovery-image
 }
 
+function build-8053-concam-compact-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
+function build-8053-concam-compact-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  export DISTRO=msm-perf
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
 function build-8053-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-iot-mtp
