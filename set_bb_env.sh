@@ -237,6 +237,7 @@ function build-8017-qsap-image() {
   export MACHINE=apq8017
   export PRODUCT=qsap
   cdbitbake machine-qsap-image
+  cdbitbake machine-qsap-recovery-image
 }
 
 function build-8017-qsap-perf-image() {
