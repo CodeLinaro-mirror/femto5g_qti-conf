@@ -94,6 +94,21 @@ function build-9650-psm-perf-image() {
   cdbitbake machine-psm-image
 }
 
+function build-9650-2k-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-9650-2k-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  cdbitbake machine-image
+}
+
 function build-9650-psm-image() {
   unset_bb_env
   export MACHINE=mdm9650
@@ -123,6 +138,8 @@ function build-9650-ccard-image() {
 build-all-9650-images() {
   build-9650-image
   build-9650-perf-image
+  build-9650-2k-image
+  build-9650-2k-perf-image
 }
 
 build-all-9650-psm-images() {
