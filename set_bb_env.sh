@@ -70,6 +70,7 @@ if [ -d "${ENV_PREPATH}/meta-agl/meta-ivi-common" ]; then
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-rust\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-security-isafw\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-ivi/meta-ivi\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-ivi/meta-ivi-test\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-genivi-demo/meta-genivi-demo\"" >> ${ENV_BBLAYERS_CONF};
 
     cat ${WS}/poky/meta-qti-bsp/conf/agl_bbmask-opensource.conf >> ${ENV_BBLAYERS_CONF};
