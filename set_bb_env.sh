@@ -94,6 +94,21 @@ function build-9650-psm-perf-image() {
   cdbitbake machine-psm-image
 }
 
+function build-9650-2k-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-9650-2k-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  cdbitbake machine-image
+}
+
 function build-9650-psm-image() {
   unset_bb_env
   export MACHINE=mdm9650
@@ -123,6 +138,8 @@ function build-9650-ccard-image() {
 build-all-9650-images() {
   build-9650-image
   build-9650-perf-image
+  build-9650-2k-image
+  build-9650-2k-perf-image
 }
 
 build-all-9650-psm-images() {
@@ -142,6 +159,14 @@ function build-8009-perf-image() {
   export DISTRO=msm-perf
   cdbitbake machine-image
 }
+
+function build-8009-user-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export DISTRO=msm-user
+  cdbitbake machine-image
+}
+
 
 function build-8009-image() {
   unset_bb_env
@@ -248,6 +273,14 @@ function build-8017-qsap-perf-image() {
   cdbitbake machine-qsap-image
 }
 
+function build-8017-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export DISTRO=msm-user
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
+}
+
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
@@ -303,6 +336,23 @@ function build-8053-image() {
 function build-8053-perf-image() {
   unset_bb_env
   export MACHINE=apq8053
+  export DISTRO=msm-perf
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
+function build-8053-concam-compact-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
+function build-8053-concam-compact-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
   export DISTRO=msm-perf
   cdbitbake machine-image
   cdbitbake machine-recovery-image
