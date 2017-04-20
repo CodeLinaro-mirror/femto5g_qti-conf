@@ -318,6 +318,11 @@ build-all-8053-concam-images() {
   build-8053-concam-perf-image
 }
 
+build-all-8053-compact-images() {
+  build-8053-concam-compact-image
+  build-8053-concam-compact-perf-image
+}
+
 # 8096 commands
 function build-8096-image() {
   unset_bb_env
