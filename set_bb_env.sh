@@ -226,6 +226,7 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+  build-8009-user-image
 }
 
 build-all-8009-qsap-images() {
