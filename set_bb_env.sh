@@ -205,6 +205,7 @@ function build-8009-robot-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=robot
   cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-drone-image() {
