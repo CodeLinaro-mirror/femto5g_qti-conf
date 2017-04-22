@@ -183,6 +183,7 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+  build-8009-user-image
 }
 
 build-all-8009-qsap-images() {
@@ -298,6 +299,23 @@ function build-8053-perf-image() {
   cdbitbake machine-recovery-image
 }
 
+function build-8053-concam-compact-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
+function build-8053-concam-compact-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  export DISTRO=msm-perf
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
 function build-8053-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-iot-mtp
@@ -315,6 +333,11 @@ build-all-8053-images() {
 build-all-8053-concam-images() {
   build-8053-concam-image
   build-8053-concam-perf-image
+}
+
+build-all-8053-compact-images() {
+  build-8053-concam-compact-image
+  build-8053-concam-compact-perf-image
 }
 
 # 8096 commands
