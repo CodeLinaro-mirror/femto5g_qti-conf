@@ -258,6 +258,14 @@ function build-8017-image() {
   cdbitbake machine-image
 }
 
+function build-8017-user-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export DISTRO=msm-user
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
 function build-8017-qsap-image() {
   unset_bb_env
   export MACHINE=apq8017
@@ -285,11 +293,13 @@ function build-8017-qsap-user-image() {
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
+  build-8017-user-image
 }
 
 build-all-8017-qsap-images() {
   build-8017-qsap-image
   build-8017-qsap-perf-image
+  build-8017-qsap-user-image
 }
 
 # 9607 commands
