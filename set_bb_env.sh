@@ -205,6 +205,7 @@ function build-8009-robot-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=robot
   cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-drone-image() {
@@ -375,6 +376,11 @@ build-all-8053-images() {
 build-all-8053-concam-images() {
   build-8053-concam-image
   build-8053-concam-perf-image
+}
+
+build-all-8053-compact-images() {
+  build-8053-concam-compact-image
+  build-8053-concam-compact-perf-image
 }
 
 # 8096 commands
