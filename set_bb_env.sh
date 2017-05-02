@@ -208,6 +208,14 @@ function build-8009-robot-perf-image() {
   cdbitbake machine-robot-recovery-image
 }
 
+function build-8009-robot-dummy-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export PRODUCT=base
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
 function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
