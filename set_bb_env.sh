@@ -372,6 +372,11 @@ function build-8x96autofusion-image() {
   export MACHINE=8x96autofusion
   export DISTRO=auto
   cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake machine-recovery-image
 }
 
 function build-8x96autofusion-perf-image() {
@@ -379,6 +384,11 @@ function build-8x96autofusion-perf-image() {
   export MACHINE=8x96autofusion
   export DISTRO=auto-perf
   cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake machine-recovery-image
 }
 
 function build-8x96auto44-image() {
