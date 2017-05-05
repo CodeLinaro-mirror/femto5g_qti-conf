@@ -205,6 +205,7 @@ function build-8009-robot-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=robot
   cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-drone-image() {
@@ -225,6 +226,7 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+  build-8009-user-image
 }
 
 build-all-8009-qsap-images() {
@@ -257,6 +259,14 @@ function build-8017-image() {
   cdbitbake machine-image
 }
 
+function build-8017-user-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export DISTRO=msm-user
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
 function build-8017-qsap-image() {
   unset_bb_env
   export MACHINE=apq8017
@@ -284,11 +294,13 @@ function build-8017-qsap-user-image() {
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
+  build-8017-user-image
 }
 
 build-all-8017-qsap-images() {
   build-8017-qsap-image
   build-8017-qsap-perf-image
+  build-8017-qsap-user-image
 }
 
 # 9607 commands
@@ -375,6 +387,11 @@ build-all-8053-images() {
 build-all-8053-concam-images() {
   build-8053-concam-image
   build-8053-concam-perf-image
+}
+
+build-all-8053-compact-images() {
+  build-8053-concam-compact-image
+  build-8053-concam-compact-perf-image
 }
 
 # 8096 commands
