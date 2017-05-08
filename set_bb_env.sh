@@ -391,13 +391,6 @@ function build-8x96autofusion-perf-image() {
   cdbitbake machine-recovery-image
 }
 
-function build-8x96auto44-image() {
-  unset_bb_env
-  export MACHINE=8x96auto44
-  export DISTRO=poky-agl
-  cdbitbake automotive-image
-}
-
 # 8996 GVM commands
 function build-8x96autogvmquin-image() {
   unset_bb_env
