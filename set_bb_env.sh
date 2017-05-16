@@ -337,7 +337,7 @@ function build-9607-image() {
 build-all-9607-images() {
   build-9607-image
   build-9607-perf-image
-  build-9607-psm-image
+#  build-9607-psm-image
 }
 
 # 8909w commands
