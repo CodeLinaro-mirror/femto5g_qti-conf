@@ -208,6 +208,14 @@ function build-8009-robot-perf-image() {
   cdbitbake machine-robot-recovery-image
 }
 
+function build-8009-robot-dummy-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export PRODUCT=base
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
 function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -311,6 +319,13 @@ function build-9607-perf-image() {
   cdbitbake machine-image
 }
 
+function build-9607-psm-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export PRODUCT=psm
+  cdbitbake machine-psm-image
+}
+
 function build-9607-image() {
   unset_bb_env
   export MACHINE=mdm9607
@@ -319,13 +334,10 @@ function build-9607-image() {
   cdbitbake machine-recovery-image
 }
 
-build-9607-perf-debug-image() {
-  build-9607-image
-}
-
 build-all-9607-images() {
   build-9607-image
   build-9607-perf-image
+  build-9607-psm-image
 }
 
 # 8909w commands
