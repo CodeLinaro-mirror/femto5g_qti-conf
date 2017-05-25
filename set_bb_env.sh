@@ -216,6 +216,23 @@ function build-8009-robot-dummy-image() {
   cdbitbake machine-recovery-image
 }
 
+function build-8009-robot-rome-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export PRODUCT=robot-rome
+  cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
+}
+
+function build-8009-robot-rome-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export DISTRO=msm-perf
+  export PRODUCT=robot-rome
+  cdbitbake machine-robot-image
+  cdbitbake machine-robot-recovery-image
+}
+
 function build-8009-drone-image() {
   unset_bb_env
   export MACHINE=apq8009
