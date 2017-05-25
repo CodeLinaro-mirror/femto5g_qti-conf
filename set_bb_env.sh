@@ -455,6 +455,26 @@ build-all-sdx20-images() {
   build-sdx20-perf-image
 }
 
+# sdxpoorwills commands
+function build-sdxpoorwills-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=mdm-perf
+  cdbitbake machine-image
+}
+
+function build-sdxpoorwills-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+build-all-sdxpoorwills-images() {
+  build-sdxpoorwills-image
+  build-sdxpoorwills-perf-image
+}
+
 # 8098 commands
 function build-8098-image() {
   unset_bb_env
