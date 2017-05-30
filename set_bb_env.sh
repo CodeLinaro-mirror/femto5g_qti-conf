@@ -443,6 +443,7 @@ function build-8096-drone-image() {
   export MACHINE=apq8096
   export PRODUCT=drone
   cdbitbake machine-drone-image
+  cdbitbake machine-drone-recovery-image
 }
 
 function build-8096-drone-perf-image() {
@@ -451,6 +452,7 @@ function build-8096-drone-perf-image() {
   export PRODUCT=drone
   export DISTRO=msm-perf
   cdbitbake machine-drone-image
+  cdbitbake machine-drone-recovery-image
 }
 
 build-all-8096-images() {
