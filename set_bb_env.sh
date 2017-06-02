@@ -307,8 +307,7 @@ function build-8053-concam-compact-image() {
   unset_bb_env
   export MACHINE=apq8053-compact
   export PRODUCT=base
-  cdbitbake machine-image
-  cdbitbake machine-recovery-image
+  cdbitbake machine-minimal-image
 }
 
 function build-8053-concam-compact-perf-image() {
@@ -316,8 +315,7 @@ function build-8053-concam-compact-perf-image() {
   export MACHINE=apq8053-compact
   export PRODUCT=base
   export DISTRO=msm-perf
-  cdbitbake machine-image
-  cdbitbake machine-recovery-image
+  cdbitbake machine-minimal-image
 }
 
 function build-8053-concam-perf-image() {
