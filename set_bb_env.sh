@@ -262,6 +262,8 @@ build-all-8009-qsap-images() {
 build-all-8009-robot-images() {
   build-8009-robot-image
   build-8009-robot-perf-image
+  build-8009-robot-rome-image
+  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
