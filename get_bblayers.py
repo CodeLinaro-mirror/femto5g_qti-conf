@@ -12,6 +12,10 @@ def getLayerPaths(target,  fnexpr) :
         if (fnmatch.fnmatch(file, fnexpr) and not
              (fnmatch.fnmatch(file, "meta-skeleton") or
              fnmatch.fnmatch(file, "meta-selftest") or
+             fnmatch.fnmatch(file, "meta-qti-camera") or
+             fnmatch.fnmatch(file, "meta-qti-camera-prop") or
+             fnmatch.fnmatch(file, "meta-qti-data") or
+             fnmatch.fnmatch(file, "meta-qti-data-prop") or
              fnmatch.fnmatch(file, "meta-yocto") or
              fnmatch.fnmatch(file, "meta-yocto-bsp"))):
             # Found what might be a metadata layer...
