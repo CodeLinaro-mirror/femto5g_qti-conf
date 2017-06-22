@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE PRODUCT VARIANT
+unset DISTRO MACHINE PRODUCT VARIANT PRODUCT_SUBTYPE
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -307,15 +307,19 @@ function build-8053-concam-compact-image() {
   unset_bb_env
   export MACHINE=apq8053-compact
   export PRODUCT=base
+  export PRODUCT_SUBTYPE=minimal
   cdbitbake machine-minimal-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-compact-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-compact
   export PRODUCT=base
+  export PRODUCT_SUBTYPE=minimal
   export DISTRO=msm-perf
   cdbitbake machine-minimal-image
+  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-perf-image() {
@@ -483,6 +487,6 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT PRODUCT_SUBTYPE"
 
 list-build-commands
