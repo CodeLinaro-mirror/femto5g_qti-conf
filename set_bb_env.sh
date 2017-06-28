@@ -119,6 +119,14 @@ function build-8009-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8009-user-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export DISTRO=msm-user
+  cdbitbake machine-image
+}
+
+
 function build-8009-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -175,6 +183,7 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+  build-8009-user-image
 }
 
 build-all-8009-qsap-images() {
@@ -222,6 +231,14 @@ function build-8017-qsap-perf-image() {
   cdbitbake machine-qsap-image
 }
 
+function build-8017-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=apq8017
+  export DISTRO=msm-user
+  export PRODUCT=qsap
+  cdbitbake machine-qsap-image
+}
+
 build-all-8017-images() {
   build-8017-image
   build-8017-perf-image
@@ -240,6 +257,13 @@ function build-9607-perf-image() {
   cdbitbake machine-image
 }
 
+function build-9607-psm-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export PRODUCT=psm
+  cdbitbake machine-psm-image
+}
+
 function build-9607-image() {
   unset_bb_env
   export MACHINE=mdm9607
@@ -248,13 +272,10 @@ function build-9607-image() {
   cdbitbake machine-recovery-image
 }
 
-build-9607-perf-debug-image() {
-  build-9607-image
-}
-
 build-all-9607-images() {
   build-9607-image
   build-9607-perf-image
+#  build-9607-psm-image
 }
 
 # 8909w commands
@@ -279,6 +300,22 @@ function build-8053-perf-image() {
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
+function build-8053-concam-compact-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  cdbitbake machine-minimal-image
+}
+
+function build-8053-concam-compact-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-compact
+  export PRODUCT=base
+  export DISTRO=msm-perf
+  cdbitbake machine-minimal-image
 }
 
 function build-8053-concam-perf-image() {
@@ -298,6 +335,11 @@ build-all-8053-images() {
 build-all-8053-concam-images() {
   build-8053-concam-image
   build-8053-concam-perf-image
+}
+
+build-all-8053-compact-images() {
+  build-8053-concam-compact-image
+  build-8053-concam-compact-perf-image
 }
 
 # 8096 commands
