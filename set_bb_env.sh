@@ -413,6 +413,13 @@ function build-8x96autogvmquin44-image() {
   cdbitbake automotive-image
 }
 
+function build-8x96autogvmquin44-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmquin44
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+}
+
 function build-8x96autogvmred-image() {
   unset_bb_env
   export MACHINE=8x96autogvmred
