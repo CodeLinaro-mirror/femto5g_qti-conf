@@ -83,7 +83,6 @@ function build-9650-image() {
   export MACHINE=mdm9650
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-9650-psm-perf-image() {
@@ -132,7 +131,6 @@ function build-9650-ccard-image() {
   export MACHINE=mdm9650-ccard
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 build-all-9650-images() {
@@ -173,7 +171,6 @@ function build-8009-image() {
   export MACHINE=apq8009
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8009-qsap-image() {
@@ -196,7 +193,6 @@ function build-8009-robot-image() {
   export MACHINE=apq8009-robot
   export PRODUCT=robot
   cdbitbake machine-robot-image
-  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-robot-perf-image() {
@@ -205,7 +201,6 @@ function build-8009-robot-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=robot
   cdbitbake machine-robot-image
-  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-robot-dummy-image() {
@@ -213,7 +208,6 @@ function build-8009-robot-dummy-image() {
   export MACHINE=apq8009-robot
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8009-robot-rome-image() {
@@ -221,7 +215,6 @@ function build-8009-robot-rome-image() {
   export MACHINE=apq8009-robot
   export PRODUCT=robot-rome
   cdbitbake machine-robot-image
-  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-robot-rome-perf-image() {
@@ -230,7 +223,6 @@ function build-8009-robot-rome-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=robot-rome
   cdbitbake machine-robot-image
-  cdbitbake machine-robot-recovery-image
 }
 
 function build-8009-drone-image() {
@@ -299,7 +291,6 @@ function build-8017-qsap-image() {
   export MACHINE=apq8017
   export PRODUCT=qsap
   cdbitbake machine-qsap-image
-  cdbitbake machine-qsap-recovery-image
 }
 
 function build-8017-qsap-perf-image() {
@@ -350,7 +341,6 @@ function build-9607-image() {
   export MACHINE=mdm9607
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 build-all-9607-images() {
@@ -373,7 +363,6 @@ function build-8053-image() {
   export MACHINE=apq8053
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8053-perf-image() {
@@ -381,7 +370,6 @@ function build-8053-perf-image() {
   export MACHINE=apq8053
   export DISTRO=msm-perf
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-compact-image() {
@@ -389,7 +377,6 @@ function build-8053-concam-compact-image() {
   export MACHINE=apq8053-compact
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-compact-perf-image() {
@@ -398,7 +385,6 @@ function build-8053-concam-compact-perf-image() {
   export PRODUCT=base
   export DISTRO=msm-perf
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8053-concam-perf-image() {
@@ -407,7 +393,6 @@ function build-8053-concam-perf-image() {
   export DISTRO=msm-perf
   export PRODUCT=concam
   cdbitbake machine-concam-image
-  cdbitbake machine-concam-recovery-image
 }
 
 build-all-8053-images() {
@@ -445,7 +430,6 @@ function build-8096-drone-image() {
   export MACHINE=apq8096
   export PRODUCT=drone
   cdbitbake machine-drone-image
-  cdbitbake machine-drone-recovery-image
 }
 
 function build-8096-drone-perf-image() {
@@ -454,7 +438,6 @@ function build-8096-drone-perf-image() {
   export PRODUCT=drone
   export DISTRO=msm-perf
   cdbitbake machine-drone-image
-  cdbitbake machine-drone-recovery-image
 }
 
 build-all-8096-images() {
@@ -480,7 +463,6 @@ function build-sdx20-image() {
   export MACHINE=sdx20
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 build-all-sdx20-images() {
