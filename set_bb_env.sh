@@ -262,6 +262,8 @@ build-all-8009-qsap-images() {
 build-all-8009-robot-images() {
   build-8009-robot-image
   build-8009-robot-perf-image
+  build-8009-robot-rome-image
+  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
@@ -443,6 +445,7 @@ function build-8096-drone-image() {
   export MACHINE=apq8096
   export PRODUCT=drone
   cdbitbake machine-drone-image
+  cdbitbake machine-drone-recovery-image
 }
 
 function build-8096-drone-perf-image() {
@@ -451,6 +454,7 @@ function build-8096-drone-perf-image() {
   export PRODUCT=drone
   export DISTRO=msm-perf
   cdbitbake machine-drone-image
+  cdbitbake machine-drone-recovery-image
 }
 
 build-all-8096-images() {
