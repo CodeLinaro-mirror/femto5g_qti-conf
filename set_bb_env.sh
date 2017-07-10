@@ -373,6 +373,18 @@ build-all-8x96auto-images() {
   build-8x96auto-perf-image
 }
 
+function build-8x96auto-sdk() {
+  unset_bb_env
+  export MACHINE=8x96auto
+  export DISTRO=auto
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake automotive-image -c populate_sdk
+}
+
 function build-8x96autofusion-image() {
   unset_bb_env
   export MACHINE=8x96autofusion
@@ -395,6 +407,18 @@ function build-8x96autofusion-perf-image() {
   return 1
   fi
   cdbitbake machine-recovery-image
+}
+
+function build-8x96autofusion-sdk() {
+  unset_bb_env
+  export MACHINE=8x96autofusion
+  export DISTRO=auto
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake automotive-image -c populate_sdk
 }
 
 # 8996 GVM commands
