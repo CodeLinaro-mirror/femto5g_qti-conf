@@ -466,6 +466,13 @@ function build-8x96autonapier-image() {
   cdbitbake automotive-image
 }
 
+function build-8x96mizar-image() {
+  unset_bb_env
+  export MACHINE=8x96mizar
+  export DISTRO=auto
+  cdbitbake automotive-image
+}
+
 # Utility commands
 buildclean() {
   set -x
