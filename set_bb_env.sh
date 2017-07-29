@@ -243,7 +243,6 @@ function build-8009-drone-perf-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
-  build-8009-user-image
 }
 
 build-all-8009-qsap-images() {
@@ -318,7 +317,6 @@ build-all-8017-images() {
 build-all-8017-qsap-images() {
   build-8017-qsap-image
   build-8017-qsap-perf-image
-  build-8017-qsap-user-image
 }
 
 # 9607 commands
