@@ -47,13 +47,10 @@ print "# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT."
 print "#--------------------------------------------------------------"
 print "LCONF_VERSION = \"6\""
 print
-print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(bb.data.getVar('FILE', d)),'../../..'))}\""
+print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../..'))}\""
 #print "# Make sure WORKSPACE isn't exported"
 #print "WORKSPACE[unexport] = \"1\""
 print 
 print "BBPATH = \"${TOPDIR}\""
 print "BBFILES ?= \"\""
 print "BBLAYERS = \"" + generatePathString(getLayerPaths(sys.argv[1].strip("\""), sys.argv[2].strip("\""))) + "\""
-
-
-
