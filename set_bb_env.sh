@@ -65,7 +65,9 @@ if [ -d "${ENV_PREPATH}/meta-agl/meta-ivi-common" ]; then
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-networking\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-python\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl-demo\"" >> ${ENV_BBLAYERS_CONF};
-    echo "BBLAYERS += \"${ENV_PREPATH}/meta-qt5\"" >> ${ENV_BBLAYERS_CONF};
+    if [ -d "${WS}/meta-qt5" ]; then
+        echo "BBLAYERS += \"${ENV_PREPATH}/meta-qt5\"" >> ${ENV_BBLAYERS_CONF};
+    fi
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-amb\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-rust\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-security-isafw\"" >> ${ENV_BBLAYERS_CONF};
