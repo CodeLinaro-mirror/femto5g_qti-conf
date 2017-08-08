@@ -347,6 +347,20 @@ function build-8053-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8053-32-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export DISTRO=msm-perf
+  cdbitbake machine-image
+}
+
+function build-8053-32-perf-minimal-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export DISTRO=msm-perf
+  cdbitbake machine-minimal-image
+}
+
 function build-8053-concam-compact-image() {
   unset_bb_env
   export MACHINE=apq8053-compact
@@ -373,6 +387,10 @@ function build-8053-concam-perf-image() {
 build-all-8053-images() {
   build-8053-image
   build-8053-perf-image
+}
+
+build-all-8053-32-images() {
+  build-8053-32-perf-minimal-image
 }
 
 build-all-8053-concam-images() {
