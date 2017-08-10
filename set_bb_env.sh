@@ -117,8 +117,8 @@ function build-9650-psm-image() {
 
 build-all-9650-images() {
   build-9650-image
-  build-9650-perf-image
   build-9650-2k-image
+  build-9650-perf-image
   build-9650-2k-perf-image
 }
 
