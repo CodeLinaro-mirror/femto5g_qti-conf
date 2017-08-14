@@ -115,24 +115,6 @@ function build-9650-psm-image() {
   cdbitbake machine-psm-image
 }
 
-# mdm9650-ccard build commands
-# Connected Car Application Reference Design
-# automotive reference design for Telematics units
-function build-9650-ccard-perf-image() {
-  unset_bb_env
-  export MACHINE=mdm9650-ccard
-  export PRODUCT=base
-  export DISTRO=mdm-perf
-  cdbitbake machine-image
-}
-
-function build-9650-ccard-image() {
-  unset_bb_env
-  export MACHINE=mdm9650-ccard
-  export PRODUCT=base
-  cdbitbake machine-image
-}
-
 build-all-9650-images() {
   build-9650-image
   build-9650-perf-image
@@ -143,11 +125,6 @@ build-all-9650-images() {
 build-all-9650-psm-images() {
   build-9650-psm-image
   build-9650-psm-perf-image
-}
-
-build-all-9650-ccard-images() {
-  build-9650-ccard-image
-  build-9650-ccard-perf-image
 }
 
 # 8009 commands
@@ -370,6 +347,20 @@ function build-8053-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8053-32-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export DISTRO=msm-perf
+  cdbitbake machine-image
+}
+
+function build-8053-32-perf-minimal-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export DISTRO=msm-perf
+  cdbitbake machine-minimal-image
+}
+
 function build-8053-concam-compact-image() {
   unset_bb_env
   export MACHINE=apq8053-compact
@@ -396,6 +387,10 @@ function build-8053-concam-perf-image() {
 build-all-8053-images() {
   build-8053-image
   build-8053-perf-image
+}
+
+build-all-8053-32-images() {
+  build-8053-32-perf-minimal-image
 }
 
 build-all-8053-concam-images() {
