@@ -361,9 +361,7 @@ function build-8053-32-perf-minimal-image() {
 
 build-all-8053-32-images() {
   build-8053-32-minimal-image
-  build-8053-32-image
   build-8053-32-perf-minimal-image
-  build-8053-32-perf-image
 }
 
 # 8096 commands
