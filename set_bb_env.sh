@@ -473,6 +473,48 @@ function build-8x96mizar-image() {
   cdbitbake automotive-image
 }
 
+# 8996 CV2X commands
+function build-8x96autocv2x-image() {
+  unset_bb_env
+  export MACHINE=8x96autocv2x
+  export DISTRO=auto
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake machine-recovery-image
+}
+
+function build-8x96autocv2x-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96autocv2x
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake machine-recovery-image
+}
+
+build-all-8x96autocv2x-images() {
+  build-8x96autocv2x-image
+  build-8x96autocv2x-perf-image
+}
+
+function build-8x96autocv2x-sdk() {
+  unset_bb_env
+  export MACHINE=8x96autocv2x
+  export DISTRO=auto
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake automotive-image -c populate_sdk
+}
+
 # Utility commands
 buildclean() {
   set -x
