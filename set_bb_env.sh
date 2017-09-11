@@ -75,6 +75,7 @@ function build-9650-perf-image() {
   export MACHINE=mdm9650
   export PRODUCT=base
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -97,6 +98,7 @@ function build-9650-2k-perf-image() {
   export MACHINE=mdm9650-2k
   export PRODUCT=base
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -275,6 +277,7 @@ function build-9607-perf-image() {
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -412,6 +415,7 @@ function build-sdx20-perf-image() {
   unset_bb_env
   export MACHINE=sdx20
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
