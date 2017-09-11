@@ -438,16 +438,16 @@ function build-8x96autogvmquin-perf-image() {
 
 
 # 8996 GVM kernel 4.4 commands
-function build-8x96autogvmquin44-image() {
+function build-8x96autogvmquintcu-image() {
   unset_bb_env
-  export MACHINE=8x96autogvmquin44
+  export MACHINE=8x96autogvmquintcu
   export DISTRO=auto
   cdbitbake automotive-image
 }
 
-function build-8x96autogvmquin44-perf-image() {
+function build-8x96autogvmquintcu-perf-image() {
   unset_bb_env
-  export MACHINE=8x96autogvmquin44
+  export MACHINE=8x96autogvmquintcu
   export DISTRO=auto-perf
   cdbitbake automotive-image
 }
