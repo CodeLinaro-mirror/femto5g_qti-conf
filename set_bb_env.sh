@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE PRODUCT VARIANT
+unset DISTRO MACHINE PRODUCT VARIANT FLOATABI
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -351,6 +351,23 @@ function build-9607-image() {
   cdbitbake machine-recovery-image
 }
 
+function build-9607-hf-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export PRODUCT=base
+  export FLOATABI=hard
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
+function build-9607-hf-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export DISTRO=mdm-perf
+  export FLOATABI=hard
+  cdbitbake machine-image
+}
+
 build-all-9607-images() {
   build-9607-image
   build-9607-perf-image
@@ -548,7 +565,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE PRODUCT VARIANT
+  unset DISTRO MACHINE PRODUCT VARIANT FLOATABI
 }
 
 # Find build templates from qti meta layer.
@@ -564,6 +581,6 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT FLOATABI"
 
 list-build-commands
