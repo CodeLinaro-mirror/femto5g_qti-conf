@@ -75,6 +75,7 @@ function build-9650-perf-image() {
   export MACHINE=mdm9650
   export PRODUCT=base
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -83,14 +84,6 @@ function build-9650-image() {
   export MACHINE=mdm9650
   export PRODUCT=base
   cdbitbake machine-image
-}
-
-function build-9650-psm-perf-image() {
-  unset_bb_env
-  export MACHINE=mdm9650
-  export DISTRO=msm-perf
-  export PRODUCT=psm
-  cdbitbake machine-psm-image
 }
 
 function build-9650-2k-image() {
@@ -105,7 +98,15 @@ function build-9650-2k-perf-image() {
   export MACHINE=mdm9650-2k
   export PRODUCT=base
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
+}
+
+build-all-9650-images() {
+  build-9650-image
+  build-9650-2k-image
+  build-9650-perf-image
+  build-9650-2k-perf-image
 }
 
 function build-9650-psm-image() {
@@ -115,29 +116,13 @@ function build-9650-psm-image() {
   cdbitbake machine-psm-image
 }
 
-# mdm9650-ccard build commands
-# Connected Car Application Reference Design
-# automotive reference design for Telematics units
-function build-9650-ccard-perf-image() {
+function build-9650-psm-perf-image() {
   unset_bb_env
-  export MACHINE=mdm9650-ccard
-  export PRODUCT=base
-  export DISTRO=mdm-perf
-  cdbitbake machine-image
-}
-
-function build-9650-ccard-image() {
-  unset_bb_env
-  export MACHINE=mdm9650-ccard
-  export PRODUCT=base
-  cdbitbake machine-image
-}
-
-build-all-9650-images() {
-  build-9650-image
-  build-9650-perf-image
-  build-9650-2k-image
-  build-9650-2k-perf-image
+  export MACHINE=mdm9650
+  export DISTRO=msm-perf
+  export VARIANT=perf
+  export PRODUCT=psm
+  cdbitbake machine-psm-image
 }
 
 build-all-9650-psm-images() {
@@ -145,16 +130,12 @@ build-all-9650-psm-images() {
   build-9650-psm-perf-image
 }
 
-build-all-9650-ccard-images() {
-  build-9650-ccard-image
-  build-9650-ccard-perf-image
-}
-
 # 8009 commands
 function build-8009-perf-image() {
   unset_bb_env
   export MACHINE=apq8009
   export DISTRO=msm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -162,6 +143,7 @@ function build-8009-user-image() {
   unset_bb_env
   export MACHINE=apq8009
   export DISTRO=msm-user
+  export VARIANT=user
   cdbitbake machine-image
 }
 
@@ -173,19 +155,9 @@ function build-8009-image() {
   cdbitbake machine-image
 }
 
-function build-8009-qsap-image() {
-  unset_bb_env
-  export MACHINE=apq8009-qsap
-  export PRODUCT=qsap
-  cdbitbake machine-qsap-image
-}
-
-function build-8009-qsap-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8009-qsap
-  export DISTRO=msm-perf
-  export PRODUCT=qsap
-  cdbitbake machine-qsap-image
+build-all-8009-images() {
+  build-8009-image
+  build-8009-perf-image
 }
 
 function build-8009-robot-image() {
@@ -199,6 +171,7 @@ function build-8009-robot-perf-image() {
   unset_bb_env
   export MACHINE=apq8009-robot
   export DISTRO=msm-perf
+  export VARIANT=perf
   export PRODUCT=robot
   cdbitbake machine-robot-image
 }
@@ -221,34 +194,9 @@ function build-8009-robot-rome-perf-image() {
   unset_bb_env
   export MACHINE=apq8009-robot
   export DISTRO=msm-perf
+  export VARIANT=perf
   export PRODUCT=robot-rome
   cdbitbake machine-robot-image
-}
-
-function build-8009-drone-image() {
-  unset_bb_env
-  export MACHINE=apq8009
-  export PRODUCT=drone
-  cdbitbake machine-drone-image
-}
-
-function build-8009-drone-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8009
-  export DISTRO=msm-perf
-  export PRODUCT=drone
-  cdbitbake machine-drone-image
-}
-
-build-all-8009-images() {
-  build-8009-image
-  build-8009-perf-image
-  build-8009-user-image
-}
-
-build-all-8009-qsap-images() {
-  build-8009-qsap-image
-  build-8009-qsap-perf-image
 }
 
 build-all-8009-robot-images() {
@@ -268,6 +216,7 @@ function build-8017-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -282,6 +231,7 @@ function build-8017-user-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-user
+  export VARIANT=user
   export PRODUCT=base
   cdbitbake machine-image
 }
@@ -297,6 +247,7 @@ function build-8017-qsap-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-perf
+  export VARIANT=perf
   export PRODUCT=qsap
   cdbitbake machine-qsap-image
 }
@@ -305,6 +256,7 @@ function build-8017-qsap-user-image() {
   unset_bb_env
   export MACHINE=apq8017
   export DISTRO=msm-user
+  export VARIANT=user
   export PRODUCT=qsap
   cdbitbake machine-qsap-image
 }
@@ -318,7 +270,6 @@ build-all-8017-images() {
 build-all-8017-qsap-images() {
   build-8017-qsap-image
   build-8017-qsap-perf-image
-  build-8017-qsap-user-image
 }
 
 # 9607 commands
@@ -326,6 +277,7 @@ function build-9607-perf-image() {
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -369,30 +321,8 @@ function build-8053-perf-image() {
   unset_bb_env
   export MACHINE=apq8053
   export DISTRO=msm-perf
+  export VARIANT=perf
   cdbitbake machine-image
-}
-
-function build-8053-concam-compact-image() {
-  unset_bb_env
-  export MACHINE=apq8053-compact
-  export PRODUCT=base
-  cdbitbake machine-image
-}
-
-function build-8053-concam-compact-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8053-compact
-  export PRODUCT=base
-  export DISTRO=msm-perf
-  cdbitbake machine-image
-}
-
-function build-8053-concam-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8053-iot-mtp
-  export DISTRO=msm-perf
-  export PRODUCT=concam
-  cdbitbake machine-concam-image
 }
 
 build-all-8053-images() {
@@ -400,14 +330,43 @@ build-all-8053-images() {
   build-8053-perf-image
 }
 
-build-all-8053-concam-images() {
-  build-8053-concam-image
-  build-8053-concam-perf-image
+# 8053-32 commands
+function build-8053-32-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export PRODUCT=base
+  cdbitbake machine-image
 }
 
-build-all-8053-compact-images() {
-  build-8053-concam-compact-image
-  build-8053-concam-compact-perf-image
+function build-8053-32-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export DISTRO=msm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-8053-32-minimal-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export PRODUCT=base
+  export VARIANT=minimal
+  cdbitbake machine-minimal-image
+}
+
+function build-8053-32-perf-minimal-image() {
+  unset_bb_env
+  export MACHINE=apq8053-32
+  export DISTRO=msm-perf
+  export VARIANT=perf-minimal
+  cdbitbake machine-minimal-image
+}
+
+build-all-8053-32-images() {
+  build-8053-32-minimal-image
+  build-8053-32-image
+  build-8053-32-perf-minimal-image
+  build-8053-32-perf-image
 }
 
 # 8096 commands
@@ -422,6 +381,7 @@ function build-8096-perf-image() {
   unset_bb_env
   export MACHINE=apq8096
   export DISTRO=msm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -455,6 +415,7 @@ function build-sdx20-perf-image() {
   unset_bb_env
   export MACHINE=sdx20
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -502,6 +463,7 @@ function build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
   export DISTRO=msm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
