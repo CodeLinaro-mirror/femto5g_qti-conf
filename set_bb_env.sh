@@ -436,6 +436,7 @@ function build-sdxpoorwills-perf-image() {
   unset_bb_env
   export MACHINE=sdxpoorwills
   export DISTRO=mdm-perf
+  export VARIANT=perf
   cdbitbake machine-image
 }
 
@@ -443,6 +444,7 @@ function build-sdxpoorwills-image() {
   unset_bb_env
   export MACHINE=sdxpoorwills
   export PRODUCT=base
+  export VARIANT=
   cdbitbake machine-image
 }
 
