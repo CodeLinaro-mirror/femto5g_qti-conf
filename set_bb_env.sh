@@ -401,6 +401,14 @@ function build-8053-perf-image() {
   cdbitbake machine-recovery-image
 }
 
+function build-8053-user-image() {
+  unset_bb_env
+  export MACHINE=apq8053
+  export DISTRO=msm-user
+  cdbitbake machine-image
+  cdbitbake machine-recovery-image
+}
+
 function build-8053-concam-compact-image() {
   unset_bb_env
   export MACHINE=apq8053-compact
@@ -430,6 +438,7 @@ function build-8053-concam-perf-image() {
 build-all-8053-images() {
   build-8053-image
   build-8053-perf-image
+  build-8053-user-image
 }
 
 build-all-8053-concam-images() {
