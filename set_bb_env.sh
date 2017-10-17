@@ -444,7 +444,6 @@ function build-sdxpoorwills-image() {
   unset_bb_env
   export MACHINE=sdxpoorwills
   export PRODUCT=base
-  export VARIANT=
   cdbitbake machine-image
 }
 
