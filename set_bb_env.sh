@@ -144,6 +144,7 @@ function build-8009-user-image() {
   export MACHINE=apq8009
   export DISTRO=msm-user
   export VARIANT=user
+  export PRODUCT=base
   cdbitbake machine-image
 }
 
@@ -158,6 +159,7 @@ function build-8009-image() {
 build-all-8009-images() {
   build-8009-image
   build-8009-perf-image
+  build-8009-user-image
 }
 
 function build-8009-robot-image() {
@@ -172,6 +174,15 @@ function build-8009-robot-perf-image() {
   export MACHINE=apq8009-robot
   export DISTRO=msm-perf
   export VARIANT=perf
+  export PRODUCT=robot
+  cdbitbake machine-robot-image
+}
+
+function build-8009-robot-user-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export DISTRO=msm-user
+  export VARIANT=user
   export PRODUCT=robot
   cdbitbake machine-robot-image
 }
@@ -202,6 +213,7 @@ function build-8009-robot-rome-perf-image() {
 build-all-8009-robot-images() {
   build-8009-robot-image
   build-8009-robot-perf-image
+  build-8009-robot-user-image
   build-8009-robot-rome-image
   build-8009-robot-rome-perf-image
 }
@@ -414,6 +426,16 @@ function build-8096-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8096-user-image() {
+  unset_bb_env
+  export MACHINE=apq8096
+  export DISTRO=msm-user
+  export VARIANT=user
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+
 function build-8096-drone-image() {
   unset_bb_env
   export MACHINE=apq8096
@@ -432,6 +454,7 @@ function build-8096-drone-perf-image() {
 build-all-8096-images() {
   build-8096-image
   build-8096-perf-image
+  build-8096-user-image
 }
 
 build-all-8096-drone-images() {
@@ -476,9 +499,19 @@ function build-8098-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8098-user-image() {
+  unset_bb_env
+  export MACHINE=apq8098
+  export DISTRO=msm-user
+  export VARIANT=user
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
 build-all-8098-images() {
   build-8098-image
   build-8098-perf-image
+  build-8098-user-image
 }
 
 # Utility commands
@@ -533,7 +566,7 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
-# This will dump the user in ${WS}/yocto/build, ready to run the 
+# This will dump the user in ${WS}/yocto/build, ready to run the
 # convienence function or straight up bitbake commands.
 . ${WS}/poky/oe-init-build-env
 
