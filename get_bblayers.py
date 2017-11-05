@@ -18,14 +18,13 @@ def getLayerPriority (layerConfPath) :
     confFile.close()
 
 def getLayerPaths(target,  fnexpr) :
+    ignoreList = [  "meta-selftest", "meta-skeleton", \
+                    "meta-yocto", "meta-yocto-bsp" \
+                 ]
     retList = []
     for file in os.listdir(target) :
-        if (fnmatch.fnmatch(file, fnexpr) and not
-             (fnmatch.fnmatch(file, "meta-skeleton") or
-             fnmatch.fnmatch(file, "meta-selftest") or
-             fnmatch.fnmatch(file, "meta-yocto") or
-             fnmatch.fnmatch(file, "meta-yocto-bsp"))):
-            # Found what might be a metadata layer...
+        if not any(fnmatch.fnmatch(file, fnexpr) for fnexpr in ignoreList):
+            # Found what might be a valid metadata layer...
             layerPath = target + "/" + file
             layerConfPath = layerPath + "/conf/layer.conf"
             if os.path.exists(layerConfPath) :
