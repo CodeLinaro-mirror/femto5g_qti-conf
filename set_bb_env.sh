@@ -452,6 +452,21 @@ function build-8x96autogvmquintcu-perf-image() {
   cdbitbake automotive-image
 }
 
+# 8996 GVM gh commands
+function build-8x96autogvmgh-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmgh
+  export DISTRO=auto
+  cdbitbake automotive-image
+}
+
+function build-8x96autogvmgh-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmgh
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+}
+
 function build-8x96autogvmred-image() {
   unset_bb_env
   export MACHINE=8x96autogvmred
