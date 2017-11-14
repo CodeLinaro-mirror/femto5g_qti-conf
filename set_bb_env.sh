@@ -353,7 +353,7 @@ function build-9607-image() {
 
 function build-9607-hf-image() {
   unset_bb_env
-  export MACHINE=mdm9607
+  export MACHINE=mdm9607-hf
   export PRODUCT=base
   export FLOATABI=hard
   cdbitbake machine-image
@@ -362,7 +362,7 @@ function build-9607-hf-image() {
 
 function build-9607-hf-perf-image() {
   unset_bb_env
-  export MACHINE=mdm9607
+  export MACHINE=mdm9607-hf
   export DISTRO=mdm-perf
   export FLOATABI=hard
   cdbitbake machine-image
@@ -371,6 +371,8 @@ function build-9607-hf-perf-image() {
 build-all-9607-images() {
   build-9607-image
   build-9607-perf-image
+  build-9607-hf-image
+  build-9607-hf-perf-image
 #  build-9607-psm-image
 }
 
