@@ -19,7 +19,7 @@ def getLayerPriority (layerConfPath) :
 
 def getLayerPaths(target,  fnexpr) :
     ignoreList = [  "meta-selftest", "meta-skeleton", \
-                    "meta-yocto", "meta-yocto-bsp" \
+                    "meta-poky", "meta-yocto", "meta-yocto-bsp" \
                  ]
     retList = []
     for file in os.listdir(target) :
