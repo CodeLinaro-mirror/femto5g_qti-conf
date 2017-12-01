@@ -479,6 +479,14 @@ function build-8x96mizar-image() {
   cdbitbake automotive-image
 }
 
+function build-8x96mizar-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96mizar
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+}
+
+
 # 8996 CV2X commands
 function build-8x96autocv2x-image() {
   unset_bb_env
