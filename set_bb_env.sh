@@ -502,6 +502,27 @@ build-all-8098-images() {
   build-8098-perf-image
 }
 
+# qcs605 commands
+function build-qcs605-perf-image() {
+  unset_bb_env
+  export MACHINE=qcs605
+  export DISTRO=msm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs605-image() {
+  unset_bb_env
+  export MACHINE=qcs605
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+build-all-qcs605-images() {
+  build-qcs605-image
+  build-qcs605-perf-image
+}
+
 # Utility commands
 buildclean() {
   set -x
