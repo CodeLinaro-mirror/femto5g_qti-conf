@@ -488,17 +488,6 @@ function build-8098-image() {
   unset_bb_env
   export MACHINE=apq8098
   export PRODUCT=base
-  export NOPTMZ="1"
-  export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} NOPTMZ"
-  cdbitbake machine-image
-}
-
-function build-8098-debug-image() {
-  unset_bb_env
-  export MACHINE=apq8098
-  export PRODUCT=base
-  export DEBUG="1"
-  export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DEBUG"
   cdbitbake machine-image
 }
 
@@ -569,7 +558,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE PRODUCT VARIANT DEBUG NOPTMZ
+  unset DISTRO MACHINE PRODUCT VARIANT
 }
 
 # Find build templates from qti meta layer.
