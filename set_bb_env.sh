@@ -348,7 +348,9 @@ function build-8053-user-image() {
 
 build-all-8053-images() {
   build-8053-image
+  buildclean-retaindeploy
   build-8053-perf-image
+  buildclean-retaindeploy
   build-8053-user-image
 }
 
@@ -515,6 +517,21 @@ build-all-8098-images() {
 }
 
 # Utility commands
+buildclean-retaindeploy() {
+  set -x
+  cd ${WS}/poky/build
+
+  tmp_dir_list=$(ls tmp-glibc/)
+  tmp_dir_rm_list=$(sed 's/\ deploy//' <<< $tmp_dir_list)
+
+  rm -rf bitbake.lock pseudodone sstate-cache cache tmp-glibc/deploy/ipk/ tmp-glibc/deploy/licenses/
+  for e in $tmp_dir_rm_list; do
+    rm -rf tmp-glibc/$e
+  done
+
+  set +x
+}
+
 buildclean() {
   set -x
   cd ${WS}/poky/build
