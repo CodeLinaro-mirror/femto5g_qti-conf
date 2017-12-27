@@ -336,7 +336,6 @@ function build-8053-user-image() {
 
 build-all-8053-images() {
   build-8053-image
-  buildclean-retaindeploy
   build-8053-perf-image
   buildclean-retaindeploy
   build-8053-user-image
