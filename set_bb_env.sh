@@ -385,6 +385,30 @@ function build-8x96auto-sdk() {
   cdbitbake automotive-image -c populate_sdk
 }
 
+function build-8x96autodvrs-image() {
+  unset_bb_env
+  export MACHINE=8x96autodvrs
+  export DISTRO=auto
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake machine-recovery-image
+}
+
+function build-8x96autodvrs-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96autodvrs
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  cdbitbake machine-recovery-image
+}
+
 function build-8x96autofusion-image() {
   unset_bb_env
   export MACHINE=8x96autofusion
