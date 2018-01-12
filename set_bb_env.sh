@@ -354,6 +354,31 @@ function build-8x96auto-image() {
   return 1
   fi
   cdbitbake machine-recovery-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-recovery-image'."
+  return 1
+  fi
+  cdbitbake dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake dm-verity-image'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c compile
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c compile'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c install
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c install'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c deploy
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c deploy_rename
 }
 
 function build-8x96auto-perf-image() {
@@ -366,6 +391,31 @@ function build-8x96auto-perf-image() {
   return 1
   fi
   cdbitbake machine-recovery-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-recovery-image'."
+  return 1
+  fi
+  cdbitbake dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake dm-verity-image'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c compile
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c compile'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c install
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c install'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c deploy
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c deploy_rename
 }
 
 build-all-8x96auto-images() {
