@@ -162,6 +162,37 @@ build-all-8009-images() {
   build-8009-user-image
 }
 
+function build-8009-qsap-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export PRODUCT=qsap
+  cdbitbake machine-image
+}
+
+function build-8009-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export DISTRO=msm-perf
+  export VARIANT=perf
+  export PRODUCT=qsap
+  cdbitbake machine-image
+}
+
+function build-8009-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export DISTRO=msm-user
+  export VARIANT=user
+  export PRODUCT=qsap
+  cdbitbake machine-image
+}
+
+build-all-8009-qsap-images() {
+  build-8009-qsap-image
+  build-8009-qsap-perf-image
+  build-8009-qsap-user-image
+}
+
 function build-8009-robot-image() {
   unset_bb_env
   export MACHINE=apq8009-robot
