@@ -171,7 +171,7 @@ function build-8009-robot-ros-image() {
   unset_bb_env
   export MACHINE=apq8009-robot
   export PRODUCT=robot
-  export VARIANT=ROS
+  export HASROS=TRUE
   cdbitbake machine-robot-image
 }
 
@@ -434,7 +434,7 @@ function build-8096-drone-ros-image() {
   unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=drone
-  export VARIANT=ROS
+  export HASROS=TRUE
   cdbitbake machine-drone-image
 }
 
@@ -557,7 +557,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE PRODUCT VARIANT
+  unset DISTRO MACHINE PRODUCT VARIANT HASROS
 }
 
 # Find build templates from qti meta layer.
@@ -573,6 +573,6 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT HASROS"
 
 list-build-commands
