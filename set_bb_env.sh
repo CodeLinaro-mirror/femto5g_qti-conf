@@ -569,7 +569,7 @@ build-all-8098-images() {
 }
 
 # qcs605 commands
-function build-qcs605-perf-image() {
+function build-qcs605-concam-perf-image() {
   unset_bb_env
   export MACHINE=qcs605
   export DISTRO=msm-perf
@@ -577,16 +577,16 @@ function build-qcs605-perf-image() {
   cdbitbake machine-image
 }
 
-function build-qcs605-image() {
+function build-qcs605-concam-image() {
   unset_bb_env
   export MACHINE=qcs605
   export PRODUCT=base
   cdbitbake machine-image
 }
 
-build-all-qcs605-images() {
-  build-qcs605-image
-  build-qcs605-perf-image
+build-all-qcs605-concam-images() {
+  build-qcs605-concam-image
+  build-qcs605-concam-perf-image
 }
 
 # Utility commands
