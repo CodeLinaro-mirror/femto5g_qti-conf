@@ -573,6 +573,7 @@ function build-qcs605-concam-perf-image() {
   unset_bb_env
   export MACHINE=qcs605
   export DISTRO=msm-perf
+  export PRODUCT=concam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -580,7 +581,7 @@ function build-qcs605-concam-perf-image() {
 function build-qcs605-concam-image() {
   unset_bb_env
   export MACHINE=qcs605
-  export PRODUCT=base
+  export PRODUCT=concam
   cdbitbake machine-image
 }
 
