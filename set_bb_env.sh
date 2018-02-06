@@ -167,6 +167,14 @@ function build-8009-robot-image() {
   cdbitbake machine-robot-image
 }
 
+function build-8009-robot-ros-image() {
+  unset_bb_env
+  export MACHINE=apq8009-robot
+  export PRODUCT=robot
+  export VARIANT=ROS
+  cdbitbake machine-robot-image
+}
+
 function build-8009-robot-perf-image() {
   unset_bb_env
   export MACHINE=apq8009-robot
@@ -419,6 +427,14 @@ function build-8096-drone-image() {
   unset_bb_env
   export MACHINE=apq8096
   export PRODUCT=drone
+  cdbitbake machine-drone-image
+}
+
+function build-8096-drone-ros-image() {
+  unset_bb_env
+  export MACHINE=apq8096
+  export PRODUCT=drone
+  export VARIANT=ROS
   cdbitbake machine-drone-image
 }
 
