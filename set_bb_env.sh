@@ -638,7 +638,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE PRODUCT VARIANT
+  unset DISTRO MACHINE PRODUCT
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
