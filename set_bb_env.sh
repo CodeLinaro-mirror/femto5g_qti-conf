@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE PRODUCT 
+unset DISTRO MACHINE PRODUCT VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
