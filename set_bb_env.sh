@@ -385,7 +385,7 @@ function build-8053-32-perf-minimal-image() {
   unset_bb_env
   export MACHINE=apq8053-32
   export DISTRO=msm-perf
-  export VARIANT=perf-minimal
+  export VARIANT=minimal
   cdbitbake machine-minimal-image
 }
 
@@ -393,17 +393,20 @@ function build-8053-32-user-minimal-image() {
   unset_bb_env
   export MACHINE=apq8053-32
   export DISTRO=msm-user
-  export VARIANT=user-minimal
+  export VARIANT=minimal
   cdbitbake machine-minimal-image
 }
 
 
 build-all-8053-32-images() {
   build-8053-32-minimal-image
-  build-8053-32-image
   build-8053-32-perf-minimal-image
-  build-8053-32-perf-image
+  buildclean-retaindeploy
   build-8053-32-user-minimal-image
+  buildclean-retaindeploy
+  build-8053-32-image
+  build-8053-32-perf-image
+  buildclean-retaindeploy
   build-8053-32-user-image
 }
 
