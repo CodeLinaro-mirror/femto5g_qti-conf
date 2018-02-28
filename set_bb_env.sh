@@ -187,35 +187,10 @@ function build-8009-robot-user-image() {
   cdbitbake machine-image
 }
 
-function build-8009-robot-dummy-image() {
-  unset_bb_env
-  export MACHINE=apq8009-robot
-  export PRODUCT=base
-  cdbitbake machine-image
-}
-
-function build-8009-robot-rome-image() {
-  unset_bb_env
-  export MACHINE=apq8009-robot
-  export PRODUCT=robot-rome
-  cdbitbake machine-robot-image
-}
-
-function build-8009-robot-rome-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8009-robot
-  export DISTRO=msm-perf
-  export VARIANT=perf
-  export PRODUCT=robot-rome
-  cdbitbake machine-image
-}
-
 build-all-8009-robot-images() {
   build-8009-robot-image
   build-8009-robot-perf-image
   build-8009-robot-user-image
-  build-8009-robot-rome-image
-  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
@@ -295,7 +270,7 @@ function build-8909w-image() {
 function build-8053-64-concam-image() {
   unset_bb_env
   export MACHINE=apq8053-64
-  export PRODUCT=base
+  export PRODUCT=concam
   cdbitbake machine-image
 }
 
@@ -303,6 +278,7 @@ function build-8053-64-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-64
   export DISTRO=msm-perf
+  export PRODUCT=concam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -311,6 +287,7 @@ function build-8053-64-concam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-64
   export DISTRO=msm-user
+  export PRODUCT=concam
   export VARIANT=user
   cdbitbake machine-image
 }
@@ -326,7 +303,7 @@ build-all-8053-64-concam-images() {
 function build-8053-32-concam-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export PRODUCT=base
+  export PRODUCT=concam
   cdbitbake machine-image
 }
 
@@ -334,6 +311,7 @@ function build-8053-32-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-32
   export DISTRO=msm-perf
+  export PRODUCT=concam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -342,6 +320,7 @@ function build-8053-32-concam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-32
   export DISTRO=msm-user
+  export PRODUCT=concam
   export VARIANT=user
   cdbitbake machine-image
 }
@@ -356,7 +335,7 @@ build-all-8053-32-concam-images() {
 function build-8053-32-mincam-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export PRODUCT=base
+  export PRODUCT=mincam
   cdbitbake machine-image
 }
 
@@ -364,6 +343,7 @@ function build-8053-32-mincam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-32
   export DISTRO=msm-perf
+  export PRODUCT=mincam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -372,6 +352,7 @@ function build-8053-32-mincam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-32
   export DISTRO=msm-user
+  export PRODUCT=mincam
   export VARIANT=user
   cdbitbake machine-image
 }
