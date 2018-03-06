@@ -54,8 +54,8 @@ export ENV_PREPATH="$(readlink -f ${WS}/)"
 if [ -d "${ENV_PREPATH}/meta-agl/meta-ivi-common" ]; then
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-ivi-common\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-agl\"" >> ${ENV_BBLAYERS_CONF};
-    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-agl-bsp\"" >> ${ENV_BBLAYERS_CONF};
-    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl-extra/meta-app-framework\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-agl-distro\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl/meta-app-framework\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-intel-iot-security/meta-security-framework\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-intel-iot-security/meta-security-smack\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-oe\"" >> ${ENV_BBLAYERS_CONF};
@@ -66,7 +66,6 @@ if [ -d "${ENV_PREPATH}/meta-agl/meta-ivi-common" ]; then
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-openembedded/meta-python\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl-demo\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-qt5\"" >> ${ENV_BBLAYERS_CONF};
-    echo "BBLAYERS += \"${ENV_PREPATH}/meta-amb\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-rust\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-security-isafw\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-ivi/meta-ivi\"" >> ${ENV_BBLAYERS_CONF};
