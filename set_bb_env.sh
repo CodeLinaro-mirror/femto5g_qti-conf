@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE PRODUCT VARIANT
+unset DISTRO MACHINE VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -73,28 +73,28 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 function build-9650-image() {
   unset_bb_env
   export MACHINE=mdm9650
-  export PRODUCT=base
+  export DISTRO=mdm
   cdbitbake machine-image
 }
 
 function build-qcs405-32-image() {
   unset_bb_env
   export MACHINE=qcs405-32
-  export PRODUCT=base
+  export DISTRO=msm
   cdbitbake machine-image
 }
 
 function build-qcs405-64-image() {
   unset_bb_env
   export MACHINE=qcs405-64
-  export PRODUCT=base
+  export DISTRO=msm
   cdbitbake machine-image
 }
 
 function build-9650-2k-image() {
   unset_bb_env
   export MACHINE=mdm9650-2k
-  export PRODUCT=base
+  export DISTRO=mdm
   cdbitbake machine-image
 }
 
@@ -106,8 +106,8 @@ build-all-9650-images() {
 function build-9650-psm-image() {
   unset_bb_env
   export MACHINE=mdm9650
-  export PRODUCT=psm
-  cdbitbake machine-psm-image
+  export DISTRO=psm
+  cdbitbake machine-image
 }
 
 build-all-9650-psm-images() {
@@ -118,25 +118,23 @@ build-all-9650-psm-images() {
 function build-8009-qsap-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export PRODUCT=qsap
+  export DISTRO=qsap
   cdbitbake machine-image
 }
 
 function build-8009-qsap-perf-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=msm-perf
+  export DISTRO=qsap
   export VARIANT=perf
-  export PRODUCT=qsap
   cdbitbake machine-image
 }
 
 function build-8009-qsap-user-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=msm-user
+  export DISTRO=qsap
   export VARIANT=user
-  export PRODUCT=qsap
   cdbitbake machine-image
 }
 
@@ -148,26 +146,24 @@ build-all-8009-qsap-images() {
 
 function build-8009-robot-image() {
   unset_bb_env
-  export MACHINE=apq8009-robot
-  export PRODUCT=robot
-  cdbitbake machine-robot-image
+  export MACHINE=apq8009
+  export DISTRO=robot
+  cdbitbake machine-image
 }
 
 function build-8009-robot-perf-image() {
   unset_bb_env
-  export MACHINE=apq8009-robot
-  export DISTRO=msm-perf
+  export MACHINE=apq8009
+  export DISTRO=robot
   export VARIANT=perf
-  export PRODUCT=robot
   cdbitbake machine-image
 }
 
 function build-8009-robot-user-image() {
   unset_bb_env
-  export MACHINE=apq8009-robot
-  export DISTRO=msm-user
+  export MACHINE=apq8009
+  export DISTRO=robot
   export VARIANT=user
-  export PRODUCT=robot
   cdbitbake machine-image
 }
 
@@ -186,25 +182,23 @@ build-all-8009-drone-images() {
 function build-8017-qsap-image() {
   unset_bb_env
   export MACHINE=apq8017
-  export PRODUCT=qsap
+  export DISTRO=qsap
   cdbitbake machine-image
 }
 
 function build-8017-qsap-perf-image() {
   unset_bb_env
   export MACHINE=apq8017
-  export DISTRO=msm-perf
+  export DISTRO=qsap
   export VARIANT=perf
-  export PRODUCT=qsap
   cdbitbake machine-image
 }
 
 function build-8017-qsap-user-image() {
   unset_bb_env
   export MACHINE=apq8017
-  export DISTRO=msm-user
+  export DISTRO=qsap
   export VARIANT=user
-  export PRODUCT=qsap
   cdbitbake machine-image
 }
 
@@ -217,7 +211,7 @@ build-all-8017-qsap-images() {
 function build-9607-perf-image() {
   unset_bb_env
   export MACHINE=mdm9607
-  export DISTRO=mdm-perf
+  export DISTRO=mdm
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -225,14 +219,14 @@ function build-9607-perf-image() {
 function build-9607-psm-image() {
   unset_bb_env
   export MACHINE=mdm9607
-  export PRODUCT=psm
+  export DISTRO=psm
   cdbitbake machine-psm-image
 }
 
 function build-9607-image() {
   unset_bb_env
   export MACHINE=mdm9607
-  export PRODUCT=base
+  export DISTRO=mdm
   cdbitbake machine-image
 }
 
@@ -242,27 +236,18 @@ build-all-9607-images() {
 #  build-9607-psm-image
 }
 
-# 8909w commands
-function build-8909w-image() {
-  unset_bb_env
-  export MACHINE=msm8909w
-  export PRODUCT=base
-  cdbitbake machine-image
-}
-
 # 8053-64 commands
 function build-8053-64-concam-image() {
   unset_bb_env
   export MACHINE=apq8053-64
-  export PRODUCT=concam
+  export DISTRO=concam
   cdbitbake machine-image
 }
 
 function build-8053-64-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-64
-  export DISTRO=msm-perf
-  export PRODUCT=concam
+  export DISTRO=concam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -270,8 +255,7 @@ function build-8053-64-concam-perf-image() {
 function build-8053-64-concam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-64
-  export DISTRO=msm-user
-  export PRODUCT=concam
+  export DISTRO=concam
   export VARIANT=user
   cdbitbake machine-image
 }
@@ -287,15 +271,14 @@ build-all-8053-64-concam-images() {
 function build-8053-32-concam-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export PRODUCT=concam
+  export DISTRO=concam
   cdbitbake machine-image
 }
 
 function build-8053-32-concam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=msm-perf
-  export PRODUCT=concam
+  export DISTRO=concam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -303,8 +286,7 @@ function build-8053-32-concam-perf-image() {
 function build-8053-32-concam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=msm-user
-  export PRODUCT=concam
+  export DISTRO=concam
   export VARIANT=user
   cdbitbake machine-image
 }
@@ -319,15 +301,14 @@ build-all-8053-32-concam-images() {
 function build-8053-32-mincam-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export PRODUCT=mincam
+  export DISTRO=mincam
   cdbitbake machine-image
 }
 
 function build-8053-32-mincam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=msm-perf
-  export PRODUCT=mincam
+  export DISTRO=mincam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -335,8 +316,7 @@ function build-8053-32-mincam-perf-image() {
 function build-8053-32-mincam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=msm-user
-  export PRODUCT=mincam
+  export DISTRO=mincam
   export VARIANT=user
   cdbitbake machine-image
 }
@@ -352,16 +332,15 @@ build-all-8053-32-mincam-images() {
 function build-8096-drone-image() {
   unset_bb_env
   export MACHINE=apq8096
-  export PRODUCT=drone
-  cdbitbake machine-drone-image
+  export DISTRO=drone
+  cdbitbake machine-image
 }
 
 function build-8096-drone-perf-image() {
   unset_bb_env
   export MACHINE=apq8096
-  export PRODUCT=drone
-  export DISTRO=msm-perf
-  cdbitbake machine-drone-image
+  export DISTRO=drone
+  cdbitbake machine-image
 }
 
 build-all-8096-drone-images() {
@@ -373,7 +352,7 @@ build-all-8096-drone-images() {
 function build-sdx20-perf-image() {
   unset_bb_env
   export MACHINE=sdx20
-  export DISTRO=mdm-perf
+  export DISTRO=mdm
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -381,7 +360,7 @@ function build-sdx20-perf-image() {
 function build-sdx20-image() {
   unset_bb_env
   export MACHINE=sdx20
-  export PRODUCT=base
+  export DISTRO=mdm
   cdbitbake machine-image
 }
 
@@ -394,7 +373,7 @@ build-all-sdx20-images() {
 function build-sdxpoorwills-perf-image() {
   unset_bb_env
   export MACHINE=sdxpoorwills
-  export DISTRO=mdm-perf
+  export DISTRO=mdm
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -402,7 +381,7 @@ function build-sdxpoorwills-perf-image() {
 function build-sdxpoorwills-image() {
   unset_bb_env
   export MACHINE=sdxpoorwills
-  export PRODUCT=base
+  export DISTRO=mdm
   cdbitbake machine-image
 }
 
@@ -415,14 +394,14 @@ build-all-sdxpoorwills-images() {
 function build-8098-image() {
   unset_bb_env
   export MACHINE=apq8098
-  export PRODUCT=base
+  export DISTRO=msm
   cdbitbake machine-image
 }
 
 function build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
-  export DISTRO=msm-perf
+  export DISTRO=msm
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -430,9 +409,8 @@ function build-8098-perf-image() {
 function build-8098-user-image() {
   unset_bb_env
   export MACHINE=apq8098
-  export DISTRO=msm-user
+  export DISTRO=msm
   export VARIANT=user
-  export PRODUCT=base
   cdbitbake machine-image
 }
 
@@ -446,8 +424,7 @@ build-all-8098-images() {
 function build-qcs605-concam-perf-image() {
   unset_bb_env
   export MACHINE=qcs605
-  export DISTRO=msm-perf
-  export PRODUCT=concam
+  export DISTRO=concam
   export VARIANT=perf
   cdbitbake machine-image
 }
@@ -455,7 +432,7 @@ function build-qcs605-concam-perf-image() {
 function build-qcs605-concam-image() {
   unset_bb_env
   export MACHINE=qcs605
-  export PRODUCT=concam
+  export DISTRO=concam
   cdbitbake machine-image
 }
 
@@ -523,7 +500,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE PRODUCT VARIANT
+  unset DISTRO MACHINE VARIANT
 }
 
 # Find build templates from qti meta layer.
@@ -539,6 +516,6 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR PRODUCT VARIANT"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT"
 
 list-build-commands
