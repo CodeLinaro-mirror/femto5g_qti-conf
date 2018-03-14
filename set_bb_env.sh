@@ -70,15 +70,6 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
 # 9650 commands
-function build-9650-perf-image() {
-  unset_bb_env
-  export MACHINE=mdm9650
-  export PRODUCT=base
-  export DISTRO=mdm-perf
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
 function build-9650-image() {
   unset_bb_env
   export MACHINE=mdm9650
@@ -93,20 +84,9 @@ function build-9650-2k-image() {
   cdbitbake machine-image
 }
 
-function build-9650-2k-perf-image() {
-  unset_bb_env
-  export MACHINE=mdm9650-2k
-  export PRODUCT=base
-  export DISTRO=mdm-perf
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
 build-all-9650-images() {
   build-9650-image
   build-9650-2k-image
-  build-9650-perf-image
-  build-9650-2k-perf-image
 }
 
 function build-9650-psm-image() {
@@ -116,18 +96,8 @@ function build-9650-psm-image() {
   cdbitbake machine-psm-image
 }
 
-function build-9650-psm-perf-image() {
-  unset_bb_env
-  export MACHINE=mdm9650
-  export DISTRO=msm-perf
-  export VARIANT=perf
-  export PRODUCT=psm
-  cdbitbake machine-psm-image
-}
-
 build-all-9650-psm-images() {
   build-9650-psm-image
-  build-9650-psm-perf-image
 }
 
 # 8009 commands
