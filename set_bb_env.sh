@@ -144,6 +144,13 @@ build-all-8009-qsap-images() {
   build-8009-qsap-user-image
 }
 
+function build-8009-robot-som-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export DISTRO=robot-som
+  cdbitbake machine-image
+}
+
 function build-8009-robot-image() {
   unset_bb_env
   export MACHINE=apq8009
