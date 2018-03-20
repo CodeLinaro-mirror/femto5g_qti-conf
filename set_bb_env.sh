@@ -77,6 +77,20 @@ function build-9650-image() {
   cdbitbake machine-image
 }
 
+function build-qcs405-32-image() {
+  unset_bb_env
+  export MACHINE=qcs405-32
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-qcs405-64-image() {
+  unset_bb_env
+  export MACHINE=qcs405-64
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
 function build-9650-2k-image() {
   unset_bb_env
   export MACHINE=mdm9650-2k
