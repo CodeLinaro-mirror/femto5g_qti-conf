@@ -343,19 +343,10 @@ build-all-8098-images() {
   build-8098-perf-image
 }
 
-# 8996 commands
-function build-8x96auto-image() {
-  unset_bb_env
-  export MACHINE=8x96auto
-  export DISTRO=auto
-  cdbitbake automotive-image
+build-dm-verity-image() {
+  cdbitbake cryptsetup-native
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake automotive-image'."
-  return 1
-  fi
-  cdbitbake machine-recovery-image
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-recovery-image'."
+  echo "Error run 'cdbitbake cryptsetup-native'."
   return 1
   fi
   cdbitbake dm-verity-image
@@ -379,43 +370,56 @@ function build-8x96auto-image() {
   return 1
   fi
   cdbitbake virtual/kernel -f -c deploy_rename
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c deploy_rename'."
+  return 1
+  fi
+  return 0
+}
+
+# 8996 commands
+function build-8x96auto-image() {
+  unset_bb_env
+  export MACHINE=8x96auto
+  export DISTRO=auto
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+#  export KERNEL_ROOTDEVICE="/dev/dm-0"
+
+  cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+  cdbitbake machine-recovery-image
 }
 
 function build-8x96auto-perf-image() {
   unset_bb_env
   export MACHINE=8x96auto
   export DISTRO=auto-perf
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+#  export KERNEL_ROOTDEVICE="/dev/dm-0"
+
   cdbitbake automotive-image
   if [ "$?" != "0" ]; then
   echo "Error run 'cdbitbake automotive-image'."
   return 1
   fi
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
   cdbitbake machine-recovery-image
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-recovery-image'."
-  return 1
-  fi
-  cdbitbake dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake dm-verity-image'."
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c compile
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c compile'."
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c install
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c install'."
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c deploy
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c deploy_rename
 }
 
 build-all-8x96auto-images() {
