@@ -243,37 +243,6 @@ build-all-9607-images() {
 #  build-9607-psm-image
 }
 
-# 8053-64 commands
-function build-8053-64-concam-image() {
-  unset_bb_env
-  export MACHINE=apq8053-64
-  export DISTRO=concam
-  cdbitbake machine-image
-}
-
-function build-8053-64-concam-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8053-64
-  export DISTRO=concam
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-8053-64-concam-user-image() {
-  unset_bb_env
-  export MACHINE=apq8053-64
-  export DISTRO=concam
-  export VARIANT=user
-  cdbitbake machine-image
-}
-
-build-all-8053-64-concam-images() {
-  build-8053-64-concam-image
-  build-8053-64-concam-perf-image
-  buildclean-retaindeploy
-  build-8053-64-concam-user-image
-}
-
 # 8053-32 commands
 function build-8053-32-concam-image() {
   unset_bb_env
@@ -305,34 +274,34 @@ build-all-8053-32-concam-images() {
   build-8053-32-concam-user-image
 }
 
-function build-8053-32-mincam-image() {
+function build-8053-32-batcam-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=mincam
+  export DISTRO=batcam
   cdbitbake machine-image
 }
 
-function build-8053-32-mincam-perf-image() {
+function build-8053-32-batcam-perf-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=mincam
+  export DISTRO=batcam
   export VARIANT=perf
   cdbitbake machine-image
 }
 
-function build-8053-32-mincam-user-image() {
+function build-8053-32-batcam-user-image() {
   unset_bb_env
   export MACHINE=apq8053-32
-  export DISTRO=mincam
+  export DISTRO=batcam
   export VARIANT=user
   cdbitbake machine-image
 }
 
-build-all-8053-32-mincam-images() {
-  build-8053-32-mincam-image
-  build-8053-32-mincam-perf-image
+build-all-8053-32-batcam-images() {
+  build-8053-32-batcam-image
+  build-8053-32-batcam-perf-image
   buildclean-retaindeploy
-  build-8053-32-mincam-user-image
+  build-8053-32-batcam-user-image
 }
 
 # 8096 commands
