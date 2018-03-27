@@ -369,11 +369,6 @@ build-dm-verity-image() {
   echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
   return 1
   fi
-  cdbitbake virtual/kernel -f -c deploy_rename
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c deploy_rename'."
-  return 1
-  fi
   return 0
 }
 
