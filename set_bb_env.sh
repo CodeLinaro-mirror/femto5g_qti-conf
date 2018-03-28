@@ -504,6 +504,7 @@ function build-8x96autogvmquin-image() {
   unset_bb_env
   export MACHINE=8x96autogvmquin
   export DISTRO=auto
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -511,6 +512,7 @@ function build-8x96autogvmquin-perf-image() {
   unset_bb_env
   export MACHINE=8x96autogvmquin
   export DISTRO=auto-perf
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -520,6 +522,7 @@ function build-8x96autogvmquintcu-image() {
   unset_bb_env
   export MACHINE=8x96autogvmquintcu
   export DISTRO=auto
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -527,6 +530,7 @@ function build-8x96autogvmquintcu-perf-image() {
   unset_bb_env
   export MACHINE=8x96autogvmquintcu
   export DISTRO=auto-perf
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -535,6 +539,7 @@ function build-8x96autogvmgh-image() {
   unset_bb_env
   export MACHINE=8x96autogvmgh
   export DISTRO=auto
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -542,6 +547,7 @@ function build-8x96autogvmgh-perf-image() {
   unset_bb_env
   export MACHINE=8x96autogvmgh
   export DISTRO=auto-perf
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -660,6 +666,18 @@ rebake() {
 
 unset_bb_env() {
   unset DISTRO MACHINE PRODUCT VARIANT
+}
+
+check_kernel_patch() {
+  unset KERNEL_PATCH
+  cdbitbake -c cleanall linux-gvm-4.4
+  cdbitbake -c patch linux-gvm-4.4
+  if [ "$?" != "0" ]; then
+  echo "Kernel Patch Conflict!!!"
+  cdbitbake -c cleanall linux-gvm-4.4
+  export KERNEL_PATCH="conflict"
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_PATCH"
+  fi
 }
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
