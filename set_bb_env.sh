@@ -292,10 +292,30 @@ function build-9607-image() {
   cdbitbake machine-image
 }
 
+function build-9607-kernel-4.9-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export DISTRO=mdm-kernel-4.9
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-9607-kernel-4.9-image() {
+  unset_bb_env
+  export MACHINE=mdm9607
+  export DISTRO=mdm-kernel-4.9
+  cdbitbake machine-image
+}
+
 build-all-9607-images() {
   build-9607-image
   build-9607-perf-image
 #  build-9607-psm-image
+}
+
+build-all-9607-kernel-4.9-images() {
+  build-9607-kernel-4.9-image
+  build-9607-kernel-4.9-perf-image
 }
 
 # 8053-32 commands
