@@ -493,5 +493,3 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT"
-
-list-build-commands
