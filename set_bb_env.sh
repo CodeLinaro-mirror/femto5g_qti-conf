@@ -151,6 +151,13 @@ function build-8009-robot-som-image() {
   cdbitbake machine-image
 }
 
+function build-8009-robot-som-ros-image() {
+  unset_bb_env
+  export MACHINE=apq8009
+  export DISTRO=robot-som-ros
+  cdbitbake machine-image
+}
+
 function build-8009-robot-image() {
   unset_bb_env
   export MACHINE=apq8009
