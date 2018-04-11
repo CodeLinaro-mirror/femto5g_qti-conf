@@ -549,6 +549,7 @@ function build-8x96mizar-perf-image() {
   unset_bb_env
   export MACHINE=8x96mizar
   export DISTRO=auto-perf
+  sed -i -e 's/${baselib}/lib/g' ../meta-ros/classes/ros.bbclass
   cdbitbake automotive-image
 }
 
