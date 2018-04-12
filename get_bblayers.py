@@ -4,8 +4,6 @@
 import os, sys, fnmatch, re
 from operator import itemgetter
 
-# Trawl the OEROOT as passed to us and find all the layer files that meet our
-# metadata directory criteria...
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
     confFile = open(layerConfPath, "r")
@@ -17,6 +15,8 @@ def getLayerPriority (layerConfPath) :
                 return int(fields[2].strip("\""))
     confFile.close()
 
+# Trawl the OEROOT as passed to us and find all the layer files that meet our
+# metadata directory criteria...
 def getLayerPaths(target,  fnexpr) :
     ignoreList = [  "meta-selftest", "meta-skeleton", \
                     "meta-poky", "meta-yocto", "meta-yocto-bsp" \
@@ -30,12 +30,6 @@ def getLayerPaths(target,  fnexpr) :
             if os.path.exists(layerConfPath) :
                 # Found a layer.  Find the priority for it...
                 retList += [( layerPath,  getLayerPriority (layerConfPath) )]
-            # Add cv layers manually since these are sublayers
-            if (fnmatch.fnmatch(file, "meta-qti-cv-prop")):
-                scve = layerPath + "/scve"
-                fastcv = layerPath + "/fastcv"
-                retList += [( scve, getLayerPriority(scve + "/conf/layer.conf") )]
-                retList += [( fastcv, getLayerPriority(fastcv + "/conf/layer.conf") )]
     # In order to avoid potential namespace conflicts, between recipes on layers
     # we sort the list in descending order of priority.
     return sorted(retList,  key=itemgetter(1), reverse=True)
