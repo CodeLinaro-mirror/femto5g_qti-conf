@@ -77,19 +77,67 @@ function build-9650-image() {
   cdbitbake machine-image
 }
 
-function build-qcs405-32-image() {
+function build-qcs405-32-qsap-image() {
   unset_bb_env
   export MACHINE=qcs405-32
-  export DISTRO=msm
+  export DISTRO=qsap
   cdbitbake machine-image
 }
 
-function build-qcs405-64-image() {
+function build-qcs405-32-qsap-perf-image() {
   unset_bb_env
-  export MACHINE=qcs405-64
-  export DISTRO=msm
+  export MACHINE=qcs405-32
+  export DISTRO=qsap
+  export VARIANT=perf
   cdbitbake machine-image
 }
+
+function build-qcs405-32-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=qcs405-32
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+build-all-qcs405-32-qsap-images() {
+ build-qcs405-32-qsap-image
+# build-qcs405-32-qsap-perf-image
+# build-qcs405-32-qsap-user-image
+}
+
+function build-qcs405-64-qsap-image() {
+  unset_bb_env
+  export MACHINE=qcs405-64
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-qcs405-64-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=qcs405-64
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs405-64-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=qcs405-64
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+
+build-all-qcs405-64-qsap-images() {
+ build-qcs405-64-qsap-image
+# build-qcs405-64-qsap-perf-image
+# build-qcs405-64-qsap-user-image
+
+
+}
+
 
 function build-9650-2k-image() {
   unset_bb_env
