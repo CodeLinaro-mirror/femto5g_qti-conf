@@ -379,9 +379,10 @@ function build-8x96auto-image() {
   export DISTRO=auto
   export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
 #  export KERNEL_ROOTDEVICE="/dev/dm-0"
-
+  qdebug-show-env
   cdbitbake automotive-image
   if [ "$?" != "0" ]; then
+  qdebug
   echo "Error run 'cdbitbake automotive-image'."
   return 1
   fi
@@ -401,9 +402,10 @@ function build-8x96auto-perf-image() {
   export DISTRO=auto-perf
   export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
 #  export KERNEL_ROOTDEVICE="/dev/dm-0"
-
+  qdebug-show-env
   cdbitbake automotive-image
   if [ "$?" != "0" ]; then
+  qdebug
   echo "Error run 'cdbitbake automotive-image'."
   return 1
   fi
@@ -438,8 +440,10 @@ function build-8x96autodvrs-image() {
   unset_bb_env
   export MACHINE=8x96autodvrs
   export DISTRO=auto
+  qdebug-show-env
   cdbitbake automotive-image
   if [ "$?" != "0" ]; then
+  qdebug
   echo "Error run 'cdbitbake automotive-image'."
   return 1
   fi
@@ -450,8 +454,10 @@ function build-8x96autodvrs-perf-image() {
   unset_bb_env
   export MACHINE=8x96autodvrs
   export DISTRO=auto-perf
+  qdebug-show-env
   cdbitbake automotive-image
   if [ "$?" != "0" ]; then
+  qdebug
   echo "Error run 'cdbitbake automotive-image'."
   return 1
   fi
@@ -662,6 +668,28 @@ rebake() {
 unset_bb_env() {
   unset DISTRO MACHINE PRODUCT VARIANT
 }
+
+qdebug-show-env() {
+  echo "******************************************"
+  echo "***** Show gcc/g++ version *****"
+  gcc --version
+  g++ --version
+  echo "***** show environment variable"
+  export
+}
+
+qdebug() {
+  echo "******************************************"
+  for f in `ls ${WS}/poky/build/tmp-glibc/qdebug*.log`
+  do
+    cat $f
+  done
+  #echo "***** show tree"
+  #tree -L 5 -h ${WS}/poky/build/tmp-glibc/work/aarch64-agl-linux/
+  #echo "***** show tree (sat-module)"
+  #tree -h ${WS}/poky/build/tmp-glibc/work/8x96auto-agl-linux/sat-module
+}
+
 
 check_kernel_patch() {
   unset KERNEL_PATCH
