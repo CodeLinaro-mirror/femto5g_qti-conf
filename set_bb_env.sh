@@ -441,6 +441,27 @@ build-all-sdxpoorwills-images() {
   build-sdxpoorwills-perf-image
 }
 
+# sdxprairie commands
+function build-sdxprairie-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxprairie
+  export DISTRO=mdm
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxprairie-image() {
+  unset_bb_env
+  export MACHINE=sdxprairie
+  export DISTRO=mdm
+  cdbitbake machine-image
+}
+
+build-all-sdxprairie-images() {
+  build-sdxprairie-image
+  build-sdxprairie-perf-image
+}
+
 # 8098 commands
 function build-8098-image() {
   unset_bb_env
