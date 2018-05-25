@@ -671,6 +671,8 @@ unset_bb_env() {
 
 qdebug-show-env() {
   echo "******************************************"
+  echo "***** Show OS version*****"
+  cat /proc/version
   echo "***** Show gcc/g++ version *****"
   gcc --version
   g++ --version
