@@ -457,6 +457,14 @@ function build-8098-image() {
   cdbitbake machine-image
 }
 
+# sdm710 commands
+function build-sdm710-image() {
+  unset_bb_env
+  export MACHINE=sdm710
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
 function build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
