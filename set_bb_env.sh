@@ -399,11 +399,6 @@ function build-8053-32-user-minimal-image() {
 
 
 build-all-8053-32-images() {
-  build-8053-32-minimal-image
-  build-8053-32-perf-minimal-image
-  buildclean-retaindeploy
-  build-8053-32-user-minimal-image
-  buildclean-retaindeploy
   build-8053-32-image
   build-8053-32-perf-image
   buildclean-retaindeploy
