@@ -125,6 +125,13 @@ function build-9650-psm-perf-image() {
   cdbitbake machine-psm-image
 }
 
+function build-9650-oneweb-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=oneweb
+  cdbitbake machine-image
+}
+
 build-all-9650-psm-images() {
   build-9650-psm-image
   build-9650-psm-perf-image
