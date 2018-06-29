@@ -492,6 +492,18 @@ build-all-qcs605-concam-images() {
   build-qcs605-concam-perf-image
 }
 
+# sda845 commands
+function build-sda845-robot-image() {
+  unset_bb_env
+  export MACHINE=sda845
+  export DISTRO=robot
+  cdbitbake machine-image
+}
+
+build-all-sda845-robot-images() {
+  build-sda845-robot-image
+}
+
 # Utility commands
 buildclean-retaindeploy() {
   set -x
