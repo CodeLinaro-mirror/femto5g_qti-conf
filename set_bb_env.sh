@@ -500,6 +500,48 @@ build-all-qcs605-concam-images() {
   build-qcs605-concam-perf-image
 }
 
+# qcs605-32 commands
+function build-qcs605-32-concam-perf-image() {
+  unset_bb_env
+  export MACHINE=qcs605-32
+  export DISTRO=concam
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs605-32-concam-image() {
+  unset_bb_env
+  export MACHINE=qcs605-32
+  export DISTRO=concam
+  cdbitbake machine-image
+}
+
+build-all-qcs605-32-concam-images() {
+  build-qcs605-32-concam-image
+  build-qcs605-32-concam-perf-image
+}
+
+# qcs605-64 commands
+function build-qcs605-64-concam-perf-image() {
+  unset_bb_env
+  export MACHINE=qcs605-64
+  export DISTRO=concam
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs605-64-concam-image() {
+  unset_bb_env
+  export MACHINE=qcs605-64
+  export DISTRO=concam
+  cdbitbake machine-image
+}
+
+build-all-qcs605-64-concam-images() {
+  build-qcs605-64-concam-image
+  build-qcs605-64-concam-perf-image
+}
+
 # Utility commands
 buildclean-retaindeploy() {
   set -x
