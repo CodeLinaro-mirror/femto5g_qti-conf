@@ -21,6 +21,9 @@ def getLayerPaths(target,  fnexpr) :
     ignoreList = [  "meta-selftest", "meta-skeleton", \
                     "meta-poky", "meta-yocto", "meta-yocto-bsp" \
                  ]
+    layersWithSubLayers = [ "meta-openembedded" ]
+    metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
+    dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
     retList = []
     for file in os.listdir(target) :
         if not any(fnmatch.fnmatch(file, fnexpr) for fnexpr in ignoreList):
@@ -30,6 +33,12 @@ def getLayerPaths(target,  fnexpr) :
             if os.path.exists(layerConfPath) :
                 # Found a layer.  Find the priority for it...
                 retList += [( layerPath,  getLayerPriority (layerConfPath) )]
+            # Add cv and openembedded layers manually since these have sublayers
+            if (fnmatch.fnmatch(file, "meta-openembedded")):
+                for subLayer in dicLayersWithSubLayers[file]:
+                    path = layerPath + "/" + subLayer
+                    retList += [( path, getLayerPriority(path + "/conf/layer.conf") )]
+
     # In order to avoid potential namespace conflicts, between recipes on layers
     # we sort the list in descending order of priority.
     return sorted(retList,  key=itemgetter(1), reverse=True)
