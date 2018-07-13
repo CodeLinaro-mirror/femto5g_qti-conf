@@ -109,6 +109,27 @@ build-all-9650-images() {
   build-9650-2k-perf-image
 }
 
+function build-9150-cv2x-image() {
+  unset_bb_env
+  export MACHINE=mdm9150-cv2x
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-9150-cv2x-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9150-cv2x
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-9150-cv2x-images() {
+  build-9150-cv2x-image
+  build-9150-cv2x-perf-image
+}
+
 function build-9650-psm-image() {
   unset_bb_env
   export MACHINE=mdm9650
@@ -123,6 +144,13 @@ function build-9650-psm-perf-image() {
   export VARIANT=perf
   export PRODUCT=psm
   cdbitbake machine-psm-image
+}
+
+function build-9650-oneweb-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=oneweb
+  cdbitbake machine-image
 }
 
 build-all-9650-psm-images() {
