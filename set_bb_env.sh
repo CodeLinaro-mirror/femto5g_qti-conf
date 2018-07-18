@@ -207,6 +207,21 @@ function build-8009-robot-som-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8009-robot-rome-image() {
+  unset bb_env
+  export MACHINE=apq8009
+  export DISTRO=robot-rome
+  cdbitbake machine-image
+}
+
+function build-8009-robot-rome-perf-image() {
+  unset bb_env
+  export MACHINE=apq8009
+  export DISTRO=robot-rome
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 function build-8009-robot-som-ros-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -214,33 +229,42 @@ function build-8009-robot-som-ros-image() {
   cdbitbake machine-image
 }
 
-function build-8009-robot-image() {
+function build-8009-robot-pronto-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=robot
+  export DISTRO=robot-pronto
   cdbitbake machine-image
 }
 
-function build-8009-robot-perf-image() {
+function build-8009-robot-pronto-perf-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=robot
+  export DISTRO=robot-pronto
   export VARIANT=perf
   cdbitbake machine-image
 }
 
-function build-8009-robot-user-image() {
+function build-8009-robot-pronto-user-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=robot
+  export DISTRO=robot-pronto
   export VARIANT=user
   cdbitbake machine-image
 }
 
-build-all-8009-robot-images() {
-  build-8009-robot-image
-  build-8009-robot-perf-image
-  build-8009-robot-user-image
+build-all-8009-robot-pronto-images() {
+  build-8009-robot-pronto-image
+  build-8009-robot-pronto-perf-image
+}
+
+build-all-8009-robot-som-images() {
+  build-8009-robot-som-image
+  build-8009-robot-som-perf-image
+}
+
+build-all-8009-robot-rome-images() {
+  build-8009-robot-rome-image
+  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
