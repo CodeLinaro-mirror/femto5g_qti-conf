@@ -479,27 +479,6 @@ build-all-8098-images() {
   build-8098-user-image
 }
 
-# qcs605 commands
-function build-qcs605-concam-perf-image() {
-  unset_bb_env
-  export MACHINE=qcs605
-  export DISTRO=concam
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-qcs605-concam-image() {
-  unset_bb_env
-  export MACHINE=qcs605
-  export DISTRO=concam
-  cdbitbake machine-image
-}
-
-build-all-qcs605-concam-images() {
-  build-qcs605-concam-image
-  build-qcs605-concam-perf-image
-}
-
 # qcs605-32 commands
 function build-qcs605-32-concam-perf-image() {
   unset_bb_env
