@@ -279,6 +279,7 @@ build-all-8017-qsap-images() {
 
 # 9607 commands
 function build-9607-perf-image() {
+  buildclean-retaindeploy
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm
@@ -457,6 +458,14 @@ function build-8098-image() {
   cdbitbake machine-image
 }
 
+# sdm710 commands
+function build-sdm710-image() {
+  unset_bb_env
+  export MACHINE=sdm710
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
 function build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
@@ -527,7 +536,7 @@ buildclean-retaindeploy() {
   cd ${WS}/poky/build
 
   tmp_dir_list=$(ls tmp-glibc/)
-  tmp_dir_rm_list=$(sed 's/\ deploy//' <<< $tmp_dir_list)
+  tmp_dir_rm_list=$(sed 's/deploy//' <<< $tmp_dir_list)
 
   rm -rf bitbake.lock pseudodone sstate-cache cache tmp-glibc/deploy/ipk/ tmp-glibc/deploy/licenses/
   for e in $tmp_dir_rm_list; do
