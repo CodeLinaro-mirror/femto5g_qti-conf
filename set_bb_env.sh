@@ -564,12 +564,17 @@ function build-8x96autogvmquintcu-perf-image() {
   cdbitbake automotive-image
 }
 
-# 8996 GVM gh commands
+# 8996 GVM gh commands, now will compile both gh and ga when runing 8x96autogvmgh cmd
 function build-8x96autogvmgh-image() {
   unset_bb_env
   export MACHINE=8x96autogvmgh
   export DISTRO=auto
   check_kernel_patch
+  cdbitbake automotive-image
+
+  unset_bb_env
+  export MACHINE=8x96autogvmga
+  export DISTRO=auto
   cdbitbake automotive-image
 }
 
@@ -578,6 +583,26 @@ function build-8x96autogvmgh-perf-image() {
   export MACHINE=8x96autogvmgh
   export DISTRO=auto-perf
   check_kernel_patch
+  cdbitbake automotive-image
+
+  unset_bb_env
+  export MACHINE=8x96autogvmga
+  export DISTRO=auto-perf
+  cdbitbake automotive-image
+}
+
+# 8996 GVM ga commands
+function build-8x96autogvmga-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmga
+  export DISTRO=auto
+  cdbitbake automotive-image
+}
+
+function build-8x96autogvmga-perf-image() {
+  unset_bb_env
+  export MACHINE=8x96autogvmga
+  export DISTRO=auto-perf
   cdbitbake automotive-image
 }
 
