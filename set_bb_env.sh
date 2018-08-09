@@ -69,6 +69,15 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
+# SA8155 commands
+function build-sa8155-image() {
+  unset_bb_env
+  export MACHINE=sa8155
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+
 # 9650 commands
 function build-9650-image() {
   unset_bb_env
