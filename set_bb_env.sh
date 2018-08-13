@@ -327,7 +327,13 @@ build-all-8017-qsap-images() {
 
 # 9607 commands
 function build-9607-perf-image() {
-  buildclean-retaindeploy
+  read -t 15 -p "Enter [Y/y] to continue to generate perf images, Timeout: 15 sec: " response
+  if [[ "$response" != "y" ]] && [[ "$response" != "Y" ]]
+  then
+      echo "Cleaning"
+      buildclean-retaindeploy
+  fi
+
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm
