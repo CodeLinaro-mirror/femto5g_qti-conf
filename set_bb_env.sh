@@ -77,6 +77,19 @@ function build-sa8155-image() {
   cdbitbake machine-image
 }
 
+function build-sa8155-perf-image() {
+  unset_bb_env
+  export MACHINE=sa8155
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa8155-image() {
+    build-sa8155-image
+    build-sa8155-perf-image
+}
+
 
 # 9650 commands
 function build-9650-image() {
