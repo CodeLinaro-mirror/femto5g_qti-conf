@@ -547,22 +547,57 @@ function build-8x96autogvmquin-perf-image() {
   fi
 }
 
-
 # 8996 GVM kernel 4.4 commands
 function build-8x96autogvmquintcu-image() {
   unset_bb_env
   export MACHINE=8x96autogvmquintcu
   export DISTRO=auto
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE ROOT_DEVICE KERNEL_ROOTDEVICE"
+# set the ROOT_DEVICE according to the linux.config
+#  export ROOT_DEVICE="/dev/vda"
+#  export KERNEL_ROOTDEVICE="/dev/dm-0"
+
   check_kernel_patch
   cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  cdbitbake cryptsetup-native
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake cryptsetup-native'."
+  return 1
+  fi
+  cdbitbake dm-verity-image
+  fi
 }
 
 function build-8x96autogvmquintcu-perf-image() {
   unset_bb_env
   export MACHINE=8x96autogvmquintcu
   export DISTRO=auto-perf
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE ROOT_DEVICE KERNEL_ROOTDEVICE"
+# set the ROOT_DEVICE according to the linux.config
+#  export ROOT_DEVICE="/dev/vda"
+#  export KERNEL_ROOTDEVICE="/dev/dm-0"
+
   check_kernel_patch
   cdbitbake automotive-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake automotive-image'."
+  return 1
+  fi
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  cdbitbake cryptsetup-native
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake cryptsetup-native'."
+  return 1
+  fi
+  cdbitbake dm-verity-image
+  fi
 }
 
 # 8996 GVM gh commands
