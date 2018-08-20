@@ -500,8 +500,17 @@ function build-sda845-robot-image() {
   cdbitbake machine-image
 }
 
+function build-sda845-robot-perf-image() {
+  unset_bb_env
+  export MACHINE=sda845
+  export DISTRO=robot
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 build-all-sda845-robot-images() {
   build-sda845-robot-image
+  build-sda845-robot-perf-image
 }
 
 # Utility commands
