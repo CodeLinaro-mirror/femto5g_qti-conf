@@ -69,6 +69,15 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
+# SA8155 commands
+function build-sa8155-image() {
+  unset_bb_env
+  export MACHINE=sa8155
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+
 # 9650 commands
 function build-9650-image() {
   unset_bb_env
@@ -102,7 +111,7 @@ function build-qcs403-som2-qsap-user-image() {
 
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
-# build-qcs403-som2-qsap-perf-image
+ build-qcs403-som2-qsap-perf-image
 # build-qcs403-som2-qsap-user-image
 }
 
@@ -132,7 +141,7 @@ function build-qcs405-som1-qsap-user-image() {
 
 build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
-# build-qcs405-som1-qsap-perf-image
+ build-qcs405-som1-qsap-perf-image
 # build-qcs405-som1-qsap-user-image
 
 
@@ -207,6 +216,21 @@ function build-8009-robot-som-perf-image() {
   cdbitbake machine-image
 }
 
+function build-8009-robot-rome-image() {
+  unset bb_env
+  export MACHINE=apq8009
+  export DISTRO=robot-rome
+  cdbitbake machine-image
+}
+
+function build-8009-robot-rome-perf-image() {
+  unset bb_env
+  export MACHINE=apq8009
+  export DISTRO=robot-rome
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 function build-8009-robot-som-ros-image() {
   unset_bb_env
   export MACHINE=apq8009
@@ -214,33 +238,42 @@ function build-8009-robot-som-ros-image() {
   cdbitbake machine-image
 }
 
-function build-8009-robot-image() {
+function build-8009-robot-pronto-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=robot
+  export DISTRO=robot-pronto
   cdbitbake machine-image
 }
 
-function build-8009-robot-perf-image() {
+function build-8009-robot-pronto-perf-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=robot
+  export DISTRO=robot-pronto
   export VARIANT=perf
   cdbitbake machine-image
 }
 
-function build-8009-robot-user-image() {
+function build-8009-robot-pronto-user-image() {
   unset_bb_env
   export MACHINE=apq8009
-  export DISTRO=robot
+  export DISTRO=robot-pronto
   export VARIANT=user
   cdbitbake machine-image
 }
 
-build-all-8009-robot-images() {
-  build-8009-robot-image
-  build-8009-robot-perf-image
-  build-8009-robot-user-image
+build-all-8009-robot-pronto-images() {
+  build-8009-robot-pronto-image
+  build-8009-robot-pronto-perf-image
+}
+
+build-all-8009-robot-som-images() {
+  build-8009-robot-som-image
+  build-8009-robot-som-perf-image
+}
+
+build-all-8009-robot-rome-images() {
+  build-8009-robot-rome-image
+  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
@@ -279,6 +312,7 @@ build-all-8017-qsap-images() {
 
 # 9607 commands
 function build-9607-perf-image() {
+  buildclean-retaindeploy
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm
@@ -457,6 +491,14 @@ function build-8098-image() {
   cdbitbake machine-image
 }
 
+# sdm710 commands
+function build-sdm710-image() {
+  unset_bb_env
+  export MACHINE=sdm710
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
 function build-8098-perf-image() {
   unset_bb_env
   export MACHINE=apq8098
@@ -488,6 +530,14 @@ function build-qcs605-32-concam-perf-image() {
   cdbitbake machine-image
 }
 
+function build-qcs605-32-concam-user-image() {
+  unset_bb_env
+  export MACHINE=qcs605-32
+  export DISTRO=concam
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
 function build-qcs605-32-concam-image() {
   unset_bb_env
   export MACHINE=qcs605-32
@@ -498,6 +548,8 @@ function build-qcs605-32-concam-image() {
 build-all-qcs605-32-concam-images() {
   build-qcs605-32-concam-image
   build-qcs605-32-concam-perf-image
+  buildclean-retaindeploy
+  build-qcs605-32-concam-user-image
 }
 
 # qcs605-64 commands
@@ -506,6 +558,14 @@ function build-qcs605-64-concam-perf-image() {
   export MACHINE=qcs605-64
   export DISTRO=concam
   export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs605-64-concam-user-image() {
+  unset_bb_env
+  export MACHINE=qcs605-64
+  export DISTRO=concam
+  export VARIANT=user
   cdbitbake machine-image
 }
 
@@ -519,6 +579,8 @@ function build-qcs605-64-concam-image() {
 build-all-qcs605-64-concam-images() {
   build-qcs605-64-concam-image
   build-qcs605-64-concam-perf-image
+  buildclean-retaindeploy
+  build-qcs605-32-concam-user-image
 }
 
 # Utility commands
@@ -527,7 +589,7 @@ buildclean-retaindeploy() {
   cd ${WS}/poky/build
 
   tmp_dir_list=$(ls tmp-glibc/)
-  tmp_dir_rm_list=$(sed 's/\ deploy//' <<< $tmp_dir_list)
+  tmp_dir_rm_list=$(sed 's/deploy//' <<< $tmp_dir_list)
 
   rm -rf bitbake.lock pseudodone sstate-cache cache tmp-glibc/deploy/ipk/ tmp-glibc/deploy/licenses/
   for e in $tmp_dir_rm_list; do
