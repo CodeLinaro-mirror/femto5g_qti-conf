@@ -124,8 +124,6 @@ function build-qcs403-som2-qsap-user-image() {
 
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
- build-qcs403-som2-qsap-perf-image
-# build-qcs403-som2-qsap-user-image
 }
 
 function build-qcs405-som1-qsap-image() {
@@ -154,8 +152,6 @@ function build-qcs405-som1-qsap-user-image() {
 
 build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
- buildclean-retaindeploy
- build-qcs405-som1-qsap-perf-image
 }
 
 
@@ -274,20 +270,14 @@ function build-8009-robot-pronto-user-image() {
 
 build-all-8009-robot-pronto-images() {
   build-8009-robot-pronto-image
-  buildclean-retaindeploy
-  build-8009-robot-pronto-perf-image
 }
 
 build-all-8009-robot-som-images() {
   build-8009-robot-som-image
-  buildclean-retaindeploy
-  build-8009-robot-som-perf-image
 }
 
 build-all-8009-robot-rome-images() {
   build-8009-robot-rome-image
-  buildclean-retaindeploy
-  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
@@ -407,9 +397,6 @@ function build-8053-32-concam-user-image() {
 
 build-all-8053-32-concam-images() {
   build-8053-32-concam-image
-  build-8053-32-concam-perf-image
-  buildclean-retaindeploy
-  build-8053-32-concam-user-image
 }
 
 function build-8053-32-batcam-image() {
@@ -437,9 +424,6 @@ function build-8053-32-batcam-user-image() {
 
 build-all-8053-32-batcam-images() {
   build-8053-32-batcam-image
-  build-8053-32-batcam-perf-image
-  buildclean-retaindeploy
-  build-8053-32-batcam-user-image
 }
 
 # 8096 commands
@@ -569,8 +553,6 @@ function build-qcs605-32-concam-image() {
 
 build-all-qcs605-32-concam-images() {
   build-qcs605-32-concam-image
-  buildclean-retaindeploy
-  build-qcs605-32-concam-perf-image
 }
 
 # qcs605-64 commands
@@ -599,8 +581,6 @@ function build-qcs605-64-concam-image() {
 
 build-all-qcs605-64-concam-images() {
   build-qcs605-64-concam-image
-  buildclean-retaindeploy
-  build-qcs605-64-concam-perf-image
 }
 
 # Utility commands
