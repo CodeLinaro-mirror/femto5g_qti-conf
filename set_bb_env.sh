@@ -396,7 +396,7 @@ function build-8053-32-concam-user-image() {
 }
 
 build-all-8053-32-concam-images() {
-  build-8053-32-concam-image
+  build-8053-32-concam-perf-image
 }
 
 function build-8053-32-batcam-image() {
@@ -424,6 +424,9 @@ function build-8053-32-batcam-user-image() {
 
 build-all-8053-32-batcam-images() {
   build-8053-32-batcam-image
+  build-8053-32-batcam-perf-image
+  buildclean-retaindeploy
+  build-8053-32-batcam-user-image
 }
 
 # 8096 commands
@@ -552,7 +555,7 @@ function build-qcs605-32-concam-image() {
 }
 
 build-all-qcs605-32-concam-images() {
-  build-qcs605-32-concam-image
+  build-qcs605-32-concam-perf-image
 }
 
 # qcs605-64 commands
@@ -580,7 +583,7 @@ function build-qcs605-64-concam-image() {
 }
 
 build-all-qcs605-64-concam-images() {
-  build-qcs605-64-concam-image
+  build-qcs605-64-concam-perf-image
 }
 
 # Utility commands
