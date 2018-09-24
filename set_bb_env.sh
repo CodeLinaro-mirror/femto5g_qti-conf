@@ -77,6 +77,19 @@ function build-sa8155-image() {
   cdbitbake machine-image
 }
 
+function build-sa8155-perf-image() {
+  unset_bb_env
+  export MACHINE=sa8155
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa8155-image() {
+    build-sa8155-image
+    build-sa8155-perf-image
+}
+
 
 # 9650 commands
 function build-9650-image() {
@@ -111,8 +124,6 @@ function build-qcs403-som2-qsap-user-image() {
 
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
- build-qcs403-som2-qsap-perf-image
-# build-qcs403-som2-qsap-user-image
 }
 
 function build-qcs405-som1-qsap-image() {
@@ -141,8 +152,6 @@ function build-qcs405-som1-qsap-user-image() {
 
 build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
- buildclean-retaindeploy
- build-qcs405-som1-qsap-perf-image
 }
 
 
@@ -261,20 +270,14 @@ function build-8009-robot-pronto-user-image() {
 
 build-all-8009-robot-pronto-images() {
   build-8009-robot-pronto-image
-  buildclean-retaindeploy
-  build-8009-robot-pronto-perf-image
 }
 
 build-all-8009-robot-som-images() {
   build-8009-robot-som-image
-  buildclean-retaindeploy
-  build-8009-robot-som-perf-image
 }
 
 build-all-8009-robot-rome-images() {
   build-8009-robot-rome-image
-  buildclean-retaindeploy
-  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
@@ -314,7 +317,13 @@ build-all-8017-qsap-images() {
 
 # 9607 commands
 function build-9607-perf-image() {
-  buildclean-retaindeploy
+  read -t 15 -p "Enter [Y/y] to continue to generate perf images, Timeout: 15 sec: " response
+  if [[ "$response" != "y" ]] && [[ "$response" != "Y" ]]
+  then
+      echo "Cleaning"
+      buildclean-retaindeploy
+  fi
+
   unset_bb_env
   export MACHINE=mdm9607
   export DISTRO=mdm
@@ -387,10 +396,7 @@ function build-8053-32-concam-user-image() {
 }
 
 build-all-8053-32-concam-images() {
-  build-8053-32-concam-image
   build-8053-32-concam-perf-image
-  buildclean-retaindeploy
-  build-8053-32-concam-user-image
 }
 
 function build-8053-32-batcam-image() {
@@ -549,8 +555,6 @@ function build-qcs605-32-concam-image() {
 }
 
 build-all-qcs605-32-concam-images() {
-  build-qcs605-32-concam-image
-  buildclean-retaindeploy
   build-qcs605-32-concam-perf-image
 }
 
@@ -579,8 +583,6 @@ function build-qcs605-64-concam-image() {
 }
 
 build-all-qcs605-64-concam-images() {
-  build-qcs605-64-concam-image
-  buildclean-retaindeploy
   build-qcs605-64-concam-perf-image
 }
 
