@@ -90,6 +90,27 @@ build-all-sa8155-image() {
     build-sa8155-perf-image
 }
 
+# SA8155qdrive commands
+function build-sa8155qdrive-image() {
+  unset_bb_env
+  export MACHINE=sa8155qdrive
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-sa8155qdrive-perf-image() {
+  unset_bb_env
+  export MACHINE=sa8155qdrive
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa8155qdrive-image() {
+    build-sa8155qdrive-image
+    build-sa8155qdrive-perf-image
+}
+
 
 # 9650 commands
 function build-9650-image() {
