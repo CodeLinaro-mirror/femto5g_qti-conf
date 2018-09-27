@@ -513,6 +513,27 @@ build-all-sdxpoorwills-images() {
   build-sdxpoorwills-perf-image
 }
 
+# sdxpoorwills auto commands
+function build-sdxpoorwills-auto-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxpoorwills-auto-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sdxpoorwills-auto-images() {
+  build-sdxpoorwills-auto-image
+  build-sdxpoorwills-auto-perf-image
+}
+
 # 8098 commands
 function build-8098-image() {
   unset_bb_env
