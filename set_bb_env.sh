@@ -124,6 +124,7 @@ function build-qcs403-som2-qsap-user-image() {
 
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
+ buildclean-retaindeploy
  build-qcs403-som2-qsap-perf-image
 # build-qcs403-som2-qsap-user-image
 }
