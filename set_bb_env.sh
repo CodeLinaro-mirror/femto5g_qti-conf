@@ -551,6 +551,36 @@ build-all-8098-images() {
   build-8098-user-image
 }
 
+
+#sdmsteppe commands
+function build-sdmsteppe-concam-perf-image() {
+  unset_bb_env
+  export MACHINE=sdmsteppe
+  export DISTRO=concam
+  export VARIANT=perf
+  cdbitbake lib32-machine-image
+}
+
+function build-sdmsteppe-concam-user-image() {
+  unset_bb_env
+  export MACHINE=sdmsteppe
+  export DISTRO=concam
+  export VARIANT=user
+  cdbitbake lib32-machine-image
+}
+
+function build-sdmsteppe-concam-image() {
+  unset_bb_env
+  export MACHINE=sdmsteppe
+  export DISTRO=concam
+  cdbitbake lib32-machine-image
+}
+
+build-all-sdmsteppe-concam-images() {
+  build-sdmsteppe-concam-perf-image
+}
+
+
 # qcs605-32 commands
 function build-qcs605-32-concam-perf-image() {
   unset_bb_env
