@@ -571,11 +571,6 @@ function build-8x96autogvmgh-image() {
   export DISTRO=auto
   check_kernel_patch
   cdbitbake automotive-image
-
-  unset_bb_env
-  export MACHINE=8x96autogvmga
-  export DISTRO=auto
-  cdbitbake automotive-image
 }
 
 function build-8x96autogvmgh-perf-image() {
@@ -583,11 +578,6 @@ function build-8x96autogvmgh-perf-image() {
   export MACHINE=8x96autogvmgh
   export DISTRO=auto-perf
   check_kernel_patch
-  cdbitbake automotive-image
-
-  unset_bb_env
-  export MACHINE=8x96autogvmga
-  export DISTRO=auto-perf
   cdbitbake automotive-image
 }
 
