@@ -558,7 +558,7 @@ function build-sdmsteppe-concam-perf-image() {
   export MACHINE=sdmsteppe
   export DISTRO=concam
   export VARIANT=perf
-  cdbitbake lib32-machine-image
+  cdbitbake machine-image
 }
 
 function build-sdmsteppe-concam-user-image() {
@@ -566,18 +566,18 @@ function build-sdmsteppe-concam-user-image() {
   export MACHINE=sdmsteppe
   export DISTRO=concam
   export VARIANT=user
-  cdbitbake lib32-machine-image
+  cdbitbake machine-image
 }
 
 function build-sdmsteppe-concam-image() {
   unset_bb_env
   export MACHINE=sdmsteppe
   export DISTRO=concam
-  cdbitbake lib32-machine-image
+  cdbitbake machine-image
 }
 
 build-all-sdmsteppe-concam-images() {
-  build-sdmsteppe-concam-perf-image
+  build-sdmsteppe-concam-image
 }
 
 
