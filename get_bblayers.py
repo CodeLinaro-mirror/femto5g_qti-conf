@@ -19,7 +19,7 @@ def getLayerPriority (layerConfPath) :
 # metadata directory criteria...
 def getLayerPaths(target,  fnexpr) :
     ignoreList = [  "meta-selftest", "meta-skeleton", \
-                    "meta-poky", "meta-yocto", "meta-yocto-bsp", \
+                    "meta-poky", "meta-yocto", "meta-yocto-bsp", "meta-selinux", "meta-qti-sepolicy", \
                     "meta-qti-bt", "meta-qti-bt-prop", \
                     "meta-qti-audio", "meta-qti-audio-cal", "meta-qti-audio-external", "meta-qti-audio-prop", \
                     "meta-qti-ssdk", "meta-qti-wlan", "meta-qti-wlan-prop" \
