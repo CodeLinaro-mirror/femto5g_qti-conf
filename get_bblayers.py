@@ -27,7 +27,6 @@ def initLayersList(target):
         ignoreList = [  "meta-selftest", "meta-skeleton", \
 	                    "meta-poky", "meta-yocto", "meta-yocto-bsp", \
 	                    "meta-qti-bt", "meta-qti-bt-prop", \
-	                    "meta-qti-audio", "meta-qti-audio-cal", "meta-qti-audio-external", "meta-qti-audio-prop", \
 	                    "meta-qti-ssdk", "meta-qti-wlan", "meta-qti-wlan-prop" \
 	                 ]
         metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
