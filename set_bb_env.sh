@@ -531,6 +531,7 @@ function build-sdxpoorwills-auto-image() {
 
 build-all-sdxpoorwills-auto-images() {
   build-sdxpoorwills-auto-image
+  buildclean-retaindeploy
   build-sdxpoorwills-auto-perf-image
 }
 
