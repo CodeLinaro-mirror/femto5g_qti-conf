@@ -510,6 +510,7 @@ function build-sdxprairie-image() {
 
 build-all-sdxprairie-images() {
   build-sdxprairie-image
+  buildclean-retaindeploy
   build-sdxprairie-perf-image
 }
 
