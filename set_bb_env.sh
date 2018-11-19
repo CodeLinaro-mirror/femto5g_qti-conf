@@ -90,6 +90,27 @@ build-all-sa8155-image() {
     build-sa8155-perf-image
 }
 
+# SA8155qdrive commands
+function build-sa8155qdrive-image() {
+  unset_bb_env
+  export MACHINE=sa8155qdrive
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-sa8155qdrive-perf-image() {
+  unset_bb_env
+  export MACHINE=sa8155qdrive
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa8155qdrive-image() {
+    build-sa8155qdrive-image
+    build-sa8155qdrive-perf-image
+}
+
 
 # 9650 commands
 function build-9650-image() {
@@ -505,6 +526,27 @@ build-all-sdxpoorwills-images() {
   build-sdxpoorwills-perf-image
 }
 
+# sdxpoorwills auto commands
+function build-sdxpoorwills-auto-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxpoorwills-auto-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sdxpoorwills-auto-images() {
+  build-sdxpoorwills-auto-image
+  build-sdxpoorwills-auto-perf-image
+}
+
 # 8098 commands
 function build-8098-image() {
   unset_bb_env
@@ -542,6 +584,36 @@ build-all-8098-images() {
   build-8098-perf-image
   build-8098-user-image
 }
+
+
+#sdmsteppe commands
+function build-sdmsteppe-concam-perf-image() {
+  unset_bb_env
+  export MACHINE=sdmsteppe
+  export DISTRO=concam
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdmsteppe-concam-user-image() {
+  unset_bb_env
+  export MACHINE=sdmsteppe
+  export DISTRO=concam
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+function build-sdmsteppe-concam-image() {
+  unset_bb_env
+  export MACHINE=sdmsteppe
+  export DISTRO=concam
+  cdbitbake machine-image
+}
+
+build-all-sdmsteppe-concam-images() {
+  build-sdmsteppe-concam-image
+}
+
 
 # qcs605-32 commands
 function build-qcs605-32-concam-perf-image() {
