@@ -544,6 +544,7 @@ function build-sdxpoorwills-auto-image() {
 
 build-all-sdxpoorwills-auto-images() {
   build-sdxpoorwills-auto-image
+  buildclean-retaindeploy
   build-sdxpoorwills-auto-perf-image
 }
 
@@ -555,10 +556,10 @@ function build-8098-image() {
   cdbitbake machine-image
 }
 
-# sdm710 commands
-function build-sdm710-image() {
+# genericarmv8-64 commands
+function build-genericarmv8-64-image() {
   unset_bb_env
-  export MACHINE=sdm710
+  export MACHINE=genericarmv8-64
   export DISTRO=msm
   cdbitbake machine-image
 }
