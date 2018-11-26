@@ -513,6 +513,13 @@ build-all-sda845-robot-images() {
   build-sda845-robot-perf-image
 }
 
+function build-sda845-robot-ros-image() {
+  unset_bb_env
+  export MACHINE=sda845
+  export DISTRO=robot-ros
+  cdbitbake machine-image
+}
+
 # Utility commands
 buildclean-retaindeploy() {
   set -x
