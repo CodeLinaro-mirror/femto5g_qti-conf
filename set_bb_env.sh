@@ -586,6 +586,7 @@ function build-8x96autogvmga-image() {
   unset_bb_env
   export MACHINE=8x96autogvmga
   export DISTRO=auto
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
@@ -593,6 +594,7 @@ function build-8x96autogvmga-perf-image() {
   unset_bb_env
   export MACHINE=8x96autogvmga
   export DISTRO=auto-perf
+  check_kernel_patch
   cdbitbake automotive-image
 }
 
