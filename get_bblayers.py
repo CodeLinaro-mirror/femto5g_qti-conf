@@ -4,6 +4,32 @@
 import os, sys, fnmatch, re
 from operator import itemgetter
 
+# meta-layer  variables
+ignoreList = None
+dicLayersWithSubLayers = None
+
+# Initialize meta-layer list.
+def initLayersList(target):
+    global ignoreList
+    global dicLayersWithSubLayers
+    if os.path.exists(target + "/meta-qti-auto"):
+        # "meta-qti-auto" is automotive(LV) project specific layers. If found this layer will initialize LV's layer list.
+        ignoreList = [  "meta-selftest", "meta-skeleton", \
+                        "meta-yocto", "meta-yocto-bsp" \
+                     ]
+        dicLayersWithSubLayers = { \
+            "meta-openembedded":[ "meta-networking", "meta-python", "meta-oe", "meta-filesystems", "meta-multimedia" ], \
+            "meta-agl":["meta-agl", "meta-agl-distro",  "meta-app-framework", "meta-ivi-common"], \
+            "meta-intel-iot-security":["meta-security-framework", "meta-security-smack"] \
+            }
+    else:
+        # initialize LE's layer list
+        ignoreList = [  "meta-selftest", "meta-skeleton", \
+                        "meta-poky", "meta-yocto", "meta-yocto-bsp" \
+                     ]
+        metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
+        dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
+
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
     confFile = open(layerConfPath, "r")
@@ -18,12 +44,9 @@ def getLayerPriority (layerConfPath) :
 # Trawl the OEROOT as passed to us and find all the layer files that meet our
 # metadata directory criteria...
 def getLayerPaths(target,  fnexpr) :
-    ignoreList = [  "meta-selftest", "meta-skeleton", \
-                    "meta-poky", "meta-yocto", "meta-yocto-bsp" \
-                 ]
-    layersWithSubLayers = [ "meta-openembedded" ]
-    metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
-    dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
+    global ignoreList
+    global dicLayersWithSubLayers
+    initLayersList(target)
     retList = []
     for file in os.listdir(target) :
         if not any(fnmatch.fnmatch(file, fnexpr) for fnexpr in ignoreList):
@@ -34,7 +57,7 @@ def getLayerPaths(target,  fnexpr) :
                 # Found a layer.  Find the priority for it...
                 retList += [( layerPath,  getLayerPriority (layerConfPath) )]
             # Add cv and openembedded layers manually since these have sublayers
-            if (fnmatch.fnmatch(file, "meta-openembedded")):
+            if (file in dicLayersWithSubLayers.keys()):
                 for subLayer in dicLayersWithSubLayers[file]:
                     path = layerPath + "/" + subLayer
                     retList += [( path, getLayerPriority(path + "/conf/layer.conf") )]
@@ -53,7 +76,7 @@ def generatePathString ( pathList ):
 
 
 # Emit our config file...
-print "# This configuration file is dynamically generated every time" 
+print "# This configuration file is dynamically generated every time"
 print "# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT."
 print "#--------------------------------------------------------------"
 print "LCONF_VERSION = \"6\""
