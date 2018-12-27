@@ -286,66 +286,6 @@ function build-8909w-image() {
   cdbitbake machine-image
 }
 
-# 8053 commands
-function build-8053-image() {
-  unset_bb_env
-  export MACHINE=apq8053
-  export PRODUCT=base
-  cdbitbake machine-image
-  cdbitbake machine-recovery-image
-}
-
-function build-8053-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8053
-  export DISTRO=msm-perf
-  cdbitbake machine-image
-  cdbitbake machine-recovery-image
-}
-
-function build-8053-concam-compact-image() {
-  unset_bb_env
-  export MACHINE=apq8053-compact
-  export PRODUCT=base
-  export PRODUCT_SUBTYPE=minimal
-  cdbitbake machine-minimal-image
-  cdbitbake machine-recovery-image
-}
-
-function build-8053-concam-compact-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8053-compact
-  export PRODUCT=base
-  export PRODUCT_SUBTYPE=minimal
-  export DISTRO=msm-perf
-  cdbitbake machine-minimal-image
-  cdbitbake machine-recovery-image
-}
-
-function build-8053-concam-perf-image() {
-  unset_bb_env
-  export MACHINE=apq8053-iot-mtp
-  export DISTRO=msm-perf
-  export PRODUCT=concam
-  cdbitbake machine-concam-image
-  cdbitbake machine-concam-recovery-image
-}
-
-build-all-8053-images() {
-  build-8053-image
-  build-8053-perf-image
-}
-
-build-all-8053-concam-images() {
-  build-8053-concam-image
-  build-8053-concam-perf-image
-}
-
-build-all-8053-compact-images() {
-  build-8053-concam-compact-image
-  build-8053-concam-compact-perf-image
-}
-
 # 8096 commands
 function build-8096-image() {
   unset_bb_env
