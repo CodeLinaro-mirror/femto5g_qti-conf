@@ -111,6 +111,21 @@ build-all-sa8155qdrive-image() {
     build-sa8155qdrive-perf-image
 }
 
+# sdm845 commands
+function build-sdm845-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  cdbitbake machine-image
+}
+
+function build-sdm845-robot-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  cdbitbake machine-image
+}
+
 
 # 9650 commands
 function build-9650-image() {
