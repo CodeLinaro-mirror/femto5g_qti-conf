@@ -621,7 +621,8 @@ function build-sdmsteppe-concam-image() {
 }
 
 build-all-sdmsteppe-concam-images() {
-  build-sdmsteppe-concam-image
+#  build-sdmsteppe-concam-image
+  build-sdmsteppe-concam-perf-image
 }
 
 
