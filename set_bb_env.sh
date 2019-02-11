@@ -83,7 +83,6 @@ function build-9650-image() {
   export MACHINE=mdm9650
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-9650-psm-perf-image() {
@@ -132,7 +131,6 @@ function build-8009-image() {
   export MACHINE=apq8009
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 function build-8009-qsap-image() {
@@ -269,7 +267,6 @@ function build-9607-image() {
   export MACHINE=mdm9607
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 build-all-9607-images() {
@@ -339,7 +336,6 @@ function build-hedgehog-image() {
   export MACHINE=sdxhedgehog
   export PRODUCT=base
   cdbitbake machine-image
-  cdbitbake machine-recovery-image
 }
 
 build-all-hedgehog-images() {
