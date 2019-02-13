@@ -638,6 +638,7 @@ function build-qcs605-32-concam-user-image() {
 
 function build-qcs605-32-concam-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=qcs605-32
   export DISTRO=concam
   cdbitbake machine-image
@@ -750,4 +751,4 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
