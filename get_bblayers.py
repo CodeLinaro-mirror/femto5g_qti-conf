@@ -26,7 +26,6 @@ def initLayersList(target):
         # initialize LE's layer list
         ignoreList = [  "meta-selftest", "meta-skeleton", \
 	                    "meta-poky", "meta-yocto", "meta-yocto-bsp", \
-	                    "meta-qti-bt", "meta-qti-bt-prop", \
 	                    "meta-qti-ssdk", "meta-qti-wlan", "meta-qti-wlan-prop" \
 	                 ]
         metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
