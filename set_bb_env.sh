@@ -164,6 +164,7 @@ build-all-qcs403-som2-qsap-images() {
 
 function build-qcs405-som1-qsap-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=qcs405-som1
   export DISTRO=qsap
   cdbitbake machine-image
