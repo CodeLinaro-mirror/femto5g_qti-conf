@@ -609,6 +609,7 @@ function build-sdmsteppe-concam-user-image() {
 
 function build-sdmsteppe-concam-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=sdmsteppe
   export DISTRO=concam
   cdbitbake machine-image
