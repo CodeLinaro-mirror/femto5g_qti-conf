@@ -132,6 +132,30 @@ build-all-qtiquingvm-image() {
     build-qtiquingvm-perf-image
 }
 
+
+# sdxpoorwills auto commands
+function build-sdxpoorwills-auto-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxpoorwills-auto-image() {
+  unset_bb_env
+  export MACHINE=sdxpoorwills
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sdxpoorwills-auto-images() {
+  build-sdxpoorwills-auto-image
+  buildclean-retaindeploy
+  build-sdxpoorwills-auto-perf-image
+}
+
+
 # sdxprairie commands
 function build-sdxprairie-sdk() {
   unset_bb_env
