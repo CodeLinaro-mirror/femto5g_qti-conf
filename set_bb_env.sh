@@ -737,7 +737,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD
 }
 
 # Find build templates from qti meta layer.
