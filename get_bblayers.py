@@ -25,8 +25,7 @@ def initLayersList(target):
     else:
         # initialize LE's layer list
         ignoreList = [  "meta-selftest", "meta-skeleton", \
-	                    "meta-poky", "meta-yocto", "meta-yocto-bsp", \
-	                    "meta-qti-ssdk" \
+	                    "meta-poky", "meta-yocto", "meta-yocto-bsp" \
 	                 ]
         metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
         dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
