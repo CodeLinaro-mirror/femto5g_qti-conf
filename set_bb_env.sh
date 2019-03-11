@@ -520,6 +520,14 @@ function build-sda845-robot-ros-image() {
   cdbitbake machine-image
 }
 
+# genericarmv8-64 commands
+function build-genericarmv8-64-image() {
+  unset_bb_env
+  export MACHINE=genericarmv8-64
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
 # Utility commands
 buildclean-retaindeploy() {
   set -x
