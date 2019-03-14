@@ -181,6 +181,7 @@ function build-sdmsteppe-concam-user-image() {
 
 function build-sdmsteppe-concam-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=sdmsteppe
   export DISTRO=concam
   cdbitbake machine-image
@@ -251,7 +252,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD
 }
 
 # Find build templates from qti meta layer.
@@ -267,4 +268,4 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
