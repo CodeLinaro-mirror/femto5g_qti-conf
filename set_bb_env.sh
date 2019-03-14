@@ -266,6 +266,26 @@ build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
 }
 
+function build-sa2150p-image() {
+  unset_bb_env
+  export MACHINE=sa2150p
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
+function build-sa2150p-perf-image() {
+  unset_bb_env
+  export MACHINE=sa2150p
+  export DISTRO=msm
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa2150p-images() {
+  build-sa2150p-image
+  build-sa2150p-perf-image
+}
+
 function build-sdm845-robot-image() {
   unset_bb_env
   export MACHINE=sdm845
