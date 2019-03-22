@@ -132,7 +132,6 @@ build-all-qtiquingvm-image() {
     build-qtiquingvm-perf-image
 }
 
-
 # sdxpoorwills auto commands
 function build-sdxpoorwills-auto-perf-image() {
   unset_bb_env
@@ -155,6 +154,61 @@ build-all-sdxpoorwills-auto-images() {
   build-sdxpoorwills-auto-perf-image
 }
 
+# qcs40x commands
+function build-qcs403-som2-qsap-image() {
+  unset_bb_env
+  export MACHINE=qcs403-som2
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-qcs403-som2-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=qcs403-som2
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs403-som2-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=qcs403-som2
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+build-all-qcs403-som2-qsap-images() {
+ build-qcs403-som2-qsap-image
+}
+
+function build-qcs405-som1-qsap-image() {
+  unset_bb_env
+  export DEBUG_BUILD=1
+  export MACHINE=qcs405-som1
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-qcs405-som1-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=qcs405-som1
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-qcs405-som1-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=qcs405-som1
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+build-all-qcs405-som1-qsap-images() {
+ build-qcs405-som1-qsap-image
+}
 
 # sdxprairie commands
 function build-sdxprairie-sdk() {
@@ -215,7 +269,6 @@ build-all-sdmsteppe-concam-images() {
 #  build-sdmsteppe-concam-image
   build-sdmsteppe-concam-perf-image
 }
-
 
 # Utility commands
 buildclean-retaindeploy() {
