@@ -111,6 +111,27 @@ build-all-sa8155qdrive-image() {
     build-sa8155qdrive-perf-image
 }
 
+# qtiquingvm commands
+function build-qtiquingvm-image() {
+  unset_bb_env
+  export MACHINE=qtiquingvm
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-qtiquingvm-perf-image() {
+  unset_bb_env
+  export MACHINE=qtiquingvm
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-qtiquingvm-image() {
+    build-qtiquingvm-image
+    build-qtiquingvm-perf-image
+}
+
 # sdm845 commands
 function build-sdm845-image() {
   unset_bb_env
@@ -125,7 +146,6 @@ function build-sdm845-robot-image() {
   export DISTRO=robot
   cdbitbake machine-image
 }
-
 
 # 9650 commands
 function build-9650-image() {
@@ -737,7 +757,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD
 }
 
 # Find build templates from qti meta layer.
