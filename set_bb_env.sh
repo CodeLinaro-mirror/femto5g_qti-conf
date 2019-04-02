@@ -69,6 +69,27 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
+# SA8195P commands
+function build-sa8195p-image() {
+  unset_bb_env
+  export MACHINE=sa8195p
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-sa8195p-perf-image() {
+  unset_bb_env
+  export MACHINE=sa8195p
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa8195p-image() {
+    build-sa8195p-image
+    build-sa8195p-perf-image
+}
+
 # SA8155 commands
 function build-sa8155-image() {
   unset_bb_env
