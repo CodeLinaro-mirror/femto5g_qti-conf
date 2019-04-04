@@ -511,6 +511,7 @@ function build-sda845-robot-perf-image() {
 build-all-sda845-robot-images() {
   build-sda845-robot-image
   build-sda845-robot-perf-image
+  build-sda845-robot-ros-image
 }
 
 function build-sda845-robot-ros-image() {
