@@ -299,6 +299,8 @@ build-all-8009-robot-som-images() {
 
 build-all-8009-robot-rome-images() {
   build-8009-robot-rome-image
+  buildclean-retaindeploy
+  build-8009-robot-rome-perf-image
 }
 
 build-all-8009-drone-images() {
