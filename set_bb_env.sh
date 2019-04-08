@@ -111,6 +111,41 @@ build-all-sa8155qdrive-image() {
     build-sa8155qdrive-perf-image
 }
 
+# qtiquingvm commands
+function build-qtiquingvm-image() {
+  unset_bb_env
+  export MACHINE=qtiquingvm
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-qtiquingvm-perf-image() {
+  unset_bb_env
+  export MACHINE=qtiquingvm
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-qtiquingvm-image() {
+    build-qtiquingvm-image
+    build-qtiquingvm-perf-image
+}
+
+# sdm845 commands
+function build-sdm845-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  cdbitbake machine-image
+}
+
+function build-sdm845-robot-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  cdbitbake machine-image
+}
 
 # 9650 commands
 function build-9650-image() {
@@ -152,6 +187,7 @@ build-all-qcs403-som2-qsap-images() {
 
 function build-qcs405-som1-qsap-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=qcs405-som1
   export DISTRO=qsap
   cdbitbake machine-image
@@ -606,6 +642,7 @@ function build-sdmsteppe-concam-user-image() {
 
 function build-sdmsteppe-concam-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=sdmsteppe
   export DISTRO=concam
   cdbitbake machine-image
@@ -636,6 +673,7 @@ function build-qcs605-32-concam-user-image() {
 
 function build-qcs605-32-concam-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=qcs605-32
   export DISTRO=concam
   cdbitbake machine-image
@@ -736,7 +774,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD
 }
 
 # Find build templates from qti meta layer.
@@ -752,4 +790,4 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
