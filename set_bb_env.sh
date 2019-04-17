@@ -225,6 +225,13 @@ build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
 }
 
+function build-sdm845-robot-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  cdbitbake machine-image
+}
+
 # sdxprairie commands
 function build-sdxprairie-sdk() {
   unset_bb_env
