@@ -4,3 +4,5 @@ bblayers.conf
 fetcherr.patch
 siggen.patch
 tarch.patch
+local.conf
+*.pyc

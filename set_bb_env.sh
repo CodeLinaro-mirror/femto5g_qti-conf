@@ -40,7 +40,7 @@ fi
 unset BT
 
 # Find where the global conf directory is...
-scriptdir="$(dirname "${BASH_SOURCE}")"
+scriptdir=$(readlink -f $(dirname "${BASH_SOURCE}"))
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../../..)
 
@@ -55,33 +55,33 @@ alias gobuilddir='CUR_DIR=`pwd` && cd $WS/poky/build'
 # Go back to the directory you were working in before you ran gobuild
 alias goback='cd $CUR_DIR'
 
-#Build recipe X for target Y
-function build_x_for_y() { gobuilddir && MACHINE=$2 rebake $1 && goback; }
-
 #Go to OUT directory
 alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
 
-# Dynamically generate our bblayers.conf since we effectively can't whitelist
-# BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
-# dynamic workspace layer functionality.
-python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.conf
-
 # Convienence functions provided for the QuIC provided OE Linux distro.
+
+# Function: Initialize bblayers.conf and local.conf
+#           $1 -- MACHINE
+#           $2 -- VARIANT
+function init-configure-files() {
+    # Dynamically generate our bblayers.conf since we effectively can't whitelist
+    # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
+    # dynamic workspace layer functionality.
+    python $scriptdir/get_bblayers.py $1 ${WS}/poky > $scriptdir/bblayers.conf
+
+    # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
+    python $scriptdir/get_localconf.py $1 $2 ${WS}/poky > $scriptdir/local.conf
+}
 
 # SA8155 commands
 function build-sa8155-image() {
-  unset_bb_env
-  export MACHINE=sa8155
-  export DISTRO=automotive
+  init-configure-files sa8155 debug
   cdbitbake machine-image
 }
 
 function build-sa8155-perf-image() {
-  unset_bb_env
-  export MACHINE=sa8155
-  export DISTRO=automotive
-  export VARIANT=perf
+  init-configure-files sa8155 perf
   cdbitbake machine-image
 }
 
@@ -90,19 +90,30 @@ build-all-sa8155-image() {
     build-sa8155-perf-image
 }
 
+# SA8155auto111 commands
+function build-sa8155auto111-image() {
+  init-configure-files sa8155auto111 debug
+  cdbitbake machine-image
+}
+
+function build-sa8155auto111-perf-image() {
+  init-configure-files sa8155auto111 perf
+  cdbitbake machine-image
+}
+
+build-all-sa8155auto111-image() {
+    build-sa8155auto111-image
+    build-sa8155auto111-perf-image
+}
+
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
-  unset_bb_env
-  export MACHINE=sa8155qdrive
-  export DISTRO=automotive
+  init-configure-files sa8155qdrive debug
   cdbitbake machine-image
 }
 
 function build-sa8155qdrive-perf-image() {
-  unset_bb_env
-  export MACHINE=sa8155qdrive
-  export DISTRO=automotive
-  export VARIANT=perf
+  init-configure-files sa8155qdrive perf
   cdbitbake machine-image
 }
 
@@ -111,34 +122,16 @@ build-all-sa8155qdrive-image() {
     build-sa8155qdrive-perf-image
 }
 
-# sdm845 commands
-function build-sdm845-image() {
-  unset_bb_env
-  export MACHINE=sdm845
-  export DISTRO=robot
-  cdbitbake machine-image
-}
 
-function build-sdm845-robot-image() {
-  unset_bb_env
-  export MACHINE=sdm845
-  export DISTRO=robot
-  cdbitbake machine-image
-}
 
 # qtiquingvm commands
 function build-qtiquingvm-image() {
-  unset_bb_env
-  export MACHINE=qtiquingvm
-  export DISTRO=automotive
+  init-configure-files qtiquingvm debug
   cdbitbake machine-image
 }
 
 function build-qtiquingvm-perf-image() {
-  unset_bb_env
-  export MACHINE=qtiquingvm
-  export DISTRO=automotive
-  export VARIANT=perf
+  init-configure-files qtiquingvm perf
   cdbitbake machine-image
 }
 
@@ -147,150 +140,11 @@ build-all-qtiquingvm-image() {
     build-qtiquingvm-perf-image
 }
 
-# sdxpoorwills auto commands
-function build-sdxpoorwills-auto-perf-image() {
-  unset_bb_env
-  export MACHINE=sdxpoorwills
-  export DISTRO=auto
-  export VARIANT=perf
+# Build image
+function build-image() {
   cdbitbake machine-image
 }
 
-function build-sdxpoorwills-auto-image() {
-  unset_bb_env
-  export MACHINE=sdxpoorwills
-  export DISTRO=auto
-  cdbitbake machine-image
-}
-
-build-all-sdxpoorwills-auto-images() {
-  build-sdxpoorwills-auto-image
-  buildclean-retaindeploy
-  build-sdxpoorwills-auto-perf-image
-}
-
-# qcs40x commands
-function build-qcs403-som2-qsap-image() {
-  unset_bb_env
-  export MACHINE=qcs403-som2
-  export DISTRO=qsap
-  cdbitbake machine-image
-}
-
-function build-qcs403-som2-qsap-perf-image() {
-  unset_bb_env
-  export MACHINE=qcs403-som2
-  export DISTRO=qsap
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-qcs403-som2-qsap-user-image() {
-  unset_bb_env
-  export MACHINE=qcs403-som2
-  export DISTRO=qsap
-  export VARIANT=user
-  cdbitbake machine-image
-}
-
-build-all-qcs403-som2-qsap-images() {
- build-qcs403-som2-qsap-image
-}
-
-function build-qcs405-som1-qsap-image() {
-  unset_bb_env
-  export DEBUG_BUILD=1
-  export MACHINE=qcs405-som1
-  export DISTRO=qsap
-  cdbitbake machine-image
-}
-
-function build-qcs405-som1-qsap-perf-image() {
-  unset_bb_env
-  export MACHINE=qcs405-som1
-  export DISTRO=qsap
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-qcs405-som1-qsap-user-image() {
-  unset_bb_env
-  export MACHINE=qcs405-som1
-  export DISTRO=qsap
-  export VARIANT=user
-  cdbitbake machine-image
-}
-
-build-all-qcs405-som1-qsap-images() {
- build-qcs405-som1-qsap-image
-}
-
-function build-sdm845-robot-image() {
-  unset_bb_env
-  export MACHINE=sdm845
-  export DISTRO=robot
-  cdbitbake machine-image
-}
-
-# sdxprairie commands
-function build-sdxprairie-sdk() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=mdm
-  cdbitbake machine-image -c populate_sdk_ext
-}
-
-function build-sdxprairie-perf-image() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=mdm
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-sdxprairie-image() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=mdm
-  cdbitbake machine-image
-}
-
-build-all-sdxprairie-images() {
-  build-sdxprairie-image
-  buildclean-retaindeploy
-  build-sdxprairie-perf-image
-}
-
-
-#sdmsteppe commands
-function build-sdmsteppe-concam-perf-image() {
-  unset_bb_env
-  export MACHINE=sdmsteppe
-  export DISTRO=concam
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-sdmsteppe-concam-user-image() {
-  unset_bb_env
-  export MACHINE=sdmsteppe
-  export DISTRO=concam
-  export VARIANT=user
-  cdbitbake machine-image
-}
-
-function build-sdmsteppe-concam-image() {
-  unset_bb_env
-  export DEBUG_BUILD=1
-  export MACHINE=sdmsteppe
-  export DISTRO=concam
-  cdbitbake machine-image
-}
-
-build-all-sdmsteppe-concam-images() {
-#  build-sdmsteppe-concam-image
-  build-sdmsteppe-concam-perf-image
-}
 
 # Utility commands
 buildclean-retaindeploy() {
@@ -355,7 +209,7 @@ unset_bb_env() {
 }
 
 # Find build templates from qti meta layer.
-export TEMPLATECONF="meta-qti-bsp/conf"
+export TEMPLATECONF="meta-qti-bsp/meta-qti-base/conf"
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
@@ -368,3 +222,20 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+
+# Initialize bblayers.conf and local.conf
+# Get MACHINE value from $1, default is sa8155
+if [ ! -n "$1" ]
+then
+  export QMACHINE="sa8155"
+else
+  export QMACHINE=$1
+fi
+# Get VARIANT value from $2, default is debug
+if [ ! -n "$2" ]
+then
+  export QVARIANT="debug"
+else
+  QVARIANT=$2
+fi
+init-configure-files ${QMACHINE} ${QVARIANT}

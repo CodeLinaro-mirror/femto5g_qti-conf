@@ -80,17 +80,17 @@ TMPDIR = "${TOPDIR}/tmp"
 #
 # The distribution setting controls which policy settings are used as defaults.
 #
-DISTRO ??= "mdm"
+# DISTRO ??= ""
 
 #
 # Machine Selection
 #
-MACHINE ??= "sdxprairie"
+# MACHINE ??= ""
 
 #
 # Variant Selection
 #
-VARIANT ??= "debug"
+# VARIANT ??= ""
 
 # Show VARIANT in pre-build configuration output
 BUILDCFG_VARS += "VARIANT"
@@ -256,3 +256,4 @@ RESUMECOMMAND_wget = "/usr/bin/env wget -c --retry-connrefused -t 5 -T 30 -nv --
 GCCVERSION ?= "8.2%"
 
 export userfsdatadir = "${base_prefix}/data"
+
