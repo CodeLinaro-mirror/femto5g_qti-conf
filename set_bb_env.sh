@@ -292,6 +292,28 @@ build-all-sdmsteppe-concam-images() {
   build-sdmsteppe-concam-perf-image
 }
 
+# sdxprairie auto commands
+function build-sdxprairie-auto-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxprairie
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxprairie-auto-image() {
+  unset_bb_env
+  export MACHINE=sdxprairie
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sdxprairie-auto-images() {
+  build-sdxprairie-auto-image
+  buildclean-retaindeploy
+  build-sdxprairie-auto-perf-image
+}
+
 # Utility commands
 buildclean-retaindeploy() {
   set -x
