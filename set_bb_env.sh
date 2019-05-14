@@ -254,13 +254,6 @@ function build-sdm845-robot-image() {
 }
 
 # sdxprairie commands
-function build-sdxprairie-sdk() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=mdm
-  cdbitbake machine-image -c populate_sdk_ext
-}
-
 function build-sdxprairie-perf-image() {
   unset_bb_env
   export MACHINE=sdxprairie
