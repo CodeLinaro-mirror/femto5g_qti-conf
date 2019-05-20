@@ -69,6 +69,27 @@ python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.con
 
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
+# SA8195P commands
+function build-sa8195p-image() {
+  unset_bb_env
+  export MACHINE=sa8195p
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-sa8195p-perf-image() {
+  unset_bb_env
+  export MACHINE=sa8195p
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa8195p-image() {
+    build-sa8195p-image
+    build-sa8195p-perf-image
+}
+
 # SA8155 commands
 function build-sa8155-image() {
   unset_bb_env
@@ -233,13 +254,6 @@ function build-sdm845-robot-image() {
 }
 
 # sdxprairie commands
-function build-sdxprairie-sdk() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=mdm
-  cdbitbake machine-image -c populate_sdk_ext
-}
-
 function build-sdxprairie-perf-image() {
   unset_bb_env
   export MACHINE=sdxprairie
@@ -290,6 +304,28 @@ function build-sdmsteppe-concam-image() {
 build-all-sdmsteppe-concam-images() {
 #  build-sdmsteppe-concam-image
   build-sdmsteppe-concam-perf-image
+}
+
+# sdxprairie auto commands
+function build-sdxprairie-auto-perf-image() {
+  unset_bb_env
+  export MACHINE=sdxprairie
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxprairie-auto-image() {
+  unset_bb_env
+  export MACHINE=sdxprairie
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sdxprairie-auto-images() {
+  build-sdxprairie-auto-image
+  buildclean-retaindeploy
+  build-sdxprairie-auto-perf-image
 }
 
 # Utility commands
