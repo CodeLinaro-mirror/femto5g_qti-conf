@@ -29,20 +29,23 @@ dicLayersWithSubLayers = None
 
 def initLayersList(MACHINE):
     global dicLayersWithSubLayers
-    dicLayersWithSubLayers = {}
-    dicLayersWithSubLayers["TOPLAYERS"] = [ \
-        "meta-qti-internal", "meta-qti-wlan-prop", "meta-qti-gfx-prop", "meta-qti-bt-prop", \
-        "meta-qti-wlan", "meta-qti-bt", "meta-qti-display", "meta-qt5", "meta-security-isafw", \
-        "meta-yocto-bsp", "meta", "meta-poky", \
-    ]
-    dicLayersWithSubLayers["meta-openembedded"] = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems", "meta-multimedia" ]
-    dicLayersWithSubLayers["meta-qti-bsp-prop"] = ["meta-qti-base-prop", "meta-qti-advance-prop", "meta-qti-qtee"]
-    dicLayersWithSubLayers["meta-qti-bsp"] = ["meta-qti-base", "meta-qti-advance"]
+    dicLayersWithSubLayers = { \
+        "poky": { \
+            "meta-qti-internal":1, "meta-qti-gfx-prop":1, \
+            "meta-qti-display":1, "meta-security-isafw":1, \
+            "meta-yocto-bsp":1, "meta":1, "meta-poky":1, \
+        }, \
+        "meta-qt5": 1, \
+        "meta-qti-internal": 1, \
+        "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1 }, \
+        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-advance-prop":1, "meta-qti-qtee":1 }, \
+        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-advance":1 }, \
+    }
     if MACHINE == "sa8155":
         pass
     elif MACHINE == "sa8155qdrive":
-        dicLayersWithSubLayers["meta-qti-bsp"].append("meta-qti-ros")
-        dicLayersWithSubLayers["TOPLAYERS"].append("meta-ros")
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
+        dicLayersWithSubLayers["meta-ros"] = 1
     elif MACHINE == 'sa8155bgq':
         pass
     elif MACHINE == 'qtiquingvm':

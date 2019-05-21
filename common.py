@@ -48,20 +48,18 @@ def getLayerPriority (layerConfPath) :
 # metadata directory criteria...
 def getLayerPaths(MACHINE, target) :
     layers.initLayersList(MACHINE)
-    retList = []
-    for k,v in layers.dicLayersWithSubLayers.items():
-        if k == "TOPLAYERS":
-            for layer in v:
-                layerPath = "%s/%s" % (target, layer)
+    def GenLayerPathList(DictPath, DictLayers, LayerPathList = []):
+        for k,v in DictLayers.items():
+            if v != 1:
+                GenLayerPathList("%s/%s" % (DictPath, k), v, LayerPathList)
+            else:
+                layerPath = "%s/%s" % (DictPath, k) 
                 layerPriority = getLayerPriority(layerPath + "/conf/layer.conf")
                 if layerPriority >= 0:
-                    retList += [( layerPath,  layerPriority )]
-        else:
-            for layer in v:
-                layerPath = "%s/%s/%s" % (target, k, layer) 
-                layerPriority = getLayerPriority(layerPath + "/conf/layer.conf")
-                if layerPriority >= 0:
-                    retList += [( layerPath,  layerPriority )]
+                    LayerPathList += [( layerPath,  layerPriority )]
+        return LayerPathList
+
+    retList = GenLayerPathList(target, layers.dicLayersWithSubLayers)
 
     # In order to avoid potential namespace conflicts, between recipes on layers
     # we sort the list in descending order of priority.

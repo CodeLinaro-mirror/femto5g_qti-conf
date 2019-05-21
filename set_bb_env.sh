@@ -68,10 +68,10 @@ function init-configure-files() {
     # Dynamically generate our bblayers.conf since we effectively can't whitelist
     # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
     # dynamic workspace layer functionality.
-    python $scriptdir/get_bblayers.py $1 ${WS}/poky > $scriptdir/bblayers.conf
+    python $scriptdir/get_bblayers.py $1 ${WS} > $scriptdir/bblayers.conf
 
     # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
-    python $scriptdir/get_localconf.py $1 $2 ${WS}/poky > $scriptdir/local.conf
+    python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 }
 
 # SA8155 commands
@@ -209,7 +209,7 @@ unset_bb_env() {
 }
 
 # Find build templates from qti meta layer.
-export TEMPLATECONF="meta-qti-bsp/meta-qti-base/conf"
+export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
