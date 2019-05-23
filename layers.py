@@ -31,8 +31,7 @@ def initLayersList(MACHINE):
     global dicLayersWithSubLayers
     dicLayersWithSubLayers = { \
         "poky": { \
-            "meta-qti-internal":1, "meta-qti-gfx-prop":1, \
-            "meta-qti-display":1, "meta-security-isafw":1, \
+             "meta-security-isafw":1, \
             "meta-yocto-bsp":1, "meta":1, "meta-poky":1, \
         }, \
         "meta-qt5": 1, \
