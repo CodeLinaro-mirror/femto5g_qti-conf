@@ -59,6 +59,49 @@ alias goback='cd $CUR_DIR'
 alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
 
+#init local git if it does not exist
+function init_localgit() {
+if [ -f "${WS}/localgit" ]
+then
+    cat ${WS}/localgit | while read line
+    do
+        echo "Source dir ${WS}/$line"
+        if [ -d "${WS}/$line" ]
+        then
+            echo "Dir exist!"
+            cd ${WS}/$line
+            if [ ! -d ".git" ]
+            then
+                echo "git init"
+                git init && git add . && git commit -m "Init new git project"
+            fi
+        else
+            echo "The directory of source code does not exist!"
+        fi
+    done
+else
+    echo "Get init local git list"
+    touch ${WS}/localgit
+    cat ${WS}/release/for_p4 | while read line
+    do
+        if grep -q "$line" ${WS}/.repo/manifests/default.xml
+        then
+            echo "$line is found in manifest "
+            strmeta="meta-qti"
+            if [[ $line == *$strmeta* ]]
+            then
+                echo "$strmeta is included, skip!"
+            else
+                echo $line >> ${WS}/localgit
+            fi
+        fi
+    done
+    echo "prebuilt_HY11" >> ${WS}/localgit
+    echo "prebuilt_HY22" >> ${WS}/localgit
+    sync
+fi
+}
+
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
 # Function: Initialize bblayers.conf and local.conf
@@ -73,6 +116,7 @@ function init-configure-files() {
     # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 }
+
 
 # SA8155 commands
 function build-sa8155-image() {
@@ -238,4 +282,8 @@ then
 else
   QVARIANT=$2
 fi
+
 init-configure-files ${QMACHINE} ${QVARIANT}
+
+#init local git if it does not exist.
+init_localgit 
