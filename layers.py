@@ -37,8 +37,8 @@ def initLayersList(MACHINE):
         "meta-qt5": 1, \
         "meta-qti-internal": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1 }, \
-        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-advance-prop":1, "meta-qti-qtee":1 }, \
-        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-advance":1 }, \
+        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1, "meta-qti-qtee":1 }, \
+        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1 }, \
     }
     if MACHINE == "sa8155":
         pass
