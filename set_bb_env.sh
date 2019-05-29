@@ -91,19 +91,19 @@ build-all-sa8155-image() {
 }
 
 # SA8155auto111 commands
-function build-sa8155auto111-image() {
-  init-configure-files sa8155auto111 debug
+function build-sa8155ivi-image() {
+  init-configure-files sa8155ivi debug
   cdbitbake machine-image
 }
 
-function build-sa8155auto111-perf-image() {
-  init-configure-files sa8155auto111 perf
+function build-sa8155ivi-perf-image() {
+  init-configure-files sa8155ivi perf
   cdbitbake machine-image
 }
 
-build-all-sa8155auto111-image() {
-    build-sa8155auto111-image
-    build-sa8155auto111-perf-image
+build-all-sa8155ivi-image() {
+    build-sa8155ivi-image
+    build-sa8155ivi-perf-image
 }
 
 # SA8155qdrive commands
