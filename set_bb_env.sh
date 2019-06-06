@@ -196,26 +196,49 @@ build-all-qtiquingvm-image() {
     build-qtiquingvm-perf-image
 }
 
-# sdxpoorwills auto commands
-function build-sdxpoorwills-auto-perf-image() {
+
+# sa415m commands
+function build-sa415m-perf-image() {
   unset_bb_env
-  export MACHINE=sdxpoorwills
+  export MACHINE=sa415m
   export DISTRO=auto
   export VARIANT=perf
   cdbitbake machine-image
 }
 
-function build-sdxpoorwills-auto-image() {
+function build-sa415m-image() {
   unset_bb_env
-  export MACHINE=sdxpoorwills
+  export MACHINE=sa415m
   export DISTRO=auto
   cdbitbake machine-image
 }
 
-build-all-sdxpoorwills-auto-images() {
-  build-sdxpoorwills-auto-image
+build-all-sa415m-images() {
+  build-sa415m-image
   buildclean-retaindeploy
-  build-sdxpoorwills-auto-perf-image
+  build-sa415m-perf-image
+}
+
+# sa515m commands
+function build-sa515m-perf-image() {
+  unset_bb_env
+  export MACHINE=sa515m
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sa515m-image() {
+  unset_bb_env
+  export MACHINE=sa515m
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sa515m-images() {
+  build-sa515m-image
+  buildclean-retaindeploy
+  build-sa515m-perf-image
 }
 
 # qcs40x commands
@@ -379,28 +402,6 @@ function build-sdmsteppe-concam-image() {
 build-all-sdmsteppe-concam-images() {
 #  build-sdmsteppe-concam-image
   build-sdmsteppe-concam-perf-image
-}
-
-# sdxprairie auto commands
-function build-sdxprairie-auto-perf-image() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=auto
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-sdxprairie-auto-image() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=auto
-  cdbitbake machine-image
-}
-
-build-all-sdxprairie-auto-images() {
-  build-sdxprairie-auto-image
-  buildclean-retaindeploy
-  build-sdxprairie-auto-perf-image
 }
 
 # Utility commands
