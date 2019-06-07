@@ -47,6 +47,7 @@ def initLayersList(MACHINE):
         dicLayersWithSubLayers["meta-ros"] = 1
     elif MACHINE == 'sa8155ivi':
         del dicLayersWithSubLayers["meta-qt5"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-qtee"]
     elif MACHINE == 'qtiquingvm':
         pass
     elif MACHINE == 'sa8195p':
