@@ -61,6 +61,11 @@ alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
 #init local git if it does not exist
 function init_localgit() {
+git config --global pack.windowMemory "100m"
+git config --global pack.SizeLimit "100m"
+git config --global pack.threads "1"
+git config --global pack.window "0"
+
 if [ -f "${WS}/localgit" ]
 then
     cat ${WS}/localgit | while read line
