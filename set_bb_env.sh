@@ -166,7 +166,10 @@ build-all-sa8155qdrive-image() {
     build-sa8155qdrive-perf-image
 }
 
-
+function build-sa8155qdrive-sdk-image() {
+    init-configure-files sa8155qdrive debug
+    cdbitbake machine-image -c populate_sdk
+}
 
 # qtiquingvm commands
 function build-qtiquingvm-image() {
