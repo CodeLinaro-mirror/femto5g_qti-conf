@@ -15,7 +15,6 @@ print "#--------------------------------------------------------------"
 print "# MACHINE=%s" % MACHINE
 print "LCONF_VERSION = \"6\""
 print
-print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../..'))}\""
 print "export SRC_DIR_ROOT := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../..'))}\""
 #print "# Make sure WORKSPACE isn't exported"
 #print "WORKSPACE[unexport] = \"1\""
