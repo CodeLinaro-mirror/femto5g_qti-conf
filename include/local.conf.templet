@@ -154,7 +154,7 @@ EXTRA_IMAGE_FEATURES += " package-management"
 USER_CLASSES ?= "buildname image-mklibs image-prelink"
 
 # ${BUILDNAME} is used to set the content of /etc/version
-BUILDNAME = "${@get_git_latest_tag('${WORKSPACE}/.repo/manifests', d)}"
+BUILDNAME = "${@get_git_latest_tag('${SRC_DIR_ROOT}/.repo/manifests', d)}"
 
 #
 # Runtime testing of images

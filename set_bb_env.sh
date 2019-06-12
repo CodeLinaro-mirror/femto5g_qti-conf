@@ -107,6 +107,10 @@ else
 fi
 }
 
+
+#init local git if it does not exist.
+init_localgit 
+
 # Convienence functions provided for the QuIC provided OE Linux distro.
 
 # Function: Initialize bblayers.conf and local.conf
@@ -291,7 +295,6 @@ else
   QVARIANT=$2
 fi
 
+
 init-configure-files ${QMACHINE} ${QVARIANT}
 
-#init local git if it does not exist.
-init_localgit 
