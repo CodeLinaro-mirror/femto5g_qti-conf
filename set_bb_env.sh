@@ -143,6 +143,11 @@ build-all-sa8155-image() {
     build-sa8155-perf-image
 }
 
+function build-sa8155-sdk-image() {
+    init-configure-files sa8155 debug
+    cdbitbake machine-image -c populate_sdk
+}
+
 # SA8155auto111 commands
 function build-sa8155ivi-image() {
   init-configure-files sa8155ivi debug
@@ -157,6 +162,11 @@ function build-sa8155ivi-perf-image() {
 build-all-sa8155ivi-image() {
     build-sa8155ivi-image
     build-sa8155ivi-perf-image
+}
+
+function build-sa8155ivi-sdk-image() {
+    init-configure-files sa8155ivi debug
+    cdbitbake machine-image -c populate_sdk
 }
 
 # SA8155qdrive commands
@@ -194,6 +204,11 @@ function build-qtiquingvm-perf-image() {
 build-all-qtiquingvm-image() {
     build-qtiquingvm-image
     build-qtiquingvm-perf-image
+}
+
+function build-qtiquingvm-sdk-image() {
+    init-configure-files qtiquingvm debug
+    cdbitbake machine-image -c populate_sdk
 }
 
 # Build image
