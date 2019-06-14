@@ -32,6 +32,7 @@ def initLayersList(MACHINE):
     dicLayersWithSubLayers = { \
         "poky": { "meta":1, "meta-poky":1 }, \
         "meta-qt5": 1, \
+        "meta-gplv2": 1, \
         "meta-qti-internal": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1, "meta-qti-qtee":1 }, \
