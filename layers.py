@@ -30,10 +30,7 @@ dicLayersWithSubLayers = None
 def initLayersList(MACHINE):
     global dicLayersWithSubLayers
     dicLayersWithSubLayers = { \
-        "poky": { \
-             "meta-security-isafw":1, \
-            "meta-yocto-bsp":1, "meta":1, "meta-poky":1, \
-        }, \
+        "poky": { "meta":1, "meta-poky":1 }, \
         "meta-qt5": 1, \
         "meta-qti-internal": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1 }, \
