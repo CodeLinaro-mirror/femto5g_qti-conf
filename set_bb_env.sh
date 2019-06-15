@@ -61,6 +61,7 @@ alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
 #init local git if it does not exist
 function init_localgit() {
+#add configuration to limit memory cost 
 git config --global pack.windowMemory "100m"
 git config --global pack.SizeLimit "100m"
 git config --global pack.threads "1"
@@ -70,18 +71,13 @@ if [ -f "${WS}/localgit" ]
 then
     cat ${WS}/localgit | while read line
     do
-        echo "Source dir ${WS}/$line"
         if [ -d "${WS}/$line" ]
         then
-            echo "Dir exist!"
             cd ${WS}/$line
             if [ ! -d ".git" ]
             then
-                echo "git init"
-                git init && git add . && git commit -m "Init new git project"
+                git init && git add . && git commit -m "Init new git project" >> /dev/null 2>&1 
             fi
-        else
-            echo "The directory of source code does not exist!"
         fi
     done
 else
@@ -91,12 +87,9 @@ else
     do
         if grep -q "$line" ${WS}/.repo/manifests/default.xml
         then
-            echo "$line is found in manifest "
             strmeta="meta-qti"
-            if [[ $line == *$strmeta* ]]
+            if [[ $line != *$strmeta* ]]
             then
-                echo "$strmeta is included, skip!"
-            else
                 echo $line >> ${WS}/localgit
             fi
         fi
