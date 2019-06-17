@@ -119,11 +119,60 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 }
 
+build-dm-verity-image() {
+  cdbitbake cryptsetup-native
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake cryptsetup-native'."
+  return 1
+  fi
+  cdbitbake dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake dm-verity-image'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c compile
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c compile'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c install
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c install'."
+  return 1
+  fi
+  cdbitbake virtual/kernel -f -c deploy
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
+  return 1
+  fi
+  cdbitbake machine-image -f -c make_bootimg
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image -f -c make_bootimg'."
+  fi
+  return 0
+}
+
 
 # SA8155 commands
 function build-sa8155-image() {
   init-configure-files sa8155 debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
 }
 
 function build-sa8155-perf-image() {
@@ -144,7 +193,23 @@ function build-sa8155-sdk-image() {
 # SA8155auto111 commands
 function build-sa8155ivi-image() {
   init-configure-files sa8155ivi debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
 }
 
 function build-sa8155ivi-perf-image() {
@@ -165,7 +230,23 @@ function build-sa8155ivi-sdk-image() {
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
   init-configure-files sa8155qdrive debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
 }
 
 function build-sa8155qdrive-perf-image() {
