@@ -1,6 +1,6 @@
 
 # bbmask
-BBMASK = "meta-qti-xxxxxx/"
+BBMASK = "meta-clang/recipes-devtools/m4/"
 
 
 

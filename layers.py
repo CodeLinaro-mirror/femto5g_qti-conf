@@ -32,10 +32,10 @@ def initLayersList(MACHINE):
     dicLayersWithSubLayers = { \
         "poky": { "meta":1, "meta-poky":1 }, \
         "meta-qt5": 1, \
-        "meta-qti-internal": 1, \
+        "meta-gplv2": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1 }, \
-        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1, "meta-qti-qtee":1 }, \
-        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1 }, \
+        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1, "meta-qti-qtee":1, "meta-qti-sdllvm-prop":1 }, \
+        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-sdllvm":1 }, \
     }
     if MACHINE == "sa8155":
         pass
@@ -45,6 +45,11 @@ def initLayersList(MACHINE):
     elif MACHINE == 'sa8155ivi':
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-qtee"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"]
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
     elif MACHINE == 'qtiquingvm':
         pass
     elif MACHINE == 'sa8195p':

@@ -59,6 +59,13 @@ def getLayerPaths(MACHINE, target) :
                     LayerPathList += [( layerPath,  layerPriority )]
         return LayerPathList
 
+
+    for foldername in os.listdir(target):
+        if not foldername.startswith("meta-qti-"):
+            continue
+        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop"]:
+            continue
+        layers.dicLayersWithSubLayers[foldername] = 1
     retList = GenLayerPathList(target, layers.dicLayersWithSubLayers)
 
     # In order to avoid potential namespace conflicts, between recipes on layers
