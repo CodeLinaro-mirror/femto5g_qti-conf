@@ -119,6 +119,21 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 }
 
+# SA6155 commands
+function build-sa6155-image() {
+  init-configure-files sa6155 debug
+  cdbitbake machine-image
+}
+
+function build-sa6155-perf-image() {
+  init-configure-files sa6155 perf
+  cdbitbake machine-image
+}
+
+build-all-sa6155-image() {
+    build-sa6155-image
+    build-sa6155-perf-image
+}
 
 # SA8155 commands
 function build-sa8155-image() {
