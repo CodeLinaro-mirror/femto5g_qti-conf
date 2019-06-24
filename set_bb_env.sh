@@ -353,21 +353,6 @@ unset_bb_env() {
   unset DISTRO MACHINE VARIANT DEBUG_BUILD
 }
 
-# Find build templates from qti meta layer.
-export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
-
-# Yocto/OE-core works a bit differently than OE-classic so we're
-# going to source the OE build environment setup script they provided.
-# This will dump the user in ${WS}/yocto/build, ready to run the
-# convienence function or straight up bitbake commands.
-. ${WS}/poky/oe-init-build-env ${WS}/poky/build
-
-# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
-# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-# oe-init-build-env calls oe-buildenv-internal which sets
-# BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
-
 # Initialize bblayers.conf and local.conf
 # Get MACHINE value from $1, default is sa8155
 if [ ! -n "$1" ]
@@ -384,6 +369,20 @@ else
   QVARIANT=$2
 fi
 
-
 init-configure-files ${QMACHINE} ${QVARIANT}
+
+# Find build templates from qti meta layer.
+export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
+
+# Yocto/OE-core works a bit differently than OE-classic so we're
+# going to source the OE build environment setup script they provided.
+# This will dump the user in ${WS}/yocto/build, ready to run the
+# convienence function or straight up bitbake commands.
+. ${WS}/poky/oe-init-build-env ${WS}/poky/build
+
+# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
+# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
+# oe-init-build-env calls oe-buildenv-internal which sets
+# BB_ENV_EXTRAWHITE, append our vars to the list
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
