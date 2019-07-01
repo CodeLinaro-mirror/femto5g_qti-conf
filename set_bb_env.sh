@@ -206,5 +206,19 @@ SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
 EOF
 
+# Check and run pre-configs from enabled meta layers
+layerstring=$( \
+while read line; do \
+  if [[ $line =~ BBLAYER ]] ; then echo $line | cut -f2 -d"="; fi \
+done < ${BUILDDIR}/conf/bblayers.conf \
+)
+
+for layer in ${layerstring//\"}; do
+  if [ -f "$layer/scripts/set_env.sh" ]; then
+    source $layer/scripts/set_env.sh
+  fi
+done
+
+
 # Finalize
 init_build_env
