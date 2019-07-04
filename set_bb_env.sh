@@ -234,6 +234,32 @@ function build-qcs403-som2-qsap-user-image() {
   cdbitbake machine-image
 }
 
+build-all-nf-64-qsap-images() {
+ build-nf-64-qsap-image
+}
+function build-nf-64-qsap-image() {
+  unset_bb_env
+  export MACHINE=nf-64
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-nf-64-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=nf-64
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-nf-64-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=nf-64
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
 }
