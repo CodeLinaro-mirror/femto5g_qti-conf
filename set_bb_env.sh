@@ -141,6 +141,11 @@ function build-sa8155-image() {
   cdbitbake machine-image
 }
 
+function build-sa8155-minimalimage() {
+  init-configure-files sa8155 debug
+  cdbitbake core-image-minimal
+}
+
 function build-sa8155-perf-image() {
   init-configure-files sa8155 perf
   cdbitbake machine-image
@@ -148,6 +153,7 @@ function build-sa8155-perf-image() {
 
 build-all-sa8155-image() {
     build-sa8155-image
+    build-sa8155-minimalimage
     build-sa8155-perf-image
 }
 
@@ -162,6 +168,11 @@ function build-sa8155ivi-image() {
   cdbitbake machine-image
 }
 
+function build-sa8155ivi-minimalimage() {
+  init-configure-files sa8155ivi debug
+  cdbitbake core-image-minimal
+}
+
 function build-sa8155ivi-perf-image() {
   init-configure-files sa8155ivi perf
   cdbitbake machine-image
@@ -169,6 +180,7 @@ function build-sa8155ivi-perf-image() {
 
 build-all-sa8155ivi-image() {
     build-sa8155ivi-image
+    build-sa8155ivi-minimalimage
     build-sa8155ivi-perf-image
 }
 
