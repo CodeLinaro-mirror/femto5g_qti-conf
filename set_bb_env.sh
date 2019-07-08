@@ -167,6 +167,14 @@ function build-sdm845-robot-image() {
   cdbitbake machine-image
 }
 
+function build-sdm845-robot-perf-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 # qtiquingvm commands
 function build-qtiquingvm-image() {
   unset_bb_env
