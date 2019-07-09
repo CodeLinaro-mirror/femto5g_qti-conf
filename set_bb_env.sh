@@ -428,6 +428,14 @@ buildclean() {
   set +x
 }
 
+clean-tmpdir() {
+  set -x
+  cd ${WS}/poky/build
+
+  rm -rf bitbake.lock pseudodone tmp-glibc/* cache && cd - || cd -
+  set +x
+}
+
 # Lists only those build commands that are:
 #   * prefixed with function keyword
 #   * name starts with build-
