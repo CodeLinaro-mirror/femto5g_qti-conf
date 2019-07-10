@@ -68,6 +68,26 @@ alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > $scriptdir/bblayers.conf
 
 # Convienence functions provided for the QuIC provided OE Linux distro.
+#SA6155 commands
+function build-sa6155-image() {
+  unset_bb_env
+  export MACHINE=sa6155
+  export DISTRO=automotive
+  cdbitbake machine-image
+}
+
+function build-sa6155-perf-image() {
+  unset_bb_env
+  export MACHINE=sa6155
+  export DISTRO=automotive
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa6155-image() {
+    build-sa6155-image
+    build-sa6155-perf-image
+}
 
 # SA8195P commands
 function build-sa8195p-image() {
