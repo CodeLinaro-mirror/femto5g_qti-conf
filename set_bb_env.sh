@@ -165,6 +165,7 @@ function build-sa6155-perf-image() {
 
 build-all-sa6155-image() {
     build-sa6155-image
+    bitbake virtual/kernel -fc cleanall
     build-sa6155-perf-image
 }
 
@@ -203,6 +204,7 @@ function build-sa8155-perf-image() {
 build-all-sa8155-image() {
     build-sa8155-image
     build-sa8155-minimalimage
+    bitbake virtual/kernel -fc cleanall
     build-sa8155-perf-image
 }
 
@@ -246,6 +248,7 @@ function build-sa8155ivi-perf-image() {
 build-all-sa8155ivi-image() {
     build-sa8155ivi-image
     build-sa8155ivi-minimalimage
+    bitbake virtual/kernel -fc cleanall
     build-sa8155ivi-perf-image
 }
 
@@ -283,6 +286,7 @@ function build-sa8155qdrive-perf-image() {
 
 build-all-sa8155qdrive-image() {
     build-sa8155qdrive-image
+    bitbake virtual/kernel -fc cleanall
     build-sa8155qdrive-perf-image
 }
 
@@ -304,6 +308,7 @@ function build-qtiquingvm-perf-image() {
 
 build-all-qtiquingvm-image() {
     build-qtiquingvm-image
+    bitbake virtual/kernel -fc cleanall
     build-qtiquingvm-perf-image
 }
 
