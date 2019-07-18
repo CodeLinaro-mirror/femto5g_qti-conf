@@ -317,6 +317,7 @@ function build-sa2150p-perf-image() {
 
 build-all-sa2150p-images() {
   build-sa2150p-image
+  buildclean-retaindeploy
   build-sa2150p-perf-image
 }
 
