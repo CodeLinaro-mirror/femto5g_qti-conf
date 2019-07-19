@@ -167,6 +167,14 @@ function build-sdm845-robot-image() {
   cdbitbake machine-image
 }
 
+function build-sdm845-robot-perf-image() {
+  unset_bb_env
+  export MACHINE=sdm845
+  export DISTRO=robot
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 # qtiquingvm commands
 function build-qtiquingvm-image() {
   unset_bb_env
@@ -234,6 +242,32 @@ function build-qcs403-som2-qsap-user-image() {
   cdbitbake machine-image
 }
 
+build-all-nf-64-qsap-images() {
+ build-nf-64-qsap-image
+}
+function build-nf-64-qsap-image() {
+  unset_bb_env
+  export MACHINE=nf-64
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-nf-64-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=nf-64
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-nf-64-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=nf-64
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
 }
@@ -264,6 +298,26 @@ function build-qcs405-som1-qsap-user-image() {
 
 build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
+}
+
+function build-sa2150p-image() {
+  unset_bb_env
+  export MACHINE=sa2150p
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
+function build-sa2150p-perf-image() {
+  unset_bb_env
+  export MACHINE=sa2150p
+  export DISTRO=msm
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sa2150p-images() {
+  build-sa2150p-image
+  build-sa2150p-perf-image
 }
 
 function build-sdm845-robot-image() {
