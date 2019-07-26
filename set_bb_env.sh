@@ -213,7 +213,52 @@ function build-sa8155-sdk-image() {
     cdbitbake machine-image -c populate_sdk
 }
 
-# SA8155auto111 commands
+# SA8195 commands
+function build-sa8195-image() {
+  init-configure-files sa8195 debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+}
+
+function build-sa8195-minimalimage() {
+  init-configure-files sa8195 debug
+  cdbitbake core-image-minimal
+}
+
+function build-sa8195-perf-image() {
+  init-configure-files sa8195 perf
+  cdbitbake machine-image
+}
+
+build-all-sa8195-image() {
+    build-sa8195-image
+    build-sa8195-minimalimage
+    bitbake virtual/kernel -fc cleanall
+    build-sa8195-perf-image
+}
+
+function build-sa8195-sdk-image() {
+    init-configure-files sa8195 debug
+    cdbitbake machine-image -c populate_sdk
+}
+
+
+# SA8155ivi commands
 function build-sa8155ivi-image() {
   init-configure-files sa8155ivi debug
 
