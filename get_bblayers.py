@@ -12,23 +12,33 @@ dicLayersWithSubLayers = None
 def initLayersList(target):
     global ignoreList
     global dicLayersWithSubLayers
-    if os.path.exists(target + "/meta-qti-auto"):
-        # "meta-qti-auto" is automotive(LV) project specific layers. If found this layer will initialize LV's layer list.
-        ignoreList = [  "meta-selftest", "meta-skeleton", \
-                        "meta-yocto", "meta-yocto-bsp" \
-                     ]
-        dicLayersWithSubLayers = { \
-            "meta-openembedded":[ "meta-networking", "meta-python", "meta-oe", "meta-filesystems", "meta-multimedia" ], \
-            "meta-agl":["meta-agl", "meta-agl-distro",  "meta-app-framework", "meta-ivi-common"], \
-            "meta-intel-iot-security":["meta-security-framework", "meta-security-smack"] \
-            }
-    else:
-        # initialize LE's layer list
-        ignoreList = [  "meta-selftest", "meta-skeleton", \
-	                    "meta-poky", "meta-yocto", "meta-yocto-bsp" \
-	                 ]
-        metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
-        dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
+
+    # initialize LE's layer list
+    ignoreList = [  "meta-selftest", "meta-skeleton", \
+                    "meta-poky", "meta-yocto", "meta-yocto-bsp", \
+                    "meta-allplay", "meta-allplay-prop", \
+                    "meta-qti-audio", "meta-qti-audio-cal", \
+                    "meta-qti-audio-external", "meta-qti-audio-prop", \
+                    "meta-qti-avs", "meta-qti-avs-prop", \
+                    "meta-qti-bsp-prop", "meta-qti-bt", \
+                    "meta-qti-bt-prop", "meta-qti-camera", \
+                    "meta-qti-camera-prop", "meta-qti-core-prop", \
+                    "meta-qti-data-prop", "meta-qti-data", \
+                    "meta-qti-display-prop", "meta-qti-display", \
+                    "meta-qti-drones", "meta-qti-drones-prop", \
+                    "meta-qti-gfx-prop", "meta-qti-gst", \
+                    "meta-qti-gst-prop", "meta-qti-internal", \
+                    "meta-qti-qsap", "meta-qti-qsap-prop", \
+                    "meta-qti-ros", "meta-qti-security", \
+                    "meta-qti-security-prop", "meta-qti-ss-mgr", \
+                    "meta-qti-ss-mgr-prop", "meta-qti-video", \
+                    "meta-qti-wfd-prop", "meta-qti-wlan", \
+                    "meta-qti-wlan-prop", "meta-qti-ros", "meta-ros", \
+                    "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
+                    "meta-qti-qzhost-prop", "meta-qti-qzhost" \
+                 ]
+    metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
+    dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
 
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
