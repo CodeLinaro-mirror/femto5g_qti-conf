@@ -26,7 +26,7 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE VARIANT
+unset VARIANT
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -141,6 +141,81 @@ unset_bb_env() {
 # Find build templates from qti meta layer.
 export TEMPLATECONF="meta-qti-bsp/conf"
 
+# create a common list of "<machine>(<layer>)", sorted by <machine>
+MACHLAYERS=$(find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+
+if [ -z "${MACHINE}" ]; then
+    # whiptail
+    which whiptail > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        MACHINETABLE=
+        for ITEM in $MACHLAYERS; do
+            MACHINETABLE="${MACHINETABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+        done
+        MACHINE=$(whiptail --title "Available Machines" --menu \
+            "Please choose a machine" 0 0 20 \
+            ${MACHINETABLE} 3>&1 1>&2 2>&3)
+    fi
+
+    # dialog
+    if [ -z "$MACHINE" ]; then
+        which dialog > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            MACHINETABLE=
+            for ITEM in $MACHLAYERS; do
+                MACHINETABLE="$MACHINETABLE $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+            done
+            MACHINE=$(dialog --title "Available Machines" --menu "Please choose a machine" 0 0 20 $MACHINETABLE 3>&1 1>&2 2>&3)
+        fi
+    fi
+fi
+
+# create a common list of "<distro>(<layer>)", sorted by <distro>
+DISTROLAYERS=$(find meta-qti-bsp -print | grep "conf/distro/.*\.conf" | grep -v "qpermissions" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+
+if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
+    # whiptail
+    which whiptail > /dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        DISTROTABLE=
+        for ITEM in $DISTROLAYERS; do
+            DISTROTABLE="${DISTROTABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+        done
+        DISTRO=$(whiptail --title "Available Distributions" --menu \
+            "Please choose a distribution" 0 0 20 \
+            ${DISTROTABLE} 3>&1 1>&2 2>&3)
+    fi
+
+    # dialog
+    if [ -z "$DISTRO" ]; then
+        which dialog > /dev/null 2>&1
+        if [ $? -eq 0 ]; then
+            DISTROTABLE=
+            for ITEM in $DISTROLAYERS; do
+                DISTROTABLE="$DISTROTABLE $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+            done
+            DISTRO=$(dialog --title "Available Distributions" --menu "Please choose a distribution" 0 0 20 $DISTROTABLE 3>&1 1>&2 2>&3)
+        fi
+    fi
+fi
+
+# If nothing has been set, go for 'nodistro'
+if [ -z "$DISTRO" ]; then
+    DISTRO="nodistro"
+fi
+
+# guard against Ctrl-D or cancel
+if [ -z "$MACHINE" ]; then
+    echo "To choose a machine interactively please install whiptail or dialog."
+    echo "To choose a machine non-interactively please use the following syntax:"
+    echo "    MACHINE=<your-machine> . ./setup-environment"
+    echo ""
+    echo "Press <ENTER> to see a list of your choices"
+    read -r
+    echo "$MACHLAYERS" | sed -e 's/(/ (/g' | sed -e 's/)/)\n/g' | sed -e 's/^ */\t/g'
+    return
+fi
+
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
@@ -152,3 +227,8 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+
+cat > conf/auto.conf <<EOF
+DISTRO ?= "${DISTRO}"
+MACHINE ?= "${MACHINE}"
+EOF
