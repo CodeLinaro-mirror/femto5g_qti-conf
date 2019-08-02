@@ -152,6 +152,14 @@ build-dm-verity-image() {
   return 0
 }
 
+function update_localgit_internal() {
+    if [ "$BRANCH" == "LV.AU.0.0.1" ]; then
+        echo "LINT server build"
+        if [ -f "${WS}/meta-qti-internal/localgit_auto_fix.sh" ]; then
+            ${WS}/meta-qti-internal/localgit_auto_fix.sh ${WS}
+        fi
+    fi
+}
 # SA6155 commands
 function build-sa6155-image() {
   init-configure-files sa6155 debug
@@ -164,6 +172,8 @@ function build-sa6155-perf-image() {
 }
 
 build-all-sa6155-image() {
+    update_localgit_internal
+ 
     build-sa6155-image
     bitbake virtual/kernel -fc cleanall
     build-sa6155-perf-image
@@ -202,6 +212,8 @@ function build-sa8155-perf-image() {
 }
 
 build-all-sa8155-image() {
+    update_localgit_internal    
+
     build-sa8155-image
     build-sa8155-minimalimage
     bitbake virtual/kernel -fc cleanall
@@ -246,6 +258,8 @@ function build-sa8195-perf-image() {
 }
 
 build-all-sa8195-image() {
+    update_localgit_internal
+
     build-sa8195-image
     build-sa8195-minimalimage
     bitbake virtual/kernel -fc cleanall
@@ -291,6 +305,8 @@ function build-sa8155ivi-perf-image() {
 }
 
 build-all-sa8155ivi-image() {
+    update_localgit_internal
+
     build-sa8155ivi-image
     build-sa8155ivi-minimalimage
     bitbake virtual/kernel -fc cleanall
@@ -330,6 +346,8 @@ function build-sa8155qdrive-perf-image() {
 }
 
 build-all-sa8155qdrive-image() {
+    update_localgit_internal
+
     build-sa8155qdrive-image
     bitbake virtual/kernel -fc cleanall
     build-sa8155qdrive-perf-image
@@ -352,6 +370,8 @@ function build-qtiquingvm-perf-image() {
 }
 
 build-all-qtiquingvm-image() {
+    update_localgit_internal
+
     build-qtiquingvm-image
     bitbake virtual/kernel -fc cleanall
     build-qtiquingvm-perf-image
