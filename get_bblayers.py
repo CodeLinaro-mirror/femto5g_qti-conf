@@ -35,7 +35,7 @@ def initLayersList(target):
                     "meta-qti-wfd-prop", "meta-qti-wlan", \
                     "meta-qti-wlan-prop", "meta-qti-ros", "meta-ros", \
                     "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
-                    "meta-qti-qzhost-prop", "meta-qti-qzhost" \
+                    "meta-qti-qzhost-prop", "meta-qti-qzhost", \
                  ]
     metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
     dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
@@ -91,7 +91,7 @@ print "# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT."
 print "#--------------------------------------------------------------"
 print "LCONF_VERSION = \"6\""
 print
-print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../..'))}\""
+print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../'))}\""
 #print "# Make sure WORKSPACE isn't exported"
 #print "WORKSPACE[unexport] = \"1\""
 print 
