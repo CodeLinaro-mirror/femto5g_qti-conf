@@ -488,7 +488,7 @@ list-build-commands()
 cdbitbake() {
   local ret=0
   cd ${WS}/poky/build
-  bitbake $@ && cd - || ret=$? && cd -
+  bitbake -D $@ && cd - || ret=$? && cd -
   return $ret
 }
 
