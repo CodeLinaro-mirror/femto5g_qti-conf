@@ -36,6 +36,53 @@ WS=$(readlink -f $scriptdir/../../..)
 # Find build templates from qti meta layer.
 TEMPLATECONF="meta-qti-bsp/conf"
 
+usage () {
+    cat <<EOF
+
+Usage: [DISTRO=<DISTRO>] [MACHINE=<MACHINE>] source ${THIS_SCRIPT} [BUILDDIR]
+
+If no MACHINE is set, list all possible machines, and ask user to choose.
+If no DISTRO is set, list all possible distros, and ask user to choose.
+If no BUILDDIR is set, it will be set to build-DISTRO.
+If BUILDDIR is set and is already configured it is used as-is
+
+EOF
+}
+
+# Eventually we need to call oe-init-build-env to finalize the configuration
+# of the newly created build folder
+init_build_env () {
+    # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
+    # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
+    BB_ENV_EXTRAWHITE="VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+
+    # Yocto/OE-core works a bit differently than OE-classic so we're
+    # going to source the OE build environment setup script they provided.
+    # This will dump the user in ${WS}/yocto/build, ready to run the
+    # convienence function or straight up bitbake commands.
+    . ${WS}/poky/oe-init-build-env ${BUILDDIR}
+
+    # Clean up environment.
+    unset MACHINE DISTRO WS usage TEMPLATECONF THIS_SCRIPT
+    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM
+}
+
+if [ $# -gt 1 ]; then
+    usage
+    return 1
+fi
+
+# If BUILDIR is provided and is already a valid build folder, let's use it
+if [ $# -eq 1 ]; then
+    BUILDDIR="${WS}/$1"
+    if [ -f "${BUILDDIR}/conf/local.conf" ] &&
+           [ -f "${BUILDDIR}/conf/auto.conf" ] &&
+           [ -f "${BUILDDIR}/conf/bblayers.conf" ]; then
+        init_build_env
+        return
+    fi
+fi
+
 # create a common list of "<machine>(<layer>)", sorted by <machine>
 MACHLAYERS=$(find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
@@ -111,7 +158,11 @@ if [ -z "$MACHINE" ]; then
     return
 fi
 
+# we can be called with only 1 parameter max, <build> folder, or default to build-$distro
 BUILDDIR="${WS}/build-$DISTRO"
+if [ $# -eq 1 ]; then
+    BUILDDIR="${WS}/$1"
+fi
 
 mkdir -p "${BUILDDIR}"/conf
 
@@ -138,16 +189,5 @@ SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
 EOF
 
-# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
-# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-BB_ENV_EXTRAWHITE="VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
-
-# Yocto/OE-core works a bit differently than OE-classic so we're
-# going to source the OE build environment setup script they provided.
-# This will dump the user in ${WS}/yocto/build, ready to run the
-# convienence function or straight up bitbake commands.
-. ${WS}/poky/oe-init-build-env ${BUILDDIR}
-
-# Clean up environment.
-unset MACHINE DISTRO WS usage TEMPLATECONF THIS_SCRIPT
-unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM
+# Finalize
+init_build_env
