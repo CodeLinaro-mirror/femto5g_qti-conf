@@ -28,8 +28,10 @@ fi
 umask 022
 unset VARIANT
 
+# This script
+THIS_SCRIPT=${BASH_SOURCE[0]}
 # Find where the global conf directory is...
-scriptdir="$(dirname "${BASH_SOURCE}")"
+scriptdir="$(dirname "${THIS_SCRIPT}")"
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../../..)
 
@@ -84,7 +86,7 @@ if [ $# -eq 1 ]; then
 fi
 
 # create a common list of "<machine>(<layer>)", sorted by <machine>
-MACHLAYERS=$(find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -z "${MACHINE}" ]; then
     # whiptail
@@ -113,7 +115,7 @@ if [ -z "${MACHINE}" ]; then
 fi
 
 # create a common list of "<distro>(<layer>)", sorted by <distro>
-DISTROLAYERS=$(find meta-qti-bsp -print | grep "conf/distro/.*\.conf" | grep -v "qpermissions" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "conf/distro/.*\.conf" | grep -v "qpermissions" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
     # whiptail
@@ -150,7 +152,7 @@ fi
 if [ -z "$MACHINE" ]; then
     echo "To choose a machine interactively please install whiptail or dialog."
     echo "To choose a machine non-interactively please use the following syntax:"
-    echo "    MACHINE=<your-machine> . ./setup-environment"
+    echo "    MACHINE=<your-machine> source ${THIS_SCRIPT}"
     echo ""
     echo "Press <ENTER> to see a list of your choices"
     read -r
