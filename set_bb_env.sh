@@ -34,7 +34,7 @@ scriptdir="$(dirname "${BASH_SOURCE}")"
 WS=$(readlink -f $scriptdir/../../..)
 
 # Find build templates from qti meta layer.
-export TEMPLATECONF="meta-qti-bsp/conf"
+TEMPLATECONF="meta-qti-bsp/conf"
 
 # create a common list of "<machine>(<layer>)", sorted by <machine>
 MACHLAYERS=$(find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
@@ -111,8 +111,6 @@ if [ -z "$MACHINE" ]; then
     return
 fi
 
-export SSTATE_DIR="${WS}/sstate-cache"
-export DL_DIR="${WS}/downloads"
 BUILDDIR="${WS}/build-$DISTRO"
 
 mkdir -p "${BUILDDIR}"/conf
@@ -129,6 +127,17 @@ cat > ${BUILDDIR}/conf/local.conf <<EOF
 EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
+# auto.conf
+cat > ${BUILDDIR}/conf/auto.conf <<EOF
+# This configuration file is dynamically generated every time
+# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
+#--------------------------------------------------------------
+DISTRO ?= "${DISTRO}"
+MACHINE ?= "${MACHINE}"
+SSTATE_DIR = "${WS}/sstate-cache"
+DL_DIR = "${WS}/downloads"
+EOF
+
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
@@ -139,12 +148,8 @@ cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD SSTATE_DIR"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
-cat > conf/auto.conf <<EOF
-# This configuration file is dynamically generated every time
-# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
-#--------------------------------------------------------------
-DISTRO ?= "${DISTRO}"
-MACHINE ?= "${MACHINE}"
-EOF
+# Clean up environment.
+unset MACHINE DISTRO WS usage TEMPLATECONF THIS_SCRIPT
+unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM
