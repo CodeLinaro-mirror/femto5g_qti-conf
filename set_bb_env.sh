@@ -120,7 +120,14 @@ mkdir -p "${BUILDDIR}"/conf
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
 python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > ${BUILDDIR}/conf/bblayers.conf
-cp $scriptdir/local.conf ${BUILDDIR}/conf/
+
+# local.conf
+cat > ${BUILDDIR}/conf/local.conf <<EOF
+# This configuration file is dynamically generated every time
+# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
+#--------------------------------------------------------------
+EOF
+cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
@@ -135,6 +142,9 @@ cp $scriptdir/local.conf ${BUILDDIR}/conf/
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD SSTATE_DIR"
 
 cat > conf/auto.conf <<EOF
+# This configuration file is dynamically generated every time
+# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
+#--------------------------------------------------------------
 DISTRO ?= "${DISTRO}"
 MACHINE ?= "${MACHINE}"
 EOF
