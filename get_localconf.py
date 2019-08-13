@@ -57,6 +57,11 @@ def generatePathString ( pathList ):
                 continue
             retList += [TracingFile]
     return retList
+
+if MACHINE == "qtiquingvm":
+    DISTRO = "auto-gvm"
+else:
+    DISTRO = "automotive"
     
 print ReadFile("%s/include/local.conf.templet" % os.path.dirname(os.path.realpath(__file__)) )
 print "###################################################"
@@ -64,7 +69,7 @@ print "# Below content is dynamically generated every time"
 print "# DO NOT EDIT."
 print ""
 print "# Define DISTRO\MACHINE\VARIANT"
-print "DISTRO ??= \"automotive\""
+print "DISTRO ??= \"%s\"" % DISTRO
 print "MACHINE ??= \"%s\"" % MACHINE
 print "VARIANT ??= \"%s\"" % VARIANT
 print ""
