@@ -349,6 +349,33 @@ function build-qcs405-som1-qsap-user-image() {
 build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
 }
+function build-vt-64-qsap-image() {
+  unset_bb_env
+  export DEBUG_BUILD=1
+  export MACHINE=vt-64
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-vt-64-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=vt-64
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-vt-64-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=vt-64
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+build-all-vt-64-qsap-images() {
+ build-vt-64-qsap-image
+}
 
 function build-sa2150p-image() {
   unset_bb_env
