@@ -138,17 +138,15 @@ SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
 EOF
 
+# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
+# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
+BB_ENV_EXTRAWHITE="VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
 # convienence function or straight up bitbake commands.
 . ${WS}/poky/oe-init-build-env ${BUILDDIR}
-
-# Let bitbake use the following env-vars as if they were pre-set bitbake ones.
-# (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-# oe-init-build-env calls oe-buildenv-internal which sets
-# BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
 # Clean up environment.
 unset MACHINE DISTRO WS usage TEMPLATECONF THIS_SCRIPT
