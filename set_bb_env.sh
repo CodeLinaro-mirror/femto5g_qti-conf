@@ -179,6 +179,11 @@ build-all-sa6155-image() {
     build-sa6155-perf-image
 }
 
+function build-sa6155-sdk-image() {
+    init-configure-files sa6155 debug
+    cdbitbake machine-image -c populate_sdk
+}
+
 # SA8155 commands
 function build-sa8155-image() {
   init-configure-files sa8155 debug
