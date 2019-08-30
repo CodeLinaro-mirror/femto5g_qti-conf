@@ -29,11 +29,11 @@ umask 022
 unset VARIANT
 
 # This script
-THIS_SCRIPT=${BASH_SOURCE[0]}
+THIS_SCRIPT=$(readlink -f ${BASH_SOURCE[0]})
 # Find where the global conf directory is...
 scriptdir="$(dirname "${THIS_SCRIPT}")"
 # Find where the workspace is...
-WS=$(readlink -f $scriptdir/../../..)
+WS=$(readlink -f $scriptdir/../..)
 
 # Find build templates from qti meta layer.
 TEMPLATECONF="meta-qti-bsp/conf"
