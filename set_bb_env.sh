@@ -175,8 +175,10 @@ build-all-sa6155-image() {
     update_localgit_internal
  
     build-sa6155-image
+    mv tmp-glibc/deploy/images/sa6155-automotive tmp-glibc/deploy/images/sa6155-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa6155-perf-image
+    mv tmp-glibc/deploy/images/sa6155-automotive.bak tmp-glibc/deploy/images/sa6155-automotive
 }
 
 function build-sa6155-sdk-image() {
@@ -221,8 +223,10 @@ build-all-sa8155-image() {
 
     build-sa8155-image
     build-sa8155-minimalimage
+    mv tmp-glibc/deploy/images/sa8155-automotive tmp-glibc/deploy/images/sa8155-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8155-perf-image
+    mv tmp-glibc/deploy/images/sa8155-automotive.bak tmp-glibc/deploy/images/sa8155-automotive
 }
 
 function build-sa8155-sdk-image() {
@@ -267,8 +271,10 @@ build-all-sa8195-image() {
 
     build-sa8195-image
     build-sa8195-minimalimage
+    mv tmp-glibc/deploy/images/sa8195-automotive tmp-glibc/deploy/images/sa8195-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8195-perf-image
+    mv tmp-glibc/deploy/images/sa8195-automotive.bak tmp-glibc/deploy/images/sa8195-automotive
 }
 
 function build-sa8195-sdk-image() {
@@ -314,8 +320,10 @@ build-all-sa8155ivi-image() {
 
     build-sa8155ivi-image
     build-sa8155ivi-minimalimage
+    mv tmp-glibc/deploy/images/sa8155ivi-automotive tmp-glibc/deploy/images/sa8155ivi-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8155ivi-perf-image
+    mv tmp-glibc/deploy/images/sa8155ivi-automotive.bak tmp-glibc/deploy/images/sa8155ivi-automotive
 }
 
 function build-sa8155ivi-sdk-image() {
@@ -354,8 +362,10 @@ build-all-sa8155qdrive-image() {
     update_localgit_internal
 
     build-sa8155qdrive-image
+    mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8155qdrive-perf-image
+    mv tmp-glibc/deploy/images/sa8155qdrive-automotive.bak tmp-glibc/deploy/images/sa8155qdrive-automotive
 }
 
 function build-sa8155qdrive-sdk-image() {
@@ -378,8 +388,10 @@ build-all-qtiquingvm-image() {
     update_localgit_internal
 
     build-qtiquingvm-image
+    mv tmp-glibc/deploy/images/qtiquingvm-automotive tmp-glibc/deploy/images/qtiquingvm-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-qtiquingvm-perf-image
+    mv tmp-glibc/deploy/images/qtiquingvm-automotive.bak tmp-glibc/deploy/images/qtiquingvm-automotive
 }
 
 function build-qtiquingvm-sdk-image() {
