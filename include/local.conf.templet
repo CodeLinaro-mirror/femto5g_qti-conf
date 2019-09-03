@@ -260,3 +260,5 @@ export userfsdatadir = "${base_prefix}/data"
 PATH_TO_REPO ?= "git://${SRC_DIR_ROOT}"
 
 PROTO ?= "file"
+
+INHERIT += "qfile"
