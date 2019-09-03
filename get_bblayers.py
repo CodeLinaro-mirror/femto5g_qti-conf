@@ -29,9 +29,10 @@ def initLayersList(target):
                     "meta-qti-gfx-prop", "meta-qti-gst", \
                     "meta-qti-gst-prop", "meta-qti-internal", \
                     "meta-qti-qsap", "meta-qti-qsap-prop", \
-                    "meta-qti-ros", "meta-qti-security", \
-                    "meta-qti-security-prop", "meta-qti-ss-mgr", \
-                    "meta-qti-ss-mgr-prop", "meta-qti-video", \
+                    "meta-qti-ros", \
+                    "meta-qti-security", "meta-qti-security-prop", \
+                    "meta-qti-ss-mgr", "meta-qti-ss-mgr-prop", \
+                    "meta-qti-video", "meta-qti-video-prop"\
                     "meta-qti-wfd-prop", "meta-qti-wlan", \
                     "meta-qti-wlan-prop", "meta-qti-ros", "meta-ros", \
                     "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
