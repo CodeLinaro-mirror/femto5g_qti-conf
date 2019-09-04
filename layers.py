@@ -38,6 +38,7 @@ def initLayersList(TARGET):
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-sdllvm":1, "meta-qti-agl":1 }, \
         "meta-agl": {"meta-agl":1 , "meta-agl-distro":1, "meta-agl-profile-core":1, "meta-agl-profile-graphical":1, "meta-agl-profile-graphical-qt5":1, "meta-app-framework":1, "meta-security":1 }, \
         "meta-agl-demo": 1, \
+        "meta-agl-devel": { "meta-pipewire":1 }, \
         "meta-security": 1, \
     }
     if TARGET == "sa8155":
@@ -51,6 +52,7 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-agl"]
         del dicLayersWithSubLayers["meta-agl-demo"]
+        del dicLayersWithSubLayers["meta-agl-devel"]
         del dicLayersWithSubLayers["meta-security"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"]
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
