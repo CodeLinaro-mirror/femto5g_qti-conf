@@ -81,10 +81,10 @@ def getLayerPaths(target,  fnexpr) :
 
 # Just spool the tuple list's paths out in order to a string...
 def generatePathString ( pathList ):
-    retString = ""
+    retString = " \\\n"
     for path, priority in pathList:
-        retString = retString + path + " "
-    return retString.strip()
+        retString = retString + "\t" + path + " \\\n"
+    return retString
 
 
 # Emit our config file...
