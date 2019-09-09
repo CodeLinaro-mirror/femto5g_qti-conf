@@ -196,26 +196,49 @@ build-all-qtiquingvm-image() {
     build-qtiquingvm-perf-image
 }
 
-# sdxpoorwills auto commands
-function build-sdxpoorwills-auto-perf-image() {
+
+# sa415m commands
+function build-sa415m-perf-image() {
   unset_bb_env
-  export MACHINE=sdxpoorwills
+  export MACHINE=sa415m
   export DISTRO=auto
   export VARIANT=perf
   cdbitbake machine-image
 }
 
-function build-sdxpoorwills-auto-image() {
+function build-sa415m-image() {
   unset_bb_env
-  export MACHINE=sdxpoorwills
+  export MACHINE=sa415m
   export DISTRO=auto
   cdbitbake machine-image
 }
 
-build-all-sdxpoorwills-auto-images() {
-  build-sdxpoorwills-auto-image
+build-all-sa415m-images() {
+  build-sa415m-image
   buildclean-retaindeploy
-  build-sdxpoorwills-auto-perf-image
+  build-sa415m-perf-image
+}
+
+# sa515m commands
+function build-sa515m-perf-image() {
+  unset_bb_env
+  export MACHINE=sa515m
+  export DISTRO=auto
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sa515m-image() {
+  unset_bb_env
+  export MACHINE=sa515m
+  export DISTRO=auto
+  cdbitbake machine-image
+}
+
+build-all-sa515m-images() {
+  build-sa515m-image
+  buildclean-retaindeploy
+  build-sa515m-perf-image
 }
 
 # qcs40x commands
@@ -268,6 +291,33 @@ function build-nf-64-qsap-user-image() {
   cdbitbake machine-image
 }
 
+build-all-nf-32-qsap-images() {
+ build-nf-32-qsap-image
+}
+
+function build-nf-32-qsap-image() {
+  unset_bb_env
+  export MACHINE=nf-32
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-nf-32-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=nf-32
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-nf-32-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=nf-32
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
 build-all-qcs403-som2-qsap-images() {
  build-qcs403-som2-qsap-image
 }
@@ -299,6 +349,33 @@ function build-qcs405-som1-qsap-user-image() {
 build-all-qcs405-som1-qsap-images() {
  build-qcs405-som1-qsap-image
 }
+function build-vt-64-qsap-image() {
+  unset_bb_env
+  export DEBUG_BUILD=1
+  export MACHINE=vt-64
+  export DISTRO=qsap
+  cdbitbake machine-image
+}
+
+function build-vt-64-qsap-perf-image() {
+  unset_bb_env
+  export MACHINE=vt-64
+  export DISTRO=qsap
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-vt-64-qsap-user-image() {
+  unset_bb_env
+  export MACHINE=vt-64
+  export DISTRO=qsap
+  export VARIANT=user
+  cdbitbake machine-image
+}
+
+build-all-vt-64-qsap-images() {
+ build-vt-64-qsap-image
+}
 
 function build-sa2150p-image() {
   unset_bb_env
@@ -317,6 +394,7 @@ function build-sa2150p-perf-image() {
 
 build-all-sa2150p-images() {
   build-sa2150p-image
+  buildclean-retaindeploy
   build-sa2150p-perf-image
 }
 
@@ -380,28 +458,6 @@ build-all-sdmsteppe-concam-images() {
   build-sdmsteppe-concam-perf-image
 }
 
-# sdxprairie auto commands
-function build-sdxprairie-auto-perf-image() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=auto
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-sdxprairie-auto-image() {
-  unset_bb_env
-  export MACHINE=sdxprairie
-  export DISTRO=auto
-  cdbitbake machine-image
-}
-
-build-all-sdxprairie-auto-images() {
-  build-sdxprairie-auto-image
-  buildclean-retaindeploy
-  build-sdxprairie-auto-perf-image
-}
-
 # Utility commands
 buildclean-retaindeploy() {
   set -x
@@ -423,6 +479,14 @@ buildclean() {
   cd ${WS}/poky/build
 
   rm -rf bitbake.lock pseudodone sstate-cache tmp-glibc/* cache && cd - || cd -
+  set +x
+}
+
+clean-tmpdir() {
+  set -x
+  cd ${WS}/poky/build
+
+  rm -rf bitbake.lock pseudodone tmp-glibc/* cache && cd - || cd -
   set +x
 }
 
