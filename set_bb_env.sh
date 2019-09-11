@@ -162,11 +162,13 @@ function update_localgit_internal() {
 }
 # SA6155 commands
 function build-sa6155-image() {
+  unset_bb_env
   init-configure-files sa6155 debug
   cdbitbake machine-image
 }
 
 function build-sa6155-perf-image() {
+  unset_bb_env
   init-configure-files sa6155 perf
   cdbitbake machine-image
 }
@@ -182,12 +184,14 @@ build-all-sa6155-image() {
 }
 
 function build-sa6155-sdk-image() {
+    unset_bb_env
     init-configure-files sa6155 debug
     cdbitbake machine-image -c populate_sdk
 }
 
 # SA8155 commands
 function build-sa8155-image() {
+  unset_bb_env
   init-configure-files sa8155 debug
 
   export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
@@ -214,6 +218,7 @@ function build-sa8155-minimalimage() {
 }
 
 function build-sa8155-perf-image() {
+  unset_bb_env
   init-configure-files sa8155 perf
   cdbitbake machine-image
 }
@@ -230,12 +235,14 @@ build-all-sa8155-image() {
 }
 
 function build-sa8155-sdk-image() {
+    unset_bb_env
     init-configure-files sa8155 debug
     cdbitbake machine-image -c populate_sdk
 }
 
 # SA8195 commands
 function build-sa8195-image() {
+  unset_bb_env
   init-configure-files sa8195 debug
 
   export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
@@ -262,6 +269,7 @@ function build-sa8195-minimalimage() {
 }
 
 function build-sa8195-perf-image() {
+  unset_bb_env
   init-configure-files sa8195 perf
   cdbitbake machine-image
 }
@@ -278,6 +286,7 @@ build-all-sa8195-image() {
 }
 
 function build-sa8195-sdk-image() {
+    unset_bb_env
     init-configure-files sa8195 debug
     cdbitbake machine-image -c populate_sdk
 }
@@ -285,6 +294,7 @@ function build-sa8195-sdk-image() {
 
 # SA8155ivi commands
 function build-sa8155ivi-image() {
+  unset_bb_env
   init-configure-files sa8155ivi debug
 
   export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
@@ -311,6 +321,7 @@ function build-sa8155ivi-minimalimage() {
 }
 
 function build-sa8155ivi-perf-image() {
+  unset_bb_env
   init-configure-files sa8155ivi perf
   cdbitbake machine-image
 }
@@ -327,12 +338,14 @@ build-all-sa8155ivi-image() {
 }
 
 function build-sa8155ivi-sdk-image() {
+    unset_bb_env
     init-configure-files sa8155ivi debug
     cdbitbake machine-image -c populate_sdk
 }
 
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
+  unset_bb_env
   init-configure-files sa8155qdrive debug
 
   export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
@@ -354,6 +367,7 @@ function build-sa8155qdrive-image() {
 }
 
 function build-sa8155qdrive-perf-image() {
+  unset_bb_env
   init-configure-files sa8155qdrive perf
   cdbitbake machine-image
 }
@@ -369,17 +383,20 @@ build-all-sa8155qdrive-image() {
 }
 
 function build-sa8155qdrive-sdk-image() {
+    unset_bb_env
     init-configure-files sa8155qdrive debug
     cdbitbake machine-image -c populate_sdk
 }
 
 # qtiquingvm commands
 function build-qtiquingvm-image() {
+  unset_bb_env
   init-configure-files qtiquingvm debug
   cdbitbake machine-image
 }
 
 function build-qtiquingvm-perf-image() {
+  unset_bb_env
   init-configure-files qtiquingvm perf
   cdbitbake machine-image
 }
@@ -395,6 +412,7 @@ build-all-qtiquingvm-image() {
 }
 
 function build-qtiquingvm-sdk-image() {
+    unset_bb_env
     init-configure-files qtiquingvm debug
     cdbitbake machine-image -c populate_sdk
 }
