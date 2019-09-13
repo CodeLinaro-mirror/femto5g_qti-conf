@@ -1,6 +1,6 @@
 
 # bbmask
-BBMASK = "meta-clang/recipes-devtools/m4/"
+BBMASK .= "|meta-clang/recipes-devtools/m4/"
 
 
 
