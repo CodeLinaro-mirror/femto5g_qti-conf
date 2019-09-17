@@ -177,6 +177,7 @@ build-all-sa6155-image() {
     update_localgit_internal
  
     build-sa6155-image
+    build-sa6155-sdk-image
     mv tmp-glibc/deploy/images/sa6155-automotive tmp-glibc/deploy/images/sa6155-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa6155-perf-image
@@ -228,6 +229,7 @@ build-all-sa8155-image() {
 
     build-sa8155-image
     build-sa8155-minimalimage
+    build-sa8155-sdk-image
     mv tmp-glibc/deploy/images/sa8155-automotive tmp-glibc/deploy/images/sa8155-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8155-perf-image
@@ -279,6 +281,7 @@ build-all-sa8195-image() {
 
     build-sa8195-image
     build-sa8195-minimalimage
+    build-sa8195-sdk-image
     mv tmp-glibc/deploy/images/sa8195-automotive tmp-glibc/deploy/images/sa8195-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8195-perf-image
@@ -331,6 +334,7 @@ build-all-sa8155ivi-image() {
 
     build-sa8155ivi-image
     build-sa8155ivi-minimalimage
+    build-sa8155ivi-sdk-image
     mv tmp-glibc/deploy/images/sa8155ivi-automotive tmp-glibc/deploy/images/sa8155ivi-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8155ivi-perf-image
@@ -376,6 +380,7 @@ build-all-sa8155qdrive-image() {
     update_localgit_internal
 
     build-sa8155qdrive-image
+    build-sa8155qdrive-sdk-image
     mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8155qdrive-perf-image
