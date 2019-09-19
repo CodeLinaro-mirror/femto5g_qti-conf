@@ -19,9 +19,7 @@ def initLayersList(target):
                     "meta-allplay", "meta-allplay-prop", \
                     "meta-qti-avs", "meta-qti-avs-prop", \
                     "meta-qti-drones", "meta-qti-drones-prop", \
-                    "meta-qti-gst", "meta-qti-gst-prop", \
                     "meta-qti-ml-prop", \
-                    "meta-qti-qmmf", "meta-qti-qmmf-prop", \
                     "meta-qti-qsap", "meta-qti-qsap-prop", \
                     "meta-qti-security", "meta-qti-security-prop", \
                     "meta-qti-wfd-prop", \
