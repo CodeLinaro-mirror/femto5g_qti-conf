@@ -46,8 +46,8 @@ def getLayerPriority (layerConfPath) :
 
 # Trawl the OEROOT as passed to us and find all the layer files that meet our
 # metadata directory criteria...
-def getLayerPaths(MACHINE, target) :
-    layers.initLayersList(MACHINE)
+def getLayerPaths(TARGET, workspace) :
+    layers.initLayersList(TARGET)
     def GenLayerPathList(DictPath, DictLayers, LayerPathList = []):
         for k,v in DictLayers.items():
             if v != 1:
@@ -60,13 +60,13 @@ def getLayerPaths(MACHINE, target) :
         return LayerPathList
 
 
-    for foldername in os.listdir(target):
+    for foldername in os.listdir(workspace):
         if not foldername.startswith("meta-qti-"):
             continue
         if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop"]:
             continue
         layers.dicLayersWithSubLayers[foldername] = 1
-    retList = GenLayerPathList(target, layers.dicLayersWithSubLayers)
+    retList = GenLayerPathList(workspace, layers.dicLayersWithSubLayers)
 
     # In order to avoid potential namespace conflicts, between recipes on layers
     # we sort the list in descending order of priority.

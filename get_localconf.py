@@ -28,9 +28,9 @@
 import common as c
 import os, sys
 
-MACHINE = sys.argv[1].strip()
+TARGET = sys.argv[1].strip()
 VARIANT = sys.argv[2].strip()
-target = sys.argv[3].strip("\"")
+workspace = sys.argv[3].strip("\"")
 
 TRACING_FILELIST = ["security_flags", "automotive"]
 
@@ -58,10 +58,19 @@ def generatePathString ( pathList ):
             retList += [TracingFile]
     return retList
 
-if MACHINE == "qtiquingvm":
+if TARGET == "qtiquingvm":
     DISTRO = "auto-gvm"
+    MACHINE = "qtiquingvm"
+elif TARGET == "sa8155bg":
+    DISTRO = "bg"
+    MACHINE = "sa8155"
+elif TARGET == "sa8195bg":
+    DISTRO = "bg"
+    MACHINE = "sa8195"
 else:
     DISTRO = "automotive"
+    MACHINE = TARGET
+
     
 print ReadFile("%s/include/local.conf.templet" % os.path.dirname(os.path.realpath(__file__)) )
 print "###################################################"
@@ -78,6 +87,6 @@ print ReadFile("%s/include/bbmask.inc" % os.path.dirname(os.path.realpath(__file
 print ""
 print "# DISTRO_INC_FILES"
 print "DISTRO_INC_FILES = \"\""
-DistroList = generatePathString(c.getLayerPaths(MACHINE, target))
+DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
 for dl in DistroList:
     print "DISTRO_INC_FILES += \"%s\"" % dl
