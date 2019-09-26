@@ -26,7 +26,6 @@ then
 fi
 
 umask 022
-unset VARIANT
 
 # This script
 THIS_SCRIPT=$(readlink -f ${BASH_SOURCE[0]})
@@ -56,7 +55,7 @@ EOF
 init_build_env () {
     # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
     # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-    BB_ENV_EXTRAWHITE="VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+    BB_ENV_EXTRAWHITE="SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
     # Yocto/OE-core works a bit differently than OE-classic so we're
     # going to source the OE build environment setup script they provided.
@@ -115,7 +114,7 @@ if [ -z "${MACHINE}" ]; then
 fi
 
 # create a common list of "<distro>(<layer>)", sorted by <distro>
-DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "conf/distro/.*\.conf" | grep -v "qpermissions" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "conf/distro/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
     # whiptail
