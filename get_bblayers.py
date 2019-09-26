@@ -23,7 +23,7 @@ def initLayersList(target):
                     "meta-qti-bsp-prop", "meta-qti-bt", \
                     "meta-qti-bt-prop", "meta-qti-camera", \
                     "meta-qti-camera-prop", "meta-qti-core-prop", \
-                    "meta-qti-data-prop", "meta-qti-data", \
+                    "meta-qti-data-prop", \
                     "meta-qti-display-prop", "meta-qti-display", \
                     "meta-qti-drones", "meta-qti-drones-prop", \
                     "meta-qti-gfx-prop", "meta-qti-gst", \
