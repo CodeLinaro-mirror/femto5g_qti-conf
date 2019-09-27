@@ -20,7 +20,7 @@ def initLayersList(target):
                     "meta-qti-audio", "meta-qti-audio-cal", \
                     "meta-qti-audio-external", "meta-qti-audio-prop", \
                     "meta-qti-avs", "meta-qti-avs-prop", \
-                    "meta-qti-bsp-prop", "meta-qti-bt", \
+                    "meta-qti-bt", \
                     "meta-qti-bt-prop", "meta-qti-camera", \
                     "meta-qti-camera-prop", "meta-qti-core-prop", \
                     "meta-qti-data-prop", \
