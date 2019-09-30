@@ -30,7 +30,6 @@ def initLayersList(target):
                     "meta-qti-ros", "meta-ros", \
                     "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
                     "meta-qti-qzhost-prop", "meta-qti-qzhost", \
-                    "meta-qti-cv-internal","meta-qti-cv-prop", \
                  ]
     metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
     dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
