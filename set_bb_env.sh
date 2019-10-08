@@ -410,6 +410,7 @@ build-all-qtiquingvm-image() {
     update_localgit_internal
 
     build-qtiquingvm-image
+    build-qtiquingvm-sdk-image
     mv tmp-glibc/deploy/images/qtiquingvm-automotive tmp-glibc/deploy/images/qtiquingvm-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-qtiquingvm-perf-image
