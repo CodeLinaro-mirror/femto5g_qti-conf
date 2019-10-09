@@ -27,7 +27,7 @@
 
 dicLayersWithSubLayers = None
 
-def initLayersList(MACHINE):
+def initLayersList(TARGET):
     global dicLayersWithSubLayers
     dicLayersWithSubLayers = { \
         "poky": { "meta":1, "meta-poky":1 }, \
@@ -40,14 +40,14 @@ def initLayersList(MACHINE):
         "meta-agl-demo": 1, \
         "meta-security": 1, \
     }
-    if MACHINE == "sa8155":
+    if TARGET == "sa8155":
         pass
-    if MACHINE == "sa8195":
+    if TARGET == "sa8195":
         pass
-    elif MACHINE == "sa8155qdrive":
+    elif TARGET == "sa8155qdrive":
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
-    elif MACHINE == 'sa8155ivi':
+    elif TARGET == 'sa8155ivi':
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-agl"]
         del dicLayersWithSubLayers["meta-agl-demo"]
@@ -58,7 +58,33 @@ def initLayersList(MACHINE):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif MACHINE == 'qtiquingvm':
+    elif TARGET == 'sa8155bg':
+        del dicLayersWithSubLayers["meta-qt5"]
+        del dicLayersWithSubLayers["meta-agl"]
+        del dicLayersWithSubLayers["meta-agl-demo"]
+        del dicLayersWithSubLayers["meta-security"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-extra"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"]
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET == 'sa8195bg':
+        del dicLayersWithSubLayers["meta-qt5"]
+        del dicLayersWithSubLayers["meta-agl"]
+        del dicLayersWithSubLayers["meta-agl-demo"]
+        del dicLayersWithSubLayers["meta-security"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-extra"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"]
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET == 'qtiquingvm':
         pass
-    elif MACHINE == 'sa8195p':
+    elif TARGET == 'sa8195p':
         pass

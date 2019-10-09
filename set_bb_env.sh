@@ -213,6 +213,51 @@ function build-sa8155-image() {
   fi
 }
 
+function build-sa8155bg-image() {
+  unset_bb_env
+  init-configure-files sa8155bg debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
+  cdbitbake bg-coreimage-minimal
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+}
+
+function build-sa8195bg-image() {
+  unset_bb_env
+  init-configure-files sa8195bg debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
+  cdbitbake bg-coreimage-minimal
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+}
+
+
 function build-sa8155-minimalimage() {
   init-configure-files sa8155 debug
   cdbitbake core-image-minimal
