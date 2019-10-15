@@ -59,7 +59,7 @@ def generatePathString ( pathList ):
     return retList
 
 if TARGET == "qtiquingvm":
-    DISTRO = "auto-gvm"
+    DISTRO = "auto-gvm-agl"
     MACHINE = "qtiquingvm"
 elif TARGET == "sa8155bg":
     DISTRO = "bg"
@@ -67,8 +67,11 @@ elif TARGET == "sa8155bg":
 elif TARGET == "sa8195bg":
     DISTRO = "bg"
     MACHINE = "sa8195"
+elif TARGET == "sa8155ivi":
+    DISTRO = "auto-ivi"
+    MACHINE = "sa8155"
 else:
-    DISTRO = "automotive"
+    DISTRO = "auto-agl"
     MACHINE = TARGET
 
     
