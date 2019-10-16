@@ -70,6 +70,9 @@ elif TARGET == "sa8195bg":
 elif TARGET == "sa8155ivi":
     DISTRO = "auto-ivi"
     MACHINE = "sa8155"
+elif TARGET == "sa8155qdrive":
+    DISTRO = "auto-qdrive-agl"
+    MACHINE = "sa8155"
 else:
     DISTRO = "auto-agl"
     MACHINE = TARGET
