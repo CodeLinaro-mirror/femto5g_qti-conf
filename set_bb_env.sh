@@ -242,28 +242,6 @@ build-all-sa515m-images() {
 }
 
 # qcs40x commands
-function build-qcs403-som2-qsap-image() {
-  unset_bb_env
-  export MACHINE=qcs403-som2
-  export DISTRO=qsap
-  cdbitbake machine-image
-}
-
-function build-qcs403-som2-qsap-perf-image() {
-  unset_bb_env
-  export MACHINE=qcs403-som2
-  export DISTRO=qsap
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-qcs403-som2-qsap-user-image() {
-  unset_bb_env
-  export MACHINE=qcs403-som2
-  export DISTRO=qsap
-  export VARIANT=user
-  cdbitbake machine-image
-}
 
 build-all-nf-64-qsap-images() {
  build-nf-64-qsap-image
@@ -318,37 +296,6 @@ function build-nf-32-qsap-user-image() {
   cdbitbake machine-image
 }
 
-build-all-qcs403-som2-qsap-images() {
- build-qcs403-som2-qsap-image
-}
-
-function build-qcs405-som1-qsap-image() {
-  unset_bb_env
-  export DEBUG_BUILD=1
-  export MACHINE=qcs405-som1
-  export DISTRO=qsap
-  cdbitbake machine-image
-}
-
-function build-qcs405-som1-qsap-perf-image() {
-  unset_bb_env
-  export MACHINE=qcs405-som1
-  export DISTRO=qsap
-  export VARIANT=perf
-  cdbitbake machine-image
-}
-
-function build-qcs405-som1-qsap-user-image() {
-  unset_bb_env
-  export MACHINE=qcs405-som1
-  export DISTRO=qsap
-  export VARIANT=user
-  cdbitbake machine-image
-}
-
-build-all-qcs405-som1-qsap-images() {
- build-qcs405-som1-qsap-image
-}
 function build-vt-64-qsap-image() {
   unset_bb_env
   export DEBUG_BUILD=1
