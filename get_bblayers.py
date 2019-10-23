@@ -28,7 +28,8 @@ def initLayersList(target):
                     "meta-qti-drones", "meta-qti-drones-prop", \
                     "meta-qti-gfx-prop", "meta-qti-gst", \
                     "meta-qti-gst-prop", "meta-qti-internal", \
-                    "meta-qti-ml-prop", "meta-qti-qsap", \
+                    "meta-qti-ml-prop", "meta-qti-qmmf", \
+                    "meta-qti-qmmf-prop", "meta-qti-qsap", \
                     "meta-qti-qsap-prop", "meta-qti-ros", \
                     "meta-qti-security", "meta-qti-security-prop", \
                     "meta-qti-ss-mgr", "meta-qti-ss-mgr-prop", \
