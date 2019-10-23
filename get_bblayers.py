@@ -27,7 +27,7 @@ def initLayersList(target):
                     "meta-qti-display-prop", "meta-qti-display", \
                     "meta-qti-drones", "meta-qti-drones-prop", \
                     "meta-qti-gfx-prop", "meta-qti-gst", \
-                    "meta-qti-gst-prop", "meta-qti-internal", \
+                    "meta-qti-gst-prop", "meta-qti-ml", \
                     "meta-qti-ml-prop", "meta-qti-qmmf", \
                     "meta-qti-qmmf-prop", "meta-qti-qsap", \
                     "meta-qti-qsap-prop", "meta-qti-ros", \
