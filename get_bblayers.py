@@ -20,15 +20,12 @@ def initLayersList(target):
                     "meta-qti-audio", "meta-qti-audio-cal", \
                     "meta-qti-audio-external", "meta-qti-audio-prop", \
                     "meta-qti-avs", "meta-qti-avs-prop", \
-                    "meta-qti-display-prop", "meta-qti-display", \
                     "meta-qti-drones", "meta-qti-drones-prop", \
-                    "meta-qti-gfx-prop", "meta-qti-gst", \
-                    "meta-qti-gst-prop", "meta-qti-ml", \
-                    "meta-qti-ml-prop", "meta-qti-qmmf", \
-                    "meta-qti-qmmf-prop", "meta-qti-qsap", \
-                    "meta-qti-qsap-prop", "meta-qti-ros", \
+                    "meta-qti-gst", "meta-qti-gst-prop", \
+                    "meta-qti-ml", "meta-qti-ml-prop", \
+                    "meta-qti-qmmf", "meta-qti-qmmf-prop", \
+                    "meta-qti-qsap", "meta-qti-qsap-prop", \
                     "meta-qti-security", "meta-qti-security-prop", \
-                    "meta-qti-video", "meta-qti-video-prop", \
                     "meta-qti-wfd-prop", \
                     "meta-qti-wlan-prop", "meta-qti-ros", "meta-ros", \
                     "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
