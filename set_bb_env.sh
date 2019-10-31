@@ -55,7 +55,7 @@ EOF
 init_build_env () {
     # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
     # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-    BB_ENV_EXTRAWHITE="SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+    BB_ENV_EXTRAWHITE="SSTATE_LOCAL_MIRROR DEBUG_BUILD PREBUILT_SRC_DIR"
 
     # Yocto/OE-core works a bit differently than OE-classic so we're
     # going to source the OE build environment setup script they provided.
@@ -64,7 +64,7 @@ init_build_env () {
     . ${WS}/poky/oe-init-build-env ${BUILDDIR}
 
     # Clean up environment.
-    unset MACHINE DISTRO WS usage TEMPLATECONF THIS_SCRIPT
+    unset MACHINE DISTRO WS usage PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
     unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM
 }
 
