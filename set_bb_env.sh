@@ -153,7 +153,7 @@ build-dm-verity-image() {
 }
 
 function update_localgit_internal() {
-    if [ "$BRANCH" == "LV.AU.0.0.1" ]; then
+    if [[ $BRANCH == LV.AU* ]]; then
         echo "LINT server build"
         if [ -f "${WS}/meta-qti-internal/localgit_auto_fix.sh" ]; then
             ${WS}/meta-qti-internal/localgit_auto_fix.sh ${WS}
