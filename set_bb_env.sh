@@ -460,10 +460,10 @@ build-all-sa8155qdrive-image() {
 
     build-sa8155qdrive-image
     build-sa8155qdrive-sdk-image
-    mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8155qdrive-perf-image
-    mv tmp-glibc/deploy/images/sa8155qdrive-automotive.bak tmp-glibc/deploy/images/sa8155qdrive-automotive
+    #mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
+    #bitbake virtual/kernel -fc cleanall
+    #build-sa8155qdrive-perf-image
+    #mv tmp-glibc/deploy/images/sa8155qdrive-automotive.bak tmp-glibc/deploy/images/sa8155qdrive-automotive
 }
 
 function build-sa8155qdrive-sdk-image() {
