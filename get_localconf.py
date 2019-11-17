@@ -69,6 +69,7 @@ elif TARGET == "sa8195bg":
     MACHINE = "sa8195"
 elif TARGET == "sa8155ivi":
     DISTRO = "auto-ivi"
+    MACHINE = "sa8155"
 elif TARGET == "sa8155agl":
     DISTRO = "auto-agl"
     MACHINE = "sa8155"
