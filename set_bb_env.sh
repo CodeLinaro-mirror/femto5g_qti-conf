@@ -425,6 +425,161 @@ function build-sa8155ivi-sdk-image() {
     init-configure-files sa8155ivi debug
     cdbitbake machine-image -c populate_sdk
 }
+# SA8155agl commands
+function build-sa8155agl-image() {
+  unset_bb_env
+  init-configure-files sa8155agl debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+}
+
+function build-sa8155agl-minimalimage() {
+  init-configure-files sa8155agl debug
+  cdbitbake core-image-minimal
+}
+
+function build-sa8155agl-perf-image() {
+  unset_bb_env
+  init-configure-files sa8155agl perf
+  cdbitbake machine-image
+}
+
+build-all-sa8155agl-image() {
+    update_localgit_internal
+
+    build-sa8155agl-image
+    build-sa8155agl-minimalimage
+    build-sa8155agl-sdk-image
+    mv tmp-glibc/deploy/images/sa8155agl-automotive tmp-glibc/deploy/images/sa8155agl-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-sa8155agl-perf-image
+    mv tmp-glibc/deploy/images/sa8155agl-automotive.bak tmp-glibc/deploy/images/sa8155agl-automotive
+}
+
+function build-sa8155agl-sdk-image() {
+    unset_bb_env
+    init-configure-files sa8155agl debug
+    cdbitbake machine-image -c populate_sdk
+}
+
+# SA6155agl commands
+function build-sa6155agl-image() {
+  unset_bb_env
+  init-configure-files sa6155agl debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+}
+
+function build-sa6155agl-minimalimage() {
+  init-configure-files sa6155agl debug
+  cdbitbake core-image-minimal
+}
+
+function build-sa6155agl-perf-image() {
+  unset_bb_env
+  init-configure-files sa6155agl perf
+  cdbitbake machine-image
+}
+
+build-all-sa6155agl-image() {
+    update_localgit_internal
+
+    build-sa6155agl-image
+    build-sa6155agl-minimalimage
+    build-sa6155agl-sdk-image
+    mv tmp-glibc/deploy/images/sa6155agl-automotive tmp-glibc/deploy/images/sa6155agl-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-sa6155agl-perf-image
+    mv tmp-glibc/deploy/images/sa6155agl-automotive.bak tmp-glibc/deploy/images/sa6155agl-automotive
+}
+
+function build-sa6155agl-sdk-image() {
+    unset_bb_env
+    init-configure-files sa6155agl debug
+    cdbitbake machine-image -c populate_sdk
+}
+
+# SA8195agl commands
+function build-sa8195agl-image() {
+  unset_bb_env
+  init-configure-files sa8195agl debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
+}
+
+function build-sa8195agl-minimalimage() {
+  init-configure-files sa8195agl debug
+  cdbitbake core-image-minimal
+}
+
+function build-sa8195agl-perf-image() {
+  unset_bb_env
+  init-configure-files sa8195agl perf
+  cdbitbake machine-image
+}
+
+build-all-sa8195agl-image() {
+    update_localgit_internal
+
+    build-sa8195agl-image
+    build-sa8195agl-minimalimage
+    build-sa8195agl-sdk-image
+    mv tmp-glibc/deploy/images/sa8195agl-automotive tmp-glibc/deploy/images/sa8195agl-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-sa8195agl-perf-image
+    mv tmp-glibc/deploy/images/sa8195agl-automotive.bak tmp-glibc/deploy/images/sa8195agl-automotive
+}
+
+function build-sa8195agl-sdk-image() {
+    unset_bb_env
+    init-configure-files sa8195agl debug
+    cdbitbake machine-image -c populate_sdk
+}
 
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
@@ -460,10 +615,10 @@ build-all-sa8155qdrive-image() {
 
     build-sa8155qdrive-image
     build-sa8155qdrive-sdk-image
-    mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8155qdrive-perf-image
-    mv tmp-glibc/deploy/images/sa8155qdrive-automotive.bak tmp-glibc/deploy/images/sa8155qdrive-automotive
+    #mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
+    #bitbake virtual/kernel -fc cleanall
+    #build-sa8155qdrive-perf-image
+    #mv tmp-glibc/deploy/images/sa8155qdrive-automotive.bak tmp-glibc/deploy/images/sa8155qdrive-automotive
 }
 
 function build-sa8155qdrive-sdk-image() {
