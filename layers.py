@@ -40,6 +40,7 @@ def initLayersList(TARGET):
         "meta-agl-demo": 1, \
         "meta-agl-devel": { "meta-pipewire":1 }, \
         "meta-security": 1, \
+        "meta-virtualization": 1, \
     }
     if TARGET == "sa8155qdrive":
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
