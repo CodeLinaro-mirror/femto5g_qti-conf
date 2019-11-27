@@ -174,7 +174,7 @@ function build-sa6155-perf-image() {
 }
 
 build-all-sa6155-image() {
-    update_localgit_internal
+   # update_localgit_internal
  
     build-sa6155-image
     build-sa6155-sdk-image
@@ -225,7 +225,7 @@ function build-sa8155-perf-image() {
 }
 
 build-all-sa8155-image() {
-    update_localgit_internal    
+   # update_localgit_internal    
 
     build-sa8155-image
     build-sa8155-minimalimage
@@ -271,7 +271,7 @@ function build-sa8155bg-perf-image() {
 }
 
 build-all-sa8155bg-image() {
-    update_localgit_internal
+   # update_localgit_internal
 
     build-sa8155bg-image
 #    build-sa8155bg-sdk-image
@@ -310,7 +310,7 @@ function build-sa8195bg-perf-image() {
 }
 
 build-all-sa8195bg-image() {
-    update_localgit_internal
+    #update_localgit_internal
 
     build-sa8195bg-image
 #    build-sa8155bg-sdk-image
@@ -356,7 +356,7 @@ function build-sa8195-perf-image() {
 }
 
 build-all-sa8195-image() {
-    update_localgit_internal
+   # update_localgit_internal
 
     build-sa8195-image
     build-sa8195-minimalimage
@@ -460,7 +460,7 @@ function build-sa8155agl-perf-image() {
 }
 
 build-all-sa8155agl-image() {
-    update_localgit_internal
+    #update_localgit_internal
 
     build-sa8155agl-image
     build-sa8155agl-minimalimage
@@ -512,7 +512,7 @@ function build-sa6155agl-perf-image() {
 }
 
 build-all-sa6155agl-image() {
-    update_localgit_internal
+    #update_localgit_internal
 
     build-sa6155agl-image
     build-sa6155agl-minimalimage
@@ -564,7 +564,7 @@ function build-sa8195agl-perf-image() {
 }
 
 build-all-sa8195agl-image() {
-    update_localgit_internal
+    #update_localgit_internal
 
     build-sa8195agl-image
     build-sa8195agl-minimalimage
