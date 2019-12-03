@@ -17,27 +17,15 @@ def initLayersList(target):
     ignoreList = [  "meta-selftest", "meta-skeleton", \
                     "meta-poky", "meta-yocto", "meta-yocto-bsp", \
                     "meta-allplay", "meta-allplay-prop", \
-                    "meta-qti-audio", "meta-qti-audio-cal", \
-                    "meta-qti-audio-external", "meta-qti-audio-prop", \
                     "meta-qti-avs", "meta-qti-avs-prop", \
-                    "meta-qti-bsp-prop", "meta-qti-bt", \
-                    "meta-qti-bt-prop", "meta-qti-camera", \
-                    "meta-qti-camera-prop", "meta-qti-core-prop", \
-                    "meta-qti-data-prop", \
-                    "meta-qti-display-prop", "meta-qti-display", \
                     "meta-qti-drones", "meta-qti-drones-prop", \
-                    "meta-qti-gfx-prop", "meta-qti-gst", \
-                    "meta-qti-gst-prop", "meta-qti-internal", \
+                    "meta-qti-ml-prop", \
                     "meta-qti-qsap", "meta-qti-qsap-prop", \
-                    "meta-qti-ros", \
                     "meta-qti-security", "meta-qti-security-prop", \
-                    "meta-qti-ss-mgr", "meta-qti-ss-mgr-prop", \
-                    "meta-qti-video", "meta-qti-video-prop", \
                     "meta-qti-wfd-prop", \
-                    "meta-qti-wlan-prop", "meta-qti-ros", "meta-ros", \
+                    "meta-qti-ros", "meta-ros", \
                     "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
                     "meta-qti-qzhost-prop", "meta-qti-qzhost", \
-                    "meta-qti-cv-internal","meta-qti-cv-prop", \
                  ]
     metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
     dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }

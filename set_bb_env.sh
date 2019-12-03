@@ -37,6 +37,19 @@ WS=$(readlink -f $scriptdir/../..)
 # Find build templates from qti meta layer.
 TEMPLATECONF="meta-qti-bsp/conf"
 
+# Patch poky with QTI optimizations which not part of thud branch.
+apply_poky_patches () {
+    cd ${WS}/poky
+    for patchfile in qti-conf/patches/*; do
+        patch -p0 -N --dry-run --silent < $patchfile 2>/dev/null
+        # sucessful dryrun sets exit status of last command ($?) to 0
+        if [ $? -eq 0 ]; then
+            #apply the patch
+            patch -p0 -N --silent < $patchfile 2>/dev/null
+        fi
+    done
+}
+
 usage () {
     cat <<EOF
 
@@ -53,9 +66,12 @@ EOF
 # Eventually we need to call oe-init-build-env to finalize the configuration
 # of the newly created build folder
 init_build_env () {
+    # Patch poky
+    apply_poky_patches
+
     # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
     # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-    BB_ENV_EXTRAWHITE="SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+    BB_ENV_EXTRAWHITE="SSTATE_LOCAL_MIRROR DEBUG_BUILD PREBUILT_SRC_DIR"
 
     # Yocto/OE-core works a bit differently than OE-classic so we're
     # going to source the OE build environment setup script they provided.
@@ -64,7 +80,7 @@ init_build_env () {
     . ${WS}/poky/oe-init-build-env ${BUILDDIR}
 
     # Clean up environment.
-    unset MACHINE DISTRO WS usage TEMPLATECONF THIS_SCRIPT
+    unset MACHINE DISTRO WS usage PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
     unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM
 }
 
@@ -85,7 +101,7 @@ if [ $# -eq 1 ]; then
 fi
 
 # create a common list of "<machine>(<layer>)", sorted by <machine>
-MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -path meta-qti-bsp/conf/machine/partition -prune -o -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -z "${MACHINE}" ]; then
     # whiptail
