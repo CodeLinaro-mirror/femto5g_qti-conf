@@ -120,6 +120,7 @@ function init-configure-files() {
 }
 
 build-dm-verity-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   cdbitbake cryptsetup-native
   if [ "$?" != "0" ]; then
   echo "Error run 'cdbitbake cryptsetup-native'."
@@ -162,18 +163,21 @@ function update_localgit_internal() {
 }
 # SA6155 commands
 function build-sa6155-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155 debug
   cdbitbake machine-image
 }
 
 function build-sa6155-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155 perf
   cdbitbake machine-image
 }
 
 build-all-sa6155-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
  
     build-sa6155-image
@@ -185,6 +189,7 @@ build-all-sa6155-image() {
 }
 
 function build-sa6155-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa6155 debug
     cdbitbake machine-image -c populate_sdk
@@ -192,6 +197,7 @@ function build-sa6155-sdk-image() {
 
 # SA8155 commands
 function build-sa8155-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155 debug
 
@@ -214,17 +220,20 @@ function build-sa8155-image() {
 }
 
 function build-sa8155-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa8155 debug
   cdbitbake core-image-minimal
 }
 
 function build-sa8155-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155 perf
   cdbitbake machine-image
 }
 
 build-all-sa8155-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal    
 
     build-sa8155-image
@@ -237,12 +246,14 @@ build-all-sa8155-image() {
 }
 
 function build-sa8155-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8155 debug
     cdbitbake machine-image -c populate_sdk
 }
 
 function build-sa8155bg-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155bg debug
 
@@ -265,12 +276,14 @@ function build-sa8155bg-image() {
 }
 
 function build-sa8155bg-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155bg perf
   cdbitbake bg-coreimage-minimal
 }
 
 build-all-sa8155bg-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa8155bg-image
@@ -282,6 +295,7 @@ build-all-sa8155bg-image() {
 }
 
 function build-sa8195bg-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195bg debug
 
@@ -304,12 +318,14 @@ function build-sa8195bg-image() {
 }
 
 function build-sa8195bg-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195bg perf
   cdbitbake bg-coreimage-minimal
 }
 
 build-all-sa8195bg-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa8195bg-image
@@ -323,6 +339,7 @@ build-all-sa8195bg-image() {
 
 # SA8195 commands
 function build-sa8195-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195 debug
 
@@ -345,17 +362,20 @@ function build-sa8195-image() {
 }
 
 function build-sa8195-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa8195 debug
   cdbitbake core-image-minimal
 }
 
 function build-sa8195-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195 perf
   cdbitbake machine-image
 }
 
 build-all-sa8195-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa8195-image
@@ -368,6 +388,7 @@ build-all-sa8195-image() {
 }
 
 function build-sa8195-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8195 debug
     cdbitbake machine-image -c populate_sdk
@@ -427,6 +448,7 @@ function build-sa8155ivi-sdk-image() {
 }
 # SA8155agl commands
 function build-sa8155agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155agl debug
 
@@ -449,17 +471,20 @@ function build-sa8155agl-image() {
 }
 
 function build-sa8155agl-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa8155agl debug
   cdbitbake core-image-minimal
 }
 
 function build-sa8155agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155agl perf
   cdbitbake machine-image
 }
 
 build-all-sa8155agl-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa8155agl-image
@@ -472,6 +497,7 @@ build-all-sa8155agl-image() {
 }
 
 function build-sa8155agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8155agl debug
     cdbitbake machine-image -c populate_sdk
@@ -479,6 +505,7 @@ function build-sa8155agl-sdk-image() {
 
 # SA6155agl commands
 function build-sa6155agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155agl debug
 
@@ -501,17 +528,20 @@ function build-sa6155agl-image() {
 }
 
 function build-sa6155agl-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa6155agl debug
   cdbitbake core-image-minimal
 }
 
 function build-sa6155agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155agl perf
   cdbitbake machine-image
 }
 
 build-all-sa6155agl-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa6155agl-image
@@ -524,6 +554,7 @@ build-all-sa6155agl-image() {
 }
 
 function build-sa6155agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa6155agl debug
     cdbitbake machine-image -c populate_sdk
@@ -531,6 +562,7 @@ function build-sa6155agl-sdk-image() {
 
 # SA8195agl commands
 function build-sa8195agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195agl debug
 
@@ -553,17 +585,20 @@ function build-sa8195agl-image() {
 }
 
 function build-sa8195agl-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa8195agl debug
   cdbitbake core-image-minimal
 }
 
 function build-sa8195agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195agl perf
   cdbitbake machine-image
 }
 
 build-all-sa8195agl-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa8195agl-image
@@ -576,6 +611,7 @@ build-all-sa8195agl-image() {
 }
 
 function build-sa8195agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8195agl debug
     cdbitbake machine-image -c populate_sdk
@@ -583,6 +619,7 @@ function build-sa8195agl-sdk-image() {
 
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155qdrive debug
 
@@ -605,12 +642,14 @@ function build-sa8155qdrive-image() {
 }
 
 function build-sa8155qdrive-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155qdrive perf
   cdbitbake machine-image
 }
 
 build-all-sa8155qdrive-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-sa8155qdrive-image
@@ -622,6 +661,7 @@ build-all-sa8155qdrive-image() {
 }
 
 function build-sa8155qdrive-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8155qdrive debug
     cdbitbake machine-image -c populate_sdk
@@ -629,18 +669,21 @@ function build-sa8155qdrive-sdk-image() {
 
 # qtiquingvm commands
 function build-qtiquingvm-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files qtiquingvm debug
   cdbitbake machine-image
 }
 
 function build-qtiquingvm-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files qtiquingvm perf
   cdbitbake machine-image
 }
 
 build-all-qtiquingvm-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     update_localgit_internal
 
     build-qtiquingvm-image
@@ -652,6 +695,7 @@ build-all-qtiquingvm-image() {
 }
 
 function build-qtiquingvm-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files qtiquingvm debug
     cdbitbake machine-image -c populate_sdk
@@ -659,6 +703,7 @@ function build-qtiquingvm-sdk-image() {
 
 # Build image
 function build-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   cdbitbake machine-image
 }
 
