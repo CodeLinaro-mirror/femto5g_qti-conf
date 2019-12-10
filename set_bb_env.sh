@@ -146,10 +146,6 @@ build-dm-verity-image() {
   echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
   return 1
   fi
-  cdbitbake machine-image -f -c make_bootimg
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image -f -c make_bootimg'."
-  fi
   return 0
 }
 
