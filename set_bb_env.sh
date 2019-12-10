@@ -101,7 +101,7 @@ if [ $# -eq 1 ]; then
 fi
 
 # create a common list of "<machine>(<layer>)", sorted by <machine>
-MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -path meta-qti-bsp/conf/machine/partition -prune -o -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -z "${MACHINE}" ]; then
     # whiptail
