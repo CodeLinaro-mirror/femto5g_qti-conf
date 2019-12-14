@@ -162,7 +162,23 @@ function build-sa6155-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155 debug
+
+  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'cdbitbake machine-image'."
+  return 1
+  fi
+
+
+  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "Error run 'build-dm-verity-image'."
+  return 1
+  fi
+  fi
 }
 
 function build-sa6155-perf-image() {
