@@ -394,58 +394,6 @@ function build-sa8195-sdk-image() {
     cdbitbake machine-image -c populate_sdk
 }
 
-
-# SA8155ivi commands
-function build-sa8155ivi-image() {
-  unset_bb_env
-  init-configure-files sa8155ivi debug
-
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
-  cdbitbake machine-image
-  if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
-  return 1
-  fi
-
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
-  return 1
-  fi
-  fi
-}
-
-function build-sa8155ivi-minimalimage() {
-  init-configure-files sa8155ivi debug
-  cdbitbake core-image-minimal
-}
-
-function build-sa8155ivi-perf-image() {
-  unset_bb_env
-  init-configure-files sa8155ivi perf
-  cdbitbake machine-image
-}
-
-build-all-sa8155ivi-image() {
-    update_localgit_internal
-
-    build-sa8155ivi-image
-    build-sa8155ivi-minimalimage
-    build-sa8155ivi-sdk-image
-    mv tmp-glibc/deploy/images/sa8155ivi-automotive tmp-glibc/deploy/images/sa8155ivi-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8155ivi-perf-image
-    mv tmp-glibc/deploy/images/sa8155ivi-automotive.bak tmp-glibc/deploy/images/sa8155ivi-automotive
-}
-
-function build-sa8155ivi-sdk-image() {
-    unset_bb_env
-    init-configure-files sa8155ivi debug
-    cdbitbake machine-image -c populate_sdk
-}
 # SA8155agl commands
 function build-sa8155agl-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
