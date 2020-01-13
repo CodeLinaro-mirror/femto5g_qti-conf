@@ -71,5 +71,9 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm':
-        pass
+    elif TARGET == 'qtiquingvm' or TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
+        del dicLayersWithSubLayers["meta-agl"]
+        del dicLayersWithSubLayers["meta-agl-demo"]
+        del dicLayersWithSubLayers["meta-agl-devel"]
+        del dicLayersWithSubLayers["meta-security"]
+
