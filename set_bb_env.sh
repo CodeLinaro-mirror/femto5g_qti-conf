@@ -12,6 +12,18 @@ then
   echo ""
   return 1
 fi
+# Patch poky with QTI optimizations which not part of thud branch.
+apply_poky_patches () {
+    cd ${WS}/poky
+    for patchfile in build/conf/patches/*; do
+    patch -p0 -N --dry-run --silent < $patchfile 2>/dev/null
+    # sucessful dryrun sets exit status of last command ($?) to 0
+    if [ $? -eq 0 ]; then
+    #apply the patch  
+    patch -p0 -N --silent < $patchfile 2>/dev/null
+   fi
+  done
+}
 
 # The SHELL variable also needs to be set to /bin/bash otherwise the build
 # will fail, use chsh to change it to bash.
@@ -530,7 +542,7 @@ unset_bb_env() {
 
 # Find build templates from qti meta layer.
 export TEMPLATECONF="meta-qti-bsp/conf"
-
+apply_poky_patches
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
