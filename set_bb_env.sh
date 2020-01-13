@@ -15,12 +15,12 @@ fi
 # Patch poky with QTI optimizations which not part of thud branch.
 apply_poky_patches () {
     cd ${WS}/poky
-    for patchfile in build/conf/patches/*; do
-    patch -p0 -N --dry-run --silent < $patchfile 2>/dev/null
+    for patchfile in $(cat build/conf/patches/series); do
+    patch -p1 -N --dry-run --silent < build/conf/patches/$patchfile 2>/dev/null
     # sucessful dryrun sets exit status of last command ($?) to 0
     if [ $? -eq 0 ]; then
     #apply the patch  
-    patch -p0 -N --silent < $patchfile 2>/dev/null
+    patch -p1 -N --silent < build/conf/patches/$patchfile 2>/dev/null
    fi
   done
 }
