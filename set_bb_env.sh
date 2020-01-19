@@ -175,22 +175,12 @@ function build-sdm845-robot-perf-image() {
   cdbitbake machine-image
 }
 
-function build-sm8250-pure-debug-image() {
+function build-sm8250-edge-image() {
   unset_bb_env
   export DEBUG_BUILD=1
   export MACHINE=sm8250
   export DISTRO=edge
-  export VARIANT=debug
   cdbitbake machine-image
-}
-
-function build-sm8250-edge-debug-image() {
-  unset_bb_env
-  export DEBUG_BUILD=1
-  export MACHINE=sm8250
-  export DISTRO=edge
-  export VARIANT=debug
-  cdbitbake machine-edge-image
 }
 
 function build-sm8250-edge-perf-image() {
@@ -198,7 +188,7 @@ function build-sm8250-edge-perf-image() {
   export MACHINE=sm8250
   export DISTRO=edge
   export VARIANT=perf
-  cdbitbake machine-edge-image
+  cdbitbake machine-image
 }
 
 # qtiquingvm commands
