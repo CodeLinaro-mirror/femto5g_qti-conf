@@ -16,14 +16,6 @@ def initLayersList(target):
     # initialize LE's layer list
     ignoreList = [  "meta-selftest", "meta-skeleton", \
                     "meta-poky", "meta-yocto", "meta-yocto-bsp", \
-                    "meta-allplay", "meta-allplay-prop", \
-                    "meta-qti-avs", "meta-qti-avs-prop", \
-                    "meta-qti-drones", "meta-qti-drones-prop", \
-                    "meta-qti-qsap", "meta-qti-qsap-prop", \
-                    "meta-qti-wfd-prop", \
-                    "meta-qti-ros", "meta-ros", \
-                    "meta-qti-location-prop", "meta-qti-location-internal", "meta-qti-location", \
-                    "meta-qti-qzhost-prop", "meta-qti-qzhost", \
                  ]
     metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
     dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
