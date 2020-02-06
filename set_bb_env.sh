@@ -117,260 +117,418 @@ function init-configure-files() {
 
     # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
+
+    # Set environment variables for dm-verity
+    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+    #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
 
 build-dm-verity-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  if [ "${KERNEL_ROOTDEVICE}" != "/dev/dm-0" ] ; then
+    echo "KERNEL_ROOTDEVICE not equal '/dev/dm-0'. Skip build-dm-verity-image."
+    return 0
+  fi
+
   cdbitbake cryptsetup-native
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake cryptsetup-native'."
+  echo "==== Error run 'cdbitbake cryptsetup-native'. (${FUNCNAME[@]})"
   return 1
   fi
   cdbitbake dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake dm-verity-image'."
+  echo "==== Error run 'cdbitbake dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
   cdbitbake virtual/kernel -f -c compile
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c compile'."
+  echo "==== Error run 'cdbitbake virtual/kernel -f -c compile'. (${FUNCNAME[@]})"
   return 1
   fi
   cdbitbake virtual/kernel -f -c install
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c install'."
+  echo "==== Error run 'cdbitbake virtual/kernel -f -c install'. (${FUNCNAME[@]})"
   return 1
   fi
   cdbitbake virtual/kernel -f -c deploy
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake virtual/kernel -f -c deploy'."
+  echo "==== Error run 'cdbitbake virtual/kernel -f -c deploy'. (${FUNCNAME[@]})"
   return 1
   fi
   cdbitbake machine-image -f -c make_bootimg
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image -f -c make_bootimg'."
+  echo "==== Error run 'cdbitbake machine-image -f -c make_bootimg'. (${FUNCNAME[@]})"
+  return 1
   fi
   return 0
 }
 
-function update_localgit_internal() {
-    if [[ $BRANCH == LV.AU* ]]; then
-        echo "LINT server build"
-        if [ -f "${WS}/meta-qti-internal/localgit_auto_fix.sh" ]; then
-            ${WS}/meta-qti-internal/localgit_auto_fix.sh ${WS}
-        fi
+# Common functions for build-all sa8155/sa6155/sa8195 images
+#           $1 -- Target name, as: sa8155/sa6155/sa8195
+function build-all-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
     fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+
+    build-$1-minimalimage
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-minimalimage'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MINIMAL_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
+
+    build-$1-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive/$MINIMAL_IMAGE tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
+
+# Common functions for build-all sa8155agl/sa6155agl/sa8195agl images
+#           $1 -- Target name, as: sa8155agl/sa6155agl/sa8195agl
+function build-all-agl-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+
+    build-$1-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+}
+
+# Common functions for build-all sa8155bg/sa8195bg images
+#           $1 -- Target name, as: sa8155bg/sa8195bg
+function build-all-bg-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export BG_MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$BG_MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$BG_MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4
+}
+
 # SA6155 commands
 function build-sa6155-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa6155 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 function build-sa6155-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155 perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa6155-image() {
-   # update_localgit_internal
- 
-    build-sa6155-image
-    build-sa6155-sdk-image
-    mv tmp-glibc/deploy/images/sa6155-automotive tmp-glibc/deploy/images/sa6155-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa6155-perf-image
-    mv tmp-glibc/deploy/images/sa6155-automotive.bak tmp-glibc/deploy/images/sa6155-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-function sa6155
+    return $?
+}
+
+function build-sa6155-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  init-configure-files sa6155 debug
+  cdbitbake core-image-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake core-image-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 function build-sa6155-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa6155 debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # SA8155 commands
 function build-sa8155-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8155 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
-  fi
   fi
 }
 
 function build-sa8155-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa8155 debug
   cdbitbake core-image-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake core-image-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 function build-sa8155-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155 perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155-image() {
-   # update_localgit_internal    
-
-    build-sa8155-image
-    build-sa8155-minimalimage
-    build-sa8155-sdk-image
-    mv tmp-glibc/deploy/images/sa8155-automotive tmp-glibc/deploy/images/sa8155-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8155-perf-image
-    mv tmp-glibc/deploy/images/sa8155-automotive.bak tmp-glibc/deploy/images/sa8155-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-function sa8155
+    return $?
 }
 
 function build-sa8155-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8155 debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
+# sa8155bg commands
 function build-sa8155bg-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155bg debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8155bg debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake bg-coreimage-minimal
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
-  fi
   fi
 }
 
 function build-sa8155bg-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155bg perf
   cdbitbake bg-coreimage-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155bg-image() {
-   # update_localgit_internal
-
-    build-sa8155bg-image
-#    build-sa8155bg-sdk-image
-    mv tmp-glibc/deploy/images/sa8155bg-automotive tmp-glibc/deploy/images/sa8155bg-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8155bg-perf-image
-    mv tmp-glibc/deploy/images/sa8155bg-automotive.bak tmp-glibc/deploy/images/sa8155bg-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-bg-function sa8155bg
+    return $?
 }
 
 function build-sa8195bg-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195bg debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8195bg debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake bg-coreimage-minimal
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
-  fi
   fi
 }
 
 function build-sa8195bg-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195bg perf
   cdbitbake bg-coreimage-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8195bg-image() {
-    #update_localgit_internal
-
-    build-sa8195bg-image
-#    build-sa8155bg-sdk-image
-    mv tmp-glibc/deploy/images/sa8195bg-automotive tmp-glibc/deploy/images/sa8195bg-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8195bg-perf-image
-    mv tmp-glibc/deploy/images/sa8195bg-automotive.bak tmp-glibc/deploy/images/sa8195bg-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-bg-function sa8195bg
+    return $?
 }
 
 
 # SA8195 commands
 function build-sa8195-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8195 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
-  fi
   fi
 }
 
 function build-sa8195-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   init-configure-files sa8195 debug
   cdbitbake core-image-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake core-image-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 function build-sa8195-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195 perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8195-image() {
-   # update_localgit_internal
-
-    build-sa8195-image
-    build-sa8195-minimalimage
-    build-sa8195-sdk-image
-    mv tmp-glibc/deploy/images/sa8195-automotive tmp-glibc/deploy/images/sa8195-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8195-perf-image
-    mv tmp-glibc/deploy/images/sa8195-automotive.bak tmp-glibc/deploy/images/sa8195-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-function sa8195
+    return $?
 }
 
 function build-sa8195-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8195 debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 
@@ -427,238 +585,286 @@ function build-sa8155ivi-sdk-image() {
 }
 # SA8155agl commands
 function build-sa8155agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155agl debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8155agl debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  fi
-}
-
-function build-sa8155agl-minimalimage() {
-  init-configure-files sa8155agl debug
-  cdbitbake core-image-minimal
 }
 
 function build-sa8155agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155agl perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155agl-image() {
-    #update_localgit_internal
-
-    build-sa8155agl-image
-    build-sa8155agl-minimalimage
-    build-sa8155agl-sdk-image
-    mv tmp-glibc/deploy/images/sa8155agl-automotive tmp-glibc/deploy/images/sa8155agl-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8155agl-perf-image
-    mv tmp-glibc/deploy/images/sa8155agl-automotive.bak tmp-glibc/deploy/images/sa8155agl-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function sa8155agl
+    return $?
 }
 
 function build-sa8155agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8155agl debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # SA6155agl commands
 function build-sa6155agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155agl debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa6155agl debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  fi
-}
-
-function build-sa6155agl-minimalimage() {
-  init-configure-files sa6155agl debug
-  cdbitbake core-image-minimal
 }
 
 function build-sa6155agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155agl perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'dbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa6155agl-image() {
-    #update_localgit_internal
-
-    build-sa6155agl-image
-    build-sa6155agl-minimalimage
-    build-sa6155agl-sdk-image
-    mv tmp-glibc/deploy/images/sa6155agl-automotive tmp-glibc/deploy/images/sa6155agl-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa6155agl-perf-image
-    mv tmp-glibc/deploy/images/sa6155agl-automotive.bak tmp-glibc/deploy/images/sa6155agl-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function sa6155agl
+    return $?
 }
 
 function build-sa6155agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa6155agl debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # SA8195agl commands
 function build-sa8195agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195agl debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8195agl debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
   build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  fi
-}
-
-function build-sa8195agl-minimalimage() {
-  init-configure-files sa8195agl debug
-  cdbitbake core-image-minimal
 }
 
 function build-sa8195agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8195agl perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8195agl perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8195agl-image() {
-    #update_localgit_internal
-
-    build-sa8195agl-image
-    build-sa8195agl-minimalimage
-    build-sa8195agl-sdk-image
-    mv tmp-glibc/deploy/images/sa8195agl-automotive tmp-glibc/deploy/images/sa8195agl-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-sa8195agl-perf-image
-    mv tmp-glibc/deploy/images/sa8195agl-automotive.bak tmp-glibc/deploy/images/sa8195agl-automotive
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function sa8195agl
+    return $?
 }
 
 function build-sa8195agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8195agl debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155qdrive debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8155qdrive debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-  export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
-  #export KERNEL_ROOTDEVICE="/dev/dm-0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "Error run 'cdbitbake machine-image'."
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
-  fi
-
-
-  if [ "${KERNEL_ROOTDEVICE}" == "/dev/dm-0" ] ; then
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "Error run 'build-dm-verity-image'."
-  return 1
-  fi
   fi
 }
 
 function build-sa8155qdrive-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa8155qdrive perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155qdrive-image() {
-    update_localgit_internal
-
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-sa8155qdrive-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8155qdrive-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
     build-sa8155qdrive-sdk-image
-    #mv tmp-glibc/deploy/images/sa8155qdrive-automotive tmp-glibc/deploy/images/sa8155qdrive-automotive.bak
-    #bitbake virtual/kernel -fc cleanall
-    #build-sa8155qdrive-perf-image
-    #mv tmp-glibc/deploy/images/sa8155qdrive-automotive.bak tmp-glibc/deploy/images/sa8155qdrive-automotive
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8155qdrive-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 function build-sa8155qdrive-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa8155qdrive debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # qtiquingvm commands
 function build-qtiquingvm-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files qtiquingvm debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files qtiquingvm debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 function build-qtiquingvm-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files qtiquingvm perf
   cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-qtiquingvm-image() {
-    update_localgit_internal
-
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-qtiquingvm-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4
+    echo "==== Error run 'build-qtiquingvm-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4
+
     build-qtiquingvm-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtiquingvm-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
     mv tmp-glibc/deploy/images/qtiquingvm-automotive tmp-glibc/deploy/images/qtiquingvm-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-qtiquingvm-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtiquingvm-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtiquingvm-automotive-perf/machine-image-qtiquingvm.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-automotive-perf/machine-image-qtiquingvm.ext4
     mv tmp-glibc/deploy/images/qtiquingvm-automotive.bak tmp-glibc/deploy/images/qtiquingvm-automotive
+
+    mv tmp-glibc/deploy/images/qtiquingvm-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtiquingvm-automotive-perf/machine-image-qtiquingvm.ext4
 }
 
 function build-qtiquingvm-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files qtiquingvm debug
     cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # Build image
 function build-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   cdbitbake machine-image
 }
 
@@ -722,7 +928,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT DEBUG_BUILD
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD KERNEL_ROOTDEVICE
 }
 
 # Initialize bblayers.conf and local.conf
