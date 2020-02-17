@@ -38,7 +38,7 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE VARIANT
+unset DISTRO MACHINE VARIANT PREBUILT_SRC_DIR
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -553,4 +553,4 @@ apply_poky_patches
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD PREBUILT_SRC_DIR"
