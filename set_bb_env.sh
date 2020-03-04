@@ -177,7 +177,6 @@ function build-sdm845-robot-perf-image() {
 
 function build-sm8250-edge-image() {
   unset_bb_env
-  export DEBUG_BUILD=1
   export MACHINE=sm8250
   export DISTRO=edge
   cdbitbake machine-image
