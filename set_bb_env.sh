@@ -177,6 +177,11 @@ function build-sdm845-robot-perf-image() {
 
 function build-sm8250-edge-image() {
   unset_bb_env
+  if [ -d ${WS}/adreno200 ]
+  then
+    export EDGE_INTERNAL=1
+  fi
+
   export MACHINE=sm8250
   export DISTRO=edge
   cdbitbake machine-image
@@ -184,6 +189,11 @@ function build-sm8250-edge-image() {
 
 function build-sm8250-edge-perf-image() {
   unset_bb_env
+  if [ -d ${WS}/adreno200 ]
+  then
+    export EDGE_INTERNAL=1
+  fi
+
   export MACHINE=sm8250
   export DISTRO=edge
   export VARIANT=perf
@@ -540,7 +550,7 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT DEBUG_BUILD
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD EDGE_INTERNAL
 }
 
 # Find build templates from qti meta layer.
@@ -556,4 +566,4 @@ export TEMPLATECONF="meta-qti-bsp/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD EDGE_INTERNAL"
