@@ -72,8 +72,7 @@ print "#--------------------------------------------------------------"
 print "LCONF_VERSION = \"6\""
 print
 print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../src/'))}\""
-#print "# Make sure WORKSPACE isn't exported"
-#print "WORKSPACE[unexport] = \"1\""
+print "export WORKSPACEROOT := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../'))}\""
 print 
 print "BBPATH = \"${TOPDIR}\""
 print "BBFILES ?= \"\""
