@@ -43,8 +43,12 @@ def initLayersList(TARGET):
         "meta-virtualization": 1, \
     }
     if TARGET == "sa8155qdrive":
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
-        dicLayersWithSubLayers["meta-ros"] = 1
+        del dicLayersWithSubLayers["meta-agl"]
+        del dicLayersWithSubLayers["meta-agl-demo"]
+        del dicLayersWithSubLayers["meta-agl-devel"]
+        del dicLayersWithSubLayers["meta-security"]
+        #dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
+        #dicLayersWithSubLayers["meta-ros"] = 1
     elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa8155ivi':
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-agl"]
