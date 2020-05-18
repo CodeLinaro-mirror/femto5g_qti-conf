@@ -17,7 +17,9 @@ def initLayersList(target):
     ignoreList = [  "meta-selftest", "meta-skeleton", \
                     "meta-poky", "meta-yocto", "meta-yocto-bsp", \
                  ]
-    metaOELayers = [ "meta-networking", "meta-python", "meta-oe", "meta-filesystems" ]
+    metaOELayers = [ "meta-networking", "meta-python", "meta-oe", \
+                     "meta-filesystems", "meta-multimedia" \
+                   ]
     dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
 
 def getLayerPriority (layerConfPath) :
