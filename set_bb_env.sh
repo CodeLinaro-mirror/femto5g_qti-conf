@@ -689,6 +689,7 @@ function build-qcs605-64-concam-user-image() {
 
 function build-qcs605-64-concam-image() {
   unset_bb_env
+  export DEBUG_BUILD=1
   export MACHINE=qcs605-64
   export DISTRO=concam
   cdbitbake machine-image
