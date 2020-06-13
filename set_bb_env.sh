@@ -339,10 +339,29 @@ function build-sa2150p-perf-image() {
   cdbitbake machine-image
 }
 
+function build-sa2150p-nand-image() {
+  unset_bb_env
+  export MACHINE=sa2150p-nand
+  export DISTRO=msm
+  cdbitbake machine-image
+}
+
+function build-sa2150p-nand-perf-image() {
+  unset_bb_env
+  export MACHINE=sa2150p-nand
+  export DISTRO=msm
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 build-all-sa2150p-images() {
   build-sa2150p-image
   buildclean-retaindeploy
   build-sa2150p-perf-image
+  buildclean-retaindeploy
+  build-sa2150p-nand-image
+  buildclean-retaindeploy
+  build-sa2150p-nand-perf-image
 }
 
 function build-sdm845-robot-image() {
