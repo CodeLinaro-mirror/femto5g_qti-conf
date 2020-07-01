@@ -200,6 +200,31 @@ function build-sm8250-edge-perf-image() {
   cdbitbake machine-image
 }
 
+function build-sm8250-aedk-image() {
+  unset_bb_env
+  if [ -d ${WS}/adreno200 ]
+  then
+    export EDGE_INTERNAL=1
+  fi
+
+  export MACHINE=sm8250
+  export DISTRO=aedk
+  cdbitbake machine-image
+}
+
+function build-sm8250-aedk-perf-image() {
+  unset_bb_env
+  if [ -d ${WS}/adreno200 ]
+  then
+    export EDGE_INTERNAL=1
+  fi
+
+  export MACHINE=sm8250
+  export DISTRO=aedk
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 # qtiquingvm commands
 function build-qtiquingvm-image() {
   unset_bb_env
