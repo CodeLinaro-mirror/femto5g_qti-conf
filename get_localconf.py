@@ -67,9 +67,6 @@ elif TARGET == "sa8155bg":
 elif TARGET == "sa8195bg":
     DISTRO = "bg"
     MACHINE = "sa8195"
-elif TARGET == "sa8155ivi":
-    DISTRO = "auto-ivi"
-    MACHINE = "sa8155"
 elif TARGET == "sa8155agl":
     DISTRO = "auto-agl"
     MACHINE = "sa8155"
@@ -99,6 +96,14 @@ print "VARIANT ??= \"%s\"" % VARIANT
 print ""
 print "# BBMASK"
 print ReadFile("%s/include/bbmask.inc" % os.path.dirname(os.path.realpath(__file__)) )
+if DISTRO == "bg":
+    print ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "auto-agl":
+    print ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "auto-qdrive-agl":
+    print ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "auto-gvm-agl":
+    print ReadFile("%s/include/bbmask-gvm.inc" % os.path.dirname(os.path.realpath(__file__)) )
 print ""
 print "# DISTRO_INC_FILES"
 print "DISTRO_INC_FILES = \"\""
