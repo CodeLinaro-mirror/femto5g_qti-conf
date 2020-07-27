@@ -178,7 +178,7 @@ function build-all-function() {
     export MINIMAL_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4`
     rm -f tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
 
-    #build-$1-sdk-image
+    build-$1-sdk-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
     return 1
@@ -213,7 +213,7 @@ function build-all-agl-function() {
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
     rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
 
-    #build-$1-sdk-image
+    build-$1-sdk-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
     return 1
