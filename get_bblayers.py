@@ -68,14 +68,12 @@ def generatePathString ( pathList ):
 
 
 # Emit our config file...
-print "# This configuration file is dynamically generated every time"
-print "# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT."
-print "#--------------------------------------------------------------"
-print "LCONF_VERSION = \"6\""
-print
-print "export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../src/'))}\""
-print "export WORKSPACEROOT := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../'))}\""
-print 
-print "BBPATH = \"${TOPDIR}\""
-print "BBFILES ?= \"\""
-print "BBLAYERS = \"" + generatePathString(getLayerPaths(sys.argv[1].strip("\""), sys.argv[2].strip("\""))) + "\""
+print ("# This configuration file is dynamically generated every time")
+print ("# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.")
+print ("#--------------------------------------------------------------")
+print ("LCONF_VERSION = \"6\"\n")
+print ("export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../src/'))}\"")
+print ("export WORKSPACEROOT := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../'))}\"\n")
+print ("BBPATH = \"${TOPDIR}\"")
+print ("BBFILES ?= \"\"")
+print ("BBLAYERS = \"" + generatePathString(getLayerPaths(sys.argv[1].strip("\""), sys.argv[2].strip("\""))) + "\"")
