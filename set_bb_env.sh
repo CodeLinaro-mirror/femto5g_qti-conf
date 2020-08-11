@@ -130,7 +130,7 @@ if [ -z "${MACHINE}" ]; then
 fi
 
 # create a common list of "<distro>(<layer>)", sorted by <distro>
-DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "conf/distro/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
+DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-distro -print | grep "conf/distro/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
     # whiptail
