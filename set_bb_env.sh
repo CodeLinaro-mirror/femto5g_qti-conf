@@ -814,6 +814,7 @@ function build-qtiquingvm-perf-image() {
 
 build-all-qtiquingvm-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    mkdir -p ${WS}/poky/build/tmp-glibc/deploy/images/qtiquingvm-automotive
     touch ${WS}/poky/build/tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4
     return 0
     build-qtiquingvm-image
