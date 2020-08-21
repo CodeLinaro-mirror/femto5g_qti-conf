@@ -816,6 +816,8 @@ build-all-qtiquingvm-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     mkdir -p ${WS}/poky/build/tmp-glibc/deploy/images/qtiquingvm-automotive
     touch ${WS}/poky/build/tmp-glibc/deploy/images/qtiquingvm-automotive/machine-image-qtiquingvm.ext4
+    mkdir -p ${WS}/prebuilt_HY11/qtiquingvm
+    touch ${WS}/prebuilt_HY11/qtiquingvm/test
     return 0
     build-qtiquingvm-image
     if [ "$?" != "0" ]; then
