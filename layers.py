@@ -29,51 +29,64 @@ dicLayersWithSubLayers = None
 
 def initLayersList(TARGET):
     global dicLayersWithSubLayers
+
+    ### Disabled agl meta layers
+    # "meta-agl": {"meta-agl":1 , "meta-agl-distro":1, "meta-agl-profile-core":1, "meta-agl-profile-graphical":1, "meta-agl-profile-graphical-qt5":1, "meta-app-framework":1, "meta-security":1 }, \
+    # "meta-agl-demo": 1, \
+    # "meta-agl-devel": { "meta-pipewire":1 }, \
+    # "meta-security": 1, \
+    # "meta-qti-agl" (in "meta-qti-bsp")
     dicLayersWithSubLayers = { \
         "poky": { "meta":1, "meta-poky":1 }, \
         "meta-qt5": 1, \
         "meta-gplv2": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1 }, \
-        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1, "meta-qti-sdllvm-prop":1 }, \
-        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-sdllvm":1, "meta-qti-agl":1 }, \
-        "meta-agl": {"meta-agl":1 , "meta-agl-distro":1, "meta-agl-profile-core":1, "meta-agl-profile-graphical":1, "meta-agl-profile-graphical-qt5":1, "meta-app-framework":1, "meta-security":1 }, \
-        "meta-agl-demo": 1, \
-        "meta-agl-devel": { "meta-pipewire":1 }, \
-        "meta-security": 1, \
-        "meta-virtualization": 1, \
+        "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
+        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1 }, \
     }
+
     if TARGET == "sa8155qdrive":
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1  
+        # Enable ROS
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
-    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa8155ivi':
+    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155':
         del dicLayersWithSubLayers["meta-qt5"]
-        del dicLayersWithSubLayers["meta-agl"]
-        del dicLayersWithSubLayers["meta-agl-demo"]
-        del dicLayersWithSubLayers["meta-agl-devel"]
-        del dicLayersWithSubLayers["meta-security"]
-        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"]
-        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
-        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"]
+        # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa8155bg' or TARGET == 'sa8195bg':
+        # This is minimal image, remove extra meta-layers
         del dicLayersWithSubLayers["meta-qt5"]
-        del dicLayersWithSubLayers["meta-agl"]
-        del dicLayersWithSubLayers["meta-agl-demo"]
-        del dicLayersWithSubLayers["meta-agl-devel"]
-        del dicLayersWithSubLayers["meta-security"]
-        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-extra"]
-        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
-        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"]
+        # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm' or TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
-        del dicLayersWithSubLayers["meta-agl"]
-        del dicLayersWithSubLayers["meta-agl-demo"]
-        del dicLayersWithSubLayers["meta-agl-devel"]
-        del dicLayersWithSubLayers["meta-security"]
+    elif TARGET == 'qtiquingvm':
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
+        # Enable container meta-layers
+        dicLayersWithSubLayers["meta-virtualization"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-lxc"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-lxc-prop"] = 1
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+    elif TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+    elif TARGET == 'sa8155lxc' or TARGET == 'sa8195lxc' or TARGET == 'sa6155lxc':
+        # Enable container meta-layers
+        dicLayersWithSubLayers["meta-virtualization"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-lxc"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-lxc-prop"] = 1
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
 
