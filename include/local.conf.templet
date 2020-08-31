@@ -264,3 +264,8 @@ PATH_TO_REPO ?= "git://${SRC_DIR_ROOT}"
 PROTO ?= "file"
 
 INHERIT += "qfile"
+
+# Enable fortran
+FORTRAN_forcevariable = ",fortran"
+
+

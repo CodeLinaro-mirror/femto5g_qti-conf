@@ -43,12 +43,8 @@ def initLayersList(TARGET):
         "meta-virtualization": 1, \
     }
     if TARGET == "sa8155qdrive":
-        del dicLayersWithSubLayers["meta-agl"]
-        del dicLayersWithSubLayers["meta-agl-demo"]
-        del dicLayersWithSubLayers["meta-agl-devel"]
-        del dicLayersWithSubLayers["meta-security"]
-        #dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
-        #dicLayersWithSubLayers["meta-ros"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
+        dicLayersWithSubLayers["meta-ros"] = 1
     elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa8155ivi':
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-agl"]
@@ -56,6 +52,11 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-agl-devel"]
         del dicLayersWithSubLayers["meta-security"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"]
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa8155bg' or TARGET == 'sa8195bg':
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-agl"]

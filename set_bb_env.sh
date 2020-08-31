@@ -149,6 +149,11 @@ build-dm-verity-image() {
   echo "==== Error run 'cdbitbake virtual/kernel -f -c deploy'. (${FUNCNAME[@]})"
   return 1
   fi
+  cdbitbake machine-image -f -c make_bootimg
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image -f -c make_bootimg'. (${FUNCNAME[@]})"
+  return 1
+  fi
   return 0
 }
 
@@ -273,11 +278,6 @@ function build-sa6155-image() {
   return 1
   fi
 
-  cdbitbake qti-image-lxc
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-image-lxc'. (${FUNCNAME[@]})"
-  fi
-
   build-dm-verity-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
@@ -337,11 +337,6 @@ function build-sa8155-image() {
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
-  fi
-
-  cdbitbake qti-image-lxc
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-image-lxc'. (${FUNCNAME[@]})"
   fi
 
   build-dm-verity-image
@@ -483,11 +478,6 @@ function build-sa8195-image() {
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
-  fi
-
-  cdbitbake qti-image-lxc
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-image-lxc'. (${FUNCNAME[@]})"
   fi
 
   build-dm-verity-image
@@ -769,10 +759,6 @@ function build-sa8155qdrive-perf-image() {
 }
 
 build-all-sa8155qdrive-image() {
-    mkdir -p tmp-glibc/deploy/images/sa8155qdrive-automotive/
-    touch tmp-glibc/deploy/images/sa8155qdrive-automotive/machine-image-sa8155qdrive.ext4
-    return 0
-
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-sa8155qdrive-image
     if [ "$?" != "0" ]; then
