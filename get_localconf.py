@@ -105,8 +105,10 @@ elif DISTRO == "auto-qdrive-agl":
 elif DISTRO == "auto-gvm-agl":
     print ReadFile("%s/include/bbmask-gvm.inc" % os.path.dirname(os.path.realpath(__file__)) )
 print ""
-print "# DISTRO_INC_FILES"
-print "DISTRO_INC_FILES = \"\""
-DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
-for dl in DistroList:
-    print "DISTRO_INC_FILES += \"%s\"" % dl
+
+if DISTRO != "bg":
+    print "# DISTRO_INC_FILES"
+    print "DISTRO_INC_FILES = \"\""
+    DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
+    for dl in DistroList:
+        print "DISTRO_INC_FILES += \"%s\"" % dl
