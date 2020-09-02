@@ -96,7 +96,6 @@ fi
 
 
 #init local git if it does not exist.
-init_localgit 
 
 # Convienence functions provided for the QuIC provided OE Linux distro.
 

@@ -259,9 +259,9 @@ GCCVERSION ?= "8.2%"
 
 export userfsdatadir = "${base_prefix}/data"
 
-PATH_TO_REPO ?= "ssh://git@git.swf.daimler.com:7999/apricotqal/lv_source"
+PATH_TO_REPO ?= "https://git.swf.daimler.com/apricotqal/lv_source"
 
-PROTO ?= "ssh"
+PROTO ?= "https"
 
 # Enable fortran
 FORTRAN_forcevariable = ",fortran"
