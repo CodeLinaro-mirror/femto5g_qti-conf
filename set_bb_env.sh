@@ -280,6 +280,12 @@ function build-sa6155-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa6155-image() {
@@ -351,6 +357,12 @@ function build-sa8155-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155-image() {
@@ -402,6 +414,12 @@ function build-sa8155bg-perf-image() {
   echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155bg-image() {
@@ -441,6 +459,13 @@ function build-sa8195bg-perf-image() {
   echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
 }
 
 build-all-sa8195bg-image() {
@@ -490,6 +515,12 @@ function build-sa8195-perf-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -595,6 +626,12 @@ function build-sa8155agl-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155agl-image() {
@@ -646,6 +683,12 @@ function build-sa6155agl-perf-image() {
   echo "==== Error run 'dbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa6155agl-image() {
@@ -695,6 +738,12 @@ function build-sa8195agl-perf-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8195agl perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
