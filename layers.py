@@ -35,7 +35,7 @@ def initLayersList(TARGET):
         "meta-gplv2": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1, "meta-qti-sdllvm-prop":1 }, \
-        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-sdllvm":1, "meta-qti-agl":1 }, \
+        "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-distro":1, "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-sdllvm":1, "meta-qti-agl":1 }, \
         "meta-agl": {"meta-agl":1 , "meta-agl-distro":1, "meta-agl-profile-core":1, "meta-agl-profile-graphical":1, "meta-agl-profile-graphical-qt5":1, "meta-app-framework":1, "meta-security":1 }, \
         "meta-agl-demo": 1, \
         "meta-agl-devel": { "meta-pipewire":1 }, \
@@ -71,7 +71,12 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm' or TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
+    elif TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
+        del dicLayersWithSubLayers["meta-agl"]
+        del dicLayersWithSubLayers["meta-agl-demo"]
+        del dicLayersWithSubLayers["meta-agl-devel"]
+        del dicLayersWithSubLayers["meta-security"]
+    elif TARGET == 'qtiquingvm':
         del dicLayersWithSubLayers["meta-agl"]
         del dicLayersWithSubLayers["meta-agl-demo"]
         del dicLayersWithSubLayers["meta-agl-devel"]
