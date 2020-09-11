@@ -152,9 +152,16 @@ build-dm-verity-image() {
   return 0
 }
 
+function show_build_environment() {
+  echo "=================Show Build Environment==========="
+  git version
+  export
+}
+
 # Common functions for build-all sa8155/sa6155/sa8195 images
 #           $1 -- Target name, as: sa8155/sa6155/sa8195
 function build-all-function() {
+    show_build_environment
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -189,6 +196,7 @@ function build-all-function() {
 # Common functions for build-all sa8155agl/sa6155agl/sa8195agl images
 #           $1 -- Target name, as: sa8155agl/sa6155agl/sa8195agl
 function build-all-agl-function() {
+    show_build_environment
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -223,6 +231,7 @@ function build-all-agl-function() {
 # Common functions for build-all sa8155bg/sa8195bg images
 #           $1 -- Target name, as: sa8155bg/sa8195bg
 function build-all-bg-function() {
+    show_build_environment
     build-$1-image
     if [ "$?" != "0" ]; then
     export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
