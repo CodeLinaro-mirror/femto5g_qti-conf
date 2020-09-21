@@ -1,7 +1,67 @@
-
 # bbmask
 BBMASK .= "|meta-clang/recipes-devtools/m4/"
+BBMASK .= "|meta-clang/recipes-graphics"
+BBMASK .= "|meta-clang/recipes-multimedia"
+
+BBMASK .= "|meta-openembedded/meta-multimedia"
+BBMASK .= "|meta-openembedded/meta-oe/dynamic-layers/meta-python/recipes-connectivity"
+BBMASK .= "|meta-openembedded/meta-oe/recipes-multimedia"
+BBMASK .= "|meta-openembedded/meta-oe/recipes-support/espeak"
+BBMASK .= "|meta-openembedded/meta-oe/recipes-support/portaudio"
+BBMASK .= "|meta-openembedded/meta-python/recipes-devtools/python/python3-pyalsaaudio_0.8.4.bb"
+BBMASK .= "|meta-openembedded/meta-python/recipes-devtools/python/python3-pyaudio_0.2.11.bb"
+
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-audio"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-camera"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-connectivity"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-audio-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-bluetooth-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-camera-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-display-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-graphics-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-multimedia-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/packagegroups/packagegroup-qti-wlan-prop.bb"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-graphics"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-location"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-multimedia"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-wlan-prop"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-clang-prop/recipes/fastcv-noship"
+
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-audio"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-connectivity"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-core/packagegroups/packagegroup-qti-audio.bb"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-core/packagegroups/packagegroup-qti-bluetooth.bb"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-core/packagegroups/packagegroup-qti-display.bb"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-core/packagegroups/packagegroup-qti-multimedia.bb"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-core/packagegroups/packagegroup-qti-vnw.bb"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-core/packagegroups/packagegroup-qti-wlan.bb"
 
 BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-extended/bzip2/bzip2_1.0.6.bbappend"
-
 BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-gnome/gdk-pixbuf/gdk-pixbuf_%.bbappend"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-graphics"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-ivi"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-location"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-multimedia"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/recipes-wlan"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/synergy-opensource"
+BBMASK .= "|meta-qti-bsp/meta-qti-base/wireless-tools"
+
+BBMASK .= "|meta-qti-bsp/meta-qti-clang/recipes/audiodlkm"
+
+BBMASK .= "|meta-qti-bsp/meta-qti-extra/recipes-audio"
+BBMASK .= "|meta-qti-bsp/meta-qti-extra/recipes-core/packagegroups/packagegroup-qti-audio.bbappend"
+
+BBMASK .= "|meta-qti-bsp/meta-qti-upstream/recipes-connectivity/wireless-tools"
+BBMASK .= "|meta-qti-bsp/meta-qti-upstream/recipes-graphics"
+BBMASK .= "|meta-qti-bsp/meta-qti-upstream/recipes-multimedia"
+
+BBMASK .= "|meta-qti-internal/recipes/cv-internal"
+BBMASK .= "|meta-qti-internal/recipes/fastcv-internal"
+BBMASK .= "|meta-qti-internal/recipes/pa-test-utils"
+BBMASK .= "|meta-qti-internal/recipes/pa-test-utils/pa-test-utils.bb"
+BBMASK .= "|meta-qti-internal/recipes/synergy"
+
+BBMASK .= "|meta-virtualization/recipes-graphics"
+
+BBMASK .= "|poky/meta/recipes-connectivity/wpa-supplicant"
+BBMASK .= "|poky/meta/recipes-sato/pulseaudio-sato"
