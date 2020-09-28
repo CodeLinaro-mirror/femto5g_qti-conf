@@ -342,14 +342,14 @@ function build-sa2150p-perf-image() {
 function build-sa2150p-nand-image() {
   unset_bb_env
   export MACHINE=sa2150p-nand
-  export DISTRO=msm
+  export DISTRO=auto-eap-nand
   cdbitbake machine-image
 }
 
 function build-sa2150p-nand-perf-image() {
   unset_bb_env
   export MACHINE=sa2150p-nand
-  export DISTRO=msm
+  export DISTRO=auto-eap-nand
   export VARIANT=perf
   cdbitbake machine-image
 }
