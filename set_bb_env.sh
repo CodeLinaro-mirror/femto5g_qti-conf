@@ -405,6 +405,129 @@ build-all-sdmsteppe-concam-images() {
   build-sdmsteppe-concam-perf-image
 }
 
+# sdxnightjar commands
+function build-sdxnightjar-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sdxnightjar-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-sdxnightjar-2k-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-sdxnightjar-2k-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-sdxnightjar-images() {
+  build-sdxnightjar-image
+  #build-sdxnightjar-2k-image
+  #build-sdxnightjar-perf-image
+  #build-sdxnightjar-2k-perf-image
+}
+
+function build-sdxnightjar-psm-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export PRODUCT=psm
+  cdbitbake machine-image
+}
+
+function build-sdxnightjar-psm-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  export PRODUCT=psm
+  cdbitbake machine-image
+}
+
+build-all-sdxnightjar-psm-images() {
+  build-sdxnightjar-psm-image
+  build-sdxnightjar-psm-perf-image
+}
+
+# mdm9650 commands
+function build-9650-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-9650-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-9650-2k-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  cdbitbake machine-image
+}
+
+function build-9650-2k-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650-2k
+  export PRODUCT=base
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+build-all-9650-images() {
+  build-9650-image
+  build-9650-2k-image
+  build-9650-perf-image
+  build-9650-2k-perf-image
+}
+
+function build-9650-psm-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export PRODUCT=psm
+  cdbitbake machine-image
+}
+
+function build-9650-psm-perf-image() {
+  unset_bb_env
+  export MACHINE=mdm9650
+  export DISTRO=mdm-perf
+  export VARIANT=perf
+  export PRODUCT=psm
+  cdbitbake machine-image
+}
+
+build-all-9650-psm-images() {
+  build-9650-psm-image
+  build-9650-psm-perf-image
+}
+
+
 # Utility commands
 buildclean-retaindeploy() {
   set -x
