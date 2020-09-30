@@ -70,8 +70,11 @@ then
             cd ${WS}/$line
             if [ ! -d ".git" ]
             then
-                git init && git add . && git commit -m "Init new git project" >> /dev/null 2>&1 
+                git init && \
+                    git config user.name "NONAME" && \
+                    git config user.email "nomail@nomail.nomail"
             fi
+            git add . && git commit -m "Init new git project" >> /dev/null 2>&1 
         fi
     done
 else
@@ -113,7 +116,7 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 
     # Set environment variables for dm-verity
-    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE COQOS_LICENSE_FILE"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
 

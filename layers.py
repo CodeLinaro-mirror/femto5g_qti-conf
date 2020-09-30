@@ -41,6 +41,7 @@ def initLayersList(TARGET):
         "meta-agl-devel": { "meta-pipewire":1 }, \
         "meta-security": 1, \
         "meta-virtualization": 1, \
+        "meta-opsy-coqoshv-sdk": {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}, \
     }
     if TARGET == "sa8155qdrive":
         del dicLayersWithSubLayers["meta-agl"]
@@ -49,7 +50,7 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-security"]
         #dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         #dicLayersWithSubLayers["meta-ros"] = 1
-    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa8155ivi':
+    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa8155ivi' or TARGET == 'opsy-sa8155ivi' or TARGET == 'opsy-sa8155':
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-agl"]
         del dicLayersWithSubLayers["meta-agl-demo"]
@@ -70,7 +71,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm' or TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
+    elif TARGET == 'qtiquingvm' or TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl' or TARGET == 'opsy-sa8155agl':
         del dicLayersWithSubLayers["meta-agl"]
         del dicLayersWithSubLayers["meta-agl-demo"]
         del dicLayersWithSubLayers["meta-agl-devel"]
