@@ -641,6 +641,30 @@ function build-sa8155agl-sdk-image() {
     fi
 }
 
+# OPSY SA8155agl debug commands
+function build-opsy-sa8155agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa8155agl debug
+  cdbitbake machine-image periscope-native
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa8155agl debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+# OPSY SA8155agl perf commands
+function build-opsy-sa8155agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa8155agl perf
+  cdbitbake machine-image periscope-native
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa8155agl perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 # SA6155agl commands
 function build-sa6155agl-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
