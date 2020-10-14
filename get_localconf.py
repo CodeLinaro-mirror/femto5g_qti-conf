@@ -96,7 +96,9 @@ print "VARIANT ??= \"%s\"" % VARIANT
 print ""
 print "# BBMASK"
 print ReadFile("%s/include/bbmask.inc" % os.path.dirname(os.path.realpath(__file__)) )
-if DISTRO == "bg":
+if DISTRO == "auto":
+    print ReadFile("%s/include/bbmask-auto.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "bg":
     print ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-agl":
     print ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) )

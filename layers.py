@@ -43,6 +43,7 @@ def initLayersList(TARGET):
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
+        "meta-virtualization": 1\
     }
 
     if TARGET == "sa8155qdrive":
@@ -69,10 +70,6 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'qtiquingvm':
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
-        # Enable container meta-layers
-        dicLayersWithSubLayers["meta-virtualization"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-lxc"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-lxc-prop"] = 1
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
@@ -82,10 +79,6 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
     elif TARGET == 'sa8155lxc' or TARGET == 'sa8195lxc' or TARGET == 'sa6155lxc':
-        # Enable container meta-layers
-        dicLayersWithSubLayers["meta-virtualization"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-lxc"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-lxc-prop"] = 1
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
