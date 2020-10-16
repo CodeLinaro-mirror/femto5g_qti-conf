@@ -26,7 +26,7 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import common as c
-import os, sys
+import os, sys, re
 
 TARGET = sys.argv[1].strip()
 VARIANT = sys.argv[2].strip()
@@ -58,30 +58,30 @@ def generatePathString ( pathList ):
             retList += [TracingFile]
     return retList
 
+
+# Analyze 'TARGET' variable, initialize 'DISTRO' & 'MACHINE'
+DISTRO = "auto"
+MACHINE = TARGET
 if TARGET == "qtiquingvm":
     DISTRO = "auto-gvm"
     MACHINE = "qtiquingvm"
-elif TARGET == "sa8155bg":
-    DISTRO = "bg"
-    MACHINE = "sa8155"
-elif TARGET == "sa8195bg":
-    DISTRO = "bg"
-    MACHINE = "sa8195"
-elif TARGET == "sa8155agl":
-    DISTRO = "auto-agl"
-    MACHINE = "sa8155"
-elif TARGET == "sa8195agl":
-    DISTRO = "auto-agl"
-    MACHINE = "sa8195"
-elif TARGET == "sa6155agl":
-    DISTRO = "auto-agl"
-    MACHINE = "sa6155"
-elif TARGET == "sa8155qdrive":
-    DISTRO = "auto-qdrive-agl"
-    MACHINE = "sa8155"
 else:
-    DISTRO = "auto"
-    MACHINE = TARGET
+    pattern = re.compile(r'^(sa\d{4})(.*?)$')
+    result = pattern.findall(TARGET)
+    if len(result) == 1:
+        target_postfix = result[0][1]
+        MACHINE = result[0][0]
+        if target_postfix == "agl":
+            DISTRO = "auto-agl"
+        elif target_postfix == "bg":
+            DISTRO = "bg"
+        elif target_postfix == "qdrive":
+            DISTRO = "auto-qdrive"
+        elif target_postfix == "lxc":
+            DISTRO = "auto-lxc"
+        else:
+            DISTRO = "auto"
+
 
     
 print ReadFile("%s/include/local.conf.templet" % os.path.dirname(os.path.realpath(__file__)) )
@@ -96,17 +96,23 @@ print "VARIANT ??= \"%s\"" % VARIANT
 print ""
 print "# BBMASK"
 print ReadFile("%s/include/bbmask.inc" % os.path.dirname(os.path.realpath(__file__)) )
-if DISTRO == "bg":
+if DISTRO == "auto":
+    print ReadFile("%s/include/bbmask-auto.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "bg":
     print ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-agl":
     print ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) )
-elif DISTRO == "auto-qdrive-agl":
+elif DISTRO == "auto-lxc":
+    print ReadFile("%s/include/bbmask-lxc.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "auto-qdrive":
     print ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) )
-elif DISTRO == "auto-gvm-agl":
+elif DISTRO == "auto-gvm":
     print ReadFile("%s/include/bbmask-gvm.inc" % os.path.dirname(os.path.realpath(__file__)) )
 print ""
-print "# DISTRO_INC_FILES"
-print "DISTRO_INC_FILES = \"\""
-DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
-for dl in DistroList:
-    print "DISTRO_INC_FILES += \"%s\"" % dl
+
+if DISTRO != "bg":
+    print "# DISTRO_INC_FILES"
+    print "DISTRO_INC_FILES = \"\""
+    DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
+    for dl in DistroList:
+        print "DISTRO_INC_FILES += \"%s\"" % dl

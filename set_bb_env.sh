@@ -234,6 +234,39 @@ function build-all-agl-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
+# Common functions for build-all sa8155lxc/sa6155lxc/sa8195lxc images
+#           $1 -- Target name, as: sa8155lxc/sa6155lxc/sa8195lxc
+function build-all-lxc-function() {
+    if [ ! -d "${WS}/lxc/lxc-conf/lxc-conf" ]; then
+        mkdir -p tmp-glibc/deploy/images/$1-automotive
+        touch tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+        return 0
+    fi
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+}
+
 # Common functions for build-all sa8155bg/sa8195bg images
 #           $1 -- Target name, as: sa8155bg/sa8195bg
 function build-all-bg-function() {
@@ -322,6 +355,124 @@ function build-sa6155-sdk-image() {
     return 1
     fi
 }
+
+# SA8155LXC commands
+function build-sa8155lxc-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8155lxc debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8155lxc debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8155lxc-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8155lxc perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8155lxc perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa8155lxc-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-lxc-function sa8155lxc
+    return $?
+}
+
+# SA8155LXC commands
+function build-sa6155lxc-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa6155lxc debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa6155lxc debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa6155lxc-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa6155lxc perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa6155lxc perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa6155lxc-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-lxc-function sa6155lxc
+    return $?
+}
+
+# SA8195LXC commands
+function build-sa8195lxc-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8195lxc debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8195lxc debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8195lxc-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8195lxc perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8195lxc perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa8195lxc-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-lxc-function sa8195lxc
+    return $?
+}
+
 
 # SA8155 commands
 function build-sa8155-image() {
@@ -813,6 +964,7 @@ function build-qtiquingvm-perf-image() {
 }
 
 build-all-qtiquingvm-image() {
+
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-qtiquingvm-image
     if [ "$?" != "0" ]; then
