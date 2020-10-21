@@ -157,8 +157,8 @@ build-dm-verity-image() {
   return 0
 }
 
-# Common functions for build-all sa8155/sa6155/sa8195 images
-#           $1 -- Target name, as: sa8155/sa6155/sa8195
+# Common functions for build-all sa81x5/sa8155/sa6155/sa8195 images
+#           $1 -- Target name, as: sa81x5/sa8155/sa6155/sa8195
 function build-all-function() {
     build-$1-image
     if [ "$?" != "0" ]; then
@@ -200,8 +200,8 @@ function build-all-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
-# Common functions for build-all sa8155agl/sa6155agl/sa8195agl images
-#           $1 -- Target name, as: sa8155agl/sa6155agl/sa8195agl
+# Common functions for build-all sa81x5agl/sa8155agl/sa6155agl/sa8195agl images
+#           $1 -- Target name, as: sa81x5agl/sa8155agl/sa6155agl/sa8195agl
 function build-all-agl-function() {
     build-$1-image
     if [ "$?" != "0" ]; then
@@ -234,8 +234,8 @@ function build-all-agl-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
-# Common functions for build-all sa8155lxc/sa6155lxc/sa8195lxc images
-#           $1 -- Target name, as: sa8155lxc/sa6155lxc/sa8195lxc
+# Common functions for build-all sa81x5lxc/sa6155lxc images
+#           $1 -- Target name, as: sa81x5lxc/sa6155lxc
 function build-all-lxc-function() {
     if [ ! -d "${WS}/lxc/lxc-conf/lxc-conf" ]; then
         mkdir -p tmp-glibc/deploy/images/$1-automotive
@@ -267,8 +267,8 @@ function build-all-lxc-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
-# Common functions for build-all sa8155bg/sa8195bg images
-#           $1 -- Target name, as: sa8155bg/sa8195bg
+# Common functions for build-all sa81x5bg/sa8155bg/sa8195bg images
+#           $1 -- Target name, as: sa81x5bg/sa8155bg/sa8195bg
 function build-all-bg-function() {
     build-$1-image
     if [ "$?" != "0" ]; then
@@ -362,13 +362,13 @@ function build-sa6155-sdk-image() {
     fi
 }
 
-# SA8155LXC commands
-function build-sa8155lxc-image() {
+# SA81x5LXC commands
+function build-sa81x5lxc-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8155lxc debug
+  init-configure-files sa81x5lxc debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8155lxc debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa81x5lxc debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -379,12 +379,12 @@ function build-sa8155lxc-image() {
   fi
 }
 
-function build-sa8155lxc-perf-image() {
+function build-sa81x5lxc-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8155lxc perf
+  init-configure-files sa81x5lxc perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8155lxc perf'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa81x5lxc perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -395,9 +395,9 @@ function build-sa8155lxc-perf-image() {
   fi
 }
 
-build-all-sa8155lxc-image() {
+build-all-sa81x5lxc-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-all-lxc-function sa8155lxc
+    build-all-lxc-function sa81x5lxc
     return $?
 }
 
@@ -440,13 +440,13 @@ build-all-sa6155lxc-image() {
     return $?
 }
 
-# SA8195LXC commands
-function build-sa8195lxc-image() {
+# SA81x5 commands
+function build-sa81x5-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8195lxc debug
+  init-configure-files sa81x5 debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8195lxc debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa81x5 debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -455,17 +455,28 @@ function build-sa8195lxc-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
-}
 
-function build-sa8195lxc-perf-image() {
-  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  unset_bb_env
-  init-configure-files sa8195lxc perf
+  build-dm-verity-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8195lxc perf'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
+}
 
+function build-sa81x5-minimalimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  init-configure-files sa81x5 debug
+  cdbitbake core-image-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake core-image-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa81x5-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5 perf
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
@@ -473,12 +484,22 @@ function build-sa8195lxc-perf-image() {
   fi
 }
 
-build-all-sa8195lxc-image() {
+build-all-sa81x5-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-all-lxc-function sa8195lxc
+    build-all-function sa81x5
     return $?
 }
 
+function build-sa81x5-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa81x5 debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
 
 # SA8155 commands
 function build-sa8155-image() {
@@ -546,6 +567,47 @@ function build-sa8155-sdk-image() {
     return 1
     fi
 }
+
+# sa81x5bg commands
+function build-sa81x5bg-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5bg debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa81x5bg debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake bg-coreimage-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa81x5bg-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5bg perf
+  cdbitbake bg-coreimage-minimal
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa81x5bg-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-bg-function sa81x5bg
+    return $?
+}
+
 
 # sa8155bg commands
 function build-sa8155bg-image() {
@@ -759,6 +821,58 @@ function build-sa8155ivi-sdk-image() {
     init-configure-files sa8155ivi debug
     cdbitbake machine-image -c populate_sdk
 }
+
+# SA81x5agl commands
+function build-sa81x5agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5agl debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa81x5agl debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa81x5agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5agl perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa81x5agl-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function sa81x5agl
+    return $?
+}
+
+function build-sa81x5agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa81x5agl debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 # SA8155agl commands
 function build-sa8155agl-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
