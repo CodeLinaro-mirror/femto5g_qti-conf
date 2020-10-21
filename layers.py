@@ -53,13 +53,13 @@ def initLayersList(TARGET):
         # Enable ROS
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
-    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155':
+    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa81x5':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'sa8155bg' or TARGET == 'sa8195bg':
+    elif TARGET == 'sa8155bg' or TARGET == 'sa8195bg' or TARGET == 'sa81x5bg':
         # This is minimal image, remove extra meta-layers
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-extra"]
@@ -73,12 +73,12 @@ def initLayersList(TARGET):
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
-    elif TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl':
+    elif TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
-    elif TARGET == 'sa8155lxc' or TARGET == 'sa8195lxc' or TARGET == 'sa6155lxc':
+    elif TARGET == 'sa8155lxc' or TARGET == 'sa8195lxc' or TARGET == 'sa6155lxc' or TARGET == 'sa81x5lxc':
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
