@@ -20,7 +20,13 @@ def initLayersList(target):
     metaOELayers = [ "meta-networking", "meta-python", "meta-oe", \
                      "meta-filesystems", "meta-multimedia" \
                    ]
-    dicLayersWithSubLayers = { "meta-openembedded": metaOELayers }
+    metaROSLayers = [ "meta-ros-common", "meta-ros2", \
+                      "meta-ros2-foxy", "meta-ros-backports-gatesgarth" \
+                    ]
+
+    dicLayersWithSubLayers = { "meta-openembedded": metaOELayers, \
+                               "meta-ros": metaROSLayers \
+                             }
 
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
