@@ -65,3 +65,4 @@ BBMASK .= "|meta-virtualization/recipes-graphics"
 
 BBMASK .= "|poky/meta/recipes-connectivity/wpa-supplicant"
 BBMASK .= "|poky/meta/recipes-sato/pulseaudio-sato"
+BBMASK .= "|meta-qti-bsp-prop/meta-qti-base-prop/recipes-core/diag/diag-vendor_git.bb"
