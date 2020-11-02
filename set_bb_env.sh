@@ -58,6 +58,12 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
+#check downloads and cache
+CD="${scriptdir}/scripts-noship/check_downloads_cache"
+if [ -f $CD ];then
+    source $CD
+    check_downloads_cache
+fi
 
 #init local git if it does not exist
 function init_localgit() {
