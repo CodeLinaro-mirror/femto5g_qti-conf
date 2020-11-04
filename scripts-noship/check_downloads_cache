@@ -32,8 +32,11 @@ function check_downloads_cache() {
 	FILES="`ls -1 ${WS}/poky/build/sstate-cache 2> /dev/null | head -n1`"
 	if [ -d $BACKUP_SERVER/sstate-cache ];then
 		if [ ! -d ${WS}/poky/build/sstate-cache ] || [ -z $FILES ]; then
+			echo "Copying build cache. Please wait and don’t press CTRL + C …"
 			if [ ! -z `cp -rf $BACKUP_SERVER/sstate-cache ${WS}/poky/build` ];then
 				echo "sstate-cache copying failed"
+			else
+				echo "Copying build cache successful"
 			fi
 		fi
 	fi
@@ -41,8 +44,11 @@ function check_downloads_cache() {
 	FILES="`ls -1 ${WS}/poky/build/downloads 2> /dev/null | head -n1`"
 	if [ -d $BACKUP_SERVER/downloads ];then
 		if [  ! -d ${WS}/poky/build/downloads ]  || [ -z $FILES ]; then
+			echo "Copying downloads. Please wait and don’t press CTRL + C …"
 			if [ ! -z `cp -rf $BACKUP_SERVER/downloads ${WS}/poky/build` ];then
 		            echo "downloads copying failed"
+			else
+		            echo "Copying downloads successful"
 			fi
 		fi
 	fi
