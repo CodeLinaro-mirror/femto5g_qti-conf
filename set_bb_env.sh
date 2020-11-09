@@ -58,10 +58,34 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
+function check_downloads_cache() {
+FILES="`ls -1 ${WS}/poky/build/sstate-cache 2> /dev/null | head -n1`"
+if [ -d $BACKUP_SERVER/sstate-cache ];then
+    if [ ! -d ${WS}/poky/build/sstate-cache ] || [ -z $FILES ]; then
+        echo "Copying build cache. Please wait and don’t press CTRL + C …"
+        if [ ! -z `cp -rf $BACKUP_SERVER/sstate-cache ${WS}/poky/build` ];then
+            echo "sstate-cache copying failed"
+        else
+            echo "Copying build cache successful"
+        fi
+    fi
+fi
+
+FILES="`ls -1 ${WS}/poky/build/downloads 2> /dev/null | head -n1`"
+if [ -d $BACKUP_SERVER/downloads ];then
+    if [  ! -d ${WS}/poky/build/downloads ]  || [ -z $FILES ]; then
+        echo "Copying downloads. Please wait and don’t press CTRL + C …"
+        if [ ! -z `cp -rf $BACKUP_SERVER/downloads ${WS}/poky/build` ];then
+            echo "downloads copying failed"
+        else
+            echo "Copying downloads successful"
+        fi
+    fi
+fi
+}
+
 #check downloads and cache
-CD="${scriptdir}/scripts-noship/check_downloads_cache"
-if [ -f $CD ];then
-    source $CD
+if [ ! -z $BACKUP_SERVER ];then
     check_downloads_cache
 fi
 
