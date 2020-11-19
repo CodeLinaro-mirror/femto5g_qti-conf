@@ -149,17 +149,19 @@ build-dm-verity-image() {
   echo "==== Error run 'cdbitbake virtual/kernel -f -c deploy'. (${FUNCNAME[@]})"
   return 1
   fi
-  cdbitbake machine-image -f -c make_bootimg
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image -f -c make_bootimg'. (${FUNCNAME[@]})"
-  return 1
-  fi
   return 0
+}
+
+function show_build_environment() {
+  echo "=================Show Build Environment==========="
+  git version
+  export
 }
 
 # Common functions for build-all sa8155/sa6155/sa8195 images
 #           $1 -- Target name, as: sa8155/sa6155/sa8195
 function build-all-function() {
+    show_build_environment
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -169,14 +171,6 @@ function build-all-function() {
     fi
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
     rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-
-    build-$1-minimalimage
-    if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-$1-minimalimage'. (${FUNCNAME[@]})"
-    return 1
-    fi
-    export MINIMAL_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
 
     build-$1-sdk-image
     if [ "$?" != "0" ]; then
@@ -196,13 +190,13 @@ function build-all-function() {
     mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive/$MINIMAL_IMAGE tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
 # Common functions for build-all sa8155agl/sa6155agl/sa8195agl images
 #           $1 -- Target name, as: sa8155agl/sa6155agl/sa8195agl
 function build-all-agl-function() {
+    show_build_environment
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -237,6 +231,7 @@ function build-all-agl-function() {
 # Common functions for build-all sa8155bg/sa8195bg images
 #           $1 -- Target name, as: sa8155bg/sa8195bg
 function build-all-bg-function() {
+    show_build_environment
     build-$1-image
     if [ "$?" != "0" ]; then
     export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
@@ -292,6 +287,12 @@ function build-sa6155-perf-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -365,6 +366,12 @@ function build-sa8155-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155-image() {
@@ -416,6 +423,12 @@ function build-sa8155bg-perf-image() {
   echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155bg-image() {
@@ -455,6 +468,13 @@ function build-sa8195bg-perf-image() {
   echo "==== Error run 'cdbitbake bg-coreimage-minimal'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
 }
 
 build-all-sa8195bg-image() {
@@ -504,6 +524,12 @@ function build-sa8195-perf-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -609,6 +635,12 @@ function build-sa8155agl-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8155agl-image() {
@@ -660,6 +692,12 @@ function build-sa6155agl-perf-image() {
   echo "==== Error run 'dbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa6155agl-image() {
@@ -709,6 +747,12 @@ function build-sa8195agl-perf-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8195agl perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
