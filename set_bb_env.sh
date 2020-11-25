@@ -41,13 +41,31 @@ TEMPLATECONF="meta-qti-bsp/conf"
 apply_poky_patches () {
     cd ${WS}/poky
     for patchfile in $(cat qti-conf/patches/series); do
-        patch -p1 -N --dry-run --silent < qti-conf/patches/$patchfile 2>/dev/null
+        patch -p1 -N --dry-run --silent < qti-conf/patches/$patchfile > /dev/null 2>&1
         # sucessful dryrun sets exit status of last command ($?) to 0
         if [ $? -eq 0 ]; then
             #apply the patch
-            patch -p1 -N --silent < qti-conf/patches/$patchfile 2>/dev/null
+            patch -p1 -N --silent < qti-conf/patches/$patchfile > /dev/null 2>&1
         fi
     done
+}
+
+confnote () {
+    cat <<EOF
+
+
+### Shell environment ready with following configuration to run bitake commands. ###
+
+DISTRO     = ${DISTRO}
+MACHINE    = ${MACHINE}
+
+You can now run 'bitbake <target>'
+
+Supported image targets are:
+    qti-console-image
+    qti-xr-image
+
+EOF
 }
 
 usage () {
@@ -68,6 +86,9 @@ EOF
 init_build_env () {
     # Patch poky
     apply_poky_patches
+
+    # Show conf notes
+    confnote
 
     # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
     # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
