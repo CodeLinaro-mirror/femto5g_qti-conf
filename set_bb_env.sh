@@ -408,7 +408,7 @@ build-all-sdmsteppe-concam-images() {
 # sdxnightjar commands
 function build-sdxnightjar-perf-image() {
   unset_bb_env
-  export MACHINE=mdm9650
+  export MACHINE=sdxnightjar
   export PRODUCT=base
   export DISTRO=mdm-perf
   export VARIANT=perf
@@ -417,21 +417,21 @@ function build-sdxnightjar-perf-image() {
 
 function build-sdxnightjar-image() {
   unset_bb_env
-  export MACHINE=mdm9650
+  export MACHINE=sdxnightjar
   export PRODUCT=base
   cdbitbake machine-image
 }
 
 function build-sdxnightjar-2k-image() {
   unset_bb_env
-  export MACHINE=mdm9650-2k
+  export MACHINE=sdxnightjar-2k
   export PRODUCT=base
   cdbitbake machine-image
 }
 
 function build-sdxnightjar-2k-perf-image() {
   unset_bb_env
-  export MACHINE=mdm9650-2k
+  export MACHINE=sdxnightjar-2k
   export PRODUCT=base
   export DISTRO=mdm-perf
   export VARIANT=perf
@@ -447,14 +447,14 @@ build-all-sdxnightjar-images() {
 
 function build-sdxnightjar-psm-image() {
   unset_bb_env
-  export MACHINE=mdm9650
+  export MACHINE=sdxnightjar
   export PRODUCT=psm
   cdbitbake machine-image
 }
 
 function build-sdxnightjar-psm-perf-image() {
   unset_bb_env
-  export MACHINE=mdm9650
+  export MACHINE=sdxnightjar
   export DISTRO=mdm-perf
   export VARIANT=perf
   export PRODUCT=psm
