@@ -441,6 +441,7 @@ function build-sdxnightjar-2k-perf-image() {
 build-all-sdxnightjar-images() {
   build-sdxnightjar-image
   #build-sdxnightjar-2k-image
+  buildclean-retaindeploy
   build-sdxnightjar-perf-image
   #build-sdxnightjar-2k-perf-image
 }
