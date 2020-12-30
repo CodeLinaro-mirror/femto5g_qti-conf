@@ -537,7 +537,8 @@ buildclean-retaindeploy() {
   tmp_dir_list=$(ls tmp-glibc/)
   tmp_dir_rm_list=$(sed 's/deploy//' <<< $tmp_dir_list)
 
-  rm -rf bitbake.lock pseudodone sstate-cache cache tmp-glibc/deploy/ipk/ tmp-glibc/deploy/licenses/
+  rm -rf bitbake.lock pseudodone sstate-cache cache tmp-glibc/deploy/ipk/ tmp-glibc/deploy/licenses/ tmp-glibc/deploy/sdk/
+
   for e in $tmp_dir_rm_list; do
     rm -rf tmp-glibc/$e
   done
