@@ -62,9 +62,8 @@ def generatePathString ( pathList ):
 # Analyze 'TARGET' variable, initialize 'DISTRO' & 'MACHINE'
 DISTRO = "auto"
 MACHINE = TARGET
-if TARGET == "qtiquingvm":
+if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" :
     DISTRO = "auto-gvm"
-    MACHINE = "qtiquingvm"
 else:
     pattern = re.compile(r'^(sa\d{4})(.*?)$')
     result = pattern.findall(TARGET)
