@@ -65,7 +65,7 @@ MACHINE = TARGET
 if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" :
     DISTRO = "auto-gvm"
 else:
-    pattern = re.compile(r'^(sa\d{4})(.*?)$')
+    pattern = re.compile(r'^(sa\w{4})(.*?)$')
     result = pattern.findall(TARGET)
     if len(result) == 1:
         target_postfix = result[0][1]
