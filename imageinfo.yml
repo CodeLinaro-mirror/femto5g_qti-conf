@@ -1,0 +1,49 @@
+# SI-machine-distro-image mapping info
+
+LE.UM.4.4.1:
+  machine:
+    - qrb5165-rb5
+  distro:
+    - qti-distro-nosecurity-debug
+    - qti-distro-nosecurity-perf
+  target:
+    - qti-console-image
+    - qti-multimedia-image
+
+LE.UM.5.2.2:
+  machine:
+    - sxr2130-mtp
+  distro:
+    - qti-distro-xr-debug
+    - qti-distro-xr-perf
+  target:
+    - qti-console-image
+    - qti-xreality-image
+
+LE.UM.5.3.1:
+  machine:
+    - genericarmv8
+  distro:
+    - qti-distro-base-debug
+    - qti-distro-base-perf
+  target:
+    - qti-vm-image
+
+LE.UM.5.3.2:
+  machine:
+    - sdxlemur
+  distro:
+    - qti-distro-nogplv3-debug
+    - qti-distro-nogplv3-perf
+    - qti-distro-nogplv3-user
+  target:
+    - qti-mbb-image
+
+LE.UM.5.4.1:
+  machine:
+    - qrbx210-rbx
+  distro:
+    - qti-distro-fullstack-noselinux-debug
+    - qti-distro-fullstack-noselinux-perf
+  target:
+    - qti-console-image
