@@ -1244,6 +1244,16 @@ function build-qtiquingvm8295-sdk-image() {
     fi
 }
 
+function build-sa81x5-rt-initramfsimage() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  init-configure-files sa81x5-rt debug
+  cdbitbake machine-image-initramfs
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image-initramfs'. (${FUNCNAME[@]})"
+    return 1
+  fi
+}
+
 # Build image
 function build-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
