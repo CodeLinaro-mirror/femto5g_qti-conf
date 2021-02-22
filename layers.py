@@ -53,7 +53,7 @@ def initLayersList(TARGET):
         # Enable ROS
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
-    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa81x5':
+    elif TARGET == 'sa8155' or TARGET == 'sa8195' or TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
