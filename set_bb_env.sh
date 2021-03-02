@@ -175,6 +175,31 @@ function build-sdm845-robot-perf-image() {
   cdbitbake machine-image
 }
 
+function build-sm8250-cdp-image() {
+  unset_bb_env
+  if [ -d ${WS}/adreno200 ]
+  then
+    export EDGE_INTERNAL=1
+  fi
+
+  export MACHINE=sm8250
+  export DISTRO=cdp
+  cdbitbake machine-image
+}
+
+function build-sm8250-cdp-perf-image() {
+  unset_bb_env
+  if [ -d ${WS}/adreno200 ]
+  then
+    export EDGE_INTERNAL=1
+  fi
+
+  export MACHINE=sm8250
+  export DISTRO=cdp
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
 function build-sm8250-edge-image() {
   unset_bb_env
   if [ -d ${WS}/adreno200 ]
