@@ -1246,6 +1246,7 @@ function build-qtiquingvm8295-sdk-image() {
 
 function build-sa81x5-rt-initramfsimage() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
   init-configure-files sa81x5-rt debug
   cdbitbake machine-image-initramfs
   if [ "$?" != "0" ]; then
