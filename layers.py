@@ -73,6 +73,8 @@ def initLayersList(TARGET):
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable sdllvm
