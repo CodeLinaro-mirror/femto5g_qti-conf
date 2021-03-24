@@ -63,7 +63,7 @@ You can now run 'bitbake <target>'
 
 Supported image targets are:
     qti-console-image
-    qti-xr-image
+    qti-xreality-image
 
 EOF
 }
