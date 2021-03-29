@@ -66,6 +66,9 @@ if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" :
     DISTRO = "auto-gvm"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
+elif TARGET == "qtiquingvm-headless":
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "qtiquingvm"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
     result = pattern.findall(TARGET)
