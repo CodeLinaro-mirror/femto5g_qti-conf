@@ -41,7 +41,7 @@ def initLayersList(TARGET):
         "meta-qt5": 1, \
         "meta-gplv2": 1, \
         "meta-selinux": 1, \
-        "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1 }, \
+        "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1, "meta-initramfs":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
         "meta-virtualization": 1\
