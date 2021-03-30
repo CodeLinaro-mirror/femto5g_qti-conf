@@ -160,6 +160,17 @@ build-dm-verity-image() {
 # Common functions for build-all sa81x5/sa6155 images
 #           $1 -- Target name, as: sa81x5/sa6155
 function build-all-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -198,11 +209,26 @@ function build-all-function() {
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive/$MINIMAL_IMAGE tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5agl/sa6155agl images
 #           $1 -- Target name, as: sa81x5agl/sa6155agl
 function build-all-agl-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -232,6 +258,10 @@ function build-all-agl-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5lxc/sa6155lxc images
@@ -242,6 +272,18 @@ function build-all-lxc-function() {
         touch tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
         return 0
     fi
+
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -265,11 +307,26 @@ function build-all-lxc-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5bg images
 #           $1 -- Target name, as: sa81x5bg
 function build-all-bg-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
@@ -293,6 +350,10 @@ function build-all-bg-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$BG_MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$BG_MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # SA6155 commands
