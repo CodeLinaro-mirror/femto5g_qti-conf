@@ -254,9 +254,6 @@ FETCHCMD_wget      = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --
 FETCHCOMMAND_wget  = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate -P ${DL_DIR} ${URI}"
 RESUMECOMMAND_wget = "/usr/bin/env wget -c --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate -P ${DL_DIR} ${URI}"
 
-# GCC Version
-GCCVERSION ?= "8.2%"
-
 export userfsdatadir = "${base_prefix}/data"
 
 PATH_TO_REPO ?= "git://${SRC_DIR_ROOT}"
