@@ -4,29 +4,20 @@
 import os, sys, fnmatch, re
 from operator import itemgetter
 
-# meta-layer  variables
-ignoreList = None
-dicLayersWithSubLayers = None
+# Layers to be excluded
+ignoreList = [  "meta-selftest", "meta-skeleton", \
+                "meta-poky", "meta-yocto", "meta-yocto-bsp", \
+             ]
+# Sub-layer info
+QtiBspSubLayers = [ "meta-qti-customizations" ]
+OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
+                    "meta-filesystems", "meta-multimedia" ]
+RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
+                    "meta-ros2-foxy", "meta-ros-backports-gatesgarth" ]
 
-# Initialize meta-layer list.
-def initLayersList(target):
-    global ignoreList
-    global dicLayersWithSubLayers
-
-    # initialize LE's layer list
-    ignoreList = [  "meta-selftest", "meta-skeleton", \
-                    "meta-poky", "meta-yocto", "meta-yocto-bsp", \
-                 ]
-    metaOELayers = [ "meta-networking", "meta-python", "meta-oe", \
-                     "meta-filesystems", "meta-multimedia" \
-                   ]
-    metaROSLayers = [ "meta-ros-common", "meta-ros2", \
-                      "meta-ros2-foxy", "meta-ros-backports-gatesgarth" \
-                    ]
-
-    dicLayersWithSubLayers = { "meta-openembedded": metaOELayers, \
-                               "meta-ros": metaROSLayers \
-                             }
+dicLayersWithSubLayers = { "meta-qti-bsp": QtiBspSubLayers, \
+                           "meta-openembedded": OeSubLayers, \
+                           "meta-ros":RosSubLayers }
 
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
@@ -44,7 +35,6 @@ def getLayerPriority (layerConfPath) :
 def getLayerPaths(target,  fnexpr) :
     global ignoreList
     global dicLayersWithSubLayers
-    initLayersList(target)
     retList = []
     for file in os.listdir(target) :
         if not any(fnmatch.fnmatch(file, fnexpr) for fnexpr in ignoreList):
