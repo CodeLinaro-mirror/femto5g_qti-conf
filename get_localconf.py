@@ -74,6 +74,8 @@ else:
         MACHINE = result[0][0]
         if target_postfix == "agl":
             DISTRO = "auto-agl"
+        elif target_postfix == "agldemo":
+            DISTRO = "auto-agldemo"
         elif target_postfix == "bg":
             DISTRO = "bg"
         elif target_postfix == "qdrive":
@@ -103,6 +105,8 @@ elif DISTRO == "bg":
     print ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-agl":
     print ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) )
+elif DISTRO == "auto-agldemo":
+    print ReadFile("%s/include/bbmask-agldemo.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-lxc":
     print ReadFile("%s/include/bbmask-lxc.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-qdrive":

@@ -39,12 +39,15 @@ def initLayersList(TARGET):
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
         "meta-virtualization": 1\
     }
-    ### Disabled agl meta layers
-    # "meta-agl": {"meta-agl-core-test":1, "meta-pipewire":1, "meta-app-framework":1 }, \
-    # "meta-agl-devel": { "meta-speech-framework":1 }, \
-    # "meta-security": 1
-    dicAglLayersWithSubLayers = { \
-        "meta-agl": {"meta-agl-core":1 } \
+    dicAglCoreLayersWithSubLayers = { \
+        "meta-agl": { "meta-agl-core":1 } \
+    }
+    ### Disabled AGL meta layers
+    # "meta-agl-devel": { "meta-speech-framework":1 },
+    dicAglDemoLayersWithSubLayers = { \
+        "meta-agl": { "meta-agl-core":1, "meta-agl-core-test":1, "meta-pipewire":1, "meta-app-framework":1 }, \
+        "meta-agl-demo": 1, \
+        "meta-security": 1 \
     }
 
     if TARGET == "sa8155qdrive":
@@ -77,8 +80,14 @@ def initLayersList(TARGET):
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa8155agl' or TARGET == 'sa8195agl' or TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
-        # Add AGL layers
-        dicLayersWithSubLayers.update(dicAglLayersWithSubLayers)
+        # Add AGL core layers
+        dicLayersWithSubLayers.update(dicAglCoreLayersWithSubLayers)
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+    elif TARGET == 'sa8155agldemo' or TARGET == 'sa8195agldemo' or TARGET == 'sa6155agldemo' or TARGET == 'sa81x5agldemo':
+        # Add AGL core + demo layers
+        dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
