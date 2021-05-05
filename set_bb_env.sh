@@ -160,6 +160,17 @@ build-dm-verity-image() {
 # Common functions for build-all sa81x5/sa6155 images
 #           $1 -- Target name, as: sa81x5/sa6155
 function build-all-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -198,11 +209,26 @@ function build-all-function() {
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive/$MINIMAL_IMAGE tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5agl/sa6155agl images
 #           $1 -- Target name, as: sa81x5agl/sa6155agl
 function build-all-agl-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -232,6 +258,10 @@ function build-all-agl-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5lxc/sa6155lxc images
@@ -242,6 +272,18 @@ function build-all-lxc-function() {
         touch tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
         return 0
     fi
+
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -265,11 +307,26 @@ function build-all-lxc-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5bg images
 #           $1 -- Target name, as: sa81x5bg
 function build-all-bg-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
@@ -293,6 +350,10 @@ function build-all-bg-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$BG_MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$BG_MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # SA6155 commands
@@ -758,6 +819,79 @@ function build-qtiquingvm-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files qtiquingvm debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+# qtiquingvm-headless commands
+function build-qtiquingvm-headless-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtiquingvm-headless debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files qtiquingvm debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-qtiquingvm-headless-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtiquingvm-headless perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-qtiquingvm-headless-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-qtiquingvm-headless-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4
+    echo "==== Error run 'build-qtiquingvm-headless-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4
+
+    build-qtiquingvm-headless-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtiquingvm-headless-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive tmp-glibc/deploy/images/qtiquingvm-headless-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-qtiquingvm-headless-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtiquingvm-headless-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/machine-image-qtiquingvm-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/machine-image-qtiquingvm-headless.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive.bak tmp-glibc/deploy/images/qtiquingvm-headless-automotive
+
+    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/machine-image-qtiquingvm-headless.ext4
+}
+
+function build-qtiquingvm-headless-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files qtiquingvm-headless debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
