@@ -98,21 +98,14 @@ print "MACHINE ??= \"%s\"" % MACHINE
 print "VARIANT ??= \"%s\"" % VARIANT
 print ""
 print "# BBMASK"
-print ReadFile("%s/include/bbmask.inc" % os.path.dirname(os.path.realpath(__file__)) )
-if DISTRO == "auto":
-    print ReadFile("%s/include/bbmask-auto.inc" % os.path.dirname(os.path.realpath(__file__)) )
-elif DISTRO == "bg":
+if DISTRO == "bg":
     print ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-agl":
     print ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-agldemo":
     print ReadFile("%s/include/bbmask-agldemo.inc" % os.path.dirname(os.path.realpath(__file__)) )
-elif DISTRO == "auto-lxc":
-    print ReadFile("%s/include/bbmask-lxc.inc" % os.path.dirname(os.path.realpath(__file__)) )
 elif DISTRO == "auto-qdrive":
     print ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) )
-elif DISTRO == "auto-gvm":
-    print ReadFile("%s/include/bbmask-gvm.inc" % os.path.dirname(os.path.realpath(__file__)) )
 print ""
 
 if DISTRO != "bg":
