@@ -54,6 +54,12 @@ def initLayersList(TARGET):
         # Enable ROS
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
+    elif TARGET == 'opsy-sa81x5':
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa6155' or TARGET == 'sa81x5':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
@@ -74,6 +80,14 @@ def initLayersList(TARGET):
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+    elif TARGET == 'opsy-sa81x5agl':
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        # Enable CoQos meta layer
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"]["meta-opsy-coqoshv"] = 1
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"]["meta-opsy-qti-sa8155"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
     elif TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable sdllvm
@@ -84,4 +98,3 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-
