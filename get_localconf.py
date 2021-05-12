@@ -87,30 +87,30 @@ else:
 
 
     
-print ReadFile("%s/include/local.conf.templet" % os.path.dirname(os.path.realpath(__file__)) )
-print "###################################################"
-print "# Below content is dynamically generated every time"
-print "# DO NOT EDIT."
-print ""
-print "# Define DISTRO\MACHINE\VARIANT"
-print "DISTRO ??= \"%s\"" % DISTRO
-print "MACHINE ??= \"%s\"" % MACHINE
-print "VARIANT ??= \"%s\"" % VARIANT
-print ""
-print "# BBMASK"
+print( ReadFile("%s/include/local.conf.templet" % os.path.dirname(os.path.realpath(__file__)) ))
+print ("###################################################")
+print ("# Below content is dynamically generated every time")
+print ("# DO NOT EDIT.")
+print ("")
+print ("# Define DISTRO\MACHINE\VARIANT")
+print ("DISTRO ??= \"%s\"" % DISTRO)
+print ("MACHINE ??= \"%s\"" % MACHINE)
+print ("VARIANT ??= \"%s\"" % VARIANT)
+print ("")
+print ("# BBMASK")
 if DISTRO == "bg":
-    print ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) )
+    print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":
-    print ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) )
+    print (ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agldemo":
-    print ReadFile("%s/include/bbmask-agldemo.inc" % os.path.dirname(os.path.realpath(__file__)) )
+    print (ReadFile("%s/include/bbmask-agldemo.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-qdrive":
-    print ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) )
-print ""
+    print (ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) ))
+print ("")
 
 if DISTRO != "bg":
-    print "# DISTRO_INC_FILES"
-    print "DISTRO_INC_FILES = \"\""
+    print ("# DISTRO_INC_FILES")
+    print ("DISTRO_INC_FILES = \"\"")
     DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
     for dl in DistroList:
-        print "DISTRO_INC_FILES += \"%s\"" % dl
+        print ("DISTRO_INC_FILES += \"%s\"" % dl)
