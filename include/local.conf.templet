@@ -236,8 +236,9 @@ BB_HASHBASE_WHITELIST_append = " \
 # Let pkgs install files that other pkgs want to install for the recovery images.
 OPKG_ARGS_append = " --force-overwrite"
 
-# Use sstate packages that track state change
-BB_SIGNATURE_HANDLER = "OEBasicHash"
+# Enable hash equivalency
+BB_SIGNATURE_HANDLER = "OEEquivHash"
+BB_HASHSERVE = "auto"
 
 # Record build history to detect possible regressions and to run analysis on top of the build output.
 INHERIT += "buildhistory"
