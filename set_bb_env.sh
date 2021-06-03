@@ -832,7 +832,7 @@ function build-sa81x5agl-image() {
   return 1
   fi
 
-  cdbitbake machine-image
+  cdbitbake qti-image-agl-weston
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
@@ -849,7 +849,7 @@ function build-sa81x5agl-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa81x5agl perf
-  cdbitbake machine-image
+  cdbitbake qti-image-agl-weston
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
@@ -940,7 +940,7 @@ function build-sa6155agl-image() {
   return 1
   fi
 
-  cdbitbake machine-image
+  cdbitbake qti-image-agl-weston 
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
@@ -957,7 +957,7 @@ function build-sa6155agl-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files sa6155agl perf
-  cdbitbake machine-image
+  cdbitbake qti-image-agl-weston
   if [ "$?" != "0" ]; then
   echo "==== Error run 'dbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
