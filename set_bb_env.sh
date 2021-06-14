@@ -205,13 +205,13 @@ function build-all-function() {
 function build-all-agl-function() {
     build-$1-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    export IMAGE_DEBUG=`readlink tmp-glibc/deploy/images/$1-automotive/qti-image-agl-weston-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/qti-image-agl-weston-$1.ext4
     echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    export IMAGE_DEBUG=`readlink tmp-glibc/deploy/images/$1-automotive/qti-image-agl-weston-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/qti-image-agl-weston-$1.ext4
 
     build-$1-sdk-image
     if [ "$?" != "0" ]; then
@@ -226,12 +226,12 @@ function build-all-agl-function() {
     echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    export IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-weston-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-weston-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
 
-    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive/$IMAGE_DEBUG tmp-glibc/deploy/images/$1-automotive/qti-image-agl-weston-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-weston-$1.ext4
 }
 
 # Common functions for build-all sa81x5lxc/sa6155lxc images
@@ -834,7 +834,7 @@ function build-sa81x5agl-image() {
 
   cdbitbake qti-image-agl-weston
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake qti-image-agl-weston'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -851,7 +851,7 @@ function build-sa81x5agl-perf-image() {
   init-configure-files sa81x5agl perf
   cdbitbake qti-image-agl-weston
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake qti-image-agl-weston'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -866,9 +866,9 @@ function build-sa81x5agl-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa81x5agl debug
-    cdbitbake machine-image -c populate_sdk
+    cdbitbake qti-image-agl-weston -c populate_sdk
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    echo "==== Error run 'cdbitbake qti-image-agl-weston -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
 }
@@ -942,7 +942,7 @@ function build-sa6155agl-image() {
 
   cdbitbake qti-image-agl-weston 
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake qti-image-agl-weston'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -959,7 +959,7 @@ function build-sa6155agl-perf-image() {
   init-configure-files sa6155agl perf
   cdbitbake qti-image-agl-weston
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'dbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake qti-image-agl-weston'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -980,9 +980,9 @@ function build-sa6155agl-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files sa6155agl debug
-    cdbitbake machine-image -c populate_sdk
+    cdbitbake qti-image-agl-weston -c populate_sdk
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    echo "==== Error run 'cdbitbake qti-image-agl-weston -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
 }
