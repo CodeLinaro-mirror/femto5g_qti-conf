@@ -113,7 +113,7 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 
     # Set environment variables for dm-verity
-    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE COQOS_LICENSE_FILE BOARD_VARIANT"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
 
@@ -699,6 +699,32 @@ function build-sa6155agl-sdk-image() {
     fi
 }
 
+# Add opsy-sa81x5 debug build commands
+function build-opsy-sa81x5-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa81x5 debug
+  export COQOS_LICENSE_FILE="${WS}/meta-opsy-coqoshv-sdk/meta-opsy-qti-sa8155/Qcoqos.lic"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa81x5 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+# Add opsy-sa81x5 perf build commands
+function build-opsy-sa81x5-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa81x5 perf
+  export COQOS_LICENSE_FILE="${WS}/meta-opsy-coqoshv-sdk/meta-opsy-qti-sa8155/Qcoqos.lic"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa81x5 perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -999,5 +1025,5 @@ export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR SSTATE_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
