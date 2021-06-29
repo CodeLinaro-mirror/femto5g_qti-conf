@@ -79,7 +79,7 @@ else
     touch ${WS}/localgit
     cat ${WS}/release/for_p4 | while read line
     do
-        if grep -q "$line" ${WS}/.repo/manifests/default.xml
+        if grep -q "\"$line\"" ${WS}/.repo/manifests/default.xml
         then
             strmeta="meta-qti"
             if [[ $line != *$strmeta* ]]
