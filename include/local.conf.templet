@@ -246,8 +246,8 @@ OPKG_ARGS_append = " --force-overwrite"
 BB_SIGNATURE_HANDLER = "OEBasicHash"
 
 # Record build history to detect possible regressions and to run analysis on top of the build output.
-INHERIT += "buildhistory"
-BUILDHISTORY_COMMIT = "1"
+#INHERIT += "buildhistory"
+#BUILDHISTORY_COMMIT = "1"
 
 # Add --retry-connrefused to the wget execution.
 FETCHCMD_wget      = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate"
@@ -267,3 +267,8 @@ INHERIT += "qfile"
 
 # Enable fortran
 FORTRAN_forcevariable = ",fortran"
+
+WHITELIST_GPL-3.0 += "glmark2 gdb binutils elfutils"
+PROJECT_PREMIRRORS = "https://.*/.* http://autoint-linux-4/workspace/visweswa/opsydownloads/  git://.*/.* http://autoint-linux-4/workspace/visweswa/opsydownloads/  gitsm://.*/.* http://autoint-linux-4/workspace/visweswa/opsydownloads/"
+INHERIT += "own-mirrors"
+SOURCE_MIRROR_URL = "http://autoint-linux-4/workspace/visweswa/opsydownloads/"

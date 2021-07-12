@@ -44,7 +44,10 @@ def initLayersList(TARGET):
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1, "meta-initramfs":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
-        "meta-virtualization": 1\
+        "meta-virtualization": 1, \
+        "meta-opsy-coqoshv-sdk": {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}, \
+        "meta-opsy-staging": {"meta-opsy-coqoshv-staging": 1, "meta-opsy-qti-sa8155-staging": 1}, \
+        "meta-opsy-e0853": 1, \
     }
 
     if TARGET == "sa8155qdrive":
