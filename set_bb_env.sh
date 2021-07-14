@@ -121,62 +121,33 @@ if [ $# -eq 1 ]; then
     fi
 fi
 
+# Choose one among whiptail & dialog to show dialog boxes
+read uitool <<< "$(which whiptail dialog 2> /dev/null)"
+
 # create a common list of "<machine>(<layer>)", sorted by <machine>
 MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | grep -v "fsconfig" | grep -v "partition" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -z "${MACHINE}" ]; then
-    # whiptail
-    which whiptail > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        MACHINETABLE=
-        for ITEM in $MACHLAYERS; do
-            MACHINETABLE="${MACHINETABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-        done
-        MACHINE=$(whiptail --title "Available Machines" --menu \
-            "Please choose a machine" 0 0 20 \
-            ${MACHINETABLE} 3>&1 1>&2 2>&3)
-    fi
-
-    # dialog
-    if [ -z "$MACHINE" ]; then
-        which dialog > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            MACHINETABLE=
-            for ITEM in $MACHLAYERS; do
-                MACHINETABLE="$MACHINETABLE $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-            done
-            MACHINE=$(dialog --title "Available Machines" --menu "Please choose a machine" 0 0 20 $MACHINETABLE 3>&1 1>&2 2>&3)
-        fi
-    fi
+    MACHINETABLE=
+    for ITEM in $MACHLAYERS; do
+        MACHINETABLE="${MACHINETABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+    done
+    MACHINE=$($uitool --title "Available Machines" --menu \
+        "Please choose a machine" 0 0 20 \
+        ${MACHINETABLE} 3>&1 1>&2 2>&3)
 fi
 
 # create a common list of "<distro>(<layer>)", sorted by <distro>
 DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-distro -print | grep "conf/distro/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
-    # whiptail
-    which whiptail > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        DISTROTABLE=
-        for ITEM in $DISTROLAYERS; do
-            DISTROTABLE="${DISTROTABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-        done
-        DISTRO=$(whiptail --title "Available Distributions" --menu \
-            "Please choose a distribution" 0 0 20 \
-            ${DISTROTABLE} 3>&1 1>&2 2>&3)
-    fi
-
-    # dialog
-    if [ -z "$DISTRO" ]; then
-        which dialog > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            DISTROTABLE=
-            for ITEM in $DISTROLAYERS; do
-                DISTROTABLE="$DISTROTABLE $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-            done
-            DISTRO=$(dialog --title "Available Distributions" --menu "Please choose a distribution" 0 0 20 $DISTROTABLE 3>&1 1>&2 2>&3)
-        fi
-    fi
+    DISTROTABLE=
+    for ITEM in $DISTROLAYERS; do
+        DISTROTABLE="${DISTROTABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+    done
+    DISTRO=$($uitool --title "Available Distributions" --menu \
+        "Please choose a distribution" 0 0 20 \
+        ${DISTROTABLE} 3>&1 1>&2 2>&3)
 fi
 
 # If nothing has been set, go for 'nodistro'
