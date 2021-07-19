@@ -206,10 +206,10 @@ mkdir -p "${BUILDDIR}"/conf
 
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" > ${BUILDDIR}/conf/bblayers.conf
+python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" >| ${BUILDDIR}/conf/bblayers.conf
 
 # local.conf
-cat > ${BUILDDIR}/conf/local.conf <<EOF
+cat >| ${BUILDDIR}/conf/local.conf <<EOF
 # This configuration file is dynamically generated every time
 # set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
 #--------------------------------------------------------------
@@ -217,7 +217,7 @@ EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
 # auto.conf
-cat > ${BUILDDIR}/conf/auto.conf <<EOF
+cat >| ${BUILDDIR}/conf/auto.conf <<EOF
 # This configuration file is dynamically generated every time
 # set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
 #--------------------------------------------------------------
