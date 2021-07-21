@@ -230,6 +230,9 @@ cat >| ${BUILDDIR}/conf/local.conf <<EOF
 EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
+# Read manifest tag to set SDK_VERSION
+BUILDVERSION=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 |rev |cut -d. -f1| rev )
+
 # auto.conf
 cat >| ${BUILDDIR}/conf/auto.conf <<EOF
 # This configuration file is dynamically generated every time
@@ -239,6 +242,7 @@ DISTRO ?= "${DISTRO}"
 MACHINE ?= "${MACHINE}"
 SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
+SDK_VERSION = "${BUILDVERSION}"
 EOF
 
 # Check and run pre-configs from enabled meta layers
