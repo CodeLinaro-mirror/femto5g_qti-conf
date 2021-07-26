@@ -40,7 +40,8 @@ def initLayersList(TARGET):
         "poky": { "meta":1, "meta-poky":1 }, \
         "meta-qt5": 1, \
         "meta-gplv2": 1, \
-        "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1 }, \
+        "meta-selinux": 1, \
+        "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1, "meta-initramfs":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
         "meta-virtualization": 1\
@@ -53,6 +54,12 @@ def initLayersList(TARGET):
         # Enable ROS
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
+    elif TARGET == 'opsy-sa81x5':
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa6155' or TARGET == 'sa81x5':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
@@ -73,6 +80,14 @@ def initLayersList(TARGET):
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+    elif TARGET == 'opsy-sa81x5agl':
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        # Enable CoQos meta layer
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"]["meta-opsy-coqoshv"] = 1
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"]["meta-opsy-qti-sa8155"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
     elif TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable sdllvm
@@ -83,4 +98,3 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-

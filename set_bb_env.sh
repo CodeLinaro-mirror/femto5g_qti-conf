@@ -113,7 +113,7 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
 
     # Set environment variables for dm-verity
-    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE COQOS_LICENSE_FILE BOARD_VARIANT"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
 
@@ -160,6 +160,17 @@ build-dm-verity-image() {
 # Common functions for build-all sa81x5/sa6155 images
 #           $1 -- Target name, as: sa81x5/sa6155
 function build-all-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -198,11 +209,26 @@ function build-all-function() {
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive/$MINIMAL_IMAGE tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5agl/sa6155agl images
 #           $1 -- Target name, as: sa81x5agl/sa6155agl
 function build-all-agl-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -232,6 +258,10 @@ function build-all-agl-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5lxc/sa6155lxc images
@@ -242,6 +272,18 @@ function build-all-lxc-function() {
         touch tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
         return 0
     fi
+
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
@@ -265,11 +307,26 @@ function build-all-lxc-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # Common functions for build-all sa81x5bg images
 #           $1 -- Target name, as: sa81x5bg
 function build-all-bg-function() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
     build-$1-image
     if [ "$?" != "0" ]; then
     export BG_MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4`
@@ -293,6 +350,10 @@ function build-all-bg-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive/$BG_MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/bg-coreimage-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$BG_MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
 }
 
 # SA6155 commands
@@ -638,6 +699,32 @@ function build-sa6155agl-sdk-image() {
     fi
 }
 
+# Add opsy-sa81x5 debug build commands
+function build-opsy-sa81x5-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa81x5 debug
+  export COQOS_LICENSE_FILE="${WS}/meta-opsy-coqoshv-sdk/meta-opsy-qti-sa8155/Qcoqos.lic"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa81x5 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+# Add opsy-sa81x5 perf build commands
+function build-opsy-sa81x5-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa81x5 perf
+  export COQOS_LICENSE_FILE="${WS}/meta-opsy-coqoshv-sdk/meta-opsy-qti-sa8155/Qcoqos.lic"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa81x5 perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -938,5 +1025,5 @@ export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR SSTATE_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
