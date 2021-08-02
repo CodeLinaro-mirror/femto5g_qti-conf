@@ -295,6 +295,41 @@ function build-all-bg-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$BG_MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/bg-coreimage-minimal-$1.ext4
 }
 
+# Common functions for build-all sa81x5agldemo/sa6155agldemo images
+#           $1 -- Target name, as: sa81x5demo/sa6155demo
+function build-all-agldemo-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export IMAGE_DEBUG=`readlink tmp-glibc/deploy/images/$1-automotive/qti-image-agl-demo-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/qti-image-agl-demo-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export IMAGE_DEBUG=`readlink tmp-glibc/deploy/images/$1-automotive/qti-image-agl-demo-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/qti-image-agl-demo-$1.ext4
+
+    build-$1-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-demo-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-demo-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$IMAGE_DEBUG tmp-glibc/deploy/images/$1-automotive/qti-image-agl-demo-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-demo-$1.ext4
+}
+
+
 # SA6155 commands
 function build-sa6155-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -590,6 +625,108 @@ function build-sa81x5agl-sdk-image() {
     echo "==== Error run 'cdbitbake qti-image-agl-weston -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+}
+
+# SA81x5agldemo commands
+function build-sa81x5agldemo-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5agldemo debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa81x5agldemo debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake qti-image-agl-demo
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-agl-demo'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa81x5agldemo-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5agldemo perf
+  cdbitbake qti-image-agl-demo
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-agl-demo'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa81x5agldemo-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa81x5agl debug
+    cdbitbake qti-image-agl-demo -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake qti-image-agl-demo -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-sa81x5agldemo-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function sa81x5agldemo
+    return $?
+}
+
+# SA6155agldemo commands
+function build-sa6155agldemo-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa6155agldemo debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa6155agldemo debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake qti-image-agl-demo
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-agl-demo'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa6155agldemo-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa6155agldemo perf
+  cdbitbake qti-image-agl-demo
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-agl-demo'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa6155agldemo-sdk-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa6155agldemo debug
+  cdbitbake qti-image-agl-demo -c populate_sdk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-agl-demo -c populate_sdk'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa6155agldemo-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function sa6155agldemo
+    return $?
 }
 
 # SA6155agl commands
