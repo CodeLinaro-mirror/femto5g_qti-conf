@@ -664,7 +664,7 @@ function build-sa81x5agldemo-perf-image() {
 function build-sa81x5agldemo-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa81x5agl debug
+    init-configure-files sa81x5agldemo debug
     cdbitbake qti-image-agl-demo -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake qti-image-agl-demo -c populate_sdk'. (${FUNCNAME[@]})"
