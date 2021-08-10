@@ -26,7 +26,48 @@ then
 fi
 
 umask 022
-unset DISTRO MACHINE VARIANT
+unset DISTRO MACHINE VARIANT QTARGET QVARIANT BUILD_DIR QTI_SETUP_HELP QTI_SETUP_ERROR
+
+usage()
+{
+    echo -e "************************************** \n
+    Usage: source build/conf/set_bb_env.sh \n
+    Optional parameters: [-t target] [-v variant] [-b build-dir] [-h] \n
+    * [-t target]: Customized target, use sa81x5 as default \n
+    * [-v variant]: Customized variant, use debug as default \n
+    * [-b build-dir]: Customized absolute build directory, use 'workspace/poky/build' as default \n
+    * [-h]: Help \n
+***************************************"
+}
+
+while getopts "t:v:b:h" qti_setup_flag
+do
+    case $qti_setup_flag in
+        t) QTARGET="$OPTARG";
+           echo "Input QTARGET: $QTARGET"
+           ;;
+        v) QVARIANT="$OPTARG";
+           echo "Input QVARIANT: $QVARIANT"
+           ;;
+        b) BUILD_DIR="$OPTARG";
+           echo "Input build directory is $BUILD_DIR"
+           ;;
+        h) QTI_SETUP_HELP='true';
+           echo "### Setup Help ### "
+           ;;
+        \?) QTI_SETUP_ERROR='true';
+            echo "### Setup Error: Unrecognised Option ### "
+           ;;
+    esac
+done
+shift $((OPTIND-1))
+unset OPTIND
+
+if [ "$QTI_SETUP_HELP" = "true" ]; then
+    usage && return 1
+elif [ "$QTI_SETUP_ERROR" = "true" ]; then
+    return 1
+fi
 
 # OE doesn't want a set-gid directory for its tmpdir
 BT="./build/tmp-glibc"
@@ -44,19 +85,31 @@ scriptdir=$(readlink -f $(dirname "${BASH_SOURCE}"))
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../../..)
 
+if [ -z "$BUILD_DIR" ]; then
+    BUILD_DIR="${WS}/poky/build"
+else
+    if [ "$BUILD_DIR" = "/" ]; then
+        echo "Error: $BUILD_DIR is not supported!"
+        return 1
+    fi
+
+    # Remove the trailing slashes in the end
+    BUILD_DIR=$(echo $BUILD_DIR | sed -re 's|/+$||')
+fi
+echo "Build directory is $BUILD_DIR"
 # Add a few helpful shortcuts
 # Go to root of workspace
 alias croot='cd $WS'
 
-# Go to the directory from where you can kick off the build(workspace/poky/build)
+# Go to the directory from where you can kick off the build(workspace/poky/build as default)
 # from wherever you are
-alias gobuilddir='CUR_DIR=`pwd` && cd $WS/poky/build'
+alias gobuilddir='CUR_DIR=`pwd` && cd ${BUILD_DIR}'
 
 # Go back to the directory you were working in before you ran gobuild
 alias goback='cd $CUR_DIR'
 
 #Go to OUT directory
-alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
+alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
 
 #init local git if it does not exist
@@ -107,10 +160,12 @@ function init-configure-files() {
     # Dynamically generate our bblayers.conf since we effectively can't whitelist
     # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
     # dynamic workspace layer functionality.
-    python $scriptdir/get_bblayers.py $1 ${WS} > $scriptdir/bblayers.conf
+    mkdir -p ${BUILD_DIR}/conf
+
+    python $scriptdir/get_bblayers.py $1 ${WS} > ${BUILD_DIR}/conf/bblayers.conf
 
     # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
-    python $scriptdir/get_localconf.py $1 $2 ${WS} > $scriptdir/local.conf
+    python $scriptdir/get_localconf.py $1 $2 ${WS} > ${BUILD_DIR}/conf/local.conf
 
     # Set environment variables for dm-verity
     export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
@@ -1098,7 +1153,7 @@ function build-image() {
 # Utility commands
 buildclean-retaindeploy() {
   set -x
-  cd ${WS}/poky/build
+  cd ${BUILD_DIR}
 
   tmp_dir_list=$(ls tmp-glibc/)
   tmp_dir_rm_list=$(sed 's/deploy//' <<< $tmp_dir_list)
@@ -1113,7 +1168,7 @@ buildclean-retaindeploy() {
 
 buildclean() {
   set -x
-  cd ${WS}/poky/build
+  cd ${BUILD_DIR}
 
   rm -rf bitbake.lock pseudodone sstate-cache tmp-glibc/* cache && cd - || cd -
   set +x
@@ -1143,7 +1198,7 @@ list-build-commands()
 
 cdbitbake() {
   local ret=0
-  cd ${WS}/poky/build
+  cd ${BUILD_DIR}
   bitbake $@ && cd - || ret=$? && cd -
   return $ret
 }
@@ -1158,22 +1213,17 @@ unset_bb_env() {
 }
 
 # Initialize bblayers.conf and local.conf
-# Get MACHINE value from $1, default is sa81x5
-if [ ! -n "$1" ]
-then
-  export QMACHINE="sa81x5"
-else
-  export QMACHINE=$1
-fi
-# Get VARIANT value from $2, default is debug
-if [ ! -n "$2" ]
-then
-  export QVARIANT="debug"
-else
-  QVARIANT=$2
+# Get MACHINE value from -m <machine>, default is sa81x5
+if [ -z "$QTARGET" ]; then
+    export QTARGET="sa81x5"
 fi
 
-init-configure-files ${QMACHINE} ${QVARIANT}
+# Get VARIANT value from -v <variant>, default is debug
+if [ -z "$QVARIANT" ]; then
+    export QVARIANT="debug"
+fi
+
+init-configure-files ${QTARGET} ${QVARIANT}
 
 # Find build templates from qti meta layer.
 export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
@@ -1182,7 +1232,7 @@ export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
 # convienence function or straight up bitbake commands.
-. ${WS}/poky/oe-init-build-env ${WS}/poky/build
+. ${WS}/poky/oe-init-build-env ${BUILD_DIR}
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
