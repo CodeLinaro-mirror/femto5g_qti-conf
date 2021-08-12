@@ -265,4 +265,4 @@ INHERIT += "qfile"
 # Enable fortran
 FORTRAN_forcevariable = ",fortran"
 
-
+CLANGSDK = "1"
