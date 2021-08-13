@@ -61,9 +61,7 @@ MACHINE    = ${MACHINE}
 
 You can now run 'bitbake <target>'
 
-Supported image targets are:
-    qti-console-image
-    qti-xreality-image
+${IMAGEINFO}
 
 EOF
 }
@@ -101,8 +99,8 @@ init_build_env () {
     . ${WS}/poky/oe-init-build-env ${BUILDDIR}
 
     # Clean up environment.
-    unset MACHINE DISTRO WS usage PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
-    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM
+    unset MACHINE DISTRO WS usage confnote PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
+    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM IMGCHOICE IMAGEINFO
 }
 
 if [ $# -gt 1 ]; then
@@ -121,32 +119,42 @@ if [ $# -eq 1 ]; then
     fi
 fi
 
+# Get si revision from manifest
+revision=$(xmllint --xpath '/manifest/default/@revision'  ${WS}/.repo/manifests/default.xml | sed 's/"/\t/g;' | awk '{print $2}')
+# Get preferred list of machines, distros and images
+PREFMACH=`python $scriptdir/parse_imageinfo.py ${revision#refs/heads/} machine`
+PREFDIST=`python $scriptdir/parse_imageinfo.py ${revision#refs/heads/} distro`
+PREFIMAG=`python $scriptdir/parse_imageinfo.py ${revision#refs/heads/} target`
+
+# Choose one among whiptail & dialog to show dialog boxes
+read uitool <<< "$(which whiptail dialog 2> /dev/null)"
+
 # create a common list of "<machine>(<layer>)", sorted by <machine>
 MACHLAYERS=$(cd ${WS}/poky && find meta-qti-bsp -print | grep "/conf/machine/.*\.conf" | grep -v "fsconfig" | grep -v "partition" | sed -e 's/\.conf//g' | awk -F'/conf/machine/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
-if [ -z "${MACHINE}" ]; then
-    # whiptail
-    which whiptail > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        MACHINETABLE=
-        for ITEM in $MACHLAYERS; do
+if [ -n "${MACHLAYERS}" ] && [ -z "${MACHINE}" ]; then
+    for ITEM in $MACHLAYERS; do
+        if [[ $PREFMACH == *$(echo "$ITEM" |cut -d'(' -f1)* ]]; then
             MACHINETABLE="${MACHINETABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-        done
-        MACHINE=$(whiptail --title "Available Machines" --menu \
+        fi
+    done
+    if [ -n "${MACHINETABLE}" ]; then
+        MACHINETABLE="${MACHINETABLE} Show-All-Machines From-All-BSP-Layers"
+        MACHINE=$($uitool --title "Preferred Machines" --menu \
             "Please choose a machine" 0 0 20 \
             ${MACHINETABLE} 3>&1 1>&2 2>&3)
-    fi
-
-    # dialog
-    if [ -z "$MACHINE" ]; then
-        which dialog > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            MACHINETABLE=
-            for ITEM in $MACHLAYERS; do
-                MACHINETABLE="$MACHINETABLE $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-            done
-            MACHINE=$(dialog --title "Available Machines" --menu "Please choose a machine" 0 0 20 $MACHINETABLE 3>&1 1>&2 2>&3)
+        if [ "$MACHINE" == "Show-All-Machines" ]; then
+            MACHINE=""
+            MACHINETABLE=""
         fi
+    fi
+    if [ -z "${MACHINE}" ]; then
+       for ITEM in $MACHLAYERS; do
+           MACHINETABLE="${MACHINETABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+       done
+       MACHINE=$($uitool --title "Available Machines" --menu \
+           "Please choose a machine" 0 0 20 \
+           ${MACHINETABLE} 3>&1 1>&2 2>&3)
     fi
 fi
 
@@ -154,10 +162,22 @@ fi
 DISTROLAYERS=$(cd ${WS}/poky && find meta-qti-distro -print | grep "conf/distro/.*\.conf" | sed -e 's/\.conf//g' | awk -F'/conf/distro/' '{print $NF "(" $1 ")"}' | LANG=C sort)
 
 if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
-    # whiptail
-    which whiptail > /dev/null 2>&1
-    if [ $? -eq 0 ]; then
-        DISTROTABLE=
+    for ITEM in $DISTROLAYERS; do
+        if [[ $PREFDIST == *$(echo "$ITEM" |cut -d'(' -f1)* ]]; then
+            DISTROTABLE="${DISTROTABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
+        fi
+    done
+    if [ -n "${DISTROTABLE}" ]; then
+        DISTROTABLE="${DISTROTABLE} Show-All-Distros From-All-Distro-Layers"
+        DISTRO=$($uitool --title "Preferred Distributions" --menu \
+            "Please choose a distribution" 0 0 20 \
+            ${DISTROTABLE} 3>&1 1>&2 2>&3)
+        if [ "$DISTRO" == "Show-All-Distros" ]; then
+            DISTRO=""
+            DISTROTABLE=""
+        fi
+    fi
+    if [ -z "${DISTRO}" ]; then
         for ITEM in $DISTROLAYERS; do
             DISTROTABLE="${DISTROTABLE} $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
         done
@@ -165,23 +185,17 @@ if [ -n "${DISTROLAYERS}" ] && [ -z "${DISTRO}" ]; then
             "Please choose a distribution" 0 0 20 \
             ${DISTROTABLE} 3>&1 1>&2 2>&3)
     fi
-
-    # dialog
-    if [ -z "$DISTRO" ]; then
-        which dialog > /dev/null 2>&1
-        if [ $? -eq 0 ]; then
-            DISTROTABLE=
-            for ITEM in $DISTROLAYERS; do
-                DISTROTABLE="$DISTROTABLE $(echo "$ITEM" | cut -d'(' -f1) $(echo "$ITEM" | cut -d'(' -f2 | cut -d')' -f1)"
-            done
-            DISTRO=$(dialog --title "Available Distributions" --menu "Please choose a distribution" 0 0 20 $DISTROTABLE 3>&1 1>&2 2>&3)
-        fi
-    fi
 fi
 
 # If nothing has been set, go for 'nodistro'
 if [ -z "$DISTRO" ]; then
     DISTRO="nodistro"
+fi
+
+# Image menu choices
+IMGCHOICE=$(echo $PREFIMAG | tr " " "\n")
+if [ -n "${IMGCHOICE}" ]; then
+   IMAGEINFO=$(printf 'Supported image targets are:\n%s' "$IMGCHOICE")
 fi
 
 # guard against Ctrl-D or cancel
@@ -216,6 +230,9 @@ cat >| ${BUILDDIR}/conf/local.conf <<EOF
 EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
+# Read manifest tag to set SDK_VERSION
+BUILDVERSION=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 |rev |cut -d. -f1| rev )
+
 # auto.conf
 cat >| ${BUILDDIR}/conf/auto.conf <<EOF
 # This configuration file is dynamically generated every time
@@ -225,6 +242,7 @@ DISTRO ?= "${DISTRO}"
 MACHINE ?= "${MACHINE}"
 SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
+SDK_VERSION = "${BUILDVERSION}"
 EOF
 
 # Check and run pre-configs from enabled meta layers
