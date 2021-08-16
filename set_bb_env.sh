@@ -83,7 +83,9 @@ EOF
 # of the newly created build folder
 init_build_env () {
     # Patch poky
-    apply_poky_patches
+    if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+      apply_poky_patches
+    fi
 
     # Show conf notes
     confnote
