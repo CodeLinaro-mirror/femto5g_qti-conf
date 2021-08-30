@@ -3,27 +3,6 @@
 # Generate bblayers.conf from get_bblayers.py.
 # Some convenience macros are defined to save some typing.
 # Set the build environement
-if [[ ! $(readlink $(which sh)) =~ bash ]]
-then
-  echo ""
-  echo "### ERROR: Please Change your /bin/sh symlink to point to bash. ### "
-  echo ""
-  echo "### sudo ln -sf /bin/bash /bin/sh ### "
-  echo ""
-  return 1
-fi
-
-# The SHELL variable also needs to be set to /bin/bash otherwise the build
-# will fail, use chsh to change it to bash.
-if [[ ! $SHELL =~ bash ]]
-then
-  echo ""
-  echo "### ERROR: Please Change your shell to bash using chsh. ### "
-  echo ""
-  echo "### Make sure that the SHELL variable points to /bin/bash ### "
-  echo ""
-  return 1
-fi
 
 umask 022
 unset DISTRO MACHINE VARIANT QTARGET QVARIANT BUILD_DIR QTI_SETUP_HELP QTI_SETUP_ERROR
@@ -37,9 +16,11 @@ usage()
     * [-v variant]: Customized variant, use debug as default \n
     * [-b build-dir]: Customized absolute build directory, use 'workspace/poky/build' as default \n
     * [-h]: Help \n
+    Compatibility: bash, zsh \n
 ***************************************"
 }
 
+OPTIND="1"
 while getopts "t:v:b:h" qti_setup_flag
 do
     case $qti_setup_flag in
@@ -61,7 +42,6 @@ do
     esac
 done
 shift $((OPTIND-1))
-unset OPTIND
 
 if [ "$QTI_SETUP_HELP" = "true" ]; then
     usage && return 1
@@ -69,19 +49,20 @@ elif [ "$QTI_SETUP_ERROR" = "true" ]; then
     return 1
 fi
 
-# OE doesn't want a set-gid directory for its tmpdir
-BT="./build/tmp-glibc"
-if [ ! -d ${BT} ]
-then
-  mkdir -m u=rwx,g=rx,g-s,o=  ${BT}
-elif [ -g ${BT} ]
-then
-  chmod -R g-s ${BT}
+if [ -n "$BASH_SOURCE" ]; then
+    THIS_SCRIPT=$BASH_SOURCE
+elif [ -n "$ZSH_NAME" ]; then
+    THIS_SCRIPT=$0
+else
+    echo -e "************************************** \n
+    Compatibility: bash, zsh \n
+    Please check the current shell \n
+***************************************"
+    return 1
 fi
-unset BT
 
 # Find where the global conf directory is...
-scriptdir=$(readlink -f $(dirname "${BASH_SOURCE}"))
+scriptdir=$(readlink -f $(dirname "${THIS_SCRIPT}"))
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../../..)
 
@@ -1224,6 +1205,17 @@ if [ -z "$QVARIANT" ]; then
 fi
 
 init-configure-files ${QTARGET} ${QVARIANT}
+
+# OE doesn't want a set-gid directory for its tmpdir
+BT="$BUILD_DIR/tmp-glibc"
+if [ ! -d ${BT} ]
+then
+  mkdir -m u=rwx,g=rx,g-s,o=  ${BT}
+elif [ -g ${BT} ]
+then
+  chmod -R g-s ${BT}
+fi
+unset BT
 
 # Find build templates from qti meta layer.
 export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
