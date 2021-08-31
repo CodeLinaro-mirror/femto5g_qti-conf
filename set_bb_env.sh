@@ -254,6 +254,11 @@ BUILDNAME = "${BUILDNAME}"
 SDK_VERSION = "${BUILDVERSION}"
 EOF
 
+# Force error for dangling bbappends
+if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+   echo 'BB_DANGLINGAPPENDS_WARNONLY_forcevariable = "false"' >> ${BUILDDIR}/conf/auto.conf
+fi
+
 # Check and run pre-configs from enabled meta layers
 layerstring=$( \
 while read line; do \
