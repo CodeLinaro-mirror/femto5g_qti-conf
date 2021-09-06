@@ -1,1 +1,2 @@
 0002-__init__.py-remove-this-print-to-reduce-warning-mess.patch
+0003-cookerdata.py-convert-layerseries-compat-warning-to-error.patch
