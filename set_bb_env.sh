@@ -192,6 +192,7 @@ cat > ${BUILDDIR}/conf/local.conf <<EOF
 # This configuration file is dynamically generated every time
 # set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
 #--------------------------------------------------------------
+BB_GENERATE_MIRROR_TARBALLS = "1"
 EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
