@@ -229,7 +229,7 @@ CONF_VERSION = "1"
 # BB_HASHBASE_WHITELIST Tells bitbake to ignore variables
 # The SRC_DIR_ROOT variable is added through build/conf/bblayers.conf
 BB_HASHBASE_WHITELIST_append = " \
-    BUILDNAME SRC_DIR_ROOT PATH_TO_REPO \
+    BSPDIR BUILDNAME SRC_DIR_ROOT PATH_TO_REPO \
     QTI_METAPATH_BASE QTI_METAPATH_BASE_PROP QTI_METAPATH_DISTRO \
 "
 
