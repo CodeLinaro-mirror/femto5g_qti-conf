@@ -236,8 +236,10 @@ cat >| ${BUILDDIR}/conf/local.conf <<EOF
 EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
-# Read manifest tag to set SDK_VERSION
-BUILDVERSION=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 |rev |cut -d. -f1| rev )
+# Read manifest tag to set BUILDNAME and SDK_VERSION
+# ${BUILDNAME} is used to set the content of /etc/version
+BUILDNAME=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 )
+BUILDVERSION=$( echo "${BUILDNAME}" |rev |cut -d. -f1| rev )
 
 # auto.conf
 cat >| ${BUILDDIR}/conf/auto.conf <<EOF
@@ -248,6 +250,7 @@ DISTRO ?= "${DISTRO}"
 MACHINE ?= "${MACHINE}"
 SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
+BUILDNAME = "${BUILDNAME}"
 SDK_VERSION = "${BUILDVERSION}"
 EOF
 
