@@ -83,7 +83,9 @@ EOF
 # of the newly created build folder
 init_build_env () {
     # Patch poky
-    apply_poky_patches
+    if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+      apply_poky_patches
+    fi
 
     # Show conf notes
     confnote
@@ -220,7 +222,11 @@ mkdir -p "${BUILDDIR}"/conf
 
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" >| ${BUILDDIR}/conf/bblayers.conf
+if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+   python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
+else
+   python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" >| ${BUILDDIR}/conf/bblayers.conf
+fi
 
 # local.conf
 cat >| ${BUILDDIR}/conf/local.conf <<EOF
