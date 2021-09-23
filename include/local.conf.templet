@@ -146,14 +146,13 @@ EXTRA_IMAGE_FEATURES += " package-management"
 # The following is a list of additional classes to use when building images which
 # enable extra features. Some available options which can be included in this variable 
 # are:
-#   - 'image-mklibs' to reduce shared library files size for an image
 #   - 'image-prelink' in order to prelink the filesystem image
 #   - 'image-swab' to perform host system intrusion detection
 # NOTE: if listing mklibs & prelink both, then make sure mklibs is before prelink
 # NOTE: mklibs also needs to be explicitly enabled for a given image, see local.conf.extended
 # Disable prelink. It is unmaintained and likely will go away
-# default: USER_CLASSES ?= "buildname image-mklibs image-prelink"
-USER_CLASSES ?= "buildname image-mklibs"
+# default: USER_CLASSES ?= "buildname image-prelink"
+USER_CLASSES ?= "buildname"
 
 # ${BUILDNAME} is used to set the content of /etc/version
 BUILDNAME = "${@get_tag('${SRC_DIR_ROOT}', d)}"
