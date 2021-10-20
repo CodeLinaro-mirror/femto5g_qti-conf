@@ -3,7 +3,7 @@
 # Generate bblayers.conf from get_bblayers.py.
 # Some convenience macros are defined to save some typing.
 # Set the build environement
-if [[ ! $(readlink $(which sh)) =~ bash ]]
+if [[ ! $(readlink -f $(which sh)) =~ bash ]]
 then
   echo ""
   echo "### ERROR: Please Change your /bin/sh symlink to point to bash. ### "
@@ -83,14 +83,16 @@ EOF
 # of the newly created build folder
 init_build_env () {
     # Patch poky
-    apply_poky_patches
+    if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+      apply_poky_patches
+    fi
 
     # Show conf notes
     confnote
 
     # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
     # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-    BB_ENV_EXTRAWHITE="SSTATE_LOCAL_MIRROR DEBUG_BUILD PREBUILT_SRC_DIR"
+    BB_ENV_EXTRAWHITE="DEBUG_BUILD PREBUILT_SRC_DIR"
 
     # Yocto/OE-core works a bit differently than OE-classic so we're
     # going to source the OE build environment setup script they provided.
@@ -220,7 +222,11 @@ mkdir -p "${BUILDDIR}"/conf
 
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" >| ${BUILDDIR}/conf/bblayers.conf
+if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+   python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
+else
+   python $scriptdir/get_bblayers.py ${WS}/poky \"meta*\" >| ${BUILDDIR}/conf/bblayers.conf
+fi
 
 # local.conf
 cat >| ${BUILDDIR}/conf/local.conf <<EOF
@@ -230,8 +236,10 @@ cat >| ${BUILDDIR}/conf/local.conf <<EOF
 EOF
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
-# Read manifest tag to set SDK_VERSION
-BUILDVERSION=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 |rev |cut -d. -f1| rev )
+# Read manifest tag to set BUILDNAME and SDK_VERSION
+# ${BUILDNAME} is used to set the content of /etc/version
+BUILDNAME=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 )
+BUILDVERSION=$( echo "${BUILDNAME}" |rev |cut -d. -f1| rev )
 
 # auto.conf
 cat >| ${BUILDDIR}/conf/auto.conf <<EOF
@@ -242,8 +250,14 @@ DISTRO ?= "${DISTRO}"
 MACHINE ?= "${MACHINE}"
 SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
+BUILDNAME = "${BUILDNAME}"
 SDK_VERSION = "${BUILDVERSION}"
 EOF
+
+# Force error for dangling bbappends
+if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+   echo 'BB_DANGLINGAPPENDS_WARNONLY_forcevariable = "false"' >> ${BUILDDIR}/conf/auto.conf
+fi
 
 # Check and run pre-configs from enabled meta layers
 layerstring=$( \

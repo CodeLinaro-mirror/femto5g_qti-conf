@@ -1,0 +1,56 @@
+From de281a2478248b20dcb71e7fb6c2d53e9c62228c Mon Sep 17 00:00:00 2001
+From: Kavinaya S <kavinaya@codeaurora.org>
+Date: Mon, 30 Aug 2021 21:31:14 +0530
+Subject: [PATCH] Check if LAYERDEPENDS is set or not
+
+Layers which dont have LAYERDEPENDS
+will be shown as warnings.
+Signed-off-by: Kavinaya S <kavinaya@codeaurora.org>
+
+Change-Id: Ibed6384b844789d430b02c5a1a83f606337f97ff
+---
+ bitbake/lib/bb/cooker.py | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/bitbake/lib/bb/cooker.py b/bitbake/lib/bb/cooker.py
+index 730cdc5..f82a495 100644
+--- a/bitbake/lib/bb/cooker.py
++++ b/bitbake/lib/bb/cooker.py
+@@ -410,6 +410,26 @@ class BBCooker:
+         if hasattr(self, "data"):
+             self.data.disableTracking()
+
++    def handleLayerDepends(self,get_layers):
++        get_bblayers = get_layers.split()
++
++        #check for qti layers
++        bb_layers = [layer for layer in get_bblayers if "qti" in layer]
++
++        for layer in bb_layers:
++            layer_depends = ""
++            layer_conf_fil = layer + "/conf/layer.conf"
++            open_file = open(layer_conf_fil, "r")
++            layer_conf = open_file.readlines()
++            #check for LAYERDEPENDS and report it as a warning if it's missing for layer.
++            for line in layer_conf:
++                find_LAYERDEPENDS = re.findall("^LAYERDEPENDS",line)
++                if find_LAYERDEPENDS:
++                   layer_depends = line
++            if layer_depends == "":
++               bb.warn(layer + " has not set LAYERDEPENDS in it's conf/local.conf")
++            open_file.close()
++
+     def parseConfiguration(self):
+         # Set log file verbosity
+         verboselogs = bb.utils.to_boolean(self.data.getVar("BB_VERBOSE_LOGS", False))
+@@ -431,7 +451,7 @@ class BBCooker:
+             self.recipecaches[mc] = bb.cache.CacheData(self.caches_array)
+
+         self.handleCollections(self.data.getVar("BBFILE_COLLECTIONS"))
+-
++        self.handleLayerDepends(self.data.getVar("BBLAYERS"))
+         self.parsecache_valid = False
+
+     def updateConfigOpts(self, options, environment, cmdline):
+--
+2.7.4
