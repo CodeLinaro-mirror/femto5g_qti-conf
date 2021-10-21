@@ -61,6 +61,12 @@ alias goout='croot && cd poky/build/tmp-glibc/deploy/images/$MACHINE'
 
 #init local git if it does not exist
 function init_localgit() {
+if [[ ! -f "${WS}/localgit" && -f "${WS}/prebuilt_HY22/localgit" ]]; then
+    mv ${WS}/prebuilt_HY22/localgit ${WS}/localgit
+elif [[ ! -f "${WS}/localgit" && -f "${WS}/prebuilt_HY11/localgit" ]]; then
+    mv ${WS}/prebuilt_HY11/localgit ${WS}/localgit
+fi
+
 if [ -f "${WS}/localgit" ]
 then
     cat ${WS}/localgit | while read line
