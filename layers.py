@@ -25,6 +25,8 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import os
+
 dicLayersWithSubLayers = None
 
 def initLayersList(TARGET):
@@ -44,11 +46,25 @@ def initLayersList(TARGET):
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1, "meta-initramfs":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
-        "meta-virtualization": 1, \
-        "meta-opsy-coqoshv-sdk": {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}, \
-        "meta-opsy-staging": {"meta-opsy-coqoshv-staging": 1, "meta-opsy-qti-sa8155-staging": 1}, \
-        "meta-opsy-e0853": 1, \
+        "meta-virtualization": 1\
     }
+    if TARGET.startswith('opsy-'):
+        # Add all meta-opsy-* meta-layers automatically. Skip meta-opsy-coqoshv-sdk
+        # since it is treated specially. Skip meta-layers containing "staging" keyword
+        # in their names.
+        metaLayersDir = os.path.realpath(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), '..', '..', '..'
+        ))
+        for metaLayerDir in os.listdir(metaLayersDir):
+            if metaLayerDir in ["meta-opsy-coqoshv-sdk", "meta-opsy-coqoshv-sdk-staging", "meta-opsy-staging"]:
+                continue
+            if metaLayerDir.startswith("meta-opsy-"):
+                dicLayersWithSubLayers[metaLayerDir] = 1
+
+        # Enable COQOS HV SDK meta-layers
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk-staging"] = {"meta-opsy-qti-sa8155-staging": 1}
+        dicLayersWithSubLayers["meta-opsy-staging"] = {"meta-opsy-qti-sa8155-staging": 1}
 
     if TARGET == "sa8155qdrive":
         # Enable sdllvm
@@ -58,7 +74,6 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-ros"] = 1
         dicLayersWithSubLayers["meta-ros"] = 1
     elif TARGET == 'opsy-sa81x5':
-        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
@@ -87,9 +102,6 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
-        # Enable CoQos meta layer
-        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"]["meta-opsy-coqoshv"] = 1
-        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"]["meta-opsy-qti-sa8155"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
     elif TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
