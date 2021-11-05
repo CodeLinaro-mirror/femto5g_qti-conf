@@ -47,3 +47,31 @@ LE.UM.5.4.1:
     - qti-distro-fullstack-noselinux-perf
   target:
     - qti-console-image
+
+LE.UM.6.2.2:
+  machine:
+    - sa410m
+  distro:
+    - qti-distro-tele-debug
+    - qti-distro-tele-perf
+  target:
+    - qti-tele-image
+
+LE.FRAMEWORK.1.0:
+  machine:
+    - genericarmv8
+    - sxrneo
+  distro:
+    - qti-distro-base-debug
+    - qti-distro-base-perf
+  target:
+    - qti-generic-image
+
+LE.PRODUCT.1.0:
+  machine:
+    - sxrneo
+  distro:
+    - qti-distro-xr-debug
+    - qti-distro-xr-perf
+  target:
+    - qti-xreality2-image
