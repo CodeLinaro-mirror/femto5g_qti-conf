@@ -3,6 +3,7 @@
 # Generate bblayers.conf from get_bblayers.py.
 # Some convenience macros are defined to save some typing.
 # Set the build environement
+
 if [[ ! $(readlink $(which sh)) =~ bash ]]
 then
   echo ""
@@ -236,8 +237,9 @@ function build-sa515m-image() {
 }
 
 build-all-sa515m-images() {
+  clean-tmpdir
   build-sa515m-image
-  buildclean-retaindeploy
+  buildclean-retain-sstatecache-deploy
   build-sa515m-perf-image
 }
 
@@ -453,6 +455,21 @@ clean-tmpdir() {
   cd ${WS}/poky/build
 
   rm -rf bitbake.lock pseudodone tmp-glibc/* cache && cd - || cd -
+  set +x
+}
+
+buildclean-retain-sstatecache-deploy() {
+  set -x
+  cd ${WS}/poky/build
+
+  tmp_dir_list=$(ls tmp-glibc/)
+  tmp_dir_rm_list=$(sed 's/deploy//' <<< $tmp_dir_list)
+
+  rm -rf bitbake.lock pseudodone cache tmp-glibc/deploy/ipk/ tmp-glibc/deploy/licenses/
+  for e in $tmp_dir_rm_list; do
+    rm -rf tmp-glibc/$e
+  done
+
   set +x
 }
 
