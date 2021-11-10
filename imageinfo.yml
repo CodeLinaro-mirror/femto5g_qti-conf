@@ -48,14 +48,14 @@ LE.UM.5.4.1:
   target:
     - qti-console-image
 
-LE.UM.6.3.1:
+LE.UM.6.2.2:
   machine:
-    - sxrneo
+    - sa410m
   distro:
-    - qti-distro-xr-debug
-    - qti-distro-xr-perf
+    - qti-distro-tele-debug
+    - qti-distro-tele-perf
   target:
-    - qti-xreality2-image
+    - qti-tele-image
 
 LE.FRAMEWORK.1.0:
   machine:
@@ -66,3 +66,12 @@ LE.FRAMEWORK.1.0:
     - qti-distro-base-perf
   target:
     - qti-generic-image
+
+LE.PRODUCT.1.0:
+  machine:
+    - sxrneo
+  distro:
+    - qti-distro-xr-debug
+    - qti-distro-xr-perf
+  target:
+    - qti-xreality2-image
