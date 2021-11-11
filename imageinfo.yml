@@ -57,15 +57,6 @@ LE.UM.6.2.2:
   target:
     - qti-tele-image
 
-LE.UM.6.3.1:
-  machine:
-    - sxrneo
-  distro:
-    - qti-distro-xr-debug
-    - qti-distro-xr-perf
-  target:
-    - qti-xreality2-image
-
 LE.FRAMEWORK.1.0:
   machine:
     - genericarmv8
@@ -75,3 +66,12 @@ LE.FRAMEWORK.1.0:
     - qti-distro-base-perf
   target:
     - qti-generic-image
+
+LE.PRODUCT.1.0:
+  machine:
+    - sxrneo
+  distro:
+    - qti-distro-xr-debug
+    - qti-distro-xr-perf
+  target:
+    - qti-xreality2-image
