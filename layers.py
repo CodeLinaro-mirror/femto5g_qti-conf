@@ -65,7 +65,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm' or TARGET == 'qtiquingvm8295':
+    elif TARGET == 'qtiquingvm' or TARGET == 'qtiquingvm8295' or TARGET == 'qtiquingvm-headless' or TARGET == 'qtiquingvm8295-headless' :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1

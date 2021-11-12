@@ -146,14 +146,13 @@ EXTRA_IMAGE_FEATURES += " package-management"
 # The following is a list of additional classes to use when building images which
 # enable extra features. Some available options which can be included in this variable 
 # are:
-#   - 'image-mklibs' to reduce shared library files size for an image
 #   - 'image-prelink' in order to prelink the filesystem image
 #   - 'image-swab' to perform host system intrusion detection
 # NOTE: if listing mklibs & prelink both, then make sure mklibs is before prelink
 # NOTE: mklibs also needs to be explicitly enabled for a given image, see local.conf.extended
 # Disable prelink. It is unmaintained and likely will go away
-# default: USER_CLASSES ?= "buildname image-mklibs image-prelink"
-USER_CLASSES ?= "buildname image-mklibs"
+# default: USER_CLASSES ?= "buildname image-prelink"
+USER_CLASSES ?= "buildname"
 
 # ${BUILDNAME} is used to set the content of /etc/version
 BUILDNAME = "${@get_tag('${SRC_DIR_ROOT}', d)}"
@@ -227,27 +226,22 @@ PATCHRESOLVE = "noop"
 CONF_VERSION = "1"
 
 # BB_HASHBASE_WHITELIST Tells bitbake to ignore variables
-# The default list is reproduced here from meta/conf/bitbake.conf
-# Because appending to it was not working
 # The SRC_DIR_ROOT variable is added through build/conf/bblayers.conf
-BB_HASHBASE_WHITELIST = "TMPDIR FILE PATH PWD BB_TASKHASH BBPATH BBSERVER DL_DIR \
-    SSTATE_DIR THISDIR FILESEXTRAPATHS FILE_DIRNAME HOME LOGNAME SHELL TERM \
-    USER FILESPATH STAGING_DIR_HOST STAGING_DIR_TARGET COREBASE PRSERV_HOST \
-    PRSERV_DUMPDIR PRSERV_DUMPFILE PRSERV_LOCKDOWN PARALLEL_MAKE \
-    CCACHE_DIR EXTERNAL_TOOLCHAIN CCACHE CCACHE_NOHASHDIR LICENSE_PATH SDKPKGSUFFIX \
-    WARN_QA ERROR_QA WORKDIR STAMPCLEAN PKGDATA_DIR BUILD_ARCH SSTATE_PKGARCH \
-    BB_WORKERCONTEXT BB_LIMITEDDEPS extend_recipe_sysroot DEPLOY_DIR WORKSPACE LICENSE_DIR \
-    BUILDNAME SRC_DIR_ROOT PATH_TO_REPO"
+BB_HASHBASE_WHITELIST_append = " \
+    BSPDIR BUILDNAME SRC_DIR_ROOT PATH_TO_REPO \
+    QTI_METAPATH_BASE QTI_METAPATH_BASE_PROP QTI_METAPATH_DISTRO \
+"
 
 # Let pkgs install files that other pkgs want to install for the recovery images.
 OPKG_ARGS_append = " --force-overwrite"
 
-# Use sstate packages that track state change
-BB_SIGNATURE_HANDLER = "OEBasicHash"
+# Enable hash equivalency
+BB_SIGNATURE_HANDLER = "OEEquivHash"
+BB_HASHSERVE = "auto"
 
 # Record build history to detect possible regressions and to run analysis on top of the build output.
-INHERIT += "buildhistory"
-BUILDHISTORY_COMMIT = "1"
+#INHERIT += "buildhistory"
+#BUILDHISTORY_COMMIT = "1"
 
 # Add --retry-connrefused to the wget execution.
 FETCHCMD_wget      = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate"
