@@ -72,7 +72,7 @@ elif TARGET == "opsy-sa81x5agl":
     DISTRO = "auto-agl"
     MACHINE = "opsy-sa81x5"
 elif TARGET == "opsy-sa81x5":
-    DISTRO = "auto"
+    DISTRO = "auto-pvm"
     MACHINE = "opsy-sa81x5"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
