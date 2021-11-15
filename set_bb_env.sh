@@ -213,6 +213,14 @@ function build-sa415m-image() {
   cdbitbake machine-image
 }
 
+function build-sa415m-initramfs-image() {
+  unset_bb_env
+  export MACHINE=sa415m
+  export DISTRO=auto
+  cdbitbake -R conf/initramfs.conf machine-recovery-image
+  cdbitbake machine-image
+}
+
 build-all-sa415m-images() {
   build-sa415m-image
   buildclean-retaindeploy
