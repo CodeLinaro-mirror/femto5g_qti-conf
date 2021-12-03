@@ -67,6 +67,7 @@ if [ -d "${ENV_PREPATH}/meta-agl/meta-ivi-common" ]; then
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-agl-demo\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-qt5\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-amb\"" >> ${ENV_BBLAYERS_CONF};
+    echo "BBLAYERS += \"${ENV_PREPATH}/meta-gplv2\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-rust\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-security-isafw\"" >> ${ENV_BBLAYERS_CONF};
     echo "BBLAYERS += \"${ENV_PREPATH}/meta-ivi/meta-ivi\"" >> ${ENV_BBLAYERS_CONF};
