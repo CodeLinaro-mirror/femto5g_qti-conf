@@ -731,6 +731,51 @@ function build-opsy-sa81x5-perf-image() {
   fi
 }
 
+# Add build-all opsy-sa81x5/sa81x5-perf imgs
+function build-all-opsy-sa81x5-image() {
+    if [[ ! -d "$WS/poky/build/downloads" && -d "$WS/.repo/downloads" ]]; then
+         mv $WS/.repo/downloads $WS/poky/build/
+    fi
+    echo "================== Show Build Environment for Debug -- Start =================="
+    echo "# Current Path:"
+    pwd
+    ls -l
+    echo "# Environment Variable:"
+    export
+    echo "================== Show Build Environment for Debug -- end=================="
+
+    build-opsy-sa81x5-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa81x5-automotive/machine-image-sa81x5.ext4`
+    rm -f tmp-glibc/deploy/images/sa81x5-automotive/machine-image-sa81x5.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa81x5-automotive/machine-image-sa81x5.ext4`
+    rm -f tmp-glibc/deploy/images/sa81x5-automotive/machine-image-sa81x5.ext4
+
+    mv tmp-glibc/deploy/images/sa81x5-automotive tmp-glibc/deploy/images/sa81x5-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    bitbake ovmf-virt -fc cleanall
+    bitbake qtbase -fc cleanall
+
+    build-opsy-sa81x5-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa81x5-automotive-perf/machine-image-sa81x5.ext4`
+    rm -f tmp-glibc/deploy/images/sa81x5-automotive-perf/machine-image-sa81x5.ext4
+    mv tmp-glibc/deploy/images/sa81x5-automotive.bak tmp-glibc/deploy/images/sa81x5-automotive
+
+    mv tmp-glibc/deploy/images/sa81x5-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa81x5-automotive/machine-image-sa81x5.ext4
+    mv tmp-glibc/deploy/images/sa81x5-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa81x5-automotive-perf/machine-image-sa81x5.ext4
+
+    if [ -f "$WS/meta-qti-internal/buildsupport.sh" ]; then
+         $WS/meta-qti-internal/buildsupport.sh
+    fi
+}
+
 # SA8155qdrive commands
 function build-sa8155qdrive-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
