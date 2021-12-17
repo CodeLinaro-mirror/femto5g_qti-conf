@@ -968,6 +968,79 @@ function build-qtiquingvm8295-sdk-image() {
     fi
 }
 
+# qtigvmI3 commands
+function build-qtigvmI3-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtigvmI3 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files qtigvmI3 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-qtigvmI3-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtigvmI3 perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-qtigvmI3-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-qtigvmI3-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmI3-automotive/machine-image-qtigvmI3.ext4`
+    rm -f tmp-glibc/deploy/images/qtigvmI3-automotive/machine-image-qtigvmI3.ext4
+    echo "==== Error run 'build-qtigvmI3-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmI3-automotive/machine-image-qtigvmI3.ext4`
+    rm -f tmp-glibc/deploy/images/qtigvmI3-automotive/machine-image-qtigvmI3.ext4
+
+    build-qtigvmI3-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtigvmI3-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/qtigvmI3-automotive tmp-glibc/deploy/images/qtigvmI3-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-qtigvmI3-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtigvmI3-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtigvmI3-automotive-perf/machine-image-qtigvmI3.ext4`
+    rm -f tmp-glibc/deploy/images/qtigvmI3-automotive-perf/machine-image-qtigvmI3.ext4
+    mv tmp-glibc/deploy/images/qtigvmI3-automotive.bak tmp-glibc/deploy/images/qtigvmI3-automotive
+
+    mv tmp-glibc/deploy/images/qtigvmI3-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtigvmI3-automotive/machine-image-qtigvmI3.ext4
+    mv tmp-glibc/deploy/images/qtigvmI3-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtigvmI3-automotive-perf/machine-image-qtigvmI3.ext4
+}
+
+function build-qtigvmI3-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files qtigvmI3 debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 function build-sa81x5-rt-initramfsimage() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env

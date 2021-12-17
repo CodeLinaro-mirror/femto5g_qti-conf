@@ -62,7 +62,7 @@ def generatePathString ( pathList ):
 # Analyze 'TARGET' variable, initialize 'DISTRO' & 'MACHINE'
 DISTRO = "auto"
 MACHINE = TARGET
-if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" :
+if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" or TARGET == "qtigvmI3" :
     DISTRO = "auto-gvm"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
