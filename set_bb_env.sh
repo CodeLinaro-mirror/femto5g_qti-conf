@@ -192,10 +192,8 @@ cat > ${BUILDDIR}/conf/local.conf <<EOF
 # This configuration file is dynamically generated every time
 # set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.
 #--------------------------------------------------------------
-# Create tarballs when pulling from a source control repository
 BB_GENERATE_MIRROR_TARBALLS = "1"
 EOF
-
 cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 
 # auto.conf
@@ -208,12 +206,6 @@ MACHINE ?= "${MACHINE}"
 SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
 EOF
-
-# Use filer location to copy downloads direcotry from the filer location
-if [ -f  ${WS}/release/downloads_uri.sh ]; then
-
-    source ${WS}/release/downloads_uri.sh
-fi
 
 # Check and run pre-configs from enabled meta layers
 layerstring=$( \
