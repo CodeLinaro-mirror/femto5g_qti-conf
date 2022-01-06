@@ -373,6 +373,20 @@ build-all-sa2150p-images() {
   build-sa2150p-nand-perf-image
 }
 
+#EMMC build commands
+build-sa2150p-emmc-images() {
+  build-sa2150p-image
+  buildclean-retaindeploy
+  build-sa2150p-perf-image
+}
+
+#NAND build commands
+build-sa2150p-nand-images() {
+  build-sa2150p-nand-image
+  buildclean-retaindeploy
+  build-sa2150p-nand-perf-image
+}
+
 function build-sdm845-robot-image() {
   unset_bb_env
   export MACHINE=sdm845
