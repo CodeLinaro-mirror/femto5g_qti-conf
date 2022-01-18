@@ -1,3 +1,4 @@
+0001-clang.inc-change-protocol-to-https.patch
 0002-__init__.py-remove-this-print-to-reduce-warning-mess.patch
 0003-cookerdata.py-convert-layerseries-compat-warning-to-error.patch
 0004-cooker.py-check-for-layerdepends.patch
