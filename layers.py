@@ -82,9 +82,10 @@ def initLayersList(TARGET):
     elif TARGET == 'sa6155agldemo' or TARGET == 'sa81x5agldemo':
         # Add AGL core + demo layers
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
-        # Enable sdllvm
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa6155lxc' or TARGET == 'sa81x5lxc':
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
