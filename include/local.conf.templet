@@ -223,7 +223,7 @@ PATCHRESOLVE = "noop"
 # CONF_VERSION is increased each time build/conf/ changes incompatibly and is used to
 # track the version of this file when it was generated. This can safely be ignored if
 # this doesn't mean anything to you.
-CONF_VERSION = "1"
+CONF_VERSION = "${@bb.utils.contains('LAYERSERIES_COMPAT_yocto', 'dunfell', '1', '2', d)}"
 
 # BB_HASHBASE_WHITELIST Tells bitbake to ignore variables
 # The SRC_DIR_ROOT variable is added through build/conf/bblayers.conf
