@@ -968,6 +968,79 @@ function build-qtiquingvm8295-sdk-image() {
     fi
 }
 
+# qtigvmi3 commands
+function build-qtigvmi3-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtigvmi3 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files qtigvmi3 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-qtigvmi3-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtigvmi3 perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-qtigvmi3-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-qtigvmi3-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4`
+    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
+    echo "==== Error run 'build-qtigvmi3-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4`
+    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
+
+    build-qtigvmi3-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtigvmi3-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/qtigvmi3-automotive tmp-glibc/deploy/images/qtigvmi3-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-qtigvmi3-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtigvmi3-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4`
+    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4
+    mv tmp-glibc/deploy/images/qtigvmi3-automotive.bak tmp-glibc/deploy/images/qtigvmi3-automotive
+
+    mv tmp-glibc/deploy/images/qtigvmi3-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
+    mv tmp-glibc/deploy/images/qtigvmi3-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4
+}
+
+function build-qtigvmi3-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files qtigvmi3 debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 function build-sa81x5-rt-initramfsimage() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
@@ -1117,6 +1190,79 @@ function build-qtiquingvm-headless-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files qtiquingvm-headless debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+# qtiquingvm-headless8295 commands
+function build-qtiquingvm8295-headless-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtiquingvm8295-headless debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files qtiquingvm8295 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-qtiquingvm8295-headless-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files qtiquingvm8295-headless perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-qtiquingvm8295-headless-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-qtiquingvm8295-headless-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive/machine-image-qtiquingvm8295-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive/machine-image-qtiquingvm8295-headless.ext4
+    echo "==== Error run 'build-qtiquingvm8295-headless-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive/machine-image-qtiquingvm8295-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive/machine-image-qtiquingvm8295-headless.ext4
+
+    build-qtiquingvm8295-headless-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtiquingvm8295-headless-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-qtiquingvm8295-headless-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-qtiquingvm8295-headless-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive-perf/machine-image-qtiquingvm8295-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive-perf/machine-image-qtiquingvm8295-headless.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive.bak tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive
+
+    mv tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive/machine-image-qtiquingvm8295-headless.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtiquingvm8295-headless-automotive-perf/machine-image-qtiquingvm8295-headless.ext4
+}
+
+function build-qtiquingvm8295-headless-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files qtiquingvm8295-headless debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
