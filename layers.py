@@ -62,8 +62,8 @@ def initLayersList(TARGET):
                 dicLayersWithSubLayers[metaLayerDir] = 1
 
         # Enable COQOS HV SDK meta-layers
-        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1, "meta-opsy-qti-sa8155-staging-fastrpc-npu": 1}
-        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk-staging"] = {"meta-opsy-qti-sa8155-staging": 1}
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8155": 1}
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk-staging"] = {"meta-opsy-qti-sa8155-staging": 1, "meta-opsy-qti-sa8155-staging-fastrpc-npu": 1}
         dicLayersWithSubLayers["meta-opsy-staging"] = {"meta-opsy-qti-sa8155-staging": 1}
 
     if TARGET == "sa8155qdrive":
