@@ -241,6 +241,28 @@ build-all-sa515m-images() {
   build-sa515m-perf-image
 }
 
+# sa515m nad commands
+function build-sa515m-nad-perf-image() {
+  unset_bb_env
+  export MACHINE=sa515m
+  export DISTRO=nad
+  export VARIANT=perf
+  cdbitbake machine-image
+}
+
+function build-sa515m-nad-image() {
+  unset_bb_env
+  export MACHINE=sa515m
+  export DISTRO=nad
+  cdbitbake machine-image
+}
+
+build-all-sa515m-nad-images() {
+  build-sa515m-nad-image
+  buildclean-retaindeploy
+  build-sa515m-nad-perf-image
+}
+
 # qcs40x commands
 
 build-all-nf-64-qsap-images() {
