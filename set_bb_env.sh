@@ -239,7 +239,7 @@ function build-sa515m-image() {
 build-all-sa515m-images() {
   clean-tmpdir
   build-sa515m-image
-  buildclean-retain-sstatecache-deploy
+  buildclean-retaindeploy
   build-sa515m-perf-image
 }
 
