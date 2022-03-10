@@ -758,6 +758,7 @@ function build-all-opsy-sa81x5-image() {
     bitbake virtual/kernel -fc cleanall
     bitbake ovmf-virt -fc cleanall
     bitbake qtbase -fc cleanall
+    bitbake image-qti-sa8155-hwvirt-linux-android-safeic -fc cleanall
 
     build-opsy-sa81x5-perf-image
     if [ "$?" != "0" ]; then
