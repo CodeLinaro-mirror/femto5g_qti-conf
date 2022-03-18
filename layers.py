@@ -50,7 +50,7 @@ def initLayersList(TARGET):
         "meta-security": 1 \
     }
 
-    if TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt' or TARGET == 'sa8295' or TARGET == 'sa81x5lxc':
+    if TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt' or TARGET == 'sa8295' or TARGET == 'lemans-lxc' or TARGET == 'sa81x5lxc':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1

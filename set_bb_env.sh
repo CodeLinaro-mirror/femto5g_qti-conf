@@ -1124,6 +1124,40 @@ function build-sa8295-sdk-image() {
     fi
 }
 
+# LeMansLXC commands
+function build-lemanslxc-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files lemans-lxc debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files lemans-lxc debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-lemanslxc-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files lemans-lxc perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-lemanslxc-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-lxc-function lemans-lxc
+    return $?
+}
+
 # qtiquingvm-headless commands
 function build-qtiquingvm-headless-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
