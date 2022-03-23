@@ -149,7 +149,7 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > ${BUILD_DIR}/conf/local.conf
 
     # Set environment variables for dm-verity
-    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE COQOS_LICENSE_FILE"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
 
@@ -1124,6 +1124,40 @@ function build-sa8295-sdk-image() {
     fi
 }
 
+# Add opsy-sa8295 debug build commands
+function build-opsy-sa8295-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa8295 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa8295 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+# Add opsy-sa81x5 perf build commands
+function build-opsy-sa8295-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files opsy-sa8295 perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files opsy-sa8295 perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 # qtiquingvm-headless commands
 function build-qtiquingvm-headless-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -1376,5 +1410,5 @@ export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR SSTATE_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 

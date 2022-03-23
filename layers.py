@@ -25,6 +25,8 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import os
+
 dicLayersWithSubLayers = None
 
 def initLayersList(TARGET):
@@ -50,7 +52,26 @@ def initLayersList(TARGET):
         "meta-security": 1 \
     }
 
-    if TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt' or TARGET == 'sa8295':
+    if TARGET.startswith('opsy-'):
+        # Add all meta-opsy-* meta-layers automatically. Skip meta-opsy-coqoshv-sdk
+        # since it is treated specially. Skip meta-layers containing "staging" keyword
+        # in their names.
+        metaLayersDir = os.path.realpath(os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), '..', '..', '..'
+        ))
+        for metaLayerDir in os.listdir(metaLayersDir):
+            if metaLayerDir in ["meta-opsy-coqoshv-sdk", "meta-opsy-coqoshv-sdk-staging", "meta-opsy-staging"]:
+                continue
+            if metaLayerDir.startswith("meta-opsy-"):
+                dicLayersWithSubLayers[metaLayerDir] = 1
+        # Enable COQOS HV SDK meta-layers
+        dicLayersWithSubLayers["meta-opsy-coqoshv-sdk"] = {"meta-opsy-coqoshv": 1, "meta-opsy-qti-sa8295": 1}
+
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET == 'opsy-sa8295':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
@@ -82,10 +103,9 @@ def initLayersList(TARGET):
     elif TARGET == 'sa6155agldemo' or TARGET == 'sa81x5agldemo':
         # Add AGL core + demo layers
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
-        # Enable upsteam llvm
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
-        dicLayersWithSubLayers["meta-clang"] = 1
+        # Enable sdllvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
     elif TARGET == 'sa6155lxc' or TARGET == 'sa81x5lxc':
         # Enable sdllvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
