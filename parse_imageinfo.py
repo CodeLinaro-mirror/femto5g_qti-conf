@@ -36,7 +36,7 @@ try:
 except ImportError:
     sys.stderr.write("This script requires PyYAML.\
     \nPlease install pyyaml python package.\n")
-    sys.exit(1)
+    sys.exit(0)
 
 thisDir = os.path.dirname(os.path.realpath(__file__))
 
