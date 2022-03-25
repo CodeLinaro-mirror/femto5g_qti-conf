@@ -50,7 +50,7 @@ def initLayersList(TARGET):
         "meta-security": 1 \
     }
 
-    if TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt' or TARGET == 'sa8295':
+    if TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt' or TARGET == 'sa8295' or TARGET == 'sa81x5lxc':
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
@@ -67,10 +67,9 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'qtiquingvm' or TARGET == 'qtiquingvm8295' or TARGET == 'qtigvmi3' or TARGET == 'qtiquingvm-headless' or TARGET == 'qtiquingvm8295-headless' :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
-        # Enable sdllvm
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
         # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         # Add AGL core layers
@@ -82,11 +81,7 @@ def initLayersList(TARGET):
     elif TARGET == 'sa6155agldemo' or TARGET == 'sa81x5agldemo':
         # Add AGL core + demo layers
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
-        # Enable sdllvm
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
-    elif TARGET == 'sa6155lxc' or TARGET == 'sa81x5lxc':
-        # Enable sdllvm
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-sdllvm"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-sdllvm-prop"] = 1
-
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
