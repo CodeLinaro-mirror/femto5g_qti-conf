@@ -1134,6 +1134,8 @@ function build-opsy-sa8295-image() {
   return 1
   fi
 
+  export COQOS_LICENSE_FILE="${WS}/meta-opsy-coqoshv-sdk/coqos.lic"
+
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
@@ -1150,6 +1152,8 @@ function build-opsy-sa8295-perf-image() {
   echo "==== Error run 'init-configure-files opsy-sa8295 perf'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  export COQOS_LICENSE_FILE="${WS}/meta-opsy-coqoshv-sdk/coqos.lic"
 
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
