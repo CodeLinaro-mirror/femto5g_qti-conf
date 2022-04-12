@@ -1130,13 +1130,13 @@ function build-qtiquingvm-headless-image() {
   unset_bb_env
   init-configure-files qtiquingvm-headless debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files qtiquingvm-headless debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files qtiquingvm debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake qti-image-headless
+  cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-image-headless'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -1145,9 +1145,9 @@ function build-qtiquingvm-headless-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files qtiquingvm-headless perf
-  cdbitbake qti-image-headless
+  cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-image-headless'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -1157,13 +1157,13 @@ build-all-qtiquingvm-headless-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-qtiquingvm-headless-image
     if [ "$?" != "0" ]; then
-    export QTI_IMAGE_HEADLESS=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive/qti-image-headless-qtiquingvm-headless.ext4`
-    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive/qti-image-headless-qtiquingvm-headless.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4
     echo "==== Error run 'build-qtiquingvm-headless-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export QTI_IMAGE_HEADLESS=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive/qti-image-headless-qtiquingvm-headless.ext4`
-    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive/qti-image-headless-qtiquingvm-headless.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4
 
     build-qtiquingvm-headless-sdk-image
     if [ "$?" != "0" ]; then
@@ -1178,12 +1178,12 @@ build-all-qtiquingvm-headless-image() {
     echo "==== Error run 'build-qtiquingvm-headless-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export QTI_IMAGE_HEADLESS_PERF=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/qti-image-headless-qtiquingvm-headless.ext4`
-    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/qti-image-headless-qtiquingvm-headless.ext4
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/machine-image-qtiquingvm-headless.ext4`
+    rm -f tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/machine-image-qtiquingvm-headless.ext4
     mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive.bak tmp-glibc/deploy/images/qtiquingvm-headless-automotive
 
-    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive/$QTI_IMAGE_HEADLESS tmp-glibc/deploy/images/qtiquingvm-headless-automotive/qti-image-headless-qtiquingvm-headless.ext4
-    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/$QTI_IMAGE_HEADLESS_PERF tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/qti-image-headless-qtiquingvm-headless.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtiquingvm-headless-automotive/machine-image-qtiquingvm-headless.ext4
+    mv tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtiquingvm-headless-automotive-perf/machine-image-qtiquingvm-headless.ext4
 }
 
 function build-qtiquingvm-headless-sdk-image() {
