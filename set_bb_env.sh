@@ -1190,9 +1190,9 @@ function build-qtiquingvm-headless-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files qtiquingvm-headless debug
-    cdbitbake machine-image -c populate_sdk
+    cdbitbake qti-image-headless -c populate_sdk
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    echo "==== Error run 'cdbitbake qti-image-headless -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
 }
