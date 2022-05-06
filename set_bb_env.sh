@@ -968,13 +968,13 @@ function build-qtiquingvm8295-sdk-image() {
     fi
 }
 
-# qtigvmi3 commands
-function build-qtigvmi3-image() {
+# quin-gvm-gen4 commands
+function build-quin-gvm-gen4-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files qtigvmi3 debug
+  init-configure-files quin-gvm-gen4 debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files qtigvmi3 debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files quin-gvm-gen4 debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -985,10 +985,10 @@ function build-qtigvmi3-image() {
   fi
 }
 
-function build-qtigvmi3-perf-image() {
+function build-quin-gvm-gen4-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files qtigvmi3 perf
+  init-configure-files quin-gvm-gen4 perf
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
@@ -996,44 +996,44 @@ function build-qtigvmi3-perf-image() {
   fi
 }
 
-build-all-qtigvmi3-image() {
+build-all-quin-gvm-gen4-image() {
 
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-qtigvmi3-image
+    build-quin-gvm-gen4-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4`
-    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
-    echo "==== Error run 'build-qtigvmi3-image'. (${FUNCNAME[@]})"
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    echo "==== Error run 'build-quin-gvm-gen4-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4`
-    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
 
-    build-qtigvmi3-sdk-image
+    build-quin-gvm-gen4-sdk-image
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-qtigvmi3-sdk-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-quin-gvm-gen4-sdk-image'. (${FUNCNAME[@]})"
     return 1
     fi
 
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive tmp-glibc/deploy/images/qtigvmi3-automotive.bak
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak
     bitbake virtual/kernel -fc cleanall
-    build-qtigvmi3-perf-image
+    build-quin-gvm-gen4-perf-image
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-qtigvmi3-perf-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-quin-gvm-gen4-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4`
-    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive.bak tmp-glibc/deploy/images/qtigvmi3-automotive
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-automotive
 
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
 }
 
-function build-qtigvmi3-sdk-image() {
+function build-quin-gvm-gen4-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files qtigvmi3 debug
+    init-configure-files quin-gvm-gen4 debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
