@@ -1155,7 +1155,7 @@ function build-lemanslxc-perf-image() {
 
 build-all-lemanslxc-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-all-lxc-function lemans-lxc
+    build-all-lxc-function lemanslxc
     return $?
 }
 
