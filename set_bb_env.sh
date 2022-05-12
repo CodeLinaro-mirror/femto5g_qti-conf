@@ -92,6 +92,20 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
+# Override/comment out the renamed variables list as a workaround to skip from old name check
+function override_renamed_vars() {
+    if [ -f "${WS}/poky/bitbake/lib/bb/data_smart.py" ] && ! grep -q "bitbake_renamed_vars_drop" ${WS}/poky/bitbake/lib/bb/data_smart.py;
+    then
+        sed -i -E "s/bitbake_renamed_vars =.*/bitbake_renamed_vars = \{\}\nbitbake_renamed_vars_drop = \{/" ${WS}/poky/bitbake/lib/bb/data_smart.py >> /dev/null 2>&1
+    fi
+
+    if [ -f "${WS}/poky/meta/conf/bitbake.conf" ];
+    then
+        sed -i -E "s/(^BB_RENAMED_VARIABLES.*)/#\1/" ${WS}/poky/meta/conf/bitbake.conf >> /dev/null 2>&1
+    fi
+}
+
+override_renamed_vars
 
 #init local git if it does not exist
 function init_localgit() {
