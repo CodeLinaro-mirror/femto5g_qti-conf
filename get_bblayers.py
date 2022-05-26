@@ -14,9 +14,12 @@ OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
                     "meta-filesystems", "meta-multimedia" ]
 RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
                     "meta-ros2-foxy", "meta-ros-backports-gatesgarth" ]
+QtiRosSubLayer  = [ "meta-ros-common", "meta-ros1", "meta-ros1-noetic", \
+                    "meta-ros2", "meta-ros2-foxy" ]
 
 dicLayersWithSubLayers = { "meta-qti-bsp": QtiBspSubLayers, \
                            "meta-openembedded": OeSubLayers, \
+                           "meta-qti-ros-oss": QtiRosSubLayer, \
                            "meta-ros":RosSubLayers }
 
 def getLayerCollections (layerConfPath) :
