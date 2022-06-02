@@ -478,6 +478,17 @@ unset_bb_env() {
 # Find build templates from qti meta layer.
 export TEMPLATECONF="meta-qti-bsp/conf"
 
+#set -x
+# enable the local mirror
+if [ ! -f ${WS}/poky/build/conf/auto.conf ]; then
+  env_files=$(ls ${WS}/poky/meta-qti-i*/script/set_env.sh 2>/dev/null || true)
+  if [ "${env_files}" != "" ]; then
+   for env_file in ${env_files};do
+     source ${env_file}
+   done
+  fi
+fi
+#set +x
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
