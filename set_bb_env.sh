@@ -195,11 +195,11 @@ function build-all-function() {
     export MINIMAL_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4`
     rm -f tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
 
-    build-$1-sdk-image
-    if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
-    return 1
-    fi
+    #build-$1-sdk-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
 
     mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
     bitbake virtual/kernel -fc cleanall
