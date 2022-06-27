@@ -65,6 +65,10 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET == 'quin-gvm-gen4-dpk' :
+        dicLayersWithSubLayers["meta-clang"] = 1
+        # Enable DPK
+        dicLayersWithSubLayers["meta-qti-dpk"] = 1
     elif TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
         # Add AGL core layers
         dicLayersWithSubLayers.update(dicAglCoreLayersWithSubLayers)
