@@ -51,11 +51,13 @@ LE.UM.5.4.1:
 LE.UM.6.2.2:
   machine:
     - sa410m
+    - sa410m-televm
   distro:
     - qti-distro-tele-debug
     - qti-distro-tele-perf
   target:
     - qti-tele-image
+    - qti-tele-vm-image
 
 LE.FRAMEWORK.1.0:
   machine:
