@@ -1,3 +1,8 @@
+# Changes from Qualcomm Innovation Center are provided under the following license:
+
+# Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
 # Common functions for build-all sa81x5/sa6155 images
 #           $1 -- Target name, as: sa81x5/sa6155
 function build-all-function() {
@@ -641,3 +646,96 @@ function build-sa81x5-rt-initramfsimage() {
     return 1
   fi
 }
+
+
+# =======================================================
+# Below is temporary code for sa81x5 kernel-5.15 bring up
+# =======================================================
+
+# Common functions for build-all sa81x5 images
+#           $1 -- Target name, as: sa81x5
+function build-all-k515-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+
+    #bitbake virtual/kernel -fc cleanall
+
+    #build-$1-perf-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
+    #export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    #rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+}
+
+# Common functions for build-all sa81x5lxc images
+#           $1 -- Target name, as: sa81x5lxc
+function build-all-k515-lxc-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+
+    #bitbake virtual/kernel -fc cleanall
+
+    #build-$1-perf-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
+    #export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    #rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+}
+
+
+# sa81x5 commands
+function build-sa81x5-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa81x5 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa81x5 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa81x5-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-k515-function sa81x5
+    return $?
+}
+
+
+build-all-sa81x5lxc-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-k515-lxc-function sa81x5lxc
+    return $?
+}
+
