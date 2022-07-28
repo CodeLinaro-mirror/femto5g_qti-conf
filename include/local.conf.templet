@@ -223,17 +223,22 @@ PATCHRESOLVE = "noop"
 # CONF_VERSION is increased each time build/conf/ changes incompatibly and is used to
 # track the version of this file when it was generated. This can safely be ignored if
 # this doesn't mean anything to you.
-CONF_VERSION = "1"
+CONF_VERSION = "${@bb.utils.contains('LAYERSERIES_COMPAT_yocto', 'dunfell', '1', '2', d)}"
 
 # BB_HASHBASE_WHITELIST Tells bitbake to ignore variables
+# BB_BASEHASH_IGNORE_VARS Tells bitbake to ignore variables
 # The SRC_DIR_ROOT variable is added through build/conf/bblayers.conf
-BB_HASHBASE_WHITELIST_append = " \
+BB_HASHBASE_WHITELIST:append = " \
+    BSPDIR BUILDNAME SRC_DIR_ROOT PATH_TO_REPO \
+    QTI_METAPATH_BASE QTI_METAPATH_BASE_PROP QTI_METAPATH_DISTRO \
+"
+BB_BASEHASH_IGNORE_VARS:append = " \
     BSPDIR BUILDNAME SRC_DIR_ROOT PATH_TO_REPO \
     QTI_METAPATH_BASE QTI_METAPATH_BASE_PROP QTI_METAPATH_DISTRO \
 "
 
 # Let pkgs install files that other pkgs want to install for the recovery images.
-OPKG_ARGS_append = " --force-overwrite"
+OPKG_ARGS:append = " --force-overwrite"
 
 # Enable hash equivalency
 BB_SIGNATURE_HANDLER = "OEEquivHash"
@@ -257,6 +262,6 @@ PROTO ?= "file"
 INHERIT += "qfile"
 
 # Enable fortran
-FORTRAN_forcevariable = ",fortran"
+FORTRAN:forcevariable = ",fortran"
 
 CLANGSDK = "1"

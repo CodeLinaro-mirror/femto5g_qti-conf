@@ -92,6 +92,20 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
+# Override/comment out the renamed variables list as a workaround to skip from old name check
+function override_renamed_vars() {
+    if [ -f "${WS}/poky/bitbake/lib/bb/data_smart.py" ] && ! grep -q "bitbake_renamed_vars_drop" ${WS}/poky/bitbake/lib/bb/data_smart.py;
+    then
+        sed -i -E "s/bitbake_renamed_vars =.*/bitbake_renamed_vars = \{\}\nbitbake_renamed_vars_drop = \{/" ${WS}/poky/bitbake/lib/bb/data_smart.py >> /dev/null 2>&1
+    fi
+
+    if [ -f "${WS}/poky/meta/conf/bitbake.conf" ];
+    then
+        sed -i -E "s/(^BB_RENAMED_VARIABLES.*)/#\1/" ${WS}/poky/meta/conf/bitbake.conf >> /dev/null 2>&1
+    fi
+}
+
+override_renamed_vars
 
 #init local git if it does not exist
 function init_localgit() {
@@ -150,6 +164,7 @@ function init-configure-files() {
 
     # Set environment variables for dm-verity
     export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
+    export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS KERNEL_ROOTDEVICE"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
 
@@ -968,13 +983,13 @@ function build-qtiquingvm8295-sdk-image() {
     fi
 }
 
-# qtigvmi3 commands
-function build-qtigvmi3-image() {
+# quin-gvm-gen4 commands
+function build-quin-gvm-gen4-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files qtigvmi3 debug
+  init-configure-files quin-gvm-gen4 debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files qtigvmi3 debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files quin-gvm-gen4 debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -985,10 +1000,10 @@ function build-qtigvmi3-image() {
   fi
 }
 
-function build-qtigvmi3-perf-image() {
+function build-quin-gvm-gen4-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files qtigvmi3 perf
+  init-configure-files quin-gvm-gen4 perf
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
@@ -996,44 +1011,118 @@ function build-qtigvmi3-perf-image() {
   fi
 }
 
-build-all-qtigvmi3-image() {
+build-all-quin-gvm-gen4-image() {
 
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-qtigvmi3-image
+    build-quin-gvm-gen4-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4`
-    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
-    echo "==== Error run 'build-qtigvmi3-image'. (${FUNCNAME[@]})"
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    echo "==== Error run 'build-quin-gvm-gen4-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4`
-    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
 
-    build-qtigvmi3-sdk-image
+    build-quin-gvm-gen4-sdk-image
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-qtigvmi3-sdk-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-quin-gvm-gen4-sdk-image'. (${FUNCNAME[@]})"
     return 1
     fi
 
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive tmp-glibc/deploy/images/qtigvmi3-automotive.bak
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak
     bitbake virtual/kernel -fc cleanall
-    build-qtigvmi3-perf-image
+    build-quin-gvm-gen4-perf-image
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-qtigvmi3-perf-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-quin-gvm-gen4-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4`
-    rm -f tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive.bak tmp-glibc/deploy/images/qtigvmi3-automotive
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-automotive
 
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/qtigvmi3-automotive/machine-image-qtigvmi3.ext4
-    mv tmp-glibc/deploy/images/qtigvmi3-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/qtigvmi3-automotive-perf/machine-image-qtigvmi3.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
 }
 
-function build-qtigvmi3-sdk-image() {
+function build-quin-gvm-gen4-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files qtigvmi3 debug
+    init-configure-files quin-gvm-gen4 debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+# quin-gvm-gen4-dpk commands
+
+function build-quin-gvm-gen4-dpk-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-gen4-dpk debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files quin-gvm-gen4-dpk debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-gen4-dpk-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-gen4-dpk perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-quin-gvm-gen4-dpk-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-gvm-gen4-dpk-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    echo "==== Error run 'build-quin-gvm-gen4-dpk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+
+    build-quin-gvm-gen4-dpk-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-gen4-dpk-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-gvm-gen4-dpk-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-gen4-dpk-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-automotive
+
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
+}
+
+function build-quin-gvm-gen4-dpk-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files quin-gvm-gen4-dpk debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
@@ -1122,6 +1211,40 @@ function build-sa8295-sdk-image() {
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+}
+
+# LeMansLXC commands
+function build-lemanslxc-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files lemans-lxc debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files lemans-lxc debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-lemanslxc-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files lemans-lxc perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-lemanslxc-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-lxc-function lemanslxc
+    return $?
 }
 
 # qtiquingvm-headless commands
@@ -1377,4 +1500,7 @@ export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_EXTRAWHITE, append our vars to the list
 export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+
+# BB_ENV_PASSTHROUGH_ADDITIONS, append our vars to the list
+export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 
