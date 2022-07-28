@@ -66,6 +66,12 @@ def getLayerPaths(TARGET, workspace) :
         if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop"]:
             continue
         layers.dicLayersWithSubLayers[foldername] = 1
+    #Enable DPK Layers
+    if TARGET == 'quin-gvm-gen4-dpk' :
+        if os.path.exists(workspace + "/meta-dpk-prop"):
+            for foldername in os.listdir(workspace + "/meta-dpk-prop"):
+                if foldername.startswith("meta-"):
+                    layers.dicLayersWithSubLayers["meta-dpk-prop/" + foldername] = 1
     retList = GenLayerPathList(workspace, layers.dicLayersWithSubLayers)
 
     # In order to avoid potential namespace conflicts, between recipes on layers
