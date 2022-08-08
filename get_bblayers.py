@@ -51,25 +51,26 @@ def getLayerPaths(lookup,  fnexpr, checkname) :
     global dicLayersWithSubLayers
     retList = []
     for target in lookup:
-        for file in os.listdir(target) :
-            if not any(fnmatch.fnmatch(file, fnexpr) for fnexpr in ignoreList):
-                # Found what might be a valid metadata layer...
-                layerPath = target + "/" + file
-                layerConfPath = layerPath + "/conf/layer.conf"
-                if os.path.exists(layerConfPath) :
-                    #Ignore qti layers not following naming convension
-                    if (checkname and re.match("(.*?)meta-qti(.*?)", layerConfPath)) :
-                        if not re.match("qti(-[a-zA-Z]+)+", getLayerCollections(layerConfPath)) :
-                            print ("# Ignored for not following qti naming convention: " + \
-                                  layerConfPath + " (" + getLayerCollections(layerConfPath) + ")")
-                            continue
-                    # Found a layer.  Find the priority for it...
-                    retList += [( layerPath,  getLayerPriority (layerConfPath) )]
-                # Add layers that have sublayers
-                if (file in dicLayersWithSubLayers.keys()):
-                    for subLayer in dicLayersWithSubLayers[file]:
-                        path = layerPath + "/" + subLayer
-                        retList += [( path, getLayerPriority(path + "/conf/layer.conf") )]
+        if os.path.exists(target):
+            for file in os.listdir(target) :
+                if not any(fnmatch.fnmatch(file, fnexpr) for fnexpr in ignoreList):
+                    # Found what might be a valid metadata layer...
+                    layerPath = target + "/" + file
+                    layerConfPath = layerPath + "/conf/layer.conf"
+                    if os.path.exists(layerConfPath) :
+                        #Ignore qti layers not following naming convension
+                        if (checkname and re.match("(.*?)meta-qti(.*?)", layerConfPath)) :
+                            if not re.match("qti(-[a-zA-Z]+)+", getLayerCollections(layerConfPath)) :
+                                print ("# Ignored for not following qti naming convention: " + \
+                                    layerConfPath + " (" + getLayerCollections(layerConfPath) + ")")
+                                continue
+                        # Found a layer.  Find the priority for it...
+                        retList += [( layerPath,  getLayerPriority (layerConfPath) )]
+                    # Add layers that have sublayers
+                    if (file in dicLayersWithSubLayers.keys()):
+                        for subLayer in dicLayersWithSubLayers[file]:
+                            path = layerPath + "/" + subLayer
+                            retList += [( path, getLayerPriority(path + "/conf/layer.conf") )]
     # In order to avoid potential namespace conflicts, between recipes on layers
     # we sort the list in descending order of priority.
     return sorted(retList,  key=itemgetter(1), reverse=True)
