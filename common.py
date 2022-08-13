@@ -63,7 +63,7 @@ def getLayerPaths(TARGET, workspace) :
     for foldername in os.listdir(workspace):
         if not foldername.startswith("meta-qti-"):
             continue
-        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop"]:
+        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop", "meta-qti-dpk"]:
             continue
         layers.dicLayersWithSubLayers[foldername] = 1
     #Enable DPK Layers
