@@ -50,7 +50,7 @@ def initLayersList(TARGET):
         "meta-security": 1 \
     }
 
-    if TARGET == 'sa6155' or TARGET == 'sa81x5' or TARGET == 'sa81x5-rt' or TARGET == 'sa8295' or TARGET == 'lemans-lxc' or TARGET == 'sa81x5lxc':
+    if TARGET in ['sa6155', 'sa81x5' , 'sa81x5-rt', 'sa8295', 'lemans-lxc', 'sa81x5lxc']:
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
@@ -61,7 +61,7 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm' or TARGET == 'qtiquingvm8295' or TARGET == 'quin-gvm-gen4' or TARGET == 'qtiquingvm-headless' or TARGET == 'qtiquingvm8295-headless' :
+    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless'] :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
@@ -69,13 +69,13 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
-    elif TARGET == 'sa6155agl' or TARGET == 'sa81x5agl':
+    elif TARGET in ['sa6155agl', 'sa81x5agl']:
         # Add AGL core layers
         dicLayersWithSubLayers.update(dicAglCoreLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-selinux"] = 1
-    elif TARGET == 'sa6155agldemo' or TARGET == 'sa81x5agldemo':
+    elif TARGET in ['sa6155agldemo', 'sa81x5agldemo']:
         # Add AGL core + demo layers
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
