@@ -661,9 +661,9 @@ function build-all-k515-function() {
     echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    #export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    #rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
 
     #bitbake virtual/kernel -fc cleanall
 
@@ -676,7 +676,7 @@ function build-all-k515-function() {
     #rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
     #mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
 
-    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     #mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
@@ -689,9 +689,9 @@ function build-all-k515-lxc-function() {
     echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    #export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    #rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
 
     #bitbake virtual/kernel -fc cleanall
 
@@ -704,7 +704,7 @@ function build-all-k515-lxc-function() {
     #rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
     #mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
 
-    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    #mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     #mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
