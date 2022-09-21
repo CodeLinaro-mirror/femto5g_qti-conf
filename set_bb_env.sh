@@ -92,7 +92,7 @@ init_build_env () {
 
     # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
     # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
-    BB_ENV_EXTRAWHITE="DEBUG_BUILD PREBUILT_SRC_DIR"
+    BB_ENV_PASSTHROUGH_ADDITIONS="DEBUG_BUILD PREBUILT_SRC_DIR"
 
     # Yocto/OE-core works a bit differently than OE-classic so we're
     # going to source the OE build environment setup script they provided.
@@ -258,7 +258,7 @@ EOF
 
 # Force error for dangling bbappends
 if [[ ${MACHINE} =~ "sxrneo" ]] ; then
-   echo 'BB_DANGLINGAPPENDS_WARNONLY_forcevariable = "false"' >> ${BUILDDIR}/conf/auto.conf
+   echo 'BB_DANGLINGAPPENDS_WARNONLY:forcevariable = "false"' >> ${BUILDDIR}/conf/auto.conf
 fi
 
 # Check and run pre-configs from enabled meta layers
