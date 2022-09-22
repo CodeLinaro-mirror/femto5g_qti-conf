@@ -60,6 +60,15 @@ LE.UM.6.2.2:
     - qti-tele-image
     - qti-tele-vm-image
 
+LE.UM.7.1.1:
+  machine:
+    - cinder
+  distro:
+    - qti-distro-base-debug
+    - qti-distro-base-perf
+  target:
+    - qti-csm-image
+
 LE.FRAMEWORK.1.0:
   machine:
     - genericarmv8
