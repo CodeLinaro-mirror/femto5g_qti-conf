@@ -86,6 +86,12 @@ function build-quin-gvm-gen4-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  cdbitbake qti-image-headless
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-headless'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 function build-quin-gvm-gen4-perf-image() {
@@ -97,6 +103,12 @@ function build-quin-gvm-gen4-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  cdbitbake qti-image-headless
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-headless'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-quin-gvm-gen4-image() {
@@ -106,11 +118,15 @@ build-all-quin-gvm-gen4-image() {
     if [ "$?" != "0" ]; then
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
     rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    export HEADLESS_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/qti-image-headless-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/qti-image-headless-quin-gvm-gen4.ext4
     echo "==== Error run 'build-quin-gvm-gen4-image'. (${FUNCNAME[@]})"
     return 1
     fi
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4`
     rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    export HEADLESS_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive/qti-image-headless-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive/qti-image-headless-quin-gvm-gen4.ext4
 
     build-quin-gvm-gen4-sdk-image
     if [ "$?" != "0" ]; then
@@ -127,10 +143,14 @@ build-all-quin-gvm-gen4-image() {
     fi
     export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4`
     rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
+    export HEADLESS_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/qti-image-headless-quin-gvm-gen4.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/qti-image-headless-quin-gvm-gen4.ext4
     mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-automotive
 
     mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-automotive/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive/$HEADLESS_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-automotive/qti-image-headless-quin-gvm-gen4.ext4
     mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/machine-image-quin-gvm-gen4.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/$HEADLESS_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-automotive-perf/qti-image-headless-quin-gvm-gen4.ext4
 }
 
 function build-quin-gvm-gen4-sdk-image() {
