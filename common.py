@@ -67,7 +67,7 @@ def getLayerPaths(TARGET, workspace) :
             continue
         layers.dicLayersWithSubLayers[foldername] = 1
     #Enable DPK Layers
-    if TARGET == 'quin-gvm-gen4-dpk' :
+    if TARGET in ['quin-gvm-gen4-dpk', 'sa8295adp']:
         if os.path.exists(workspace + "/meta-dpk-prop"):
             for foldername in os.listdir(workspace + "/meta-dpk-prop"):
                 if foldername.startswith("meta-"):

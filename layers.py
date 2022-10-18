@@ -69,6 +69,10 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
+    elif TARGET == 'sa8295adp' :
+        dicLayersWithSubLayers["meta-clang"] = 1
+        # Enable DPK
+        dicLayersWithSubLayers["meta-qti-dpk"] = 1
     elif TARGET in ['sa6155agl', 'sa81x5agl']:
         # Add AGL core layers
         dicLayersWithSubLayers.update(dicAglCoreLayersWithSubLayers)
