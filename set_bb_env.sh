@@ -243,6 +243,15 @@ cat $scriptdir/local.conf >> ${BUILDDIR}/conf/local.conf
 BUILDNAME=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 )
 BUILDVERSION=$( echo "${BUILDNAME}" |rev |cut -d. -f1| rev )
 
+# Get the kernel target name from the kernel build directory
+if [[ ${MACHINE} =~ "trustedvm" ]] ; then
+   cd $BUILDDIR/../src/kernel-*/out/
+   kernel_dir=$(find . -maxdepth 1 -name \*msm-kernel\* -type d | head -n1)
+   kernel_target_name=$(echo ${kernel_dir} | cut -d'-' -f3)
+   KERNEL_TARGET=$(echo ${kernel_target_name} | cut -d'_' -f1)
+   cd -
+fi
+
 # auto.conf
 cat >| ${BUILDDIR}/conf/auto.conf <<EOF
 # This configuration file is dynamically generated every time
@@ -254,6 +263,7 @@ SSTATE_DIR = "${WS}/sstate-cache"
 DL_DIR = "${WS}/downloads"
 BUILDNAME = "${BUILDNAME}"
 SDK_VERSION = "${BUILDVERSION}"
+VM_KERNEL_TARGET="${KERNEL_TARGET}"
 EOF
 
 # Force error for dangling bbappends
