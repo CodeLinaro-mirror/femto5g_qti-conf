@@ -69,6 +69,10 @@ if TARGET == "quin-gvm-gen4-dpk" :
     MACHINE = "quin-gvm-gen4"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
+#support 4gb DDR,DISTRO using auto-gvm
+elif TARGET == "quin-gvm-4gb":
+    DISTRO = "auto-gvm"
+    MACHINE = "quin-gvm-4gb"
 elif TARGET == "qtiquingvm-headless" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "qtiquingvm"
