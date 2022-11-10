@@ -61,7 +61,7 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET == 'qtiquingvm' or TARGET == 'qtiquingvm8295' or TARGET == 'quin-gvm-gen4' or TARGET == 'qtiquingvm-headless' or TARGET == 'qtiquingvm8295-headless' :
+    elif TARGET == 'qtiquingvm' or TARGET == 'qtiquingvm8295' or TARGET == 'quin-gvm-gen4' or TARGET == 'quin-gvm-4gb' or TARGET == 'qtiquingvm-headless' or TARGET == 'qtiquingvm8295-headless' :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1

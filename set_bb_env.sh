@@ -837,6 +837,79 @@ function build-sa6155agl-sdk-image() {
     fi
 }
 
+# quin-gvm-4gb commands
+function build-quin-gvm-4gb-image(){
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-4gb debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files quin-gvm-4gb debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-4gb-perf-image(){
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-4gb perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-4gb-sdk-image(){
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files quin-gvm-4gb debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-quin-gvm-4gb-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-gvm-4gb-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-4gb-automotive/machine-image-quin-gvm-4gb.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-4gb-automotive/machine-image-quin-gvm-4gb.ext4
+    echo "==== Error run 'build-quin-gvm-4gb-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-4gb-automotive/machine-image-quin-gvm-4gb.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-4gb-automotive/machine-image-quin-gvm-4gb.ext4
+
+    build-quin-gvm-4gb-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-4gb-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/quin-gvm-4gb-automotive tmp-glibc/deploy/images/quin-gvm-4gb-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-gvm-4gb-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-4gb-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-4gb-automotive-perf/machine-image-quin-gvm-4gb.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-4gb-automotive-perf/machine-image-quin-gvm-4gb.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-4gb-automotive.bak tmp-glibc/deploy/images/quin-gvm-4gb-automotive
+
+    mv tmp-glibc/deploy/images/quin-gvm-4gb-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-4gb-automotive/machine-image-quin-gvm-4gb.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-4gb-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-4gb-automotive-perf/machine-image-quin-gvm-4gb.ext4
+}
+
 # qtiquingvm commands
 function build-qtiquingvm-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
