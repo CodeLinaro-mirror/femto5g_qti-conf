@@ -98,6 +98,17 @@ function build-lemanslxc-perf-image() {
   fi
 }
 
+function build-lemanslxc-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files lemans-lxc debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 build-all-lemanslxc-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-all-lxc-function lemanslxc
