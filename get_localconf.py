@@ -67,6 +67,8 @@ if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" or TARGET == "quin-gvm-g
 if TARGET == "quin-gvm-gen4-dpk" :
     DISTRO = "auto-gvm-dpk"
     MACHINE = "quin-gvm-gen4"
+elif TARGET == "sa8295adp" :
+    DISTRO = "auto-gvm-dpk"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
 elif TARGET == "qtiquingvm-headless" :
@@ -78,6 +80,9 @@ elif TARGET == "qtiquingvm8295-headless" :
 elif TARGET == "quin-gvm-gen4-headless" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-gen4"
+elif TARGET == "quin-gvm-gen4-2" :
+    DISTRO = "auto-gvm"
+    MACHINE = "quin-gvm-gen4-2"
 elif TARGET == "lemans-lxc" :
     DISTRO = "auto-lxc"
     MACHINE = "lemans"
@@ -93,8 +98,6 @@ else:
             DISTRO = "auto-agldemo"
         elif target_postfix == "bg":
             DISTRO = "bg"
-        elif target_postfix == "qdrive":
-            DISTRO = "auto-qdrive"
         elif target_postfix == "lxc":
             DISTRO = "auto-lxc"
         else:
@@ -119,8 +122,6 @@ elif DISTRO == "auto-agl":
     print (ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agldemo":
     print (ReadFile("%s/include/bbmask-agldemo.inc" % os.path.dirname(os.path.realpath(__file__)) ))
-elif DISTRO == "auto-qdrive":
-    print (ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 print ("")
 
 if DISTRO != "bg":
