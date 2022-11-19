@@ -15,6 +15,7 @@ function build-all-function() {
     fi
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
     rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
 
     build-$1-minimalimage
     if [ "$?" != "0" ]; then
@@ -30,7 +31,6 @@ function build-all-function() {
     return 1
     fi
 
-    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-$1-perf-image
     if [ "$?" != "0" ]; then
@@ -39,8 +39,8 @@ function build-all-function() {
     fi
     export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
     rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
 
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
     mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive/$MINIMAL_IMAGE tmp-glibc/deploy/images/$1-automotive/core-image-minimal-$1.ext4
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
