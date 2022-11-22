@@ -116,6 +116,7 @@ print ("MACHINE ??= \"%s\"" % MACHINE)
 print ("VARIANT ??= \"%s\"" % VARIANT)
 print ("")
 print ("# BBMASK")
+print ("include conf/local_${VARIANT}.conf")
 if DISTRO == "bg":
     print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":
