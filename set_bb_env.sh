@@ -1129,8 +1129,8 @@ function build-sa8540-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd $BUILD_DIR/../../
-  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean
-  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply
+  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean $QTARGET
+  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply $QTARGET
   cd -
   init-configure-files sa8540 debug
   if [ "$?" != "0" ]; then
