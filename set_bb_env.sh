@@ -1129,8 +1129,8 @@ function build-sa8540-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd $BUILD_DIR/../../
-  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean $QTARGET
-  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply $QTARGET
+  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean sa8540
+  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply sa8540
   cd -
   init-configure-files sa8540 debug
   if [ "$?" != "0" ]; then
@@ -1205,8 +1205,8 @@ function build-sa8775-image() {
 	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
 	unset_bb_env
 	cd $BUILD_DIR/../../
-	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean $QTARGET
-	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply $QTARGET
+	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean sa8775
+	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply sa8775
 	cd -
 	init-configure-files sa8775 debug
 	if [ "$?" != "0" ]; then
