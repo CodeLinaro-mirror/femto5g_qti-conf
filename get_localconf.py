@@ -131,3 +131,9 @@ if DISTRO != "bg":
     DistroList = generatePathString(c.getLayerPaths(MACHINE, workspace))
     for dl in DistroList:
         print ("DISTRO_INC_FILES += \"%s\"" % dl)
+print ("")
+
+print ("# Specify the path of the sectools tool and the security file required for lemans signature")
+print ("SECTOOLS_V1_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V1_DIR", "/pkg/sectools/int/latest") )
+print ("SECTOOLS_V2_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V2_DIR", "/pkg/sectools/v2/1.21/Linux") )
+print ("SECTOOLS_SECURITY_PROFILE ??= \"%s\"" % os.getenv("SECTOOLS_SECURITY_PROFILE", "${BSPDIR}/security/securemsm/security_profiles/lemans_tz_security_profile.xml") )
