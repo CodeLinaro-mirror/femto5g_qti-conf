@@ -25,6 +25,7 @@ then
   return 1
 fi
 
+export python=/usr/bin/python
 umask 022
 unset DISTRO MACHINE VARIANT
 
