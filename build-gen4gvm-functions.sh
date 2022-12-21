@@ -238,6 +238,80 @@ function build-quin-gvm-gen4-dpk-sdk-image() {
     fi
 }
 
+
+# sa8295adp commands
+function build-sa8295adp-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8295adp debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8295adp debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake qti-image-dpk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-dpk'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8295adp-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8295adp perf
+  cdbitbake qti-image-dpk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-dpk'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa8295adp-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-sa8295adp-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp-automotive/qti-image-dpk-sa8295adp.ext4`
+    rm -f tmp-glibc/deploy/images/sa8295adp-automotive/qti-image-dpk-sa8295adp.ext4
+    echo "==== Error run 'build-sa8295adp-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp-automotive/qti-image-dpk-sa8295adp.ext4`
+    rm -f tmp-glibc/deploy/images/sa8295adp-automotive/qti-image-dpk-sa8295adp.ext4
+
+#    build-sa8295adp-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8295adp-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/sa8295adp-automotive tmp-glibc/deploy/images/sa8295adp-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-sa8295adp-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8295adp-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8295adp-automotive-perf/qti-image-dpk-sa8295adp.ext4`
+    rm -f tmp-glibc/deploy/images/sa8295adp-automotive-perf/qti-image-dpk-sa8295adp.ext4
+    mv tmp-glibc/deploy/images/sa8295adp-automotive.bak tmp-glibc/deploy/images/sa8295adp-automotive
+
+    mv tmp-glibc/deploy/images/sa8295adp-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8295adp-automotive/qti-image-dpk-sa8295adp.ext4
+    mv tmp-glibc/deploy/images/sa8295adp-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8295adp-automotive-perf/qti-image-dpk-sa8295adp.ext4
+}
+
+function build-sa8295adp-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8295adp debug
+    cdbitbake qti-image-dpk -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake qti-image-dpk -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 # quin-gvm-gen4-headless commands
 function build-quin-gvm-gen4-headless-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -451,6 +525,79 @@ function build-quin-gvm-gen4-dpk-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     init-configure-files quin-gvm-gen4-dpk debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+# quin-gvm-gen4-2 commands
+function build-quin-gvm-gen4-2-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-gen4-2 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files quin-gvm-82x5 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-gen4-2-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-gen4-2 perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-quin-gvm-gen4-2-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-gvm-gen4-2-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/machine-image-quin-gvm-gen4-2.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/machine-image-quin-gvm-gen4-2.ext4
+    echo "==== Error run 'build-quin-gvm-gen4-2-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/machine-image-quin-gvm-gen4-2.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/machine-image-quin-gvm-gen4-2.ext4
+
+    #build-quin-gvm-gen4-2-sdk-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-quin-gvm-gen4-2-sdk-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
+
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-gvm-gen4-2-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-gen4-2-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/machine-image-quin-gvm-gen4-2.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/machine-image-quin-gvm-gen4-2.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive
+
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/machine-image-quin-gvm-gen4-2.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/machine-image-quin-gvm-gen4-2.ext4
+}
+
+function build-quin-gvm-gen4-2-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files quin-gvm-gen4-2 debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"

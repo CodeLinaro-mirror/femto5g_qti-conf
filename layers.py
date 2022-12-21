@@ -50,8 +50,11 @@ def initLayersList(TARGET):
         "meta-security": 1 \
     }
 
-    if TARGET in ['sa6155', 'sa81x5' , 'sa81x5-rt', 'sa8295', 'lemans-lxc', 'sa81x5lxc']:
+    if TARGET in ['sa6155', 'sa81x5-rt', 'sa8295', 'lemans-lxc']:
         del dicLayersWithSubLayers["meta-qt5"]
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['sa81x5', 'sa81x5lxc']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa81x5bg':
@@ -61,11 +64,15 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-headless'] :
+    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-headless', 'quin-gvm-gen4-2'] :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'quin-gvm-gen4-dpk' :
+        dicLayersWithSubLayers["meta-clang"] = 1
+        # Enable DPK
+        dicLayersWithSubLayers["meta-qti-dpk"] = 1
+    elif TARGET == 'sa8295adp' :
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1

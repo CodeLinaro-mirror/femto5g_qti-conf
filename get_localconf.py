@@ -67,6 +67,8 @@ if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" or TARGET == "quin-gvm-g
 if TARGET == "quin-gvm-gen4-dpk" :
     DISTRO = "auto-gvm-dpk"
     MACHINE = "quin-gvm-gen4"
+elif TARGET == "sa8295adp" :
+    DISTRO = "auto-gvm-dpk"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
 elif TARGET == "qtiquingvm-headless" :
@@ -78,6 +80,9 @@ elif TARGET == "qtiquingvm8295-headless" :
 elif TARGET == "quin-gvm-gen4-headless" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-gen4"
+elif TARGET == "quin-gvm-gen4-2" :
+    DISTRO = "auto-gvm"
+    MACHINE = "quin-gvm-gen4-2"
 elif TARGET == "lemans-lxc" :
     DISTRO = "auto-lxc"
     MACHINE = "lemans"
@@ -93,8 +98,6 @@ else:
             DISTRO = "auto-agldemo"
         elif target_postfix == "bg":
             DISTRO = "bg"
-        elif target_postfix == "qdrive":
-            DISTRO = "auto-qdrive"
         elif target_postfix == "lxc":
             DISTRO = "auto-lxc"
         else:
@@ -113,14 +116,13 @@ print ("MACHINE ??= \"%s\"" % MACHINE)
 print ("VARIANT ??= \"%s\"" % VARIANT)
 print ("")
 print ("# BBMASK")
+print ("include conf/local_${VARIANT}.conf")
 if DISTRO == "bg":
     print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":
     print (ReadFile("%s/include/bbmask-agl.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agldemo":
     print (ReadFile("%s/include/bbmask-agldemo.inc" % os.path.dirname(os.path.realpath(__file__)) ))
-elif DISTRO == "auto-qdrive":
-    print (ReadFile("%s/include/bbmask-qdrive.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 print ("")
 
 if DISTRO != "bg":
@@ -134,4 +136,4 @@ print ("")
 print ("# Specify the path of the sectools tool and the security file required for lemans signature")
 print ("SECTOOLS_V1_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V1_DIR", "/pkg/sectools/int/latest") )
 print ("SECTOOLS_V2_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V2_DIR", "/pkg/sectools/v2/1.21/Linux") )
-print ("SECTOOLS_SECURITY_PROFILE ??= \"%s\"" % os.getenv("SECTOOLS_SECURITY_PROFILE", "${BSPDIR}/kernel/kernel-5.15/kernel_platform/prebuilts/qcom_boot_artifacts/sectools/profiles/lemans_tz_security_profile.xml") )
+print ("SECTOOLS_SECURITY_PROFILE ??= \"%s\"" % os.getenv("SECTOOLS_SECURITY_PROFILE", "${BSPDIR}/security/securemsm/security_profiles/lemans_tz_security_profile.xml") )
