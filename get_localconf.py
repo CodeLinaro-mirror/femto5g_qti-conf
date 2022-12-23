@@ -116,6 +116,7 @@ print ("MACHINE ??= \"%s\"" % MACHINE)
 print ("VARIANT ??= \"%s\"" % VARIANT)
 print ("")
 print ("# BBMASK")
+print ("include conf/local_${VARIANT}.conf")
 if DISTRO == "bg":
     print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":
@@ -135,4 +136,4 @@ print ("")
 print ("# Specify the path of the sectools tool and the security file required for lemans signature")
 print ("SECTOOLS_V1_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V1_DIR", "/pkg/sectools/int/latest") )
 print ("SECTOOLS_V2_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V2_DIR", "/pkg/sectools/v2/1.21/Linux") )
-print ("SECTOOLS_SECURITY_PROFILE ??= \"%s\"" % os.getenv("SECTOOLS_SECURITY_PROFILE", "${BSPDIR}/kernel/kernel-5.15/kernel_platform/prebuilts/qcom_boot_artifacts/sectools/profiles/lemans_tz_security_profile.xml") )
+print ("SECTOOLS_SECURITY_PROFILE ??= \"%s\"" % os.getenv("SECTOOLS_SECURITY_PROFILE", "${BSPDIR}/security/securemsm/security_profiles/lemans_tz_security_profile.xml") )
