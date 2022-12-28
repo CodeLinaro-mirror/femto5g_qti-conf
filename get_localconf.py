@@ -67,7 +67,7 @@ if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" or TARGET == "quin-gvm-g
 if TARGET == "quin-gvm-gen4-dpk" :
     DISTRO = "auto-gvm-dpk"
     MACHINE = "quin-gvm-gen4"
-elif TARGET == "sa8295adp" :
+elif TARGET == "sa8295adp" or TARGET == "sa8295adp-2" :
     DISTRO = "auto-gvm-dpk"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
@@ -116,6 +116,7 @@ print ("MACHINE ??= \"%s\"" % MACHINE)
 print ("VARIANT ??= \"%s\"" % VARIANT)
 print ("")
 print ("# BBMASK")
+print ("include conf/local_${VARIANT}.conf")
 if DISTRO == "bg":
     print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":

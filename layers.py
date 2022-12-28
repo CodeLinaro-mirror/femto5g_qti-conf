@@ -50,8 +50,11 @@ def initLayersList(TARGET):
         "meta-security": 1 \
     }
 
-    if TARGET in ['sa6155', 'sa81x5' , 'sa81x5-rt', 'sa8295', 'lemans-lxc', 'sa81x5lxc']:
+    if TARGET in ['sa6155', 'sa81x5-rt', 'sa8295']:
         del dicLayersWithSubLayers["meta-qt5"]
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['sa81x5', 'sa81x5lxc', 'lemans-lxc']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa81x5bg':
@@ -69,7 +72,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
-    elif TARGET == 'sa8295adp' :
+    elif TARGET in ['sa8295adp', 'sa8295adp-2']:
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
