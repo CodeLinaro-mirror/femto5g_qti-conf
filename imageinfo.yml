@@ -77,3 +77,12 @@ LE.PRODUCT.1.0:
     - qti-distro-xr-perf
   target:
     - qti-xreality2-image
+
+LE.PRODUCT.3.0:
+  machine:
+    - sm8450p
+  distro:
+    - qti-distro-xr-debug
+    - qti-distro-xr-perf
+  target:
+    - qti-xreality-image
