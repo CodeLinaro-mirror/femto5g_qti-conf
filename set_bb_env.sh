@@ -82,10 +82,8 @@ EOF
 # Eventually we need to call oe-init-build-env to finalize the configuration
 # of the newly created build folder
 init_build_env () {
-    # Patch poky
-    if [[ ${MACHINE} =~ "sxrneo" ]] ; then
-      apply_poky_patches
-    fi
+    # Patch poky with qti modifications
+    apply_poky_patches
 
     # Show conf notes
     confnote
