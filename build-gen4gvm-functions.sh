@@ -345,13 +345,13 @@ build-all-sa8295adp-2-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-sa8295adp-2-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp-2-automotive/qti-image-dpk-sa8295adp-2.ext4`
-    rm -f tmp-glibc/deploy/images/sa8295adp-2-automotive/qti-image-dpk-sa8295adp-2.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4`
+    rm -f tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4
     echo "==== Error run 'build-sa8295adp-2-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp-2-automotive/qti-image-dpk-sa8295adp-2.ext4`
-    rm -f tmp-glibc/deploy/images/sa8295adp-2-automotive/qti-image-dpk-sa8295adp-2.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4`
+    rm -f tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4
 
 #    build-sa8295adp-2-sdk-image
     if [ "$?" != "0" ]; then
@@ -359,19 +359,19 @@ build-all-sa8295adp-2-image() {
     return 1
     fi
 
-    mv tmp-glibc/deploy/images/sa8295adp-2-automotive tmp-glibc/deploy/images/sa8295adp-2-automotive.bak
+    mv tmp-glibc/deploy/images/sa8295adp_2-automotive tmp-glibc/deploy/images/sa8295adp_2-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-sa8295adp-2-perf-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-sa8295adp-2-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8295adp-2-automotive-perf/qti-image-dpk-sa8295adp-2.ext4`
-    rm -f tmp-glibc/deploy/images/sa8295adp-2-automotive-perf/qti-image-dpk-sa8295adp-2.ext4
-    mv tmp-glibc/deploy/images/sa8295adp-2-automotive.bak tmp-glibc/deploy/images/sa8295adp-2-automotive
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8295adp_2-automotive-perf/qti-image-dpk-sa8295adp_2.ext4`
+    rm -f tmp-glibc/deploy/images/sa8295adp_2-automotive-perf/qti-image-dpk-sa8295adp_2.ext4
+    mv tmp-glibc/deploy/images/sa8295adp_2-automotive.bak tmp-glibc/deploy/images/sa8295adp_2-automotive
 
-    mv tmp-glibc/deploy/images/sa8295adp-2-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8295adp-2-automotive/qti-image-dpk-sa8295adp-2.ext4
-    mv tmp-glibc/deploy/images/sa8295adp-2-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8295adp-2-automotive-perf/qti-image-dpk-sa8295adp-2.ext4
+    mv tmp-glibc/deploy/images/sa8295adp_2-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4
+    mv tmp-glibc/deploy/images/sa8295adp_2-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8295adp_2-automotive-perf/qti-image-dpk-sa8295adp_2.ext4
 }
 
 function build-sa8295adp-2-sdk-image() {
