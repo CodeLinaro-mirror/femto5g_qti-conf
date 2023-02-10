@@ -86,6 +86,12 @@ elif TARGET == "quin-gvm-gen4-2" :
 elif TARGET == "lemans-lxc" :
     DISTRO = "auto-lxc"
     MACHINE = "lemans"
+elif TARGET == "sa8540" :
+    DISTRO = "auto"
+    MACHINE = "sa8540"
+elif TARGET == "sa8775" :
+    DISTRO = "auto"
+    MACHINE = "sa8775"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
     result = pattern.findall(TARGET)
