@@ -77,3 +77,22 @@ LE.PRODUCT.1.0:
     - qti-distro-xr-perf
   target:
     - qti-xreality2-image
+
+LE.FRAMEWORK.2.0:
+  machine:
+    - genericarmv8
+    - kalama
+  distro:
+    - qti-distro-base-debug
+    - qti-distro-base-perf
+  target:
+    - qti-generic-image
+
+LE.PRODUCT.2.1:
+  machine:
+    - kalama
+  distro:
+    - qti-distro-rb-debug
+    - qti-distro-rb-perf
+  target:
+    - qti-robotics-image
