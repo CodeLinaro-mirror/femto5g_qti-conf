@@ -63,6 +63,7 @@ LE.FRAMEWORK.1.0:
   machine:
     - genericarmv8
     - sxrneo
+    - sm8450p
   distro:
     - qti-distro-base-debug
     - qti-distro-base-perf
