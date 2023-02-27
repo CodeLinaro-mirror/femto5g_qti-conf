@@ -418,44 +418,27 @@ build-all-quin-gvm-gen4-headless-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-quin-gvm-gen4-headless-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive/qti-image-headless-quin-gvm-gen4-headless.ext4`
-    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive/qti-image-headless-quin-gvm-gen4-headless.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless-quin-tgvm-gen4-headless.ext4`
+    rm -f tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless-quin-tgvm-gen4-headless.ext4
     echo "==== Error run 'build-quin-gvm-gen4-headless-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive/qti-image-headless-quin-gvm-gen4-headless.ext4`
-    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive/qti-image-headless-quin-gvm-gen4-headless.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless-quin-tgvm-gen4-headless.ext4`
+    rm -f tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless-quin-tgvm-gen4-headless.ext4
 
-    build-quin-gvm-gen4-headless-sdk-image
-    if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-quin-gvm-gen4-headless-sdk-image'. (${FUNCNAME[@]})"
-    return 1
-    fi
-
-    mv tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive.bak
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-quin-gvm-gen4-headless-perf-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-quin-gvm-gen4-headless-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive-perf/qti-image-headless-quin-gvm-gen4-headless.ext4`
-    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive-perf/qti-image-headless-quin-gvm-gen4-headless.ext4
-    mv tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/qti-image-headless-quin-tgvm-gen4-headless.ext4`
+    rm -f tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/qti-image-headless-quin-tgvm-gen4-headless.ext4
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive.bak tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive
 
-    mv tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive/qti-image-headless-quin-gvm-gen4-headless.ext4
-    mv tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-headless-automotive-perf/qti-image-headless-quin-gvm-gen4-headless.ext4
-}
-
-function build-quin-gvm-gen4-headless-sdk-image() {
-    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    unset_bb_env
-    init-configure-files quin-gvm-gen4-headless debug
-    cdbitbake qti-image-headless -c populate_sdk
-    if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake qti-image-headless -c populate_sdk'. (${FUNCNAME[@]})"
-    return 1
-    fi
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless-quin-tgvm-gen4-headless.ext4
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/qti-image-headless-quin-tgvm-gen4-headless.ext4
 }
 
 # qtiquingvm-headless8295 commands
