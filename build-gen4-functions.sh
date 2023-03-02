@@ -119,10 +119,6 @@ build-all-lemanslxc-image() {
 function build-sa8540-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  cd $BUILD_DIR/../../
-  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean sa8540
-  vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply sa8540
-  cd -
   init-configure-files sa8540 debug
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8540 debug'. (${FUNCNAME[@]})"
@@ -212,20 +208,6 @@ function build-sa8775-image() {
   fi
 }
 
-function build-sa8775-perf-image() {
-	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-	unset_bb_env
-cd $BUILD_DIR/../../
-	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean sa8775
-	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply sa8775
-	cd -
-	init-configure-files sa8775 perf
-	cdbitbake machine-image
-	if [ "$?" != "0" ]; then
-	echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
-	return 1
-	fi
-}
 
 build-all-sa8775-image() {
 	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -236,35 +218,4 @@ build-all-sa8775-image() {
 	echo "==== Error run 'build-sa8775-image'. (${FUNCNAME[@]})"
 	return 1
 	fi
-	export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4`
-	rm -f tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
-
-	build-sa8775-sdk-image
-	if [ "$?" != "0" ]; then
-	echo "==== Error run 'build-sa8775-sdk-image'. (${FUNCNAME[@]})"
-	return 1
-  fi
-  mv tmp-glibc/deploy/images/sa8775-automotive tmp-glibc/deploy/images/sa8775-automotive.bak
-  bitbake virtual/kernel -fc cleanall
-  build-sa8775-perf-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8775-perf-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
-  mv tmp-glibc/deploy/images/sa8775-automotive.bak tmp-glibc/deploy/images/sa8775-automotive
-  mv tmp-glibc/deploy/images/sa8775-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
-  mv tmp-glibc/deploy/images/sa8775-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
-}
-
-function build-sa8775-sdk-image() {
-  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  unset_bb_env
-  init-configure-files sa8775 debug
-  cdbitbake machine-image -c populate_sdk
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
