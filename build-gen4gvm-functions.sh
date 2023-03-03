@@ -677,3 +677,77 @@ function build-quin-gvm-gen4-2-sdk-image() {
     return 1
     fi
 }
+
+# quin-gvm-lemans commands
+function build-quin-gvm-lemans-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-lemans debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files quin-gvm-82x5 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-lemans-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-lemans perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-quin-gvm-lemans-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-gvm-lemans-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-lemans-automotive/machine-image-quin-gvm-lemans.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-lemans-automotive/machine-image-quin-gvm-lemans.ext4
+    echo "==== Error run 'build-quin-gvm-lemans-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-lemans-automotive/machine-image-quin-gvm-lemans.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-lemans-automotive/machine-image-quin-gvm-lemans.ext4
+
+    #build-quin-gvm-lemans-sdk-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-quin-gvm-lemans-sdk-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
+
+    mv tmp-glibc/deploy/images/quin-gvm-lemans-automotive tmp-glibc/deploy/images/quin-gvm-lemans-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-gvm-lemans-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-lemans-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-lemans-automotive-perf/machine-image-quin-gvm-lemans.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-lemans-automotive-perf/machine-image-quin-gvm-lemans.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-lemans-automotive.bak tmp-glibc/deploy/images/quin-gvm-lemans-automotive
+
+    mv tmp-glibc/deploy/images/quin-gvm-lemans-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-lemans-automotive/machine-image-quin-gvm-lemans.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-lemans-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-lemans-automotive-perf/machine-image-quin-gvm-lemans.ext4
+}
+
+function build-quin-gvm-lemans-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files quin-gvm-lemans debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
