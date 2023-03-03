@@ -64,8 +64,19 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-headless', 'quin-gvm-gen4-2'] :
+    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans'] :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET == 'quin-gvm-gen4-headless' :
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-base"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-upstream"]
+        del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-extra"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
+        del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-base-prop"]
+        # Enable headless
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-headless"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-headless-prop"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'quin-gvm-gen4-dpk' :
