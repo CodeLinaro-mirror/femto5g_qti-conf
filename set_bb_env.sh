@@ -1204,10 +1204,6 @@ function build-sa8540-sdk-image() {
 function build-sa8775-image() {
 	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
 	unset_bb_env
-	cd $BUILD_DIR/../../
-	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch clean sa8775
-	vendor/qcom/proprietary/autolrh-buildconf/scripts/apply_patches.sh vendor/qcom/opensource/rh-patch apply sa8775
-	cd -
 	init-configure-files sa8775 debug
 	if [ "$?" != "0" ]; then
 	echo "==== Error run 'init-configure-files sa8775 debug'. (${FUNCNAME[@]})"
