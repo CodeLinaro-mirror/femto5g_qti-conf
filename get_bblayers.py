@@ -13,7 +13,7 @@ QtiBspSubLayers = [ "meta-qti-customizations" ]
 OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
                     "meta-filesystems", "meta-multimedia" ]
 RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
-                    "meta-ros2-foxy", "meta-ros-backports-gatesgarth" ]
+                    "meta-ros2-foxy" ]
 QtiRosSubLayer  = [ "meta-ros-common", "meta-ros1", "meta-ros1-noetic", \
                     "meta-ros2", "meta-ros2-foxy" ]
 
