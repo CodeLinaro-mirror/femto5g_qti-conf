@@ -87,7 +87,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
-    elif TARGET in ['sa8295adp', 'sa8295adp-2']:
+    elif TARGET in ['sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk']:
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
