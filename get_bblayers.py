@@ -89,7 +89,13 @@ parser.add_argument('--lookup-paths', default="none", dest='lookup_paths', nargs
                    help='Look for meta layers from the given paths')
 parser.add_argument('--with-layer-check', action='store_true', default=False, dest='check_layers',
                    help='check if qti meta layers following naming conventions (off by default)')
+parser.add_argument('--gplv2', action='store_true', default=False, dest='gplv2_layer',
+                   help='Include meta-gplv2 in generated conf file (meta-glpv2 is ignored by default)')
+
 args = parser.parse_args()
+
+if args.gplv2_layer == False:
+    ignoreList.append('meta-gplv2')
 
 # Emit our config file...
 print ("# This configuration file is dynamically generated every time")
