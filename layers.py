@@ -108,3 +108,6 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['monaco-lxc']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
