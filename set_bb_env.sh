@@ -92,20 +92,6 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
-# Override/comment out the renamed variables list as a workaround to skip from old name check
-function override_renamed_vars() {
-    if [ -f "${WS}/poky/bitbake/lib/bb/data_smart.py" ] && ! grep -q "bitbake_renamed_vars_drop" ${WS}/poky/bitbake/lib/bb/data_smart.py;
-    then
-        sed -i -E "s/bitbake_renamed_vars =.*/bitbake_renamed_vars = \{\}\nbitbake_renamed_vars_drop = \{/" ${WS}/poky/bitbake/lib/bb/data_smart.py >> /dev/null 2>&1
-    fi
-
-    if [ -f "${WS}/poky/meta/conf/bitbake.conf" ];
-    then
-        sed -i -E "s/(^BB_RENAMED_VARIABLES.*)/#\1/" ${WS}/poky/meta/conf/bitbake.conf >> /dev/null 2>&1
-    fi
-}
-
-override_renamed_vars
 
 #init local git if it does not exist
 function init_localgit() {
@@ -163,7 +149,6 @@ function init-configure-files() {
     python $scriptdir/get_localconf.py $1 $2 ${WS} > ${BUILD_DIR}/conf/local.conf
 
     # Set environment variables for dm-verity
-    export BB_ENV_EXTRAWHITE="$BB_ENV_EXTRAWHITE KERNEL_ROOTDEVICE"
     export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS KERNEL_ROOTDEVICE"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
 }
@@ -324,9 +309,6 @@ export TEMPLATECONF="../meta-qti-bsp/meta-qti-base/conf"
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
-# BB_ENV_EXTRAWHITE, append our vars to the list
-export BB_ENV_EXTRAWHITE="${BB_ENV_EXTRAWHITE} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
-
 # BB_ENV_PASSTHROUGH_ADDITIONS, append our vars to the list
 export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
 

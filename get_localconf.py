@@ -78,14 +78,23 @@ elif TARGET == "qtiquingvm8295-headless" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "qtiquingvm8295"
 elif TARGET == "quin-gvm-gen4-headless" :
-    DISTRO = "auto-gvm"
-    MACHINE = "quin-gvm-gen4"
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "quin-tgvm-gen4"
 elif TARGET == "quin-gvm-gen4-2" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-gen4-2"
+elif TARGET == "quin-gvm-lemans" :
+    DISTRO = "auto-gvm"
+    MACHINE = "quin-gvm-lemans"
 elif TARGET == "lemans-lxc" :
     DISTRO = "auto-lxc"
     MACHINE = "lemans"
+elif TARGET == "sa8540" :
+    DISTRO = "auto"
+    MACHINE = "sa8540"
+elif TARGET == "sa8775" :
+    DISTRO = "auto"
+    MACHINE = "sa8775"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
     result = pattern.findall(TARGET)
