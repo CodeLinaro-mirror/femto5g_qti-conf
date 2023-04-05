@@ -746,6 +746,10 @@ build-all-quin-gvm-gen4-2-image() {
     mv tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/machine-image-quin-gvm-gen4-2.ext4
     mv tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/$HEADLESS_IMAGE tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless-quin-tgvm-gen4-headless.ext4
     mv tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/$HEADLESS_IMAGE_PERF tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/qti-image-headless-quin-tgvm-gen4-headless.ext4
+    cp tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/qti-image-headless* tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/
+    cp tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive/quin-tgvm-gen4-headless* tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive/
+    cp tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/qti-image-headless* tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/
+    cp tmp-glibc/deploy/images/quin-tgvm-gen4-headless-automotive-perf/quin-tgvm-gen4-headless* tmp-glibc/deploy/images/quin-gvm-gen4-2-automotive-perf/
 }
 
 function build-quin-gvm-gen4-2-sdk-image() {
