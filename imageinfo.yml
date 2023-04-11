@@ -96,3 +96,12 @@ LE.PRODUCT.2.1:
     - qti-distro-rb-perf
   target:
     - qti-robotics-image
+
+LE.PRODUCT.3.0:
+  machine:
+    - sm8450p
+  distro:
+    - qti-distro-xr-debug
+    - qti-distro-xr-perf
+  target:
+    - qti-xreality-image
