@@ -54,7 +54,11 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa81x5', 'sa81x5lxc', 'lemans-lxc']:
+    elif TARGET in ['sa81x5', 'sa81x5lxc']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
+    elif TARGET in ['lemans-lxc']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
     elif TARGET == 'sa81x5bg':
@@ -83,7 +87,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
-    elif TARGET in ['sa8295adp', 'sa8295adp-2']:
+    elif TARGET in ['sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk']:
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
@@ -103,4 +107,7 @@ def initLayersList(TARGET):
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
+        dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['monaco-lxc']:
+        # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1

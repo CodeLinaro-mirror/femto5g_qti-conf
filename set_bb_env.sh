@@ -76,6 +76,12 @@ else
 
     # Remove the trailing slashes in the end
     BUILD_DIR=$(echo $BUILD_DIR | sed -re 's|/+$||')
+    BUILD_DIR=$(readlink -f "$BUILD_DIR")
+    if [ -z "$BUILD_DIR" ]; then
+            echo "Error: the directory $BUILD_DIR does not exist?"
+            return 1
+    fi
+
 fi
 echo "Build directory is $BUILD_DIR"
 # Add a few helpful shortcuts
