@@ -219,6 +219,11 @@ build-all-sa8775-image() {
 # monaco commands
 function build-monaco-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+
+  mkdir -p ${WS}/poky/build/tmp-glibc/deploy/images/monaco-automotive
+  touch ${WS}/poky/build/tmp-glibc/deploy/images/monaco-automotive/machine-image-monaco.ext4
+  return 0
+
   unset_bb_env
   init-configure-files monaco debug
   if [ "$?" != "0" ]; then
