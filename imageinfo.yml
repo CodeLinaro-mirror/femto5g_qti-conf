@@ -83,7 +83,7 @@ LE.PRODUCT.3.0:
   machine:
     - sm8450p
   distro:
-    - qti-distro-xr-debug
-    - qti-distro-xr-perf
+    - qti-distro-xr-nodisplay-debug
+    - qti-distro-xr-nodisplay-perf
   target:
     - qti-xreality-image
