@@ -259,10 +259,6 @@ function build-monaco-sdk-image() {
 build-all-monaco-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
 
-    mkdir -p ${WS}/poky/build/tmp-glibc/deploy/images/monaco-automotive
-    touch ${WS}/poky/build/tmp-glibc/deploy/images/monaco-automotive/machine-image-monaco.ext4
-    return 0
-
     build-all-lxc-function monaco
     return $?
 }
