@@ -89,8 +89,8 @@ elif TARGET == "quin-gvm-lemans" :
 elif TARGET == "lemans-lxc" :
     DISTRO = "auto-lxc"
     MACHINE = "lemans"
-elif TARGET == "monaco-lxc" :
-    DISTRO = "auto-lxc"
+elif TARGET == "monaco" :
+    DISTRO = "auto"
     MACHINE = "monaco"
 elif TARGET == "sa8540" :
     DISTRO = "auto"
