@@ -215,3 +215,54 @@ build-all-sa8775-image() {
 	return 1
 	fi
 }
+
+# monaco commands
+function build-monaco-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+
+  unset_bb_env
+  init-configure-files monaco debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files monaco debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-monaco-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files monaco perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-monaco-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files monaco debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-monaco-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+
+    mkdir -p ${WS}/poky/build/tmp-glibc/deploy/images/monaco-automotive
+    touch ${WS}/poky/build/tmp-glibc/deploy/images/monaco-automotive/machine-image-monaco.ext4
+    return 0
+
+    build-all-lxc-function monaco
+    return $?
+}
