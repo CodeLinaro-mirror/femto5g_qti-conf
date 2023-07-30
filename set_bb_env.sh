@@ -759,6 +759,7 @@ function build-all-opsy-sa81x5-image() {
     bitbake ovmf-virt -fc cleanall
     bitbake qtbase -fc cleanall
     bitbake image-qti-sa8155-hwvirt-linux-android -fc cleanall
+    bitbake coqoshv-preloader-sa8155-qhee-stub -fc cleanall
 
     build-opsy-sa81x5-perf-image
     if [ "$?" != "0" ]; then
