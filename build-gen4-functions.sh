@@ -222,31 +222,50 @@ function build-sa8540-sdk-image() {
 
 # SA8775 commands
 function build-sa8775-image() {
-	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-	unset_bb_env
-	init-configure-files sa8775 debug
-	if [ "$?" != "0" ]; then
-	echo "==== Error run 'init-configure-files sa8775 debug'. (${FUNCNAME[@]})"
-	return 1
-	fi
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
 
-	cdbitbake machine-image
-	if [ "$?" != "0" ]; then
-	echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
+function build-sa8775-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8775 debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
 
 build-all-sa8775-image() {
-	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-	build-sa8775-image
-	if [ "$?" != "0" ]; then
-	export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4`
-	rm -f tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
-	echo "==== Error run 'build-sa8775-image'. (${FUNCNAME[@]})"
-	return 1
-	fi
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8775-image
+  if [ "$?" != "0" ]; then
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
+  echo "==== Error run 'build-sa8775-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
+
+  build-sa8775-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  mv tmp-glibc/deploy/images/sa8775-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
 }
 
 # monaco commands
