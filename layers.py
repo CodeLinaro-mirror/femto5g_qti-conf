@@ -61,6 +61,12 @@ def initLayersList(TARGET):
     elif TARGET in ['lemans-lxc']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['sa8775-ubuntu']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-rust"] = 1
+        # Enable ubuntu
+        dicLayersWithSubLayers["meta-qti-ubuntu"] = 1
     elif TARGET == 'sa81x5bg':
         # This is minimal image, remove extra meta-layers
         del dicLayersWithSubLayers["meta-qt5"]

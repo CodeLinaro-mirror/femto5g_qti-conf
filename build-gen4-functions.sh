@@ -295,3 +295,21 @@ build-all-monaco-image() {
     build-all-gen4-function monaco
     return $?
 }
+
+# sa8775 ubuntu
+function build-sa8775-ubuntu-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-ubuntu debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-ubuntu debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake qti-auto-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+########################
