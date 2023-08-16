@@ -13,7 +13,8 @@ QtiBspSubLayers = [ "meta-qti-customizations" ]
 OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
                     "meta-filesystems", "meta-multimedia" ]
 RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
-                    "meta-ros2-foxy", "meta-ros-backports-gatesgarth" ]
+                    "meta-ros2-foxy", "meta-ros-backports-gatesgarth", \
+                    "meta-ros-backports-hardknott"]
 QtiRosSubLayer  = [ "meta-ros-common", "meta-ros1", "meta-ros1-noetic", \
                     "meta-ros2", "meta-ros2-foxy" ]
 
@@ -69,7 +70,8 @@ def getLayerPaths(lookup,  fnexpr, checkname) :
                 if (file in dicLayersWithSubLayers.keys()):
                     for subLayer in dicLayersWithSubLayers[file]:
                         path = layerPath + "/" + subLayer
-                        retList += [( path, getLayerPriority(path + "/conf/layer.conf") )]
+                        if os.path.exists(path):
+                            retList += [( path, getLayerPriority(path + "/conf/layer.conf") )]
     # In order to avoid potential namespace conflicts, between recipes on layers
     # we sort the list in descending order of priority.
     return sorted(retList,  key=itemgetter(1), reverse=True)
