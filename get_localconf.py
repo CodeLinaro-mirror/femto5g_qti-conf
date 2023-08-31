@@ -132,6 +132,8 @@ if VARIANT == "perf":
     print ("include conf/local_release.conf")
 else:
     print ("include conf/local_${VARIANT}.conf")
+print ("# Include ERROR_QA setting")
+print ("include conf/local_automotive.conf")
 if DISTRO == "bg":
     print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":
