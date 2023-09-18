@@ -1,3 +1,36 @@
+function build-all-gen4-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+
+    build-$1-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+}
+
+
 # SA8295 commands
 function build-sa8295-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
@@ -111,7 +144,7 @@ function build-lemanslxc-sdk-image() {
 
 build-all-lemanslxc-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-all-lxc-function lemanslxc
+    build-all-gen4-function lemanslxc
     return $?
 }
 
@@ -218,7 +251,7 @@ build-all-sa8775-image() {
 
 # monaco commands
 function build-monaco-image() {
-  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  echo "==== Function: $FUNCNAME (${FUCNAME[@]})"
 
   unset_bb_env
   init-configure-files monaco debug
@@ -259,6 +292,24 @@ function build-monaco-sdk-image() {
 build-all-monaco-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
 
-    build-all-lxc-function monaco
+    build-all-gen4-function monaco
     return $?
 }
+
+# sa8775 ubuntu
+function build-sa8775-ubuntu-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-ubuntu debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-ubuntu debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake qti-auto-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+########################
