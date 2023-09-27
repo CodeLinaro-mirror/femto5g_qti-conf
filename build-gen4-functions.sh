@@ -312,4 +312,15 @@ function build-sa8775-ubuntu-image() {
   return 1
   fi
 }
+
+build-all-sa8775-ubuntu-image() {
+	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+	build-sa8775-ubuntu-image
+	if [ "$?" != "0" ]; then
+	export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775ubuntu-automotive/qti-auto-image-sa8775ubuntu.ext4`
+	rm -f tmp-glibc/deploy/images/sa8775ubuntu-automotive/qti-auto-image-sa8775ubuntu.ext4
+	echo "==== Error run 'build-sa8775-ubuntu-image'. (${FUNCNAME[@]})"
+	return 1
+	fi
+}
 ########################
