@@ -334,7 +334,7 @@ build-all-sa8295adp-2-image() {
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4`
     rm -f tmp-glibc/deploy/images/sa8295adp_2-automotive/qti-image-dpk-sa8295adp_2.ext4
 
-    build-sa8295adp-2-sdk-image
+#    build-sa8295adp-2-sdk-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-sa8295adp-2-image'. (${FUNCNAME[@]})"
     return 1
