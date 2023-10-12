@@ -817,3 +817,75 @@ function build-quin-gvm-lemans-sdk-image() {
     fi
 }
 
+# quin-gvm-monaco commands
+function build-quin-gvm-monaco-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-monaco debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files quin-gvm-monaco debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-monaco-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-monaco perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-quin-gvm-monaco-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-gvm-monaco-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-monaco-automotive/machine-image-quin-gvm-monaco.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-monaco-automotive/machine-image-quin-gvm-monaco.ext4
+    echo "==== Error run 'build-quin-gvm-monaco-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-monaco-automotive/machine-image-quin-gvm-monaco.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-monaco-automotive/machine-image-quin-gvm-monaco.ext4
+
+    #build-quin-gvm-monaco-sdk-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-quin-gvm-monaco-sdk-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
+
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-automotive tmp-glibc/deploy/images/quin-gvm-monaco-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-gvm-monaco-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-monaco-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-monaco-automotive-perf/machine-image-quin-gvm-monaco.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-monaco-automotive-perf/machine-image-quin-gvm-monaco.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-automotive.bak tmp-glibc/deploy/images/quin-gvm-monaco-automotive
+
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-monaco-automotive/machine-image-quin-gvm-monaco.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-monaco-automotive-perf/machine-image-quin-gvm-monaco.ext4
+}
+
+function build-quin-gvm-monaco-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files quin-gvm-monaco debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
