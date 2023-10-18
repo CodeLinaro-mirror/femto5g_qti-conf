@@ -157,6 +157,9 @@ function init-configure-files() {
     # Set environment variables for dm-verity
     export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS KERNEL_ROOTDEVICE"
     #export KERNEL_ROOTDEVICE="/dev/dm-0"
+
+    # Set environment variables for fetching ubuntu sourcelist from specific mirrors
+    export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS PREFERRED_UBUNTU_SOURCELIST"
 }
 
 build-dm-verity-image() {
