@@ -889,3 +889,77 @@ function build-quin-gvm-monaco-sdk-image() {
     return 1
     fi
 }
+
+# quin-gvm-monaco-dpk commands
+function build-quin-gvm-monaco-dpk-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-monaco-dpk debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files quin-gvm-monaco-dpk debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  
+  cdbitbake qti-image-dpk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-dpk'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-quin-gvm-monaco-dpk-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-gvm-monaco-dpk perf
+
+  cdbitbake qti-image-dpk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-image-dpk'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-quin-gvm-monaco-dpk-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-gvm-monaco-dpk-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive/qti-image-dpk-quin-gvm-monaco-dpk.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive/qti-image-dpk-quin-gvm-monaco-dpk.ext4
+    echo "==== Error run 'build-quin-gvm-monaco-dpk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive/qti-image-dpk-quin-gvm-monaco-dpk.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive/qti-image-dpk-quin-gvm-monaco-dpk.ext4
+
+#    build-quin-gvm-monaco-dpk-sdk-image
+#    if [ "$?" != "0" ]; then
+#    echo "==== Error run 'build-quin-gvm-monaco-dpk-image'. (${FUNCNAME[@]})"
+#    return 1
+#    fi
+
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-gvm-monaco-dpk-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-monaco-dpk-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive-perf/qti-image-dpk-quin-gvm-monaco-dpk.ext4`
+    rm -f tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive-perf/qti-image-dpk-quin-gvm-monaco-dpk.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive.bak tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive
+
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive/qti-image-dpk-quin-gvm-monaco-dpk.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-monaco-dpk-automotive-perf/qti-image-dpk-quin-gvm-monaco-dpk.ext4
+}
+
+function build-quin-gvm-monaco-dpk-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files quin-gvm-monaco-dpk debug
+    cdbitbake qti-image-dpk -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake qti-image-dpk -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}

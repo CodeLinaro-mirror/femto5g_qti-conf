@@ -72,7 +72,7 @@ def getLayerPaths(TARGET, workspace) :
         if os.path.exists(workspace + "/meta-qti-ubuntu-internal"):
             layers.dicLayersWithSubLayers["meta-qti-ubuntu-internal"] = 1
     #Enable DPK Layers
-    if TARGET in ['quin-gvm-gen4-dpk', 'sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk']:
+    if TARGET in ['quin-gvm-gen4-dpk', 'sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk', 'quin-gvm-monaco-dpk']:
         if os.path.exists(workspace + "/meta-dpk-prop"):
             for foldername in os.listdir(workspace + "/meta-dpk-prop"):
                 if foldername.startswith("meta-"):
