@@ -74,7 +74,7 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans'] :
+    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans', 'quin-gvm-monaco'] :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
@@ -93,7 +93,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
-    elif TARGET in ['sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk']:
+    elif TARGET in ['sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk','quin-gvm-monaco-dpk']:
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
