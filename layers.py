@@ -90,6 +90,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-headless-prop"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
     elif TARGET == 'quin-gvm-gen4-dpk' :
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
