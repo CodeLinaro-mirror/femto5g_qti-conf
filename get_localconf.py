@@ -64,10 +64,7 @@ DISTRO = "auto"
 MACHINE = TARGET
 if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" or TARGET == "quin-gvm-gen4" :
     DISTRO = "auto-gvm"
-if TARGET == "quin-gvm-gen4-dpk" :
-    DISTRO = "auto-gvm-dpk"
-    MACHINE = "quin-gvm-gen4"
-elif TARGET == "sa8295adp" or TARGET == "sa8295adp-2" or TARGET == "quin-gvm-lemans-dpk" or TARGET == "quin-gvm-monaco-dpk":
+elif TARGET == "quin-gvm-gen4-dpk" or TARGET == "sa8295adp" or TARGET == "sa8295adp-2" or TARGET == "quin-gvm-lemans-dpk" or TARGET == "quin-gvm-monaco-dpk":
     DISTRO = "auto-gvm-dpk"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
