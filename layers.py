@@ -67,6 +67,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-rust"] = 1
         # Enable ubuntu
         dicLayersWithSubLayers["meta-qti-ubuntu"] = 1
+        dicLayersWithSubLayers["meta-qti-ubuntu-prop"] = 1
     elif TARGET == 'sa81x5bg':
         # This is minimal image, remove extra meta-layers
         del dicLayersWithSubLayers["meta-qt5"]
@@ -89,6 +90,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-headless-prop"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
     elif TARGET == 'quin-gvm-gen4-dpk' :
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
