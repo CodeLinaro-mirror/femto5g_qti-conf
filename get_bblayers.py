@@ -29,20 +29,25 @@ def getLayerCollections (layerConfPath) :
         for line in confFile :
             fields = line.split()
             if (len(fields) > 0 and re.match("BBFILE_COLLECTIONS",  fields[0])) :
-                #return name
-                return fields[2].strip("\"")
+                bbfileCollection=fields[2].strip("\"")
     confFile.close()
+    #return name
+    return bbfileCollection
 
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
     confFile = open(layerConfPath, "r")
     if (confFile != None) :
+        # Set default layerPriorityValue as 5
+        layerPriorityValue = 5
         for line in confFile :
             fields = line.split()
             if (len(fields) > 0 and re.match("BBFILE_PRIORITY",  fields[0])) :
-                #return priority
-                return int(fields[2].strip("\""))
+                layerPriorityValue = int(fields[2].strip("\""))
+                break
     confFile.close()
+    #return priority
+    return layerPriorityValue
 
 # Trawl the OEROOT as passed to us and find all the layer files that meet our
 # metadata directory criteria...
