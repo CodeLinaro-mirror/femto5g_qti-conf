@@ -326,17 +326,6 @@ function build-sa8775-ubuntu-image() {
   fi
 
   cdbitbake qti-auto-image
-
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-auto-image retry 2nd times'. (${FUNCNAME[@]})"
-  cdbitbake qti-auto-image
-  fi
-
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-auto-image retry 3rd times'. (${FUNCNAME[@]})"
-  cdbitbake qti-auto-image
-  fi
-
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
   return 1
