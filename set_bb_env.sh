@@ -154,52 +154,8 @@ function init-configure-files() {
     # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
     python $scriptdir/get_localconf.py $1 $2 ${WS} > ${BUILD_DIR}/conf/local.conf
 
-    # Set environment variables for dm-verity
-    export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS KERNEL_ROOTDEVICE"
-    #export KERNEL_ROOTDEVICE="/dev/dm-0"
-
     # Set environment variables for fetching ubuntu sourcelist from specific mirrors
     export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS PREFERRED_UBUNTU_SOURCELIST"
-}
-
-build-dm-verity-image() {
-  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  if [ "${KERNEL_ROOTDEVICE}" != "/dev/dm-0" ] ; then
-    echo "KERNEL_ROOTDEVICE not equal '/dev/dm-0'. Skip build-dm-verity-image."
-    return 0
-  fi
-
-  cdbitbake cryptsetup-native
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake cryptsetup-native'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  cdbitbake dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c compile
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake virtual/kernel -f -c compile'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c install
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake virtual/kernel -f -c install'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  cdbitbake virtual/kernel -f -c deploy
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake virtual/kernel -f -c deploy'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  cdbitbake machine-image -f -c make_bootimg
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image -f -c make_bootimg'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  return 0
 }
 
 # Build image

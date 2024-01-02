@@ -237,6 +237,22 @@ function build-sa8775-image() {
   fi
 }
 
+function build-sa8775-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775 perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775 perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 function build-sa8775-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
@@ -265,7 +281,68 @@ build-all-sa8775-image() {
   echo "==== Error run 'build-sa8775-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  mv tmp-glibc/deploy/images/sa8775-automotive tmp-glibc/deploy/images/sa8775-automotive.bak
+  bitbake virtual/kernel -fc cleanall
+  build-sa8775-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
+  mv tmp-glibc/deploy/images/sa8775-automotive.bak tmp-glibc/deploy/images/sa8775-automotive
+
   mv tmp-glibc/deploy/images/sa8775-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
+  mv tmp-glibc/deploy/images/sa8775-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
+}
+
+# SA7255 commands
+function build-sa7255-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa7255 debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa7255 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa7255-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa7255 debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-sa7255-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa7255-image
+  if [ "$?" != "0" ]; then
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa7255-automotive/machine-image-sa7255.ext4`
+  rm -f tmp-glibc/deploy/images/sa7255-automotive/machine-image-sa7255.ext4
+  echo "==== Error run 'build-sa7255-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa7255-automotive/machine-image-sa7255.ext4`
+  rm -f tmp-glibc/deploy/images/sa7255-automotive/machine-image-sa7255.ext4
+
+  build-sa7255-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa7255-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  mv tmp-glibc/deploy/images/sa7255-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa7255-automotive/machine-image-sa7255.ext4
 }
 
 # monaco commands
@@ -326,6 +403,17 @@ function build-sa8775-ubuntu-image() {
   fi
 
   cdbitbake qti-auto-image
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-auto-image retry 2nd times'. (${FUNCNAME[@]})"
+  cdbitbake qti-auto-image
+  fi
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake qti-auto-image retry 3rd times'. (${FUNCNAME[@]})"
+  cdbitbake qti-auto-image
+  fi
+
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
   return 1
