@@ -256,6 +256,7 @@ PROTO ?= "file"
 
 INHERIT += "qfile"
 
+INHERIT += "${@bb.utils.contains('DISTRO_FEATURES', 'asan', 'asan', '', d)} "
 # Enable fortran
 FORTRAN:forcevariable = ",fortran"
 
