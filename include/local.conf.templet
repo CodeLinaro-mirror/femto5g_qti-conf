@@ -93,7 +93,7 @@ TMPDIR = "${TOPDIR}/tmp"
 # VARIANT ??= ""
 
 # Show VARIANT in pre-build configuration output
-BUILDCFG_VARS += "VARIANT"
+BUILDCFG_VARS += "VARIANT MACHINE_FEATURES"
 
 #
 # Package Management configuration
