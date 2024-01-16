@@ -186,11 +186,6 @@ function build-sa6155-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa6155-perf-image() {
@@ -203,11 +198,6 @@ function build-sa6155-perf-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 build-all-sa6155-image() {
@@ -332,11 +322,6 @@ function build-sa81x5-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa81x5-minimalimage() {
@@ -393,11 +378,6 @@ function build-sa81x5bg-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa81x5bg-perf-image() {
@@ -433,11 +413,6 @@ function build-sa81x5agl-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa81x5agl-perf-image() {
@@ -484,11 +459,6 @@ function build-sa81x5agldemo-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa81x5agldemo-perf-image() {
@@ -535,11 +505,6 @@ function build-sa6155agldemo-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa6155agldemo-perf-image() {
@@ -586,11 +551,6 @@ function build-sa6155agl-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 function build-sa6155agl-perf-image() {
@@ -603,11 +563,6 @@ function build-sa6155agl-perf-image() {
   return 1
   fi
 
-  build-dm-verity-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
 }
 
 build-all-sa6155agl-image() {

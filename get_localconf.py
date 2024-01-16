@@ -64,10 +64,7 @@ DISTRO = "auto"
 MACHINE = TARGET
 if TARGET == "qtiquingvm" or TARGET == "qtiquingvm8295" or TARGET == "quin-gvm-gen4" :
     DISTRO = "auto-gvm"
-if TARGET == "quin-gvm-gen4-dpk" :
-    DISTRO = "auto-gvm-dpk"
-    MACHINE = "quin-gvm-gen4"
-elif TARGET == "sa8295adp" or TARGET == "sa8295adp-2" or TARGET == "quin-gvm-lemans-dpk" :
+elif TARGET == "quin-gvm-gen4-dpk" or TARGET == "sa8295adp" or TARGET == "sa8295adp-2" or TARGET == "quin-gvm-lemans-dpk" or TARGET == "quin-gvm-monaco-dpk":
     DISTRO = "auto-gvm-dpk"
 elif TARGET == "sa81x5-rt" :
     DISTRO = "auto"
@@ -86,6 +83,9 @@ elif TARGET == "quin-gvm-gen4-2" :
 elif TARGET == "quin-gvm-lemans" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-lemans"
+elif TARGET == "quin-gvm-monaco" :
+    DISTRO = "auto-gvm"
+    MACHINE = "quin-gvm-monaco"
 elif TARGET == "lemans-lxc" :
     DISTRO = "auto-lxc"
     MACHINE = "lemans"
@@ -97,6 +97,12 @@ elif TARGET == "sa8540" :
     MACHINE = "sa8540"
 elif TARGET == "sa8775" :
     DISTRO = "auto"
+    MACHINE = "sa8775"
+elif TARGET == "sa7255" :
+    DISTRO = "auto"
+    MACHINE = "sa7255"
+elif TARGET == "sa8775-ubuntu" :
+    DISTRO = "auto-lxc-ubuntu"
     MACHINE = "sa8775"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
@@ -128,7 +134,12 @@ print ("MACHINE ??= \"%s\"" % MACHINE)
 print ("VARIANT ??= \"%s\"" % VARIANT)
 print ("")
 print ("# BBMASK")
-print ("include conf/local_${VARIANT}.conf")
+if VARIANT == "perf":
+    print ("include conf/local_release.conf")
+else:
+    print ("include conf/local_${VARIANT}.conf")
+print ("# Include ERROR_QA setting")
+print ("include conf/local_automotive.conf")
 if DISTRO == "bg":
     print (ReadFile("%s/include/bbmask-bg.inc" % os.path.dirname(os.path.realpath(__file__)) ))
 elif DISTRO == "auto-agl":

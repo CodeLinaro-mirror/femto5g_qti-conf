@@ -61,6 +61,13 @@ def initLayersList(TARGET):
     elif TARGET in ['lemans-lxc']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['sa8775-ubuntu']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-rust"] = 1
+        # Enable ubuntu
+        dicLayersWithSubLayers["meta-qti-ubuntu"] = 1
+        dicLayersWithSubLayers["meta-qti-ubuntu-prop"] = 1
     elif TARGET == 'sa81x5bg':
         # This is minimal image, remove extra meta-layers
         del dicLayersWithSubLayers["meta-qt5"]
@@ -68,7 +75,7 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans'] :
+    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans', 'quin-gvm-monaco'] :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
@@ -83,11 +90,12 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-headless-prop"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
     elif TARGET == 'quin-gvm-gen4-dpk' :
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
-    elif TARGET in ['sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk']:
+    elif TARGET in ['sa8295adp', 'sa8295adp-2', 'quin-gvm-lemans-dpk','quin-gvm-monaco-dpk']:
         dicLayersWithSubLayers["meta-clang"] = 1
         # Enable DPK
         dicLayersWithSubLayers["meta-qti-dpk"] = 1
@@ -102,12 +110,15 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8540', 'sa8775']:
+    elif TARGET in ['sa8775']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-rust"] = 1
+    elif TARGET in ['sa8540', 'sa7255']:
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
-        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-clang"] = 1
-        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-clang-prop"] = 1
         dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-rust"] = 1
     elif TARGET in ['monaco']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
