@@ -59,6 +59,20 @@ LE.UM.6.2.2:
     - qti-tele-image
     - qti-tele-vm-image
 
+LE.UM.7.4.1:
+  machine:
+    - sa525m
+    - sa525m-emmc
+    - sa525m-televm
+    - sa525m-fotavm
+  distro:
+    - qti-distro-tele-debug
+    - qti-distro-tele-perf
+  target:
+    - qti-tele-image
+    - qti-tele-vm-image
+    - qti-fota-vm-image
+
 LE.FRAMEWORK.1.0:
   machine:
     - genericarmv8
