@@ -237,6 +237,22 @@ function build-sa8775-image() {
   fi
 }
 
+function build-sa8775-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775 perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775 perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 function build-sa8775-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
@@ -265,7 +281,20 @@ build-all-sa8775-image() {
   echo "==== Error run 'build-sa8775-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  mv tmp-glibc/deploy/images/sa8775-automotive tmp-glibc/deploy/images/sa8775-automotive.bak
+  bitbake virtual/kernel -fc cleanall
+  build-sa8775-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
+  mv tmp-glibc/deploy/images/sa8775-automotive.bak tmp-glibc/deploy/images/sa8775-automotive
+
   mv tmp-glibc/deploy/images/sa8775-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
+  mv tmp-glibc/deploy/images/sa8775-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
 }
 
 # SA7255 commands
@@ -330,6 +359,30 @@ function build-monaco-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  #debugg added to print the audio/securemsm/safelinux error, will remove after the fix
+  LOG_FILE=qti-qa.log
+  if [ -f "$LOG_FILE" ];then
+  #add log file line to file1
+  grep "ar-audiodlkm" qti-qa.log | grep "log\.do" > file1
+  grep "securemsmdlkm" qti-qa.log | grep "log\.do" >> file1
+  grep "safelinux-cfg-modules" qti-qa.log | grep "log\.do" >> file1
+  #cat file1: error log line details
+  cat file1
+  # capture the extract error log path
+  awk -F : '{print $3}' file1 > file_path
+  # print the error log path and cat the log details
+  lines=$(cat file_path)
+  for line in $lines
+  do
+	  echo "--------------------------------------start----------------------------------------"
+	  echo "--------------------------------detail logs path: $line------------------------------"
+	  echo "--------------------------------cat $line------------------------------"
+	  cat $line
+	  echo " -----------------------------end logs: $line--------------------------------"
+	  echo "-----------------------------------end-----------------------------------------"
+  done
+  fi
+  #end of the debug, will remove after the fix
   return 1
   fi
 }
@@ -374,17 +427,22 @@ function build-sa8775-ubuntu-image() {
   fi
 
   cdbitbake qti-auto-image
-
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-auto-image retry 2nd times'. (${FUNCNAME[@]})"
-  cdbitbake qti-auto-image
+  echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-ubuntu-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-ubuntu perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-ubuntu perf'. (${FUNCNAME[@]})"
+  return 1
   fi
 
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-auto-image retry 3rd times'. (${FUNCNAME[@]})"
   cdbitbake qti-auto-image
-  fi
-
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
   return 1
@@ -392,13 +450,30 @@ function build-sa8775-ubuntu-image() {
 }
 
 build-all-sa8775-ubuntu-image() {
-	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-	build-sa8775-ubuntu-image
-	if [ "$?" != "0" ]; then
-	export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
-	rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
-	echo "==== Error run 'build-sa8775-ubuntu-image'. (${FUNCNAME[@]})"
-	return 1
-	fi
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8775-ubuntu-image
+  if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
+    rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
+    echo "==== Error run 'build-sa8775-ubuntu-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive tmp-glibc/deploy/images/sa8775-ubuntu-automotive.bak
+
+  bitbake virtual/kernel -fc cleanall
+  build-sa8775-ubuntu-perf-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8775-ubuntu-perf-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive.bak tmp-glibc/deploy/images/sa8775-ubuntu-automotive
+
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4
+
 }
 ########################
