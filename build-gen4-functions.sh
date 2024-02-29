@@ -359,30 +359,6 @@ function build-monaco-image() {
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
-  #debugg added to print the audio/securemsm/safelinux error, will remove after the fix
-  LOG_FILE=qti-qa.log
-  if [ -f "$LOG_FILE" ];then
-  #add log file line to file1
-  grep "ar-audiodlkm" qti-qa.log | grep "log\.do" > file1
-  grep "securemsmdlkm" qti-qa.log | grep "log\.do" >> file1
-  grep "safelinux-cfg-modules" qti-qa.log | grep "log\.do" >> file1
-  #cat file1: error log line details
-  cat file1
-  # capture the extract error log path
-  awk -F : '{print $3}' file1 > file_path
-  # print the error log path and cat the log details
-  lines=$(cat file_path)
-  for line in $lines
-  do
-	  echo "--------------------------------------start----------------------------------------"
-	  echo "--------------------------------detail logs path: $line------------------------------"
-	  echo "--------------------------------cat $line------------------------------"
-	  cat $line
-	  echo " -----------------------------end logs: $line--------------------------------"
-	  echo "-----------------------------------end-----------------------------------------"
-  done
-  fi
-  #end of the debug, will remove after the fix
   return 1
   fi
 }
