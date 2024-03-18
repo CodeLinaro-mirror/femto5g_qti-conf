@@ -179,13 +179,21 @@ build-all-quin-gvm-gen4-dpk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-quin-gvm-gen4-dpk-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4`
-    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/system.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/system.img
     echo "==== Error run 'build-quin-gvm-gen4-dpk-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4`
-    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4
+    export MACHINE_SYSTEM_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/system.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/system.img
+    export MACHINE_VENDOR_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/vendor.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/vendor.img
+    export MACHINE_BOOT_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/boot.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/boot.img
+
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/$MACHINE_SYSTEM_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/system.img
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/$MACHINE_VENDOR_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/vendor.img
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/$MACHINE_BOOT_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/boot.img
 
     build-quin-gvm-gen4-dpk-sdk-image
     if [ "$?" != "0" ]; then
@@ -200,12 +208,17 @@ build-all-quin-gvm-gen4-dpk-image() {
     echo "==== Error run 'build-quin-gvm-gen4-dpk-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4`
-    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4
+    export MACHINE_SYSTEM_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/system.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/system.img
+    export MACHINE_VENDOR_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/vendor.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/vendor.img
+    export MACHINE_BOOT_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/boot.img`
+    rm -f tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/boot.img
     mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive.bak tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive
 
-    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive/qti-image-dpk-quin-gvm-gen4-dpk.ext4
-    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/qti-image-dpk-quin-gvm-gen4-dpk.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/$MACHINE_SYSTEM_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/system.img
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/$MACHINE_VENDOR_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/vendor.img
+    mv tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/$MACHINE_BOOT_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-gen4-dpk-automotive-perf/boot.img
 }
 
 function build-quin-gvm-gen4-dpk-sdk-image() {
