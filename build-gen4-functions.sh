@@ -403,17 +403,22 @@ function build-sa8775-ubuntu-image() {
   fi
 
   cdbitbake qti-auto-image
-
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-auto-image retry 2nd times'. (${FUNCNAME[@]})"
-  cdbitbake qti-auto-image
+  echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-ubuntu-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-ubuntu perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-ubuntu perf'. (${FUNCNAME[@]})"
+  return 1
   fi
 
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake qti-auto-image retry 3rd times'. (${FUNCNAME[@]})"
   cdbitbake qti-auto-image
-  fi
-
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake qti-auto-image'. (${FUNCNAME[@]})"
   return 1
@@ -421,13 +426,30 @@ function build-sa8775-ubuntu-image() {
 }
 
 build-all-sa8775-ubuntu-image() {
-	echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-	build-sa8775-ubuntu-image
-	if [ "$?" != "0" ]; then
-	export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
-	rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
-	echo "==== Error run 'build-sa8775-ubuntu-image'. (${FUNCNAME[@]})"
-	return 1
-	fi
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8775-ubuntu-image
+  if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
+    rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
+    echo "==== Error run 'build-sa8775-ubuntu-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive tmp-glibc/deploy/images/sa8775-ubuntu-automotive.bak
+
+  bitbake virtual/kernel -fc cleanall
+  build-sa8775-ubuntu-perf-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8775-ubuntu-perf-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive.bak tmp-glibc/deploy/images/sa8775-ubuntu-automotive
+
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4
+
 }
 ########################
