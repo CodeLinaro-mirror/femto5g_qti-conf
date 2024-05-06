@@ -110,7 +110,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8775', 'sa7255']:
+    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1
