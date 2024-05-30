@@ -169,6 +169,7 @@ source ${WS}/poky/build/conf/build-gen3-functions.sh
 source ${WS}/poky/build/conf/build-gen3gvm-functions.sh
 source ${WS}/poky/build/conf/build-gen4-functions.sh
 source ${WS}/poky/build/conf/build-gen4gvm-functions.sh
+source ${WS}/poky/build/conf/build-gen5-functions.sh
 
 
 # Utility commands
@@ -204,7 +205,7 @@ list-build-commands()
     echo
     echo "Convenience commands for building images:"
 
-    filelist=(build-gen3-functions.sh build-gen3gvm-functions.sh build-gen4-functions.sh build-gen4gvm-functions.sh)
+    filelist=(build-gen3-functions.sh build-gen3gvm-functions.sh build-gen4-functions.sh build-gen4gvm-functions.sh build-gen5-functions.sh)
     for fn in ${filelist[@]}
     do
         local script_file="$WS/poky/build/conf/$fn"
