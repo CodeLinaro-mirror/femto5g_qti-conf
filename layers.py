@@ -114,6 +114,7 @@ def initLayersList(TARGET):
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
     elif TARGET in ['sa8540']:
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
