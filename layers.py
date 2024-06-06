@@ -25,6 +25,11 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Changes from Qualcomm Innovation Center are provided under the following license:
+
+# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
 dicLayersWithSubLayers = None
 
 def initLayersList(TARGET):
@@ -110,11 +115,12 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8775']:
+    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1
-    elif TARGET in ['sa8540', 'sa7255']:
+        dicLayersWithSubLayers["meta-selinux"] = 1
+    elif TARGET in ['sa8540']:
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
@@ -122,3 +128,8 @@ def initLayersList(TARGET):
     elif TARGET in ['monaco']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+    elif TARGET in ['sa8797']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-rust"] = 1
+        del dicLayersWithSubLayers["meta-qt5"]

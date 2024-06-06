@@ -25,6 +25,11 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# Changes from Qualcomm Innovation Center are provided under the following license:
+
+# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
 import common as c
 import os, sys, re
 
@@ -98,12 +103,18 @@ elif TARGET == "sa8540" :
 elif TARGET == "sa8775" :
     DISTRO = "auto"
     MACHINE = "sa8775"
+elif TARGET == "sa8255-mos" :
+    DISTRO = "auto-mos"
+    MACHINE = "sa8775"
 elif TARGET == "sa7255" :
     DISTRO = "auto"
     MACHINE = "sa7255"
 elif TARGET == "sa8775-ubuntu" :
     DISTRO = "auto-lxc-ubuntu"
     MACHINE = "sa8775"
+elif TARGET == "sa8797" :
+    DISTRO = "auto"
+    MACHINE = "sa8797"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
     result = pattern.findall(TARGET)
