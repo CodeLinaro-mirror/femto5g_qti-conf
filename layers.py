@@ -131,5 +131,5 @@ def initLayersList(TARGET):
     elif TARGET in ['sa8797']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-        dicLayersWithSubLayers["meta-rust"] = 1
         del dicLayersWithSubLayers["meta-qt5"]
+        del dicLayersWithSubLayers["meta-gplv2"]
