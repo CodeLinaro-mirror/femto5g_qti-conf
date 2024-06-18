@@ -11,7 +11,8 @@ ignoreList = [  "meta-selftest", "meta-skeleton", \
 # Sub-layer info
 QtiBspSubLayers = [ "meta-qti-customizations" ]
 OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
-                    "meta-filesystems", "meta-multimedia" ]
+                    "meta-filesystems", "meta-multimedia" , \
+                    "meta-virtualization"]
 RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
                     "meta-ros2-foxy", "meta-ros2-humble" ]
 QtiRosSubLayer  = [ "meta-ros-common", "meta-ros1", "meta-ros1-noetic", \
