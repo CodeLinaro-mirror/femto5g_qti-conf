@@ -297,13 +297,13 @@ build-all-sa8775-image() {
   mv tmp-glibc/deploy/images/sa8775-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
 }
 
-# SA8650 commands
-function build-sa8650-image() {
+# sa877-flex commands
+function build-sa8775-flex-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650 debug
+  init-configure-files sa8775-flex debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8650 debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8775-flex debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -314,12 +314,12 @@ function build-sa8650-image() {
   fi
 }
 
-function build-sa8650-perf-image() {
+function build-sa8775-flex-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650 perf
+  init-configure-files sa8775-flex perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8650 perf'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8775-flex perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -330,10 +330,10 @@ function build-sa8650-perf-image() {
   fi
 }
 
-function build-sa8650-sdk-image() {
+function build-sa8775-flex-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa8650 debug
+    init-configure-files sa8775-flex debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
@@ -341,46 +341,123 @@ function build-sa8650-sdk-image() {
     fi
 }
 
-build-all-sa8650-image() {
+build-all-sa8775-flex-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8650-image
+  build-sa8775-flex-image
   if [ "$?" != "0" ]; then
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-automotive/machine-image-sa8650.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-automotive/machine-image-sa8650.ext4
-  echo "==== Error run 'build-sa8650-image'. (${FUNCNAME[@]})"
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
+  echo "==== Error run 'build-sa8775-flex-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-automotive/machine-image-sa8650.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8650.ext4
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
 
-  build-sa8650-sdk-image
+  build-sa8775-flex-sdk-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8650-sdk-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  mv tmp-glibc/deploy/images/sa8650-automotive tmp-glibc/deploy/images/sa8650-automotive.bak
+  mv tmp-glibc/deploy/images/sa8775-flex-automotive tmp-glibc/deploy/images/sa8775-flex-automotive.bak
   bitbake virtual/kernel -fc cleanall
-  build-sa8650-perf-image
+  build-sa8775-flex-perf-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8650-perf-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-automotive-perf/machine-image-sa8650.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-automotive-perf/machine-image-sa8650.ext4
-  mv tmp-glibc/deploy/images/sa8650-automotive.bak tmp-glibc/deploy/images/sa8650-automotive
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-automotive.bak tmp-glibc/deploy/images/sa8775-flex-automotive
 
-  mv tmp-glibc/deploy/images/sa8650-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8650.ext4
-  mv tmp-glibc/deploy/images/sa8650-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8650.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
 }
 
-# sa8650-ubuntu commands
-function build-sa8650-ubuntu-image() {
+# sa8650-adas commands
+function build-sa8650-adas-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650-ubuntu debug
+  init-configure-files sa8650-adas debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8650-ubuntu debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8650-adas debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8650-adas-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8650-adas perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8650-adas perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8650-adas-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8650-adas debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-sa8650-adas-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8650-adas-image
+  if [ "$?" != "0" ]; then
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
+  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
+  echo "==== Error run 'build-sa8650-adas-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
+  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
+
+  build-sa8650-adas-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8650-adas-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa8650-adas-automotive tmp-glibc/deploy/images/sa8650-adas-automotive.bak
+  bitbake virtual/kernel -fc cleanall
+  build-sa8650-adas-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8650-adas-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4`
+  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
+  mv tmp-glibc/deploy/images/sa8650-adas-automotive.bak tmp-glibc/deploy/images/sa8650-adas-automotive
+
+  mv tmp-glibc/deploy/images/sa8650-adas-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
+  mv tmp-glibc/deploy/images/sa8650-adas-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
+}
+
+# sa8650-adas-ubuntu commands
+function build-sa8650-adas-ubuntu-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8650-adas-ubuntu debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8650-adas-ubuntu debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -391,12 +468,12 @@ function build-sa8650-ubuntu-image() {
   fi
 }
 
-function build-sa8650-ubuntu-perf-image() {
+function build-sa8650-adas-ubuntu-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650-ubuntu perf
+  init-configure-files sa8650-adas-ubuntu perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8650-ubuntu perf'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8650-adas-ubuntu perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -407,41 +484,41 @@ function build-sa8650-ubuntu-perf-image() {
   fi
 }
 
-build-all-sa8650-ubuntu-image() {
+build-all-sa8650-adas-ubuntu-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8650-ubuntu-image
+  build-sa8650-adas-ubuntu-image
   if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-ubuntu-automotive/qti-auto-image-sa8650-ubuntu.ext4`
-    rm -f tmp-glibc/deploy/images/sa8650-ubuntu-automotive/qti-auto-image-sa8650-ubuntu.ext4
-    echo "==== Error run 'build-sa8650-ubuntu-image'. (${FUNCNAME[@]})"
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4`
+    rm -f tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4
+    echo "==== Error run 'build-sa8650-adas-ubuntu-image'. (${FUNCNAME[@]})"
     return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-ubuntu-automotive/qti-auto-image-sa8650-ubuntu.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-ubuntu-automotive/qti-auto-image-sa8650-ubuntu.ext4
-  mv tmp-glibc/deploy/images/sa8650-ubuntu-automotive tmp-glibc/deploy/images/sa8650-ubuntu-automotive.bak
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4`
+  rm -f tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive.bak
 
   bitbake virtual/kernel -fc cleanall
-  build-sa8650-ubuntu-perf-image
+  build-sa8650-adas-ubuntu-perf-image
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-sa8650-ubuntu-perf-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-sa8650-adas-ubuntu-perf-image'. (${FUNCNAME[@]})"
     return 1
   fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-ubuntu-automotive-perf/qti-auto-image-sa8650-ubuntu.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-ubuntu-automotive-perf/qti-auto-image-sa8650-ubuntu.ext4
-  mv tmp-glibc/deploy/images/sa8650-ubuntu-automotive.bak tmp-glibc/deploy/images/sa8650-ubuntu-automotive
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive-perf/qti-auto-image-sa8650-adas-ubuntu.ext4`
+  rm -f tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive-perf/qti-auto-image-sa8650-adas-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive.bak tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive
 
-  mv tmp-glibc/deploy/images/sa8650-ubuntu-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8650-ubuntu-automotive/qti-auto-image-sa8650-ubuntu.ext4
-  mv tmp-glibc/deploy/images/sa8650-ubuntu-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8650-ubuntu-automotive-perf/qti-auto-image-sa8650-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4
+  mv tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive-perf/qti-auto-image-sa8650-adas-ubuntu.ext4
 
 }
 
-# sa8255 commands
-function build-sa8255-image() {
+# sa8255-ivi commands
+function build-sa8255-ivi-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8255 debug
+  init-configure-files sa8255-ivi debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8255 debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8255-ivi debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -452,12 +529,12 @@ function build-sa8255-image() {
   fi
 }
 
-function build-sa8255-perf-image() {
+function build-sa8255-ivi-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8255 perf
+  init-configure-files sa8255-ivi perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8255 perf'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8255-ivi perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -468,10 +545,10 @@ function build-sa8255-perf-image() {
   fi
 }
 
-function build-sa8255-sdk-image() {
+function build-sa8255-ivi-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa8255 debug
+    init-configure-files sa8255-ivi debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
@@ -479,37 +556,37 @@ function build-sa8255-sdk-image() {
     fi
 }
 
-build-all-sa8255-image() {
+build-all-sa8255-ivi-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8255-image
+  build-sa8255-ivi-image
   if [ "$?" != "0" ]; then
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-automotive/machine-image-sa8255.ext4`
-  rm -f tmp-glibc/deploy/images/sa8255-automotive/machine-image-sa8255.ext4
-  echo "==== Error run 'build-sa8255-image'. (${FUNCNAME[@]})"
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
+  echo "==== Error run 'build-sa8255-ivi-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-automotive/machine-image-sa8255.ext4`
-  rm -f tmp-glibc/deploy/images/sa8255-automotive/machine-image-sa8255.ext4
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
 
-  build-sa8255-sdk-image
+  build-sa8255-ivi-sdk-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8255-sdk-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8255-ivi-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  mv tmp-glibc/deploy/images/sa8255-automotive tmp-glibc/deploy/images/sa8255-automotive.bak
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive tmp-glibc/deploy/images/sa8255-ivi-automotive.bak
   bitbake virtual/kernel -fc cleanall
-  build-sa8255-perf-image
+  build-sa8255-ivi-perf-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8255-perf-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8255-ivi-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8255-automotive-perf/machine-image-sa8255.ext4`
-  rm -f tmp-glibc/deploy/images/sa8255-automotive-perf/machine-image-sa8255.ext4
-  mv tmp-glibc/deploy/images/sa8255-automotive.bak tmp-glibc/deploy/images/sa8255-automotive
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive.bak tmp-glibc/deploy/images/sa8255-ivi-automotive
 
-  mv tmp-glibc/deploy/images/sa8255-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8255-automotive/machine-image-sa8255.ext4
-  mv tmp-glibc/deploy/images/sa8255-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8255-automotive-perf/machine-image-sa8255.ext4
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4
 }
 
 # SA8255-mos commands

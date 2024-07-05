@@ -66,15 +66,8 @@ def initLayersList(TARGET):
     elif TARGET in ['lemans-lxc']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8650-ubuntu']:
-        # Enable upsteam llvm
-        dicLayersWithSubLayers["meta-clang"] = 1
-        dicLayersWithSubLayers["meta-rust"] = 1
-        # Enable ubuntu
-        dicLayersWithSubLayers["meta-qti-ubuntu"] = 1
-        dicLayersWithSubLayers["meta-qti-ubuntu-prop"] = 1
-    # need to be deleted once kernel migration done
-    elif TARGET in ['sa8775-ubuntu']:
+    #sa8775-ubuntu need to be deleted once kernel migration done
+    elif TARGET in ['sa8775-ubuntu', 'sa8650-adas-ubuntu']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1
@@ -123,7 +116,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8650', 'sa8255']:
+    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8775-flex', 'sa8650-adas', 'sa8255-ivi']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1

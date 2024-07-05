@@ -106,19 +106,22 @@ elif TARGET == "sa8775" :
 elif TARGET == "sa8255-mos" :
     DISTRO = "auto-mos"
     MACHINE = "sa8775"
-elif TARGET == "sa8650" :
+elif TARGET == "sa8775-flex" :
     DISTRO = "auto"
-    MACHINE = "sa8650"
-elif TARGET == "sa8650-ubuntu" :
+    MACHINE = "sa8775-flex"
+elif TARGET == "sa8650-adas" :
+    DISTRO = "auto"
+    MACHINE = "sa8650-adas"
+elif TARGET == "sa8650-adas-ubuntu" :
     DISTRO = "auto-lxc-ubuntu"
-    MACHINE = "sa8650"
+    MACHINE = "sa8650-adas"
 # need to be deleted once migrate kernel done
 elif TARGET == "sa8775-ubuntu" :
     DISTRO = "auto-lxc-ubuntu"
     MACHINE = "sa8775"
-elif TARGET == "sa8255" :
+elif TARGET == "sa8255-ivi" :
     DISTRO = "auto"
-    MACHINE = "sa8255"
+    MACHINE = "sa8255-ivi"
 elif TARGET == "sa7255" :
     DISTRO = "auto"
     MACHINE = "sa7255"

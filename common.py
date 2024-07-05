@@ -68,7 +68,7 @@ def getLayerPaths(TARGET, workspace) :
         if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop", "meta-qti-dpk", "meta-qti-mos", "meta-qti-mos-prop"]:
             continue
         layers.dicLayersWithSubLayers[foldername] = 1
-    if TARGET == 'sa8775-ubuntu':
+    if TARGET in ['sa8775-ubuntu', 'sa8650-adas-ubuntu']:
         if os.path.exists(workspace + "/meta-qti-ubuntu-internal"):
             layers.dicLayersWithSubLayers["meta-qti-ubuntu-internal"] = 1
     # enable MOS layers
