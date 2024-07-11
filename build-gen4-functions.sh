@@ -823,6 +823,17 @@ function build-sa8775-ubuntu-perf-image() {
   fi
 }
 
+function build-sa8775-ubuntu-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8775-ubuntu debug
+    cdbitbake qti-auto-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake qti-auto-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 build-all-sa8775-ubuntu-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8775-ubuntu-image
@@ -834,8 +845,14 @@ build-all-sa8775-ubuntu-image() {
   fi
   export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4`
   rm -f tmp-glibc/deploy/images/sa8775-ubuntu-automotive/qti-auto-image-sa8775-ubuntu.ext4
-  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive tmp-glibc/deploy/images/sa8775-ubuntu-automotive.bak
 
+  build-sa8775-ubuntu-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-ubuntu-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive tmp-glibc/deploy/images/sa8775-ubuntu-automotive.bak
   bitbake virtual/kernel -fc cleanall
   build-sa8775-ubuntu-perf-image
   if [ "$?" != "0" ]; then
