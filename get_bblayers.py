@@ -11,7 +11,8 @@ ignoreList = [  "meta-selftest", "meta-skeleton", \
 # Sub-layer info
 QtiBspSubLayers = [ "meta-qti-customizations" ]
 OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
-                    "meta-filesystems", "meta-multimedia" ]
+                    "meta-filesystems", "meta-multimedia" , \
+                    "meta-virtualization"]
 RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
                     "meta-ros2-foxy", "meta-ros2-humble" ]
 QtiRosSubLayer  = [ "meta-ros-common", "meta-ros1", "meta-ros1-noetic", \
@@ -83,7 +84,7 @@ def getLayerPaths(lookup,  fnexpr, checkname) :
 
 # Just spool the tuple list's paths out in order to a string...
 def generatePathString ( pathList ):
-    retString = " \\\n"
+    retString = ""
     for path, priority in pathList:
         retString = retString + "\t" + path + " \\\n"
     return retString
@@ -106,4 +107,5 @@ print ("export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.
 print ("export WORKSPACEROOT := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../'))}\"\n")
 print ("BBPATH = \"${TOPDIR}\"")
 print ("BBFILES ?= \"\"")
-print ("BBLAYERS = \"" + generatePathString(getLayerPaths(args.lookup_paths, args.layers.strip("\""), args.check_layers)) + "\"")
+print ("EXTRALAYERS ?= \" \\\n\"")
+print ("BBLAYERS = \" \\\n\t${EXTRALAYERS} \\\n" + generatePathString(getLayerPaths(args.lookup_paths, args.layers.strip("\""), args.check_layers)) + "\"")
