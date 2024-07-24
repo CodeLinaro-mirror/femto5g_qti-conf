@@ -933,3 +933,76 @@ function build-quin-gvm-monaco-dpk-sdk-image() {
     return 1
     fi
 }
+
+# gh-gvm-lemans commands
+function build-gh-gvm-lemans-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files gh-gvm-lemans debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files gh-gvm-lemans debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-gh-gvm-lemans-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files gh-gvm-lemans perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-gh-gvm-lemans-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-gh-gvm-lemans-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gh-gvm-lemans-automotive/machine-image-gh-gvm-lemans.ext4`
+    rm -f tmp-glibc/deploy/images/gh-gvm-lemans-automotive/machine-image-gh-gvm-lemans.ext4
+    echo "==== Error run 'build-gh-gvm-lemans-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gh-gvm-lemans-automotive/machine-image-gh-gvm-lemans.ext4`
+    rm -f tmp-glibc/deploy/images/gh-gvm-lemans-automotive/machine-image-gh-gvm-lemans.ext4
+
+    #build-gh-gvm-lemans-sdk-image
+    #if [ "$?" != "0" ]; then
+    #echo "==== Error run 'build-gh-gvm-lemans-sdk-image'. (${FUNCNAME[@]})"
+    #return 1
+    #fi
+
+    mv tmp-glibc/deploy/images/gh-gvm-lemans-automotive tmp-glibc/deploy/images/gh-gvm-lemans-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-gh-gvm-lemans-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-gh-gvm-lemans-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/gh-gvm-lemans-automotive-perf/machine-image-gh-gvm-lemans.ext4`
+    rm -f tmp-glibc/deploy/images/gh-gvm-lemans-automotive-perf/machine-image-gh-gvm-lemans.ext4
+    mv tmp-glibc/deploy/images/gh-gvm-lemans-automotive.bak tmp-glibc/deploy/images/gh-gvm-lemans-automotive
+
+    mv tmp-glibc/deploy/images/gh-gvm-lemans-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/gh-gvm-lemans-automotive/machine-image-gh-gvm-lemans.ext4
+    mv tmp-glibc/deploy/images/gh-gvm-lemans-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/gh-gvm-lemans-automotive-perf/machine-image-gh-gvm-lemans.ext4
+}
+
+function build-gh-gvm-lemans-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files gh-gvm-lemans debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
