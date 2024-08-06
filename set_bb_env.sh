@@ -98,6 +98,20 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
+# This commit in latest Yocto 4.0.19 breaks build with sstate cache enabled. Revert it temporarily as workaround
+# https://git.yoctoproject.org/poky/commit/bitbake/lib/bb/codeparser.py?h=kirkstone&id=8ec4f29e432feec9d8deedc06bfb90d57e7436cf
+function revert_python_ast_commit_in_yp4019() {
+    if grep -q "4.0.19" ${WS}/poky/meta-poky/conf/distro/poky.conf  && grep -q "ast.Constant" ${WS}/poky/bitbake/lib/bb/codeparser.py;
+    then
+	echo "Workaround: revert one commit in Yocto 4.0.19 to fix sstate cache issue in perf build "
+	sed -i -e 's/ast.Constant/ast.Str/' ${WS}/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+	sed -i -e 's/node.args\[0\].value/node.args\[0\].s/' ${WS}/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+	sed -i -e 's/node.args\[1\].value/node.args\[1\].s/' ${WS}/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+    fi
+}
+
+revert_python_ast_commit_in_yp4019
+
 
 #init local git if it does not exist
 function init_localgit() {
