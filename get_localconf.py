@@ -88,6 +88,9 @@ elif TARGET == "quin-gvm-gen4-2" :
 elif TARGET == "quin-gvm-lemans" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-lemans"
+elif TARGET == "gh-gvm-lemans" :
+    DISTRO = "auto-gvm"
+    MACHINE = "gh-gvm-lemans"
 elif TARGET == "quin-gvm-monaco" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-monaco"
@@ -106,12 +109,25 @@ elif TARGET == "sa8775" :
 elif TARGET == "sa8255-mos" :
     DISTRO = "auto-mos"
     MACHINE = "sa8775"
-elif TARGET == "sa7255" :
+elif TARGET == "sa8775-flex" :
     DISTRO = "auto"
-    MACHINE = "sa7255"
+    MACHINE = "sa8775-flex"
+elif TARGET == "sa8650-adas" :
+    DISTRO = "auto"
+    MACHINE = "sa8650-adas"
+elif TARGET == "sa8650-adas-ubuntu" :
+    DISTRO = "auto-lxc-ubuntu"
+    MACHINE = "sa8650-adas"
+# need to be deleted once migrate kernel done
 elif TARGET == "sa8775-ubuntu" :
     DISTRO = "auto-lxc-ubuntu"
     MACHINE = "sa8775"
+elif TARGET == "sa8255-ivi" :
+    DISTRO = "auto"
+    MACHINE = "sa8255-ivi"
+elif TARGET == "sa7255" :
+    DISTRO = "auto"
+    MACHINE = "sa7255"
 elif TARGET == "sa8797" :
     DISTRO = "auto"
     MACHINE = "sa8797"
