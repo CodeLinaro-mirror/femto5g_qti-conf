@@ -100,7 +100,7 @@ init_build_env () {
 
     # Clean up environment.
     unset MACHINE DISTRO WS usage confnote PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
-    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM IMGCHOICE IMAGEINFO
+    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM IMGCHOICE IMAGEINFO EXTRALAYERS
 }
 
 if [ $# -gt 1 ]; then
@@ -226,6 +226,17 @@ elif [[ ${MACHINE} =~ "trustedvm" ]] ; then
     python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary >| ${BUILDDIR}/conf/bblayers.conf
 else
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky >| ${BUILDDIR}/conf/bblayers.conf
+fi
+
+##### bblayers.conf EXTRALAYERS #####
+# If EXTRALAYERS are avilable update them
+if [ -n "${EXTRALAYERS}" ]; then
+    earr=($EXTRALAYERS)
+    for s in "${earr[@]}"; do
+        LAYERDIR="${WS}"
+        str=${LAYERDIR}/layers/$(echo "${s}")
+        sed -i "/EXTRALAYERS ?= /a\\    ${str} \\ \\" ${BUILDDIR}/conf/bblayers.conf
+    done
 fi
 
 # local.conf
