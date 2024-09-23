@@ -743,6 +743,158 @@ build-all-sa7255-image() {
   mv tmp-glibc/deploy/images/sa7255-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa7255-automotive/machine-image-sa7255.ext4
 }
 
+# SA7255-ivi commands
+function build-sa7255-ivi-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa7255-ivi debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa7255-ivi debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa7255-ivi-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa7255-ivi perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa7255-ivi perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa7255-ivi-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa7255-ivi debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-sa7255-ivi-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa7255-ivi-image
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa7255-ivi-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-sa7255-ivi-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa7255-ivi-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa7255-ivi-automotive tmp-glibc/deploy/images/sa7255-ivi-automotive.bak
+
+  build-sa7255-ivi-perf-image
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa7255-ivi-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa7255-ivi-automotive.bak tmp-glibc/deploy/images/sa7255-ivi-automotive
+
+  mv tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4
+  mv tmp-glibc/deploy/images/sa7255-ivi-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
+}
+
+# SA8620-adas commands
+function build-sa8620-adas-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8620-adas debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8620-adas debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8620-adas-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8620-adas perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8620-adas perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8620-adas-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8620-adas debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
+build-all-sa8620-adas-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8620-adas-image
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8620-adas-automotive/machine-image-sa8620-adas.ext4`
+  rm -f tmp-glibc/deploy/images/sa8620-adas-automotive/machine-image-sa8620-adas.ext4
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8620-adas-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-sa8620-adas-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8620-adas-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa8620-adas-automotive tmp-glibc/deploy/images/sa8620-adas-automotive.bak
+
+  build-sa8620-adas-perf-image
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8620-adas-automotive-perf/machine-image-sa8620-adas.ext4`
+  rm -f tmp-glibc/deploy/images/sa8620-adas-automotive-perf/machine-image-sa8620-adas.ext4
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8620-adas-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa8620-adas-automotive.bak tmp-glibc/deploy/images/sa8620-adas-automotive
+
+  mv tmp-glibc/deploy/images/sa8620-adas-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8620-adas-automotive-perf/machine-image-sa8620-adas.ext4
+  mv tmp-glibc/deploy/images/sa8620-adas-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8620-adas-automotive/machine-image-sa8620-adas.ext4
+}
+
 # monaco commands
 function build-monaco-image() {
   echo "==== Function: $FUNCNAME (${FUCNAME[@]})"
