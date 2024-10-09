@@ -263,6 +263,14 @@ if [[ ${MACHINE} =~ "trustedvm" ]] ; then
    cd -
 fi
 
+if [[ ${MACHINE} =~ "trustedvm-v3" ]] ; then
+   KERNEL_TARGET="sun"
+   KERNEL_VERSION="6.7"
+else
+   KERNEL_TARGET="canoe"
+   KERNEL_VERSION="6.7"
+fi
+
 # auto.conf
 cat >| ${BUILDDIR}/conf/auto.conf <<EOF
 # This configuration file is dynamically generated every time
