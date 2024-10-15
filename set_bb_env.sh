@@ -41,9 +41,7 @@ TEMPLATECONF="meta-qti-bsp/conf"
 apply_poky_patches () {
     cd ${WS}/poky
     for patchfile in $(cat qti-conf/patches/series); do
-        patch -p1 -N --dry-run --silent < qti-conf/patches/$patchfile > /dev/null 2>&1
-        # sucessful dryrun sets exit status of last command ($?) to 0
-        if [ $? -eq 0 ]; then
+        if patch -p1 -N --dry-run --silent < qti-conf/patches/$patchfile > /dev/null 2>&1; then
             #apply the patch
             patch -p1 -N --silent < qti-conf/patches/$patchfile > /dev/null 2>&1
         fi
