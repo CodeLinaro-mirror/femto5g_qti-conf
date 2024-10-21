@@ -129,7 +129,7 @@ def initLayersList(TARGET):
     elif TARGET in ['monaco']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8797']:
+    elif TARGET in ['sa8797', 'sa8797-slt']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         del dicLayersWithSubLayers["meta-qt5"]
