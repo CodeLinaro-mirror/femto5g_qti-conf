@@ -96,6 +96,23 @@ function build-sa8797-sdk-image() {
     fi
 }
 
+
+function build-sa8797-slt-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8797-slt debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8797 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 build-all-sa8797-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8797-image
