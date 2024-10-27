@@ -131,6 +131,15 @@ elif TARGET == "sa7255" :
 elif TARGET == "sa8797" :
     DISTRO = "auto"
     MACHINE = "sa8797"
+elif TARGET == "sa8797-slt" :
+    DISTRO = "auto-slt"
+    MACHINE = "sa8797"
+elif TARGET == "sa7255-ivi" :
+    DISTRO = "auto"
+    MACHINE = "sa7255-ivi"
+elif TARGET == "sa8620-adas" :
+    DISTRO = "auto"
+    MACHINE = "sa8620-adas"
 else:
     pattern = re.compile(r'^(sa\w{4})(.*?)$')
     result = pattern.findall(TARGET)
@@ -164,7 +173,7 @@ print ("# BBMASK")
 if VARIANT == "perf":
     print ("include conf/local_release.conf")
 else:
-    print ("include conf/local_${VARIANT}.conf")
+    print ("include conf/local_%s.conf" % VARIANT)
 print ("# Include ERROR_QA setting")
 print ("include conf/local_automotive.conf")
 if DISTRO == "bg":
