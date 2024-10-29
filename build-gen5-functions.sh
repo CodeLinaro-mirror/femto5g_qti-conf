@@ -41,9 +41,9 @@ function build-sa8797-qclinux-image() {
   unset_bb_env
   cd ${WS}
 
-  MACHINE=sa8797 DISTRO=auto source layers/meta-qti-automotive-internal/set_bb_env_internal.sh
+  MACHINE=sa8797 DISTRO=auto source layers/meta-qti-automotive-distro/set_bb_env_internal.sh
   echo "====  Switch to qclinux yocto build directory: `pwd`"
-  bitbake qcom-automotive-image
+  bitbake machine-image
 
   if [ "$?" != "0" ]; then
   echo "==== Error run 'sa8797 qclinux build failed'. (${FUNCNAME[@]})"
@@ -113,37 +113,18 @@ function build-sa8797-slt-image() {
   fi
 }
 
+
 build-all-sa8797-image() {
+  #This build entry is used for LEQCLinux1.0 yocto now
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8797-image
+  build-sa8797-qclinux-image
   if [ "$?" != "0" ]; then
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4`
-  rm -f tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4
-  echo "==== Error run 'build-sa8797-image'. (${FUNCNAME[@]})"
-  return 1
+    echo "==== Error run 'build-sa8797-qclinux-image'. (${FUNCNAME[@]})"
+    return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4`
-  rm -f tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4
-
-  build-sa8797-sdk-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8797-sdk-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
-
-  mv tmp-glibc/deploy/images/sa8797-automotive tmp-glibc/deploy/images/sa8797-automotive.bak
-  bitbake virtual/kernel -fc cleanall
-  build-sa8797-perf-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4`
-  rm -f tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4
-  mv tmp-glibc/deploy/images/sa8797-automotive.bak tmp-glibc/deploy/images/sa8797-automotive
-
-  mv tmp-glibc/deploy/images/sa8797-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4
-  mv tmp-glibc/deploy/images/sa8797-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+  cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+  echo "Prepare qclinux build image done"
 }
 
 ########################

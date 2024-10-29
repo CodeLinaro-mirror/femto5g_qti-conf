@@ -286,7 +286,13 @@ export TEMPLATECONF="${WS}/poky/build/conf"
 # going to source the OE build environment setup script they provided.
 # This will dump the user in ${WS}/yocto/build, ready to run the
 # convienence function or straight up bitbake commands.
-. ${WS}/poky/oe-init-build-env ${BUILD_DIR}
+
+if [ -f ${WS}/poky/oe-init-build-env ]; then
+  . ${WS}/poky/oe-init-build-env ${BUILD_DIR}
+else
+  #QCLINUX1.0 poky oe under layers/
+  . ${WS}/layers/poky/oe-init-build-env ${BUILD_DIR} 
+fi
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
