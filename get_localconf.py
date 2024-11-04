@@ -76,6 +76,9 @@ elif TARGET == "sa81x5-rt" :
 elif TARGET == "qtiquingvm-headless" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "qtiquingvm"
+elif TARGET == "quin-gvm-lemans-headless" :
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "quin-gvm-lemans"
 elif TARGET == "qtiquingvm8295-headless" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "qtiquingvm8295"
