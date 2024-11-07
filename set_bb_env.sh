@@ -261,6 +261,12 @@ if [[ ${MACHINE} =~ "trustedvm" ]] ; then
    KERNEL_TARGET=$(echo ${kernel_target_name} | cut -d'_' -f1)
    KERNEL_VERSION=$(basename $BUILDDIR/../src/kernel-*/ | sed 's/.*-//') 
    cd -
+
+   # Temp workaround for release
+   DISPLAY_ARTIFACTS_PATH="${WS}/src/display/vendor/qcom/proprietary/techpack/artifacts/display-le/trustedvm-v3"
+   if [ -d ${DISPLAY_ARTIFACTS_PATH} ]; then
+      rm -rf ${DISPLAY_ARTIFACTS_PATH}/usr/lib/libtinyxml2_1.so 
+   fi
 fi
 
 if [[ ${MACHINE} =~ "trustedvm-v3" ]] ; then
