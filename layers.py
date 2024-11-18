@@ -116,7 +116,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8775-flex', 'sa8650-adas', 'sa8255-ivi']:
+    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8775-flex', 'sa8650-adas', 'sa8255-ivi', 'sa8620-adas', 'sa7255-ivi']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1
@@ -129,7 +129,7 @@ def initLayersList(TARGET):
     elif TARGET in ['monaco']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8797']:
+    elif TARGET in ['sa8797', 'sa8797-slt']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         del dicLayersWithSubLayers["meta-qt5"]

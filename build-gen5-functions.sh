@@ -35,6 +35,22 @@ function build-all-gen5-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
 }
 
+# SA8797 qclinux commands
+function build-sa8797-qclinux-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  cd ${WS}
+
+  MACHINE=sa8797 DISTRO=auto source layers/meta-qti-automotive-internal/set_bb_env_internal.sh
+  echo "====  Switch to qclinux yocto build directory: `pwd`"
+  bitbake qcom-automotive-image
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'sa8797 qclinux build failed'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+}
 
 # SA8797 commands
 function build-sa8797-image() {
@@ -78,6 +94,23 @@ function build-sa8797-sdk-image() {
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+}
+
+
+function build-sa8797-slt-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8797-slt debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8797 debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 build-all-sa8797-image() {
