@@ -1067,6 +1067,8 @@ build-all-quin-gvm-lemans-headless-image() {
 
     mv tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive/machine-image-quin-gvm-lemans-headless.ext4
     mv tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive-perf/machine-image-quin-gvm-lemans-headless.ext4
+    mv tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive/vmlinux tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive/quin-gvm-lemans-headless-vmlinux
+    mv tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive-perf/vmlinux tmp-glibc/deploy/images/quin-gvm-lemans-headless-automotive-perf/quin-gvm-lemans-headless-vmlinux
 }
 
 function build-quin-gvm-lemans-headless-sdk-image() {
