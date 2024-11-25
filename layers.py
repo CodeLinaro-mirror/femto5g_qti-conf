@@ -85,6 +85,7 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
     elif TARGET == 'quin-gvm-gen4-headless' :
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-base"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-upstream"]
