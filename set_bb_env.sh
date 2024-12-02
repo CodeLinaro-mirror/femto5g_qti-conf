@@ -34,9 +34,6 @@ scriptdir="$(dirname "${THIS_SCRIPT}")"
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../..)
 
-# Find build templates from qti meta layer.
-TEMPLATECONF="meta-qti-bsp/conf"
-
 # Patch poky with QTI optimizations which not part of thud branch.
 apply_poky_patches () {
     cd ${WS}/poky
