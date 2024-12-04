@@ -63,6 +63,7 @@ LE.FRAMEWORK.1.0:
   machine:
     - genericarmv8
     - sxrneo
+    - sm8450p
   distro:
     - qti-distro-base-debug
     - qti-distro-base-perf
@@ -82,6 +83,7 @@ LE.FRAMEWORK.2.0:
   machine:
     - genericarmv8
     - kalama
+    - sxrneo
   distro:
     - qti-distro-base-debug
     - qti-distro-base-perf
@@ -101,7 +103,16 @@ LE.PRODUCT.3.0:
   machine:
     - sm8450p
   distro:
+    - qti-distro-xr-nodisplay-debug
+    - qti-distro-xr-nodisplay-perf
+  target:
+    - qti-xreality-image
+
+LE.PRODUCT.7.0:
+  machine:
+    - sxrneo
+  distro:
     - qti-distro-xr-debug
     - qti-distro-xr-perf
   target:
-    - qti-xreality-image
+    - qti-xreality2-image
