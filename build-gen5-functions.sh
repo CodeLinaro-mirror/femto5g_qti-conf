@@ -100,17 +100,23 @@ function build-sa8797-sdk-image() {
 function build-sa8797-slt-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8797-slt debug
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8797 debug'. (${FUNCNAME[@]})"
-  return 1
-  fi
+  cd ${WS}
 
-  cdbitbake machine-image
+  MACHINE=sa8797 DISTRO=auto-slt source layers/meta-qti-automotive-distro/set_bb_env_internal.sh
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init configure sa8797-slt debug'. (${FUNCNAME[@]})"
   return 1
   fi
+  echo "====  Switch to qclinux yocto build directory: `pwd`"
+  bitbake machine-image
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'sa8797-slt qclinux build failed'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
+  cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
+  echo "Prepare qclinux build sa8797-slt image done"
 }
 
 
