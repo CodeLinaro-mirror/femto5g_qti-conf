@@ -100,7 +100,7 @@ init_build_env () {
 
     # Clean up environment.
     unset MACHINE DISTRO WS usage confnote PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
-    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM IMGCHOICE IMAGEINFO
+    unset DISTROTABLE DISTROLAYERS MACHINETABLE MACHLAYERS ITEM IMGCHOICE IMAGEINFO EXTRALAYERS
 }
 
 if [ $# -gt 1 ]; then
@@ -220,12 +220,23 @@ mkdir -p "${BUILDDIR}"/conf
 
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-if [[ ${MACHINE} =~ "sxrneo" ]] ; then
+if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" ]] ; then
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
 elif [[ ${MACHINE} =~ "trustedvm" ]] ; then
     python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary >| ${BUILDDIR}/conf/bblayers.conf
 else
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky >| ${BUILDDIR}/conf/bblayers.conf
+fi
+
+##### bblayers.conf EXTRALAYERS #####
+# If EXTRALAYERS are avilable update them
+if [ -n "${EXTRALAYERS}" ]; then
+    earr=($EXTRALAYERS)
+    for s in "${earr[@]}"; do
+        LAYERDIR="${WS}"
+        str=${LAYERDIR}/layers/$(echo "${s}")
+        sed -i "/EXTRALAYERS ?= /a\\    ${str} \\ \\" ${BUILDDIR}/conf/bblayers.conf
+    done
 fi
 
 # local.conf
@@ -244,10 +255,15 @@ BUILDVERSION=$( echo "${BUILDNAME}" |rev |cut -d. -f1| rev )
 # Get the kernel target name from the kernel build directory
 if [[ ${MACHINE} =~ "trustedvm" ]] ; then
    cd $BUILDDIR/../src/kernel-*/out/
-   kernel_dir=$(find . -maxdepth 1 -name \*msm-kernel\* -type d | head -n1)
-   echo $kernel_ver
-   kernel_target_name=$(echo ${kernel_dir} | cut -d'-' -f3)
-   KERNEL_TARGET=$(echo ${kernel_target_name} | cut -d'_' -f1)
+   kernel_dirs=$(find . -maxdepth 1 -name \*msm-kernel\* -type d)
+   for dir in $kernel_dirs; do
+      echo "Processing directory: $dir"
+      kernel_target_name=$(echo ${dir} | cut -d'-' -f3)
+      KERNEL_TARGET=$(echo ${kernel_target_name} | cut -d'_' -f1)
+      if [[ ${MACHINE} =~ "trustedvm-v3" ]] ; then
+          break
+      fi
+   done
    KERNEL_VERSION=$(basename $BUILDDIR/../src/kernel-*/ | sed 's/.*-//') 
    cd -
 fi
