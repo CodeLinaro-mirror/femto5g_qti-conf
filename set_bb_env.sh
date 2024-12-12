@@ -100,14 +100,20 @@ alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
 # This commit in latest Yocto 4.0.19 breaks build with sstate cache enabled when python3 version is lower than 3.8. Revert it temporarily as workaround
 # https://git.yoctoproject.org/poky/commit/bitbake/lib/bb/codeparser.py?h=kirkstone&id=8ec4f29e432feec9d8deedc06bfb90d57e7436cf
+#
+# YP4.0.23 has fix to support python 3.6
+# https://git.yoctoproject.org/poky/commit/bitbake/lib/bb/codeparser.py?h=kirkstone&id=3aaed26728b2d8bcb66db94792fc080a37e2d9d3
+#
+# This can be reverted when do minor version to upgrade 4.0.23+
 function revert_python_ast_commit_in_yp4019() {
-    py3_ver=$(python3 -V 2>&1 | sed 's/.* \([0-9]\).\([0-9]\).*/\1\2/')
-    if [ "$py3_ver" -lt "38" ]; then
-        echo "Python version is $py3_ver . Revert one commit in Yocto 4.0.19 to fix sstate cache issue"
-        if grep -q "4.0.19" ${WS}/poky/meta-poky/conf/distro/poky.conf  && grep -q "ast.Constant" ${WS}/poky/bitbake/lib/bb/codeparser.py; then
-            sed -i -e 's/ast.Constant/ast.Str/' ${WS}/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
-            sed -i -e 's/node.args\[0\].value/node.args\[0\].s/' ${WS}/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
-            sed -i -e 's/node.args\[1\].value/node.args\[1\].s/' ${WS}/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+    py3_ver=$(python3 -V 2>&1 | awk '{print $2}' | awk -F '.' '{print $2}')
+    echo "Python3 version is 3.$py3_ver "
+    if [ "$py3_ver" -lt "8" ]; then
+        echo "Revert one commit in Yocto 4.0.20 to fix sstate cache issue"
+        if grep -q "4.0.20" ${WS}/layers/poky/meta-poky/conf/distro/poky.conf  && grep -q "ast.Constant" ${WS}/layers/poky/bitbake/lib/bb/codeparser.py; then
+            sed -i -e 's/ast.Constant/ast.Str/' ${WS}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+            sed -i -e 's/node.args\[0\].value/node.args\[0\].s/' ${WS}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+            sed -i -e 's/node.args\[1\].value/node.args\[1\].s/' ${WS}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
         fi
     fi
 }
