@@ -3,60 +3,14 @@
 
 # Common functions for build-all Gen5 images
 #           $1 -- Target name, as: sa8797
-function build-all-gen5-function() {
-    build-$1-image
-    if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
-    return 1
-    fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-
-    build-$1-sdk-image
-    if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
-    return 1
-    fi
-
-    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
-    bitbake virtual/kernel -fc cleanall
-    build-$1-perf-image
-    if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
-    return 1
-    fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
-    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
-
-    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
-    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
-}
-
 # SA8797 qclinux commands
-function build-sa8797-qclinux-image() {
-  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  unset_bb_env
-  cd ${WS}
 
-  MACHINE=sa8797 DISTRO=auto source layers/meta-qti-automotive-distro/set_bb_env_internal.sh
-  echo "====  Switch to qclinux yocto build directory: `pwd`"
-  bitbake machine-image
-
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'sa8797 qclinux build failed'. (${FUNCNAME[@]})"
-  return 1
-  fi
-
-}
-
-# SA8797 commands
 function build-sa8797-image() {
-  build-sa8797-qclinux-image
+  #Suppose this command work after source poky/build/conf/set_bb_env.sh done.
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-sa8797-qclinux-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-sa8797-image failed'. (${FUNCNAME[@]})"
     return 1
   fi
 }
@@ -64,27 +18,34 @@ function build-sa8797-image() {
 function build-sa8797-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8797 perf
+  cd ..
+  source poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8797 perf'. (${FUNCNAME[@]})"
-  return 1
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v perf'. (${FUNCNAME[@]})"
+    return 1
   fi
-
-  cdbitbake machine-image
+  echo "====  qclinux yocto build in: `pwd`"
+  bitbake machine-image 
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
-  return 1
+    echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
+    return 1
   fi
 }
 
 function build-sa8797-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa8797 debug
-    cdbitbake machine-image -c populate_sdk
+    cd ..
+    source poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
-    return 1
+      echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug'. (${FUNCNAME[@]})"
+      return 1
+    fi
+    echo "====  qclinux yocto build in: `pwd`"
+    bitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+      echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+      return 1
     fi
 }
 
@@ -92,22 +53,22 @@ function build-sa8797-sdk-image() {
 function build-sa8797-slt-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  cd ${WS}
-
-  MACHINE=sa8797 DISTRO=auto-slt source layers/meta-qti-automotive-distro/set_bb_env_internal.sh
+  cd ..
+  source poky/build/conf/set_bb_env.sh -t sa8797 -d auto-slt -v debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init configure sa8797-slt debug'. (${FUNCNAME[@]})"
-  return 1
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto-slt -v debug'. (${FUNCNAME[@]})"
+    return 1
   fi
-  echo "====  Switch to qclinux yocto build directory: `pwd`"
-  bitbake machine-image
+  echo "====  qclinux yocto build in: `pwd`"
 
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'sa8797-slt qclinux build failed'. (${FUNCNAME[@]})"
-  return 1
+    echo "==== Error run 'sa8797-slt qclinux build failed'. (${FUNCNAME[@]})"
+    return 1
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
   cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   echo "Prepare qclinux build sa8797-slt image done"
 }
 
@@ -115,14 +76,36 @@ function build-sa8797-slt-image() {
 build-all-sa8797-image() {
   #This build entry is used for LEQCLinux1.0 yocto now
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8797-qclinux-image
+  build-sa8797-image
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-sa8797-qclinux-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-sa8797-image'. (${FUNCNAME[@]})"
     return 1
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
-  cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
-  echo "Prepare qclinux build image done"
+  mv tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+  mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+  mkdir -p ../poky/build/tmp-glibc/sysroots-components
+  cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  echo "Prepare build-sa8797-image done"
+  
+  # echo "Begin to build-sa8797-sdk-image"
+  # build-sa8797-sdk-image
+  # mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
+  # cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
+  # echo "Prepare build-sa8797-sdk-image done"
+
+  # echo "Begin to build-sa8797-perf-image"
+  # bitbake virtual/kernel -fc cleanall
+  # build-sa8797-perf-image
+  # if [ "$?" != "0" ]; then
+  #   echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
+  #   return 1
+  # fi
+  # mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
+  # cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
+
+  # echo "Prepare build-sa8797-perf-image done"
 }
 
 ########################

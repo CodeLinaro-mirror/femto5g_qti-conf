@@ -14,6 +14,7 @@ usage()
     Optional parameters: [-t target] [-v variant] [-b build-dir] [-h] \n
     * [-t target]: Customized target, use sa81x5 as default \n
     * [-v variant]: Customized variant, use debug as default \n
+    * [-d variant]: Customized distro, use auto as default \n
     * [-b build-dir]: Customized absolute build directory, use 'workspace/poky/build' as default \n
     * [-h]: Help \n
     Compatibility: bash, zsh \n
@@ -21,11 +22,14 @@ usage()
 }
 
 OPTIND="1"
-while getopts "t:v:b:h" qti_setup_flag
+while getopts "t:d:v:b:h" qti_setup_flag
 do
     case $qti_setup_flag in
         t) QTARGET="$OPTARG";
            echo "Input QTARGET: $QTARGET"
+           ;;
+        d) QDISTRO="$OPTARG";
+           echo "Input QDISTRO: $QDISTRO"
            ;;
         v) QVARIANT="$OPTARG";
            echo "Input QVARIANT: $QVARIANT"
@@ -64,10 +68,15 @@ fi
 # Find where the global conf directory is...
 scriptdir=$(readlink -f $(dirname "${THIS_SCRIPT}"))
 # Find where the workspace is...
-WS=$(readlink -f $scriptdir/../../..)
+WSQC=$(readlink -f $scriptdir/../../..)
+export WSQC="${WSQC}"
+
+if [ -z "$QDISTRO" ]; then
+    export QDISTRO="auto"
+fi
 
 if [ -z "$BUILD_DIR" ]; then
-    BUILD_DIR="${WS}/poky/build"
+    BUILD_DIR="${WSQC}/build-${QDISTRO}"
 else
     if [ "$BUILD_DIR" = "/" ]; then
         echo "Error: $BUILD_DIR is not supported!"
@@ -86,7 +95,7 @@ fi
 echo "Build directory is $BUILD_DIR"
 # Add a few helpful shortcuts
 # Go to root of workspace
-alias croot='cd $WS'
+alias croot='cd $WSQC'
 
 # Go to the directory from where you can kick off the build(workspace/poky/build as default)
 # from wherever you are
@@ -110,10 +119,10 @@ function revert_python_ast_commit_in_yp4019() {
     echo "Python3 version is 3.$py3_ver "
     if [ "$py3_ver" -lt "8" ]; then
         echo "Revert one commit in Yocto 4.0.20 to fix sstate cache issue"
-        if grep -q "4.0.20" ${WS}/layers/poky/meta-poky/conf/distro/poky.conf  && grep -q "ast.Constant" ${WS}/layers/poky/bitbake/lib/bb/codeparser.py; then
-            sed -i -e 's/ast.Constant/ast.Str/' ${WS}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
-            sed -i -e 's/node.args\[0\].value/node.args\[0\].s/' ${WS}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
-            sed -i -e 's/node.args\[1\].value/node.args\[1\].s/' ${WS}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+        if grep -q "4.0.20" ${WSQC}/layers/poky/meta-poky/conf/distro/poky.conf  && grep -q "ast.Constant" ${WSQC}/layers/poky/bitbake/lib/bb/codeparser.py; then
+            sed -i -e 's/ast.Constant/ast.Str/' ${WSQC}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+            sed -i -e 's/node.args\[0\].value/node.args\[0\].s/' ${WSQC}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
+            sed -i -e 's/node.args\[1\].value/node.args\[1\].s/' ${WSQC}/layers/poky/bitbake/lib/bb/codeparser.py  >> /dev/null 2>&1
         fi
     fi
 }
@@ -123,13 +132,13 @@ revert_python_ast_commit_in_yp4019
 
 #init local git if it does not exist
 function init_localgit() {
-if [ -f "${WS}/localgit" ]
+if [ -f "${WSQC}/localgit" ]
 then
-    cat ${WS}/localgit | while read line
+    cat ${WSQC}/localgit | while read line
     do
-        if [ -d "${WS}/$line" ]
+        if [ -d "${WSQC}/$line" ]
         then
-            cd ${WS}/$line
+            cd ${WSQC}/$line
             if [ ! -d ".git" ]
             then
                 git init && git add . && git commit -m "Init new git project" >> /dev/null 2>&1 
@@ -138,20 +147,20 @@ then
     done
 else
     echo "Get init local git list"
-    touch ${WS}/localgit
-    cat ${WS}/release/for_p4 | while read line
+    touch ${WSQC}/localgit
+    cat ${WSQC}/release/for_p4 | while read line
     do
-        if grep -q "\"$line\"" ${WS}/.repo/manifests/default.xml
+        if grep -q "\"$line\"" ${WSQC}/.repo/manifests/default.xml
         then
             strmeta="meta-qti"
             if [[ $line != *$strmeta* ]]
             then
-                echo $line >> ${WS}/localgit
+                echo $line >> ${WSQC}/localgit
             fi
         fi
     done
-    echo "prebuilt_HY11" >> ${WS}/localgit
-    echo "prebuilt_HY22" >> ${WS}/localgit
+    echo "prebuilt_HY11" >> ${WSQC}/localgit
+    echo "prebuilt_HY22" >> ${WSQC}/localgit
     sync
 fi
 }
@@ -160,38 +169,13 @@ fi
 #init local git if it does not exist.
 init_localgit 
 
-# Convienence functions provided for the QuIC provided OE Linux distro.
-
-# Function: Initialize bblayers.conf and local.conf
-#           $1 -- MACHINE
-#           $2 -- VARIANT
-function init-configure-files() {
-    # Dynamically generate our bblayers.conf since we effectively can't whitelist
-    # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
-    # dynamic workspace layer functionality.
-    mkdir -p ${BUILD_DIR}/conf
-
-    python $scriptdir/get_bblayers.py $1 ${WS} > ${BUILD_DIR}/conf/bblayers.conf
-
-    # Copy local.conf from templet. Dynamically append DISTRO/MACHINE/VARIANT/BBMASK to local.conf.
-    python $scriptdir/get_localconf.py $1 $2 ${WS} > ${BUILD_DIR}/conf/local.conf
-
-    # Set environment variables for fetching ubuntu sourcelist from specific mirrors
-    export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS PREFERRED_UBUNTU_SOURCELIST"
-}
-
 # Build image
 function build-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   cdbitbake machine-image
 }
 
-
-source ${WS}/poky/build/conf/build-gen3-functions.sh
-source ${WS}/poky/build/conf/build-gen3gvm-functions.sh
-source ${WS}/poky/build/conf/build-gen4-functions.sh
-source ${WS}/poky/build/conf/build-gen4gvm-functions.sh
-source ${WS}/poky/build/conf/build-gen5-functions.sh
+source ${WSQC}/poky/build/conf/build-gen5-functions.sh
 
 
 # Utility commands
@@ -227,10 +211,10 @@ list-build-commands()
     echo
     echo "Convenience commands for building images:"
 
-    filelist=(build-gen3-functions.sh build-gen3gvm-functions.sh build-gen4-functions.sh build-gen4gvm-functions.sh build-gen5-functions.sh)
+    filelist=(build-gen5-functions.sh)
     for fn in ${filelist[@]}
     do
-        local script_file="$WS/poky/build/conf/$fn"
+        local script_file="$WSQC/poky/build/conf/$fn"
 
         while IFS= read line; do
             if echo $line | grep -q "^function[[:blank:]][[:blank:]]*build-.*-image"; then
@@ -264,7 +248,7 @@ unset_bb_env() {
 # Initialize bblayers.conf and local.conf
 # Get MACHINE value from -m <machine>, default is sa81x5
 if [ -z "$QTARGET" ]; then
-    export QTARGET="sa81x5"
+    export QTARGET="sa8797"
 fi
 
 # Get VARIANT value from -v <variant>, default is debug
@@ -272,37 +256,23 @@ if [ -z "$QVARIANT" ]; then
     export QVARIANT="debug"
 fi
 
-init-configure-files ${QTARGET} ${QVARIANT}
-
-# OE doesn't want a set-gid directory for its tmpdir
-BT="$BUILD_DIR/tmp-glibc"
-if [ ! -d ${BT} ]
-then
-  mkdir -m u=rwx,g=rx,g-s,o=  ${BT}
-elif [ -g ${BT} ]
-then
-  chmod -R g-s ${BT}
-fi
-unset BT
-
 # Find build templates from qti meta layer.
-export TEMPLATECONF="${WS}/poky/build/conf"
+export TEMPLATECONF="${WSQC}/poky/build/conf"
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
-# This will dump the user in ${WS}/yocto/build, ready to run the
+# This will dump the user in ${WSQC}/yocto/build, ready to run the
 # convienence function or straight up bitbake commands.
 
-if [ -f ${WS}/poky/oe-init-build-env ]; then
-  . ${WS}/poky/oe-init-build-env ${BUILD_DIR}
-else
-  #QCLINUX1.0 poky oe under layers/
-  . ${WS}/layers/poky/oe-init-build-env ${BUILD_DIR} 
-fi
+echo "QTARGET: $QTARGET"
+echo "QDISTRO: $QDISTRO"
+echo "QVARIANT: $QVARIANT"
+echo "WSQC : $WSQC"
+cd ${WSQC}
+MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_PASSTHROUGH_ADDITIONS, append our vars to the list
 export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
-
