@@ -67,7 +67,7 @@ function build-sa8797-slt-image() {
     return 1
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
-  cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
+  cp -r tmp-glibc/deploy/images/sa8797-slt-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   echo "Prepare qclinux build sa8797-slt image done"
 }
@@ -82,7 +82,7 @@ build-all-sa8797-image() {
     return 1
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
-  mv tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+  mv tmp-glibc/deploy/images/sa8797-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
   mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   mkdir -p ../poky/build/tmp-glibc/sysroots-components
