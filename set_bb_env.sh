@@ -64,7 +64,7 @@ fi
 # Find where the global conf directory is...
 scriptdir=$(readlink -f $(dirname "${THIS_SCRIPT}"))
 # Find where the workspace is...
-WS=$(readlink -f $scriptdir/../../..)
+export WS=$(readlink -f $scriptdir/../../..)
 
 if [ -z "$BUILD_DIR" ]; then
     BUILD_DIR="${WS}/poky/build"
@@ -172,6 +172,10 @@ function init-configure-files() {
 
     # Set environment variables for fetching ubuntu sourcelist from specific mirrors
     export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS PREFERRED_UBUNTU_SOURCELIST"
+
+    if [[ "$1" == "sa8775-flex-ed0" || "$1" == "sa8775-flex-ed1" ]]; then
+       export qti_ed="$WS/meta-qti-ed/"
+    fi
 }
 
 # Build image

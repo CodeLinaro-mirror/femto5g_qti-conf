@@ -53,7 +53,7 @@ def getLayerPaths(TARGET, workspace) :
             if v != 1:
                 GenLayerPathList("%s/%s" % (DictPath, k), v, LayerPathList)
             else:
-                layerPath = "%s/%s" % (DictPath, k) 
+                layerPath = "%s/%s" % (DictPath, k)
                 layerPriority = getLayerPriority(layerPath + "/conf/layer.conf")
                 if layerPriority >= 0:
                     LayerPathList += [( layerPath,  layerPriority )]
@@ -65,7 +65,7 @@ def getLayerPaths(TARGET, workspace) :
             continue
         if foldername.startswith("meta-qti-ubuntu"):
             continue
-        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop", "meta-qti-dpk", "meta-qti-mos", "meta-qti-mos-prop"]:
+        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop", "meta-qti-dpk", "meta-qti-mos", "meta-qti-mos-prop","meta-qti-ed"]:
             continue
         if foldername.startswith("meta-qti-automotive"):
             continue
@@ -84,6 +84,10 @@ def getLayerPaths(TARGET, workspace) :
             for foldername in os.listdir(workspace + "/meta-dpk-prop"):
                 if foldername.startswith("meta-"):
                     layers.dicLayersWithSubLayers["meta-dpk-prop/" + foldername] = 1
+    
+    if TARGET in ['sa8775-flex-ed0','sa8775-flex-ed1']:
+                if os.path.exists(workspace + "/meta-qti-ed"):
+                                 layers.dicLayersWithSubLayers["meta-qti-ed"] = 1
     retList = GenLayerPathList(workspace, layers.dicLayersWithSubLayers)
 
     # In order to avoid potential namespace conflicts, between recipes on layers
