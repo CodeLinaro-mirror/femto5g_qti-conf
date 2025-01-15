@@ -255,10 +255,15 @@ BUILDVERSION=$( echo "${BUILDNAME}" |rev |cut -d. -f1| rev )
 # Get the kernel target name from the kernel build directory
 if [[ ${MACHINE} =~ "trustedvm" ]] ; then
    cd $BUILDDIR/../src/kernel-*/out/
-   kernel_dir=$(find . -maxdepth 1 -name \*msm-kernel\* -type d | head -n1)
-   echo $kernel_ver
-   kernel_target_name=$(echo ${kernel_dir} | cut -d'-' -f3)
-   KERNEL_TARGET=$(echo ${kernel_target_name} | cut -d'_' -f1)
+   kernel_dirs=$(find . -maxdepth 1 -name \*msm-kernel\* -type d)
+   for dir in $kernel_dirs; do
+      echo "Processing directory: $dir"
+      kernel_target_name=$(echo ${dir} | cut -d'-' -f3)
+      KERNEL_TARGET=$(echo ${kernel_target_name} | cut -d'_' -f1)
+      if [[ ${MACHINE} =~ "trustedvm-v3" ]] ; then
+          break
+      fi
+   done
    KERNEL_VERSION=$(basename $BUILDDIR/../src/kernel-*/ | sed 's/.*-//') 
    cd -
 fi
