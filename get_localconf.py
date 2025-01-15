@@ -115,6 +115,12 @@ elif TARGET == "sa8255-mos" :
 elif TARGET == "sa8775-flex" :
     DISTRO = "auto"
     MACHINE = "sa8775-flex"
+elif TARGET == "sa8775-flex-ed0" :
+    DISTRO = "auto"
+    MACHINE = "sa8775-flex-ed0"
+elif TARGET == "sa8775-flex-ed1" :
+    DISTRO = "auto"
+    MACHINE = "sa8775-flex-ed1"
 elif TARGET == "sa8650-adas" :
     DISTRO = "auto"
     MACHINE = "sa8650-adas"
