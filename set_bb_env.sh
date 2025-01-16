@@ -267,7 +267,7 @@ export TEMPLATECONF="${WSQC}/poky/build/conf"
 echo "QTARGET: $QTARGET"
 echo "QDISTRO: $QDISTRO"
 echo "QVARIANT: $QVARIANT"
-echo "WSQC : $WSQC"
+echo "cd $WSQC"
 cd ${WSQC}
 MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
 
