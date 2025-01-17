@@ -89,11 +89,11 @@ build-all-sa8797-image() {
   cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
   echo "Prepare build-sa8797-image done"
   
-  # echo "Begin to build-sa8797-sdk-image"
-  # build-sa8797-sdk-image
-  # mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
-  # cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
-  # echo "Prepare build-sa8797-sdk-image done"
+  echo "Begin to build-sa8797-sdk-image"
+  build-sa8797-sdk-image
+  mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
+  cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
+  echo "Prepare build-sa8797-sdk-image done"
 
   echo "Begin to build-sa8797-perf-image"
   bitbake virtual/kernel -fc cleanall
