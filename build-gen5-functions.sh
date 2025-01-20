@@ -95,17 +95,17 @@ build-all-sa8797-image() {
   # cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
   # echo "Prepare build-sa8797-sdk-image done"
 
-  # echo "Begin to build-sa8797-perf-image"
-  # bitbake virtual/kernel -fc cleanall
-  # build-sa8797-perf-image
-  # if [ "$?" != "0" ]; then
-  #   echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
-  #   return 1
-  # fi
-  # mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
-  # cp -r tmp-glibc/deploy/images/sa8797/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
+  echo "Begin to build-sa8797-perf-image"
+  bitbake virtual/kernel -fc cleanall
+  build-sa8797-perf-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8797-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
 
-  # echo "Prepare build-sa8797-perf-image done"
+  echo "Prepare build-sa8797-perf-image done"
 }
 
 ########################
