@@ -2,3 +2,4 @@
 0003-cookerdata.py-convert-layerseries-compat-warning-to-error.patch
 0004-cooker.py-check-for-layerdepends.patch
 0005-__init__.py-revert-bb.fatal-when-trying-to-checksum-.patch
+0006-bitbake-codeparser-Restore-old-code-for-Python-versi.patch
