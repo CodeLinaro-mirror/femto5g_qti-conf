@@ -68,6 +68,7 @@ function build-sa8797-slt-image() {
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
   cp -r tmp-glibc/deploy/images/sa8797-slt-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/machine-image-sa8797-slt-*.rootfs.ext4 ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/machine-image-sa8797-slt.ext4
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   echo "Prepare qclinux build sa8797-slt image done"
 }
@@ -83,17 +84,18 @@ build-all-sa8797-image() {
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
   mv tmp-glibc/deploy/images/sa8797-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797-*.rootfs.ext4 ../poky/build/tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4
   mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   mkdir -p ../poky/build/tmp-glibc/sysroots-components
   cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
   echo "Prepare build-sa8797-image done"
   
-  # echo "Begin to build-sa8797-sdk-image"
-  # build-sa8797-sdk-image
-  # mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
-  # cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
-  # echo "Prepare build-sa8797-sdk-image done"
+  echo "Begin to build-sa8797-sdk-image"
+  build-sa8797-sdk-image
+  mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
+  cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
+  echo "Prepare build-sa8797-sdk-image done"
 
   echo "Begin to build-sa8797-perf-image"
   bitbake virtual/kernel -fc cleanall
@@ -104,7 +106,7 @@ build-all-sa8797-image() {
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
   cp -r tmp-glibc/deploy/images/sa8797-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
-
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797-*.rootfs.ext4 ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4
   echo "Prepare build-sa8797-perf-image done"
 }
 
