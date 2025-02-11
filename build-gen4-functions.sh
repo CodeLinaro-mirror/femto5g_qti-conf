@@ -1,3 +1,5 @@
+
+
 function build-all-gen4-function() {
     build-$1-image
     if [ "$?" != "0" ]; then
@@ -264,6 +266,17 @@ function build-sa8775-sdk-image() {
     fi
 }
 
+function clean-ed(){
+  ed0_dir="$qti_ed/patches/ED0"
+  ed1_dir="$qti_ed/patches/ED1"
+
+  if [ -f "${ed0_dir}/patchdir/patch_applied" ];then
+       bash -x "${qti_ed}"/custom-patching.sh -b ${WS} -p "${ed0_dir}/patchdir" --bin_dir "${ed0_dir}"/bindir -m clean
+  elif [ -f "${ed1_dir}/patchdir/patch_applied" ];then
+       bash -x "${qti_ed}"/custom-patching.sh -b ${WS} -p "${ed1_dir}/patchdir" --bin_dir "${ed1_dir}"/bindir -m clean
+  fi
+}
+
 build-all-sa8775-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8775-image
@@ -295,6 +308,199 @@ build-all-sa8775-image() {
 
   mv tmp-glibc/deploy/images/sa8775-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-automotive/machine-image-sa8775.ext4
   mv tmp-glibc/deploy/images/sa8775-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
+}
+
+function configure-flex-ed() {
+
+
+  mode="debug"
+  ed_num="ed0"
+  while [[ $# -gt 0 ]]; do
+      case $1 in
+          --mode)
+              mode="$2"
+              shift 2
+              ;;
+          --ed_num)
+              ed_num="$2"
+              shift 2
+              ;;
+          *)
+              echo "Unknown argument: $1"
+              exit 1
+              ;;
+      esac
+  done
+
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-flex-$ed_num "$mode"
+
+  
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-flex-$ed_num $mode'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-flex-ed0-image() {
+  configure-flex-ed --ed_num "ed0"
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image ed0'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-flex-ed1-image() {
+  configure-flex-ed --ed_num "ed1"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image ed1'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-flex-ed0-perf-image() {
+  configure-flex-ed --mode "perf" --ed_num "ed0"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image ed0'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-flex-ed1-perf-image() {
+  configure-flex-ed --mode "perf" --ed_num "ed1"
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image ed1'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-flex-ed0-sdk-image() {
+  configure-flex-ed --ed_num "ed0"
+  cdbitbake machine-image -c populate_sdk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image ed0'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8775-flex-ed1-sdk-image() {
+  configure-flex-ed --ed_num "ed1"
+  cdbitbake machine-image -c populate_sdk
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image ed1'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+# sa877-flex-ed commands
+function build-sa8775-flex-ed-image() {
+  build-sa8775-flex-ed0-image
+  build-sa8775-flex-ed1-image
+}
+
+function build-sa8775-flex-ed-perf-image() {
+  build-sa8775-flex-ed0-perf-image
+  build-sa8775-flex-ed1-perf-image
+}
+
+function build-sa8775-flex-ed-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-sa8775-flex-ed0-sdk-image
+    build-sa8775-flex-ed1-sdk-image
+}
+
+build-all-sa8775-flex-ed0-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8775-flex-ed0-image
+  build_ret="$?"
+  export MACHINE_IMAGE_ed0=`readlink tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/machine-image-sa8775-flex-ed0.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/machine-image-sa8775-flex-ed0.ext4
+
+  if [ "$build_ret" != "0" ]; then
+  echo "==== Error run 'build-sa8775-flex-ed0-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-sa8775-flex-ed0-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-flex-ed0-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+
+  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive tmp-glibc/deploy/images/sa8775-flex-ed0-automotive.bak
+  bitbake virtual/kernel -fc cleanall
+  build-sa8775-flex-ed0-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-flex-ed0-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_PERF_ed0=`readlink tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/machine-image-sa8775-flex-ed0.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/machine-image-sa8775-flex-ed0.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive.bak tmp-glibc/deploy/images/sa8775-flex-ed0-automotive
+
+
+  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/$MACHINE_IMAGE_ed0 tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/machine-image-sa8775-flex-ed0.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/$MACHINE_IMAGE_PERF_ed0 tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/machine-image-sa8775-flex-ed0.ext4
+}
+
+build-all-sa8775-flex-ed1-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8775-flex-ed1-image
+  build_ret="$?"
+  export MACHINE_IMAGE_ED1=`readlink tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/machine-image-sa8775-flex-ed1.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/machine-image-sa8775-flex-ed1.ext4
+
+  if [ "$build_ret" != "0" ]; then
+  echo "==== Error run 'build-sa8775-flex-ed1-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-sa8775-flex-ed1-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-flex-ed1-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+
+  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive tmp-glibc/deploy/images/sa8775-flex-ed1-automotive.bak
+  bitbake virtual/kernel -fc cleanall
+  build-sa8775-flex-ed1-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8775-flex-ed1-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_PERF_ED1=`readlink tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/machine-image-sa8775-flex-ed1.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/machine-image-sa8775-flex-ed1.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive.bak tmp-glibc/deploy/images/sa8775-flex-ed1-automotive
+
+
+  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/$MACHINE_IMAGE_ED1 tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/machine-image-sa8775-flex-ed1.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/$MACHINE_IMAGE_PERF_ED1 tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/machine-image-sa8775-flex-ed1.ext4
+}
+
+build-all-sa8775-flex-ed-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-all-sa8775-flex-ed0-image
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-all-sa8775-flex-ed0-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-all-sa8775-flex-ed1-image
+
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-all-sa8775-flex-ed1-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
 }
 
 # sa877-flex commands
@@ -484,6 +690,17 @@ function build-sa8650-adas-ubuntu-perf-image() {
   fi
 }
 
+function  build-sa8650-adas-ubuntu-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8650-adas-ubuntu debug
+    cdbitbake qti-auto-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake qti-auto-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+}
+
 build-all-sa8650-adas-ubuntu-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8650-adas-ubuntu-image
@@ -495,8 +712,14 @@ build-all-sa8650-adas-ubuntu-image() {
   fi
   export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4`
   rm -f tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive/qti-auto-image-sa8650-adas-ubuntu.ext4
-  mv tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive.bak
 
+  build-sa8650-adas-ubuntu-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8650-adas-ubuntu-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mv tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive tmp-glibc/deploy/images/sa8650-adas-ubuntu-automotive.bak
   bitbake virtual/kernel -fc cleanall
   build-sa8650-adas-ubuntu-perf-image
   if [ "$?" != "0" ]; then
@@ -1019,4 +1242,3 @@ build-all-sa8775-ubuntu-image() {
   mv tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-ubuntu-automotive-perf/qti-auto-image-sa8775-ubuntu.ext4
 
 }
-########################
