@@ -27,9 +27,15 @@ function build-sa8797-perf-image() {
   echo "====  qclinux yocto build in: `pwd`"
   bitbake machine-image 
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
     return 1
   fi
+  
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8797-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797-*.rootfs.ext4 ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4
+  echo "Prepare build-sa8797-perf-image done"
+
 }
 
 function build-sa8797-sdk-image() {
@@ -47,6 +53,10 @@ function build-sa8797-sdk-image() {
       echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
       return 1
     fi
+
+    mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
+    cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
+    echo "Prepare build-sa8797-sdk-image done"
 }
 
 
@@ -93,21 +103,11 @@ build-all-sa8797-image() {
   
   echo "Begin to build-sa8797-sdk-image"
   build-sa8797-sdk-image
-  mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8797
-  cp -r tmp-glibc/deploy/sdk-sa8797/* ../poky/build/tmp-glibc/deploy/sdk-sa8797
-  echo "Prepare build-sa8797-sdk-image done"
 
   echo "Begin to build-sa8797-perf-image"
   bitbake virtual/kernel -fc cleanall
   build-sa8797-perf-image
-  if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
-    return 1
-  fi
-  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
-  cp -r tmp-glibc/deploy/images/sa8797-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
-  mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797-*.rootfs.ext4 ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4
-  echo "Prepare build-sa8797-perf-image done"
+
 }
 
 ########################
