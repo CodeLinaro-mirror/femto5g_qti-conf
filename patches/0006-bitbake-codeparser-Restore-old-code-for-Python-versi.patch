@@ -1,0 +1,125 @@
+From 99267b989de55260c764a85332b9ed2311886827 Mon Sep 17 00:00:00 2001
+From: mohit pal singh <quic_mohitpal@quicinc.com>
+Date: Tue, 29 Oct 2024 18:19:17 -0700
+Subject: [PATCH 1/2]  bitbake: codeparser:Restore old code for Python version
+ less than 3.11
+
+Change-Id: I511e04fb7dedfcbe87119173623ae5d181c6d4b6
+---
+ bitbake/lib/bb/codeparser.py | 94 +++++++++++++++++++++++++-----------
+ 1 file changed, 65 insertions(+), 29 deletions(-)
+
+diff --git a/bitbake/lib/bb/codeparser.py b/bitbake/lib/bb/codeparser.py
+index 6ce0c5182f..493dba2cb3 100644
+--- a/bitbake/lib/bb/codeparser.py
++++ b/bitbake/lib/bb/codeparser.py
+@@ -225,41 +225,77 @@ class PythonParser():
+     def visit_Call(self, node):
+         name = self.called_node_name(node.func)
+         if name and (name.endswith(self.getvars) or name.endswith(self.getvarflags) or name in self.containsfuncs or name in self.containsanyfuncs):
+-            if isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str):
+-                varname = node.args[0].value
+-                if name in self.containsfuncs and isinstance(node.args[1], ast.Constant):
+-                    if varname not in self.contains:
+-                        self.contains[varname] = set()
+-                    self.contains[varname].add(node.args[1].value)
+-                elif name in self.containsanyfuncs and isinstance(node.args[1], ast.Constant):
+-                    if varname not in self.contains:
+-                        self.contains[varname] = set()
+-                    self.contains[varname].update(node.args[1].value.split())
+-                elif name.endswith(self.getvarflags):
+-                    if isinstance(node.args[1], ast.Constant):
+-                        self.references.add('%s[%s]' % (varname, node.args[1].value))
++            if sys.version_info[:3] <= (3, 11, 1):
++                if isinstance(node.args[0], ast.Str):
++                    varname = node.args[0].s
++                    if name in self.containsfuncs and isinstance(node.args[1], ast.Str):
++                        if varname not in self.contains:
++                            self.contains[varname] = set()
++                        self.contains[varname].add(node.args[1].s)
++                    elif name in self.containsanyfuncs and isinstance(node.args[1], ast.Str):
++                        if varname not in self.contains:
++                            self.contains[varname] = set()
++                        self.contains[varname].update(node.args[1].s.split())
++                    elif name.endswith(self.getvarflags):
++                        if isinstance(node.args[1], ast.Str):
++                            self.references.add('%s[%s]' % (varname, node.args[1].s))
++                        else:
++                            self.warn(node.func, node.args[1])
+                     else:
+-                        self.warn(node.func, node.args[1])
++                        self.references.add(varname)
+                 else:
+-                    self.references.add(varname)
++                    self.warn(node.func, node.args[0])
+             else:
+-                self.warn(node.func, node.args[0])
++                if isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str):
++                    varname = node.args[0].value
++                    if name in self.containsfuncs and isinstance(node.args[1], ast.Constant):
++                        if varname not in self.contains:
++                            self.contains[varname] = set()
++                        self.contains[varname].add(node.args[1].value)
++                    elif name in self.containsanyfuncs and isinstance(node.args[1], ast.Constant):
++                        if varname not in self.contains:
++                            self.contains[varname] = set()
++                        self.contains[varname].update(node.args[1].value.split())
++                    elif name.endswith(self.getvarflags):
++                        if isinstance(node.args[1], ast.Constant):
++                            self.references.add('%s[%s]' % (varname, node.args[1].value))
++                        else:
++                            self.warn(node.func, node.args[1])
++                    else:
++                        self.references.add(varname)
++                else:
++                    self.warn(node.func, node.args[0])
+         elif name and name.endswith(".expand"):
+-            if isinstance(node.args[0], ast.Constant):
+-                value = node.args[0].value
+-                d = bb.data.init()
+-                parser = d.expandWithRefs(value, self.name)
+-                self.references |= parser.references
+-                self.execs |= parser.execs
+-                for varname in parser.contains:
+-                    if varname not in self.contains:
+-                        self.contains[varname] = set()
+-                    self.contains[varname] |= parser.contains[varname]
++            if sys.version_info[:3] <= (3, 11, 1):
++                if isinstance(node.args[0], ast.Str):
++                    value = node.args[0].s
++                else:
++                    value = None
++            else:
++                if isinstance(node.args[0], ast.Constant):
++                    value = node.args[0].value
++                else:
++                    value = None
++            if value is not None:
++               d = bb.data.init()
++               parser = d.expandWithRefs(value, self.name)
++               self.references |= parser.references
++               self.execs |= parser.execs
++               for varname in parser.contains:
++                   if varname not in self.contains:
++                      self.contains[varname] = set()
++                   self.contains[varname] |= parser.contains[varname]
+         elif name in self.execfuncs:
+-            if isinstance(node.args[0], ast.Constant):
+-                self.var_execs.add(node.args[0].value)
++            if sys.version_info[:3] <= (3, 11, 1):
++                if isinstance(node.args[0], ast.Str):
++                    self.var_execs.add(node.args[0].s)
++                else:
++                    self.warn(node.func, node.args[0])
+             else:
+-                self.warn(node.func, node.args[0])
++                if isinstance(node.args[0], ast.Constant):
++                    self.var_execs.add(node.args[0].value)
++                else:
++                    self.warn(node.func, node.args[0])
+         elif name and isinstance(node.func, (ast.Name, ast.Attribute)):
+             self.execs.add(name)
+ 
+-- 
+2.17.1
+
