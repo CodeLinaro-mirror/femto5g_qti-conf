@@ -69,6 +69,8 @@ def getLayerPaths(TARGET, workspace) :
             continue
         if foldername.startswith("meta-qti-automotive"):
             continue
+        if foldername.startswith("meta-qti-auto-kernel"):
+            continue
         layers.dicLayersWithSubLayers[foldername] = 1
     if TARGET in ['sa8775-ubuntu', 'sa8650-adas-ubuntu']:
         if os.path.exists(workspace + "/meta-qti-ubuntu-internal"):
