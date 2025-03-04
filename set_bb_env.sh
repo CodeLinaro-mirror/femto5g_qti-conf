@@ -174,8 +174,8 @@ function init-configure-files() {
     # Set environment variables for fetching ubuntu sourcelist from specific mirrors
     export BB_ENV_PASSTHROUGH_ADDITIONS="$BB_ENV_PASSTHROUGH_ADDITIONS PREFERRED_UBUNTU_SOURCELIST"
 
-    if [[ "$1" == "sa8775-flex-ed0" || "$1" == "sa8775-flex-ed1" ]]; then
-       export qti_ed="$WS/meta-qti-ed/"
+    if [[ "$1" == "sa8775-flex-cb0" || "$1" == "sa8775-flex-cb1" ]]; then
+       export qti_cb="$WS/meta-qti-custom-board/"
     fi
 }
 
