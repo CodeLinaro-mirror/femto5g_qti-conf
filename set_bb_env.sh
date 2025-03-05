@@ -45,6 +45,16 @@ apply_poky_patches () {
     done
 }
 
+copy_meta_classes () {
+    if [ -d ${WS}/poky/meta/classes-global ]; then
+        cp -f ${WS}/poky/meta/classes-global/*.bbclass ${WS}/poky/meta/classes/
+    fi
+
+    if [ -d ${WS}/poky/meta/classes-recipe ]; then
+        cp -f ${WS}/poky/meta/classes-recipe/*.bbclass ${WS}/poky/meta/classes/
+    fi
+}
+
 confnote () {
     cat <<EOF
 
@@ -77,6 +87,9 @@ EOF
 # Eventually we need to call oe-init-build-env to finalize the configuration
 # of the newly created build folder
 init_build_env () {
+    # Copy classes into one folder
+    copy_meta_classes
+
     # Patch poky with qti modifications
     apply_poky_patches
 
