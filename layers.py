@@ -74,6 +74,7 @@ def initLayersList(TARGET):
         # Enable ubuntu
         dicLayersWithSubLayers["meta-qti-ubuntu"] = 1
         dicLayersWithSubLayers["meta-qti-ubuntu-prop"] = 1
+        dicLayersWithSubLayers["meta-qti-auto-kernel"] = 1
     elif TARGET == 'sa81x5bg':
         # This is minimal image, remove extra meta-layers
         del dicLayersWithSubLayers["meta-qt5"]
@@ -81,10 +82,11 @@ def initLayersList(TARGET):
         del dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-extra-prop"]
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans', 'quin-gvm-monaco', 'gh-gvm-lemans'] :
+    elif TARGET in ['qtiquingvm', 'qtiquingvm8295', 'quin-gvm-gen4', 'qtiquingvm-headless', 'qtiquingvm8295-headless', 'quin-gvm-gen4-2', 'quin-gvm-lemans', 'quin-gvm-monaco', 'gh-gvm-lemans', 'quin-gvm-lemans-headless', 'quin-gvm-monaco-headless'] :
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-agl"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
     elif TARGET == 'quin-gvm-gen4-headless' :
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-base"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-upstream"]
@@ -116,11 +118,12 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers.update(dicAglDemoLayersWithSubLayers)
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8775-flex', 'sa8650-adas', 'sa8255-ivi', 'sa8620-adas', 'sa7255-ivi']:
+    elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8775-flex','sa8775-flex-cb0','sa8775-flex-cb1', 'sa8650-adas', 'sa8255-ivi', 'sa8620-adas', 'sa7255-ivi']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-rust"] = 1
         dicLayersWithSubLayers["meta-selinux"] = 1
+        dicLayersWithSubLayers["meta-qti-auto-kernel"] = 1
     elif TARGET in ['sa8540']:
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
