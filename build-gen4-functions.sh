@@ -266,17 +266,6 @@ function build-sa8775-sdk-image() {
     fi
 }
 
-function clean-ed(){
-  ed0_dir="$qti_ed/patches/ED0"
-  ed1_dir="$qti_ed/patches/ED1"
-
-  if [ -f "${ed0_dir}/patchdir/patch_applied" ];then
-       bash -x "${qti_ed}"/custom-patching.sh -b ${WS} -p "${ed0_dir}/patchdir" --bin_dir "${ed0_dir}"/bindir -m clean
-  elif [ -f "${ed1_dir}/patchdir/patch_applied" ];then
-       bash -x "${qti_ed}"/custom-patching.sh -b ${WS} -p "${ed1_dir}/patchdir" --bin_dir "${ed1_dir}"/bindir -m clean
-  fi
-}
-
 build-all-sa8775-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8775-image
@@ -310,19 +299,19 @@ build-all-sa8775-image() {
   mv tmp-glibc/deploy/images/sa8775-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-automotive-perf/machine-image-sa8775.ext4
 }
 
-function configure-flex-ed() {
+function configure-flex-cb() {
 
 
   mode="debug"
-  ed_num="ed0"
+  cb_num="cb0"
   while [[ $# -gt 0 ]]; do
       case $1 in
           --mode)
               mode="$2"
               shift 2
               ;;
-          --ed_num)
-              ed_num="$2"
+          --cb_num)
+              cb_num="$2"
               shift 2
               ;;
           *)
@@ -334,171 +323,171 @@ function configure-flex-ed() {
 
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8775-flex-$ed_num "$mode"
+  init-configure-files sa8775-flex-$cb_num "$mode"
 
   
 
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8775-flex-$ed_num $mode'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files sa8775-flex-$cb_num $mode'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-function build-sa8775-flex-ed0-image() {
-  configure-flex-ed --ed_num "ed0"
+function build-sa8775-flex-cb0-image() {
+  configure-flex-cb --cb_num "cb0"
 
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image ed0'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image cb0'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-function build-sa8775-flex-ed1-image() {
-  configure-flex-ed --ed_num "ed1"
+function build-sa8775-flex-cb1-image() {
+  configure-flex-cb --cb_num "cb1"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image ed1'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image cb1'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-function build-sa8775-flex-ed0-perf-image() {
-  configure-flex-ed --mode "perf" --ed_num "ed0"
+function build-sa8775-flex-cb0-perf-image() {
+  configure-flex-cb --mode "perf" --cb_num "cb0"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image ed0'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image cb0'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-function build-sa8775-flex-ed1-perf-image() {
-  configure-flex-ed --mode "perf" --ed_num "ed1"
+function build-sa8775-flex-cb1-perf-image() {
+  configure-flex-cb --mode "perf" --cb_num "cb1"
   cdbitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image ed1'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image cb1'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-function build-sa8775-flex-ed0-sdk-image() {
-  configure-flex-ed --ed_num "ed0"
+function build-sa8775-flex-cb0-sdk-image() {
+  configure-flex-cb --cb_num "cb0"
   cdbitbake machine-image -c populate_sdk
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image ed0'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image cb0'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-function build-sa8775-flex-ed1-sdk-image() {
-  configure-flex-ed --ed_num "ed1"
+function build-sa8775-flex-cb1-sdk-image() {
+  configure-flex-cb --cb_num "cb1"
   cdbitbake machine-image -c populate_sdk
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image ed1'. (${FUNCNAME[@]})"
+  echo "==== Error run 'cdbitbake machine-image cb1'. (${FUNCNAME[@]})"
   return 1
   fi
 }
 
-# sa877-flex-ed commands
-function build-sa8775-flex-ed-image() {
-  build-sa8775-flex-ed0-image
-  build-sa8775-flex-ed1-image
+# sa877-flex-cb commands
+function build-sa8775-flex-cb-image() {
+  build-sa8775-flex-cb0-image
+  build-sa8775-flex-cb1-image
 }
 
-function build-sa8775-flex-ed-perf-image() {
-  build-sa8775-flex-ed0-perf-image
-  build-sa8775-flex-ed1-perf-image
+function build-sa8775-flex-cb-perf-image() {
+  build-sa8775-flex-cb0-perf-image
+  build-sa8775-flex-cb1-perf-image
 }
 
-function build-sa8775-flex-ed-sdk-image() {
+function build-sa8775-flex-cb-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-sa8775-flex-ed0-sdk-image
-    build-sa8775-flex-ed1-sdk-image
+    build-sa8775-flex-cb0-sdk-image
+    build-sa8775-flex-cb1-sdk-image
 }
 
-build-all-sa8775-flex-ed0-image() {
+build-all-sa8775-flex-cb0-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8775-flex-ed0-image
+  build-sa8775-flex-cb0-image
   build_ret="$?"
-  export MACHINE_IMAGE_ed0=`readlink tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/machine-image-sa8775-flex-ed0.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/machine-image-sa8775-flex-ed0.ext4
+  export MACHINE_IMAGE_cb0=`readlink tmp-glibc/deploy/images/sa8775-flex-cb0-automotive/machine-image-sa8775-flex-cb0.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-cb0-automotive/machine-image-sa8775-flex-cb0.ext4
 
   if [ "$build_ret" != "0" ]; then
-  echo "==== Error run 'build-sa8775-flex-ed0-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-cb0-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  build-sa8775-flex-ed0-sdk-image
+  build-sa8775-flex-cb0-sdk-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8775-flex-ed0-sdk-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-cb0-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
 
-  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive tmp-glibc/deploy/images/sa8775-flex-ed0-automotive.bak
+  mv tmp-glibc/deploy/images/sa8775-flex-cb0-automotive tmp-glibc/deploy/images/sa8775-flex-cb0-automotive.bak
   bitbake virtual/kernel -fc cleanall
-  build-sa8775-flex-ed0-perf-image
+  build-sa8775-flex-cb0-perf-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8775-flex-ed0-perf-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-cb0-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF_ed0=`readlink tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/machine-image-sa8775-flex-ed0.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/machine-image-sa8775-flex-ed0.ext4
-  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive.bak tmp-glibc/deploy/images/sa8775-flex-ed0-automotive
+  export MACHINE_IMAGE_PERF_cb0=`readlink tmp-glibc/deploy/images/sa8775-flex-cb0-automotive-perf/machine-image-sa8775-flex-cb0.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-cb0-automotive-perf/machine-image-sa8775-flex-cb0.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-cb0-automotive.bak tmp-glibc/deploy/images/sa8775-flex-cb0-automotive
 
 
-  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/$MACHINE_IMAGE_ed0 tmp-glibc/deploy/images/sa8775-flex-ed0-automotive/machine-image-sa8775-flex-ed0.ext4
-  mv tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/$MACHINE_IMAGE_PERF_ed0 tmp-glibc/deploy/images/sa8775-flex-ed0-automotive-perf/machine-image-sa8775-flex-ed0.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-cb0-automotive/$MACHINE_IMAGE_cb0 tmp-glibc/deploy/images/sa8775-flex-cb0-automotive/machine-image-sa8775-flex-cb0.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-cb0-automotive-perf/$MACHINE_IMAGE_PERF_cb0 tmp-glibc/deploy/images/sa8775-flex-cb0-automotive-perf/machine-image-sa8775-flex-cb0.ext4
 }
 
-build-all-sa8775-flex-ed1-image() {
+build-all-sa8775-flex-cb1-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8775-flex-ed1-image
+  build-sa8775-flex-cb1-image
   build_ret="$?"
-  export MACHINE_IMAGE_ED1=`readlink tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/machine-image-sa8775-flex-ed1.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/machine-image-sa8775-flex-ed1.ext4
+  export MACHINE_IMAGE_CB1=`readlink tmp-glibc/deploy/images/sa8775-flex-cb1-automotive/machine-image-sa8775-flex-cb1.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-cb1-automotive/machine-image-sa8775-flex-cb1.ext4
 
   if [ "$build_ret" != "0" ]; then
-  echo "==== Error run 'build-sa8775-flex-ed1-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-cb1-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  build-sa8775-flex-ed1-sdk-image
+  build-sa8775-flex-cb1-sdk-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8775-flex-ed1-sdk-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-cb1-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
 
-  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive tmp-glibc/deploy/images/sa8775-flex-ed1-automotive.bak
+  mv tmp-glibc/deploy/images/sa8775-flex-cb1-automotive tmp-glibc/deploy/images/sa8775-flex-cb1-automotive.bak
   bitbake virtual/kernel -fc cleanall
-  build-sa8775-flex-ed1-perf-image
+  build-sa8775-flex-cb1-perf-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8775-flex-ed1-perf-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-cb1-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF_ED1=`readlink tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/machine-image-sa8775-flex-ed1.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/machine-image-sa8775-flex-ed1.ext4
-  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive.bak tmp-glibc/deploy/images/sa8775-flex-ed1-automotive
+  export MACHINE_IMAGE_PERF_CB1=`readlink tmp-glibc/deploy/images/sa8775-flex-cb1-automotive-perf/machine-image-sa8775-flex-cb1.ext4`
+  rm -f tmp-glibc/deploy/images/sa8775-flex-cb1-automotive-perf/machine-image-sa8775-flex-cb1.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-cb1-automotive.bak tmp-glibc/deploy/images/sa8775-flex-cb1-automotive
 
 
-  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/$MACHINE_IMAGE_ED1 tmp-glibc/deploy/images/sa8775-flex-ed1-automotive/machine-image-sa8775-flex-ed1.ext4
-  mv tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/$MACHINE_IMAGE_PERF_ED1 tmp-glibc/deploy/images/sa8775-flex-ed1-automotive-perf/machine-image-sa8775-flex-ed1.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-cb1-automotive/$MACHINE_IMAGE_CB1 tmp-glibc/deploy/images/sa8775-flex-cb1-automotive/machine-image-sa8775-flex-cb1.ext4
+  mv tmp-glibc/deploy/images/sa8775-flex-cb1-automotive-perf/$MACHINE_IMAGE_PERF_CB1 tmp-glibc/deploy/images/sa8775-flex-cb1-automotive-perf/machine-image-sa8775-flex-cb1.ext4
 }
 
-build-all-sa8775-flex-ed-image() {
+build-all-sa8775-flex-cb-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-all-sa8775-flex-ed0-image
+  build-all-sa8775-flex-cb0-image
 
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-all-sa8775-flex-ed0-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-all-sa8775-flex-cb0-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  build-all-sa8775-flex-ed1-image
+  build-all-sa8775-flex-cb1-image
 
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-all-sa8775-flex-ed1-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-all-sa8775-flex-cb1-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
