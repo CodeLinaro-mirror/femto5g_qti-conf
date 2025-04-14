@@ -215,7 +215,7 @@ mkdir -p "${BUILDDIR}"/conf
 
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" ]] ; then
+if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" || ${MACHINE} =~ "ar-sg1" ]] ; then
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
 elif [[ ${MACHINE} =~ "trustedvm" ]] ; then
     python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary >| ${BUILDDIR}/conf/bblayers.conf
