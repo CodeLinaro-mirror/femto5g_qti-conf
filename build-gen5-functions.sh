@@ -87,10 +87,6 @@ build-all-sa8797-image() {
   #This build entry is used for LEQCLinux1.0 yocto now
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
 
-  echo "Begin to build-sa8797-minimal-image"
-  build-sa8797-minimal-image
-  echo "Prepare build-sa8797-minimal-image done"
-
   build-sa8797-image
   if [ "$?" != "0" ]; then
     echo "==== Error run 'build-sa8797-image'. (${FUNCNAME[@]})"
