@@ -257,7 +257,7 @@ if [ -z "$QVARIANT" ]; then
 fi
 
 # Find build templates from qti meta layer.
-export TEMPLATECONF="${WSQC}/poky/build/conf"
+#export TEMPLATECONF="${WSQC}/poky/build/conf"
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
@@ -271,6 +271,10 @@ echo "cd $WSQC"
 cd ${WSQC}
 #Bypass generate_prebuilt_confs.sh as don't depend on any CSE's prebuilt layers. Remove it once depend on CSE's qprebuilt.
 sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qti-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
+#Delete the patch in the meta-qti-internal layer that conflicts with yocto5.0
+sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
+sed -i '/0001-Add-fetch-extra-refs-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
+
 MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
