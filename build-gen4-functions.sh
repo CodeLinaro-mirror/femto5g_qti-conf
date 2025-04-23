@@ -510,6 +510,22 @@ function build-sa8775-flex-image() {
   fi
 }
 
+function build-sa8775-slt-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-slt debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-slt debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 function build-sa8775-flex-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
@@ -963,6 +979,22 @@ function build-sa7255-ivi-image() {
   init-configure-files sa7255-ivi debug
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa7255-ivi debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa7255-slt-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa7255-slt debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa7255-slt debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
