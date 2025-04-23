@@ -8,6 +8,13 @@
 function build-sa8797-image() {
   #Suppose this command work after source poky/build/conf/set_bb_env.sh done.
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  echo "====  qclinux yocto build in: `pwd`"
   bitbake machine-image
   if [ "$?" != "0" ]; then
     echo "==== Error run 'build-sa8797-image failed'. (${FUNCNAME[@]})"
@@ -78,7 +85,6 @@ function build-sa8797-slt-image() {
   cp -r tmp-glibc/deploy/images/sa8797-slt-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
   export MACHINE_IMAGE_SLT=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/machine-image-sa8797-slt.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/$MACHINE_IMAGE_SLT ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/machine-image-sa8797-slt.ext4
-  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   echo "Prepare qclinux build sa8797-slt image done"
 }
 
