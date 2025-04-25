@@ -526,6 +526,10 @@ function build-sa8775-slt-image() {
   fi
 }
 
+build-all-sa8775-slt-image() {
+    build-sa8775-slt-image
+}
+
 function build-sa8775-flex-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
@@ -756,6 +760,26 @@ function build-sa8255-ivi-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+}
+
+function build-sa8255-slt-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8255-slt debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8255-slt debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa8255-slt-image() {
+    build-sa8255-slt-image
 }
 
 function build-sa8255-ivi-perf-image() {
@@ -1003,6 +1027,10 @@ function build-sa7255-slt-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+}
+
+build-all-sa7255-slt-image() {
+    build-sa7255-slt-image
 }
 
 function build-sa7255-ivi-perf-image() {
