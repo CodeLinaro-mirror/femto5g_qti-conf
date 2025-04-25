@@ -124,6 +124,9 @@ elif TARGET == "sa8775-flex-cb0" :
 elif TARGET == "sa8775-flex-cb1" :
     DISTRO = "auto"
     MACHINE = "sa8775-flex-cb1"
+elif TARGET == "sa8775-slt" :
+    DISTRO = "auto-slt"
+    MACHINE = "sa8775-flex"
 elif TARGET == "sa8650-adas" :
     DISTRO = "auto"
     MACHINE = "sa8650-adas"
@@ -137,6 +140,9 @@ elif TARGET == "sa8775-ubuntu" :
 elif TARGET == "sa8255-ivi" :
     DISTRO = "auto"
     MACHINE = "sa8255-ivi"
+elif TARGET == "sa8255-slt" :
+    DISTRO = "auto-slt"
+    MACHINE = "sa8255-ivi"
 elif TARGET == "sa7255" :
     DISTRO = "auto"
     MACHINE = "sa7255"
@@ -148,6 +154,9 @@ elif TARGET == "sa8797-slt" :
     MACHINE = "sa8797"
 elif TARGET == "sa7255-ivi" :
     DISTRO = "auto"
+    MACHINE = "sa7255-ivi"
+elif TARGET == "sa7255-slt" :
+    DISTRO = "auto-slt"
     MACHINE = "sa7255-ivi"
 elif TARGET == "sa8620-adas" :
     DISTRO = "auto"
