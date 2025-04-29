@@ -1,3 +1,6 @@
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
 # set_bb_env.sh
 # Define macros for build targets.
 # Generate bblayers.conf from get_bblayers.py.
@@ -727,6 +730,57 @@ build-all-sa81x5agldemo-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-all-agl-function sa81x5agldemo
     return $?
+}
+
+# COQOS SA81x5agl commands
+function build-coqos-sa81x5agl-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files coqos-sa81x5agl debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files coqos-sa81x5agl debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  build-dm-verity-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-dm-verity-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-coqos-sa81x5agl-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files coqos-sa81x5agl perf
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-coqos-sa81x5agl-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-agl-function coqos-sa81x5agl
+    return $?
+}
+
+function build-coqos-sa81x5agl-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files coqos-sa81x5agl debug
+    cdbitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # SA6155agldemo commands
