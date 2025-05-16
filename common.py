@@ -65,9 +65,11 @@ def getLayerPaths(TARGET, workspace) :
             continue
         if foldername.startswith("meta-qti-ubuntu"):
             continue
-        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop", "meta-qti-dpk", "meta-qti-mos", "meta-qti-mos-prop","meta-qti-ed"]:
+        if foldername in ["meta-qti-bsp", "meta-qti-bsp-prop", "meta-qti-dpk", "meta-qti-mos", "meta-qti-mos-prop","meta-qti-custom-board"]:
             continue
         if foldername.startswith("meta-qti-automotive"):
+            continue
+        if foldername.startswith("meta-qti-auto-kernel"):
             continue
         layers.dicLayersWithSubLayers[foldername] = 1
     if TARGET in ['sa8775-ubuntu', 'sa8650-adas-ubuntu']:
@@ -85,9 +87,9 @@ def getLayerPaths(TARGET, workspace) :
                 if foldername.startswith("meta-"):
                     layers.dicLayersWithSubLayers["meta-dpk-prop/" + foldername] = 1
     
-    if TARGET in ['sa8775-flex-ed0','sa8775-flex-ed1']:
-                if os.path.exists(workspace + "/meta-qti-ed"):
-                                 layers.dicLayersWithSubLayers["meta-qti-ed"] = 1
+    if TARGET in ['sa8775-flex-cb0','sa8775-flex-cb1']:
+                if os.path.exists(workspace + "/meta-qti-custom-board"):
+                                 layers.dicLayersWithSubLayers["meta-qti-custom-board"] = 1
     retList = GenLayerPathList(workspace, layers.dicLayersWithSubLayers)
 
     # In order to avoid potential namespace conflicts, between recipes on layers

@@ -79,6 +79,9 @@ elif TARGET == "qtiquingvm-headless" :
 elif TARGET == "quin-gvm-lemans-headless" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "quin-gvm-lemans"
+elif TARGET == "quin-gvm-monaco-headless" :
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "quin-gvm-monaco"
 elif TARGET == "qtiquingvm8295-headless" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "qtiquingvm8295"
@@ -115,12 +118,12 @@ elif TARGET == "sa8255-mos" :
 elif TARGET == "sa8775-flex" :
     DISTRO = "auto"
     MACHINE = "sa8775-flex"
-elif TARGET == "sa8775-flex-ed0" :
+elif TARGET == "sa8775-flex-cb0" :
     DISTRO = "auto"
-    MACHINE = "sa8775-flex-ed0"
-elif TARGET == "sa8775-flex-ed1" :
+    MACHINE = "sa8775-flex-cb0"
+elif TARGET == "sa8775-flex-cb1" :
     DISTRO = "auto"
-    MACHINE = "sa8775-flex-ed1"
+    MACHINE = "sa8775-flex-cb1"
 elif TARGET == "sa8650-adas" :
     DISTRO = "auto"
     MACHINE = "sa8650-adas"
