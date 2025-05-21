@@ -1,0 +1,63 @@
+From fc131e58a5af47dcc9288970026450ff73010aff Mon Sep 17 00:00:00 2001
+From: Joshua Watt <JPEWhacker@gmail.com>
+Date: Thu, 1 Jun 2023 20:02:26 -0500
+Subject: [PATCH 11/22] classes/create-spdx-2.2: Fix runtime dependency
+ calculations
+
+Fixes the runtime dependency calculations to also only follow direct
+dependencies of the current task instead of all transient dependencies
+in a similar way as the build time dependencies.
+
+(From OE-Core rev: 5fa00564b047725541a5fed95b621f0202803345)
+
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index c461c77744..f9cb3add38 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -454,7 +454,7 @@ def add_download_packages(d, doc, recipe):
+             # but this should be sufficient for now
+             doc.add_relationship(package, "BUILD_DEPENDENCY_OF", recipe)
+ 
+-def collect_deps(d, dep_task):
++def collect_direct_deps(d, dep_task):
+     current_task = "do_" + d.getVar("BB_CURRENTTASK")
+     pn = d.getVar("PN")
+ 
+@@ -474,8 +474,8 @@ def collect_deps(d, dep_task):
+ 
+     return sorted(deps)
+ 
+-collect_deps[vardepsexclude] += "BB_TASKDEPDATA"
+-collect_deps[vardeps] += "DEPENDS"
++collect_direct_deps[vardepsexclude] += "BB_TASKDEPDATA"
++collect_direct_deps[vardeps] += "DEPENDS"
+ 
+ python do_collect_spdx_deps() {
+     # This task calculates the build time dependencies of the recipe, and is
+@@ -489,7 +489,7 @@ python do_collect_spdx_deps() {
+ 
+     spdx_deps_file = Path(d.getVar("SPDXDEPS"))
+ 
+-    deps = collect_deps(d, "do_create_spdx")
++    deps = collect_direct_deps(d, "do_create_spdx")
+ 
+     with spdx_deps_file.open("w") as f:
+         json.dump(deps, f)
+@@ -710,10 +710,7 @@ def collect_package_providers(d):
+ 
+     providers = {}
+ 
+-    taskdepdata = d.getVar("BB_TASKDEPDATA", False)
+-    deps = sorted(set(
+-        (dep[0], dep[7]) for dep in taskdepdata.values() if dep[0] != d.getVar("PN")
+-    ))
++    deps = collect_direct_deps(d, "do_create_spdx")
+     deps.append((d.getVar("PN"), d.getVar("BB_HASHFILENAME")))
+ 
+     for dep_pn, dep_hashfn in deps:
