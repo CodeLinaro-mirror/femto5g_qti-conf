@@ -1,0 +1,32 @@
+From 377b8a44bbf9469c166fe898f56eeefb36d493af Mon Sep 17 00:00:00 2001
+From: Louis Rannou <lrannou@baylibre.com>
+Date: Thu, 25 May 2023 10:53:23 +0200
+Subject: [PATCH 07/22] spdx: Fix license parsing
+
+[YOCTO #14890] -- https://bugzilla.yoctoproject.org/show_bug.cgi?id=14890#c3
+
+Since spaces in the license name are not mandatory, we need to add spaces around
+ `|` and `&` before spliting.
+
+(From OE-Core rev: 28c704bdf731f1c5012b74e4fdb899622f15a7b1)
+
+Signed-off-by: Louis Rannou <lrannou@baylibre.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 13d13fe1fc..e0f62a43a2 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -167,7 +167,7 @@ def convert_license_to_spdx(lic, document, d, existing={}):
+ 
+         return spdx_license
+ 
+-    lic_split = lic.replace("(", " ( ").replace(")", " ) ").split()
++    lic_split = lic.replace("(", " ( ").replace(")", " ) ").replace("|", " | ").replace("&", " & ").split()
+ 
+     return ' '.join(convert(l) for l in lic_split)
+ 

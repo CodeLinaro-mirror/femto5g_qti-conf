@@ -1,0 +1,158 @@
+From b8b6f5b6eea6baf39cb98c60c17eb35a19c426ef Mon Sep 17 00:00:00 2001
+From: Joshua Watt <JPEWhacker@gmail.com>
+Date: Wed, 15 Feb 2023 15:13:46 -0600
+Subject: [PATCH 05/22] classes/create-spdx-2.2: Report downloads as separate
+ packages
+
+Moves the downloaded items from SRC_URI into separate packages in the
+recipe document. This is much better than the previous implementation
+because:
+ 1) It can report multiple download locations in SRC_URI, instead of
+    just the first one reported.
+ 2) It prevents the assumption that the source files listed in the
+    recipe are the exact file from the source URL; in particular, files
+    that come from file:// SRC_URI entries, and source files that have
+    been patched were problematic, since these aren't from the upstream
+    source.
+ 3) It allows the checksums to be specified
+
+(From OE-Core rev: 1dd4369b3638637a2cbba2a3c37c6b6f4df335cd)
+
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 58 ++++++++++++++++++++++++----
+ meta/lib/oe/sbom.py                  |  4 ++
+ meta/lib/oe/spdx.py                  | 13 +++++++
+ 3 files changed, 67 insertions(+), 8 deletions(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 28a42e009f..454dd7a7a0 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -406,6 +406,54 @@ def collect_dep_sources(d, dep_recipes):
+ 
+     return sources
+ 
++def add_download_packages(d, doc, recipe):
++    import os.path
++    from bb.fetch2 import decodeurl, CHECKSUM_LIST
++    import bb.process
++    import oe.spdx
++    import oe.sbom
++
++    for download_idx, src_uri in enumerate(d.getVar('SRC_URI').split()):
++        f = bb.fetch2.FetchData(src_uri, d)
++
++        for name in f.names:
++            package = oe.spdx.SPDXPackage()
++            package.name = "%s-source-%d" % (d.getVar("PN"), download_idx + 1)
++            package.SPDXID = oe.sbom.get_download_spdxid(d, download_idx + 1)
++
++            if f.type == "file":
++                continue
++
++            uri = f.type
++            proto = getattr(f, "proto", None)
++            if proto is not None:
++                uri = uri + "+" + proto
++            uri = uri + "://" + f.host + f.path
++
++            if f.method.supports_srcrev():
++                uri = uri + "@" + f.revisions[name]
++
++            if f.method.supports_checksum(f):
++                for checksum_id in CHECKSUM_LIST:
++                    if checksum_id.upper() not in oe.spdx.SPDXPackage.ALLOWED_CHECKSUMS:
++                        continue
++
++                    expected_checksum = getattr(f, "%s_expected" % checksum_id)
++                    if expected_checksum is None:
++                        continue
++
++                    c = oe.spdx.SPDXChecksum()
++                    c.algorithm = checksum_id.upper()
++                    c.checksumValue = expected_checksum
++                    package.checksums.append(c)
++
++            package.downloadLocation = uri
++            doc.packages.append(package)
++            doc.add_relationship(doc, "DESCRIBES", package)
++            # In the future, we might be able to do more fancy dependencies,
++            # but this should be sufficient for now
++            doc.add_relationship(package, "BUILD_DEPENDENCY_OF", recipe)
++
+ python do_create_spdx() {
+     from datetime import datetime, timezone
+     import oe.sbom
+@@ -458,14 +506,6 @@ python do_create_spdx() {
+     if bb.data.inherits_class("native", d) or bb.data.inherits_class("cross", d):
+         recipe.annotations.append(create_annotation(d, "isNative"))
+ 
+-    for s in d.getVar('SRC_URI').split():
+-        if not s.startswith("file://"):
+-            s = s.split(';')[0]
+-            recipe.downloadLocation = s
+-            break
+-    else:
+-        recipe.downloadLocation = "NOASSERTION"
+-
+     homepage = d.getVar("HOMEPAGE")
+     if homepage:
+         recipe.homepage = homepage
+@@ -507,6 +547,8 @@ python do_create_spdx() {
+     doc.packages.append(recipe)
+     doc.add_relationship(doc, "DESCRIBES", recipe)
+ 
++    add_download_packages(d, doc, recipe)
++
+     if process_sources(d) and include_sources:
+         recipe_archive = deploy_dir_spdx / "recipes" / (doc.name + ".tar.zst")
+         with optional_tarfile(recipe_archive, archive_sources) as archive:
+diff --git a/meta/lib/oe/sbom.py b/meta/lib/oe/sbom.py
+index 52bf51440e..e1c132bc90 100644
+--- a/meta/lib/oe/sbom.py
++++ b/meta/lib/oe/sbom.py
+@@ -12,6 +12,10 @@ def get_recipe_spdxid(d):
+     return "SPDXRef-%s-%s" % ("Recipe", d.getVar("PN"))
+ 
+ 
++def get_download_spdxid(d, idx):
++    return "SPDXRef-Download-%s-%d" % (d.getVar("PN"), idx)
++
++
+ def get_package_spdxid(pkg):
+     return "SPDXRef-Package-%s" % pkg
+ 
+diff --git a/meta/lib/oe/spdx.py b/meta/lib/oe/spdx.py
+index 6d56ed90df..29d1db235c 100644
+--- a/meta/lib/oe/spdx.py
++++ b/meta/lib/oe/spdx.py
+@@ -214,6 +214,18 @@ class SPDXPackageVerificationCode(SPDXObject):
+ 
+ 
+ class SPDXPackage(SPDXObject):
++    ALLOWED_CHECKSUMS = [
++        "SHA1",
++        "SHA224",
++        "SHA256",
++        "SHA384",
++        "SHA512",
++        "MD2",
++        "MD4",
++        "MD5",
++        "MD6",
++    ]
++
+     name = _String()
+     SPDXID = _String()
+     versionInfo = _String()
+@@ -232,6 +244,7 @@ class SPDXPackage(SPDXObject):
+     hasFiles = _StringList()
+     packageFileName = _String()
+     annotations = _ObjectList(SPDXAnnotation)
++    checksums = _ObjectList(SPDXChecksum)
+ 
+ 
+ class SPDXFile(SPDXObject):
