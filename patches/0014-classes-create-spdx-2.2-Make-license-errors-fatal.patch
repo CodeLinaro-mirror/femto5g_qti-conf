@@ -1,0 +1,29 @@
+From 1f8204accda518fd34110a28dd54c92a98975f53 Mon Sep 17 00:00:00 2001
+From: Joshua Watt <JPEWhacker@gmail.com>
+Date: Thu, 1 Jun 2023 15:32:20 -0500
+Subject: [PATCH 14/22] classes/create-spdx-2.2: Make license errors fatal
+
+Otherwise the task is still put into sstate, which means the error can
+effectively be hidden by ignoring it.
+
+(From OE-Core rev: 9d00f3ba4555510cf9525f4f6f186bf8a1371cee)
+
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 7569f8792b..844b674f6f 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -138,7 +138,7 @@ def convert_license_to_spdx(lic, document, d, existing={}):
+                     with open(filename, errors="replace") as f:
+                         extracted_info.extractedText = f.read()
+                 else:
+-                    bb.error("Cannot find any text for license %s" % name)
++                    bb.fatal("Cannot find any text for license %s" % name)
+ 
+         extracted[name] = extracted_info
+         document.hasExtractedLicensingInfos.append(extracted_info)
