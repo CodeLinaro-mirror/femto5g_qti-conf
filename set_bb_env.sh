@@ -34,16 +34,11 @@ scriptdir="$(dirname "${THIS_SCRIPT}")"
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../..)
 
-# Find build templates from qti meta layer.
-TEMPLATECONF="meta-qti-bsp/conf"
-
 # Patch poky with QTI optimizations which not part of thud branch.
 apply_poky_patches () {
     cd ${WS}/poky
     for patchfile in $(cat qti-conf/patches/series); do
-        patch -p1 -N --dry-run --silent < qti-conf/patches/$patchfile > /dev/null 2>&1
-        # sucessful dryrun sets exit status of last command ($?) to 0
-        if [ $? -eq 0 ]; then
+        if patch -p1 -N --dry-run --silent < qti-conf/patches/$patchfile > /dev/null 2>&1; then
             #apply the patch
             patch -p1 -N --silent < qti-conf/patches/$patchfile > /dev/null 2>&1
         fi
@@ -220,7 +215,7 @@ mkdir -p "${BUILDDIR}"/conf
 
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
-if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" ]] ; then
+if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" || ${MACHINE} =~ "ar-sg1" ]] ; then
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
 elif [[ ${MACHINE} =~ "trustedvm" ]] ; then
     python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary >| ${BUILDDIR}/conf/bblayers.conf
