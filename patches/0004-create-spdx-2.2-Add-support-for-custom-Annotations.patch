@@ -1,0 +1,62 @@
+From 15e6131314950c3757f3a0b32402a368ff892865 Mon Sep 17 00:00:00 2001
+From: Saul Wold <Saul.Wold@windriver.com>
+Date: Mon, 13 Feb 2023 11:54:13 -0800
+Subject: [PATCH 04/22] create-spdx-2.2: Add support for custom Annotations
+
+This change adds a new variable to track which recipe variables
+are added as SPDX Annotations.
+
+Usage: add SPDX_CUSTOM_ANNOTATION_VARS = <some recipe variable>
+
+The recipe spdx json will contain an annotation stanza that looks
+something like this:
+
+     "annotations": [
+        {
+          "annotationDate": "2023-02-13T19:44:20Z",
+          "annotationType": "OTHER",
+          "annotator": "Tool: oe-spdx-creator - 1.0",
+          "comment": "CUSTOM_VARIABLE=some value or string"
+        },
+
+(From OE-Core rev: 33ced8338f0facb412b5f24cf9df4a84226a2a94)
+
+Signed-off-by: Saul Wold <saul.wold@windriver.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 9aede86870..28a42e009f 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -32,6 +32,8 @@ SPDX_PRETTY ??= "0"
+ 
+ SPDX_LICENSES ??= "${COREBASE}/meta/files/spdx-licenses.json"
+ 
++SPDX_CUSTOM_ANNOTATION_VARS ??= ""
++
+ SPDX_ORG ??= "OpenEmbedded ()"
+ SPDX_SUPPLIER ??= "Organization: ${SPDX_ORG}"
+ SPDX_SUPPLIER[doc] = "The SPDX PackageSupplier field for SPDX packages created from \
+@@ -404,7 +406,6 @@ def collect_dep_sources(d, dep_recipes):
+ 
+     return sources
+ 
+-
+ python do_create_spdx() {
+     from datetime import datetime, timezone
+     import oe.sbom
+@@ -481,6 +482,10 @@ python do_create_spdx() {
+     if description:
+         recipe.description = description
+ 
++    if d.getVar("SPDX_CUSTOM_ANNOTATION_VARS"):
++        for var in d.getVar('SPDX_CUSTOM_ANNOTATION_VARS').split():
++            recipe.annotations.append(create_annotation(d, var + "=" + d.getVar(var)))
++
+     # Some CVEs may be patched during the build process without incrementing the version number,
+     # so querying for CVEs based on the CPE id can lead to false positives. To account for this,
+     # save the CVEs fixed by patches to source information field in the SPDX.
