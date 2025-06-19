@@ -1,0 +1,31 @@
+From 362a3aabac8977749628203dc2876db88293356c Mon Sep 17 00:00:00 2001
+From: Joshua Watt <JPEWhacker@gmail.com>
+Date: Thu, 28 Sep 2023 12:34:13 -0600
+Subject: [PATCH 19/22] classes/create-spdx-2.2: Show error if document is not
+ found
+
+As in other places, print a more helpful error if a SPDX document is not
+found when assembling documents for the final SPDX archive.
+
+(From OE-Core rev: 0a3f7e0b41552e113347d6f5edefe84fd4e47fdf)
+
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 286abd0ef3..2f2b754b16 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -1131,6 +1131,8 @@ def combine_spdx(d, rootfs_name, rootfs_deploydir, rootfs_spdxid, packages, spdx
+ 
+                 for ref in doc.externalDocumentRefs:
+                     ref_path = oe.sbom.doc_find_by_namespace(deploy_dir_spdx, package_archs, ref.spdxDocument)
++                    if not ref_path:
++                        bb.fatal("Cannot find any SPDX file for document %s" % ref.spdxDocument)
+                     collect_spdx_document(ref_path)
+ 
+             collect_spdx_document(image_spdx_path)

@@ -1,0 +1,31 @@
+From ffc0d972f894d6b58bfe5980e8771453d8806a18 Mon Sep 17 00:00:00 2001
+From: Joshua Watt <JPEWhacker@gmail.com>
+Date: Tue, 12 Sep 2023 08:38:33 -0600
+Subject: [PATCH 15/22] classes/create-spdx-2.2: Add extra debugging for
+ missing package files
+
+In a effort to debug YOCTO #15185, improve the logging when a package
+file cannot be found in the list of SPDX files.
+
+(From OE-Core rev: 35d827d44d65380bfb7f6e1d0a0ee63516f822a8)
+
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 844b674f6f..3aa629852d 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -302,7 +302,8 @@ def add_package_sources_from_debug(d, package_doc, spdx_package, package, packag
+             if file_path.lstrip("/") == pkg_file.fileName.lstrip("/"):
+                 break
+         else:
+-            bb.fatal("No package file found for %s" % str(file_path))
++            bb.fatal("No package file found for %s in %s; SPDX found: %s" % (str(file_path), package,
++                " ".join(p.fileName for p in package_files)))
+             continue
+ 
+         for debugsrc in file_data["debugsrc"]:
