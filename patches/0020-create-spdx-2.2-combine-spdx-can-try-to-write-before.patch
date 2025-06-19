@@ -1,0 +1,41 @@
+From 858d7f14985ca34de055284a6fd0daf410645185 Mon Sep 17 00:00:00 2001
+From: "Jeremy A. Puhlman" <jpuhlman@mvista.com>
+Date: Fri, 15 Dec 2023 09:10:46 -0800
+Subject: [PATCH 20/22] create-spdx-2.2: combine spdx can try to write before
+ dir creation
+
+On occasion a file is attmpeded to be opened prior to the
+creation of the spdx_workdir. Create the directory before
+the open, just in case.
+
+File: '/build/layers/poky/meta/classes/create-spdx-2.2.bbclass', lineno: 1081, function: combine_spdx
+     1077:        )
+     1078:
+     1079:    image_spdx_path = spdx_workdir / (rootfs_name + ".spdx.json")
+     1080:
+ *** 1081:    with image_spdx_path.open("wb") as f:
+     1082:        doc.to_json(f, sort_keys=True, indent=get_json_indent(d))
+
+(From OE-Core rev: 1b90a9c9c8180c080f780c8dd428fad3f55e879d)
+
+Signed-off-by: Jeremy A. Puhlman <jpuhlman@mvista.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+(cherry picked from commit bb9f2a9c0ff5dcdeaf1a0beb6a614d0d022a2481)
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
+---
+ meta/classes/create-spdx-2.2.bbclass | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 2f2b754b16..e6f274b87e 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -1075,7 +1075,7 @@ def combine_spdx(d, rootfs_name, rootfs_deploydir, rootfs_spdxid, packages, spdx
+             "%s:%s" % (runtime_ref.externalDocumentId, runtime_doc.SPDXID),
+             comment="Runtime dependencies for %s" % name
+         )
+-
++    bb.utils.mkdirhier(spdx_workdir)
+     image_spdx_path = spdx_workdir / (rootfs_name + ".spdx.json")
+ 
+     with image_spdx_path.open("wb") as f:
