@@ -590,6 +590,27 @@ build-all-sa8775-flex-image() {
   mv tmp-glibc/deploy/images/sa8775-flex-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
 }
 
+#  sa877-flex-trout commands
+function build-sa8775-flex-trout-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8775-flex-trout debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8775-flex-trout debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+build-all-sa8775-trout-image() {
+    build-sa8775-trout-image
+}
+
 # sa8650-adas commands
 function build-sa8650-adas-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"

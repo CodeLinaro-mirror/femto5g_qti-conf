@@ -124,6 +124,14 @@ def initLayersList(TARGET):
         dicLayersWithSubLayers["meta-rust"] = 1
         dicLayersWithSubLayers["meta-selinux"] = 1
         dicLayersWithSubLayers["meta-qti-auto-kernel"] = 1
+    elif TARGET in ['sa8775-flex-trout']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-rust"] = 1
+        dicLayersWithSubLayers["meta-selinux"] = 1
+        dicLayersWithSubLayers["meta-qti-auto-kernel"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-qcvirtio"] = 1
+        dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-qcvirtio-prop"] = 1
     elif TARGET in ['sa8540']:
         del dicLayersWithSubLayers["meta-qt5"]
         # Enable upsteam llvm
