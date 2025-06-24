@@ -25,9 +25,8 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Changes from Qualcomm Innovation Center are provided under the following license:
-
-# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+# Changes from Qualcomm Technologies, Inc. are provided under the following license:
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 # SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import common as c
@@ -131,6 +130,9 @@ elif TARGET == "sa7255" :
 elif TARGET == "sa8797" :
     DISTRO = "auto"
     MACHINE = "sa8797"
+elif TARGET == "sa8797dc" :
+    DISTRO = "auto"
+    MACHINE = "sa8797dc"
 elif TARGET == "sa8797-slt" :
     DISTRO = "auto-slt"
     MACHINE = "sa8797"

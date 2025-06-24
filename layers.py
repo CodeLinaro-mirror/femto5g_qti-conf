@@ -25,9 +25,8 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Changes from Qualcomm Innovation Center are provided under the following license:
-
-# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+# Changes from Qualcomm Technologies, Inc. are provided under the following license:
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 # SPDX-License-Identifier: BSD-3-Clause-Clear
 
 dicLayersWithSubLayers = None
@@ -132,5 +131,13 @@ def initLayersList(TARGET):
     elif TARGET in ['sa8797', 'sa8797-slt']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
+        del dicLayersWithSubLayers["meta-qt5"]
+        del dicLayersWithSubLayers["meta-gplv2"]
+    elif TARGET in ['sa8797dc']:
+        # Enable upsteam llvm
+        dicLayersWithSubLayers["meta-clang"] = 1
+        dicLayersWithSubLayers["meta-cloudai"] = 1
+        dicLayersWithSubLayers["meta-qti-bmc"] = 1
+        dicLayersWithSubLayers["meta-qti-bmc-prop"] = 1
         del dicLayersWithSubLayers["meta-qt5"]
         del dicLayersWithSubLayers["meta-gplv2"]
