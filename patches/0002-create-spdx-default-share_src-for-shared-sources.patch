@@ -1,0 +1,49 @@
+From 8e659443f807a0a3cce1dc205a38d0a534390ace Mon Sep 17 00:00:00 2001
+From: Konrad Weihmann <kweihmann@witekio.com>
+Date: Wed, 9 Nov 2022 08:37:14 -0600
+Subject: [PATCH 02/22] create-spdx: default share_src for shared sources
+
+if a source is using work-shared but isn't a kernel,
+like for instance llvm-source from meta-clang, share_src was
+previously undefined leading to a crash of the python code.
+Default to WORKDIR and just override it in case the source being
+a kernel recipe.
+Additionally changes the variable names in the following, as
+they imply that it's only about the kernel, which is not the case
+in every case
+
+(From OE-Core rev: 34fa68a0b07328c4ed4eef81f8cde80137a91f18)
+
+Signed-off-by: Konrad Weihmann <kweihmann@witekio.com>
+On-behalf-of: Avnet Embedded <AvnetEmbedded@avnet.eu>
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Reviewed-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index af6afcc653..f0513af083 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -795,6 +795,7 @@ def spdx_get_src(d):
+             bb.build.exec_func('do_unpack', d)
+         # Copy source of kernel to spdx_workdir
+         if is_work_shared_spdx(d):
++            share_src = d.getVar('WORKDIR')
+             d.setVar('WORKDIR', spdx_workdir)
+             d.setVar('STAGING_DIR_NATIVE', spdx_sysroot_native)
+             src_dir = spdx_workdir + "/" + d.getVar('PN')+ "-" + d.getVar('PV') + "-" + d.getVar('PR')
+@@ -802,8 +803,8 @@ def spdx_get_src(d):
+             if bb.data.inherits_class('kernel',d):
+                 share_src = d.getVar('STAGING_KERNEL_DIR')
+             cmd_copy_share = "cp -rf " + share_src + "/* " + src_dir + "/"
+-            cmd_copy_kernel_result = os.popen(cmd_copy_share).read()
+-            bb.note("cmd_copy_kernel_result = " + cmd_copy_kernel_result)
++            cmd_copy_shared_res = os.popen(cmd_copy_share).read()
++            bb.note("cmd_copy_shared_result = " + cmd_copy_shared_res)
+ 
+             git_path = src_dir + "/.git"
+             if os.path.exists(git_path):
