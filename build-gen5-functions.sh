@@ -68,26 +68,26 @@ function build-sa8797-sdk-image() {
 }
 
 
-function build-sa8797-slt-image() {
+function build-sa8797-fts-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto-slt -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto-fts -v debug
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto-slt -v debug'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto-fts -v debug'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
 
   bitbake machine-image
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'sa8797-slt qclinux build failed'. (${FUNCNAME[@]})"
+    echo "==== Error run 'sa8797-fts qclinux build failed'. (${FUNCNAME[@]})"
     return 1
   fi
-  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
-  cp -r tmp-glibc/deploy/images/sa8797-slt-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive
-  export MACHINE_IMAGE_SLT=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/machine-image-sa8797-slt.ext4`
-  mv ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/$MACHINE_IMAGE_SLT ../poky/build/tmp-glibc/deploy/images/sa8797-slt-automotive/machine-image-sa8797-slt.ext4
-  echo "Prepare qclinux build sa8797-slt image done"
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive
+  cp -r tmp-glibc/deploy/images/sa8797-fts-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive
+  export MACHINE_IMAGE_FTS=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/machine-image-sa8797-fts.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/$MACHINE_IMAGE_fts ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/machine-image-sa8797-fts.ext4
+  echo "Prepare qclinux build sa8797-fts image done"
 }
 
 function build-gen5-image() {

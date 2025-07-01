@@ -8,7 +8,7 @@ Supported combinations are listed below.
       | MACHINE             | DISTRO          |  VARIANT         |
       +---------------------+-----------------+------------------+
       |sa8797               | auto            | debug perf       |
-      |                     | auto-slt        | debug perf       |
+      |                     | auto-fts        | debug perf       |
       +---------------------+-----------------+------------------+
 
 Once ready run 'bitbake <pkg-name>' to build required package or
