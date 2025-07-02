@@ -15,6 +15,7 @@ Supported combinations are listed below.
       |quin-gvm-gen4        | auto-gvm        | debug perf       |
       |quin-gvm-monaco      |                 |                  |
       |quin-gvm-lemans      |                 |                  |
+      |quin-gvm-gen4-5      |                 |                  |
       +---------------------+-----------------+------------------+
       |quin-gvm-gen4-dpk    | auto-gvm-dpk    | debug perf       |
       |quin-gvm-monaco-dpk  |                 |                  |
