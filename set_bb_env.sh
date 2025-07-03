@@ -288,6 +288,40 @@ function build-all-agl-function() {
     mv tmp-glibc/deploy/images/$1-automotive-perf/$IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/qti-image-agl-weston-$1.ext4
 }
 
+# Common functions for build-all coqos-sa81x5agl images
+#           $1 -- Target name, as: coqos-sa81x5agl
+function build-all-coqos-function() {
+    build-$1-image
+    if [ "$?" != "0" ]; then
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    echo "==== Error run 'build-$1-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+
+    build-$1-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-$1-perf-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4`
+    rm -f tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive.bak tmp-glibc/deploy/images/$1-automotive
+
+    mv tmp-glibc/deploy/images/$1-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/$1-automotive/machine-image-$1.ext4
+    mv tmp-glibc/deploy/images/$1-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/$1-automotive-perf/machine-image-$1.ext4
+}
+
 # Common functions for build-all sa81x5lxc/sa6155lxc images
 #           $1 -- Target name, as: sa81x5lxc/sa6155lxc
 function build-all-lxc-function() {
@@ -766,12 +800,6 @@ function build-coqos-sa81x5agl-perf-image() {
   fi
 }
 
-build-all-coqos-sa81x5agl-image() {
-    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-all-agl-function coqos-sa81x5agl
-    return $?
-}
-
 function build-coqos-sa81x5agl-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
@@ -781,6 +809,12 @@ function build-coqos-sa81x5agl-sdk-image() {
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+}
+
+build-all-coqos-sa81x5agl-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-all-coqos-function coqos-sa81x5agl
+    return $?
 }
 
 # SA6155agldemo commands
