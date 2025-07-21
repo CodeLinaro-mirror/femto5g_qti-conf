@@ -41,6 +41,8 @@ function build-sa8797-perf-image() {
   cp -r tmp-glibc/deploy/images/sa8797-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf
   export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-perf/machine-image-sa8797.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive-perf
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive-perf/
   echo "Prepare build-sa8797-perf-image done"
 
 }
@@ -106,6 +108,8 @@ build-all-sa8797-image() {
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   mkdir -p ../poky/build/tmp-glibc/sysroots-components
   cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive/
   echo "Prepare build-sa8797-image done"
 
   echo "Begin to build-sa8797-sdk-image"

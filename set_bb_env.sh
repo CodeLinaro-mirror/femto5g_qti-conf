@@ -176,7 +176,7 @@ function build-image() {
 }
 
 source ${WSQC}/poky/build/conf/build-gen5-functions.sh
-
+source ${WSQC}/poky/build/conf/build-gen5-dc-functions.sh
 
 # Utility commands
 buildclean-retaindeploy() {
@@ -211,7 +211,7 @@ list-build-commands()
     echo
     echo "Convenience commands for building images:"
 
-    filelist=(build-gen5-functions.sh)
+    filelist=(build-gen5-functions.sh build-gen5-dc-functions.sh)
     for fn in ${filelist[@]}
     do
         local script_file="$WSQC/poky/build/conf/$fn"
