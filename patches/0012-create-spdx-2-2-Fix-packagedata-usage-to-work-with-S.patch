@@ -1,0 +1,42 @@
+From 472e7980709afaab6281ece7b938103d5ff3525d Mon Sep 17 00:00:00 2001
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+Date: Wed, 31 May 2023 11:25:29 +0100
+Subject: [PATCH 12/22] create-spdx-2-2: Fix packagedata usage to work with SDK
+ packages
+
+There are two seperate PKGDATA_DIR directories, one for the target and one for
+the SDK. Rather than fail when a package can't be found, try the SDK first.
+
+We use a datastore copy to keep the code simple, rather than havng to parameterise
+all the packagedata functions.
+
+(From OE-Core rev: 701d8f975c89dc6753188fbcf9d4883650ba5b58)
+
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index f9cb3add38..b8728c5705 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -714,11 +714,16 @@ def collect_package_providers(d):
+     deps.append((d.getVar("PN"), d.getVar("BB_HASHFILENAME")))
+ 
+     for dep_pn, dep_hashfn in deps:
+-        recipe_data = oe.packagedata.read_pkgdata(dep_pn, d)
++        localdata = d
++        recipe_data = oe.packagedata.read_pkgdata(dep_pn, localdata)
++        if not recipe_data:
++            localdata = bb.data.createCopy(d)
++            localdata.setVar("PKGDATA_DIR", "${PKGDATA_DIR_SDK}")
++            recipe_data = oe.packagedata.read_pkgdata(dep_pn, localdata)
+ 
+         for pkg in recipe_data.get("PACKAGES", "").split():
+ 
+-            pkg_data = oe.packagedata.read_subpkgdata_dict(pkg, d)
++            pkg_data = oe.packagedata.read_subpkgdata_dict(pkg, localdata)
+             rprovides = set(n for n, _ in bb.utils.explode_dep_versions2(pkg_data.get("RPROVIDES", "")).items())
+             rprovides.add(pkg)
+ 
