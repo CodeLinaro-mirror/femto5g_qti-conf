@@ -731,6 +731,18 @@ function build-quin-gvm-gen4-2-sdk-image() {
 
 # quin-gvm-lemans commands
 function build-quin-gvm-lemans-image() {
+  KERNEL_VARIANT="debug_defconfig"
+  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm debug-defconfig"
+  echo "building kernel"
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  $KERNEL_BUILDCMD
+  find out/bazel -type d -exec chmod 0755 {} +
+  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
+      echo "Kernel compilation failed !!"
+      exit 1
+  fi
+  cd ${WS}/poky/build
+
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files quin-gvm-lemans debug
@@ -744,9 +756,25 @@ function build-quin-gvm-lemans-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  rm -rf bazel-cache
+  cd ${WS}/poky/build
 }
 
 function build-quin-gvm-lemans-perf-image() {
+  KERNEL_VARIANT="defconfig"
+  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm defconfig"
+  echo "building kernel"
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  $KERNEL_BUILDCMD
+  find out/bazel -type d -exec chmod 0755 {} +
+  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
+      echo "Kernel compilation failed !!"
+      exit 1
+  fi
+  cd ${WS}/poky/build
+
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files quin-gvm-lemans perf
@@ -755,6 +783,10 @@ function build-quin-gvm-lemans-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  rm -rf bazel-cache
+  cd ${WS}/poky/build
 }
 
 build-all-quin-gvm-lemans-image() {
@@ -965,6 +997,18 @@ function build-quin-gvm-monaco-dpk-sdk-image() {
 
 # quin-gvm-gen4-5 commands
 function build-quin-gvm-gen4-5-image() {
+  KERNEL_VARIANT="debug_defconfig"
+  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm debug-defconfig"
+  echo "building kernel"
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  $KERNEL_BUILDCMD
+  find out/bazel -type d -exec chmod 0755 {} +
+  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
+      echo "Kernel compilation failed !!"
+      exit 1
+  fi
+  cd ${WS}/poky/build
+
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files quin-gvm-gen4-5 debug
@@ -978,9 +1022,25 @@ function build-quin-gvm-gen4-5-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  rm -rf bazel-cache
+  cd ${WS}/poky/build
 }
 
 function build-quin-gvm-gen4-5-perf-image() {
+  KERNEL_VARIANT="defconfig"
+  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm defconfig"
+  echo "building kernel"
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  $KERNEL_BUILDCMD
+  find out/bazel -type d -exec chmod 0755 {} +
+  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
+      echo "Kernel compilation failed !!"
+      exit 1
+  fi
+  cd ${WS}/poky/build
+
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   init-configure-files quin-gvm-gen4-5 perf
@@ -989,6 +1049,10 @@ function build-quin-gvm-gen4-5-perf-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  rm -rf bazel-cache
+  cd ${WS}/poky/build
 }
 
 build-all-quin-gvm-gen4-5-image() {
