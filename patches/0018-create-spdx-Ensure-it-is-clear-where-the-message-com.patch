@@ -1,0 +1,30 @@
+From ba4ec237efc20017fc5142a204798f5a2a1ce445 Mon Sep 17 00:00:00 2001
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+Date: Mon, 25 Sep 2023 14:28:21 +0100
+Subject: [PATCH 18/22] create-spdx: Ensure it is clear where the message comes
+ from
+
+This message can appear in do_rootfs and the users tend to think this is
+some kind of packaging issue. Add SPDX to the message so users like me
+think in the right direction.
+
+(From OE-Core rev: ddcf15134b5ec4bf4c728156461c2e45194d71ca)
+
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 3adb1ecbe2..286abd0ef3 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -1031,7 +1031,7 @@ def combine_spdx(d, rootfs_name, rootfs_deploydir, rootfs_spdxid, packages, spdx
+ 
+     for name in sorted(packages.keys()):
+         if name not in providers:
+-            bb.fatal("Unable to find provider for '%s'" % name)
++            bb.fatal("Unable to find SPDX provider for '%s'" % name)
+ 
+         pkg_name, pkg_hashfn = providers[name]
+ 

@@ -1,0 +1,44 @@
+From 713f1a84c9064fa2ca751363ed33be10d007bfbd Mon Sep 17 00:00:00 2001
+From: Denys Dmytriyenko <denis@denix.org>
+Date: Fri, 22 Sep 2023 22:20:43 +0000
+Subject: [PATCH 17/22] spdx: use TOOLCHAIN_OUTPUTNAME for SDK filename prefix
+
+Replace SDK_NAME with TOOLCHAIN_OUTPUTNAME when naming SDK host and
+target SPDX archives.
+
+In most cases TOOLCHAIN_OUTPUTNAME is almost identical to SDK_NAME,
+but sometimes custom meta-toolchain recipes have some variations and
+populate_sdk_base.bbclass already uses TOOLCHAIN_OUTPUTNAME to name
+corresponding host and target manifests:
+
+SDK_HOST_MANIFEST = "${SDKDEPLOYDIR}/${TOOLCHAIN_OUTPUTNAME}.host.manifest"
+SDK_TARGET_MANIFEST = "${SDKDEPLOYDIR}/${TOOLCHAIN_OUTPUTNAME}.target.manifest"
+
+To match the naming convention, also use TOOLCHAIN_OUTPUTNAME here
+for naming SPDX archives as well, resulting in:
+
+${TOOLCHAIN_OUTPUTNAME}-host.spdx.tar.zst
+${TOOLCHAIN_OUTPUTNAME}-target.spdx.tar.zst
+
+(From OE-Core rev: 38158670256e2ce803aa45f609108d29523b3135)
+
+Signed-off-by: Denys Dmytriyenko <denys@konsulko.com>
+Signed-off-by: Denys Dmytriyenko <denis@denix.org>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ meta/classes/create-spdx-2.2.bbclass | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/meta/classes/create-spdx-2.2.bbclass b/meta/classes/create-spdx-2.2.bbclass
+index 395066ee4b..3adb1ecbe2 100644
+--- a/meta/classes/create-spdx-2.2.bbclass
++++ b/meta/classes/create-spdx-2.2.bbclass
+@@ -986,7 +986,7 @@ def sdk_combine_spdx(d, sdk_type):
+     from pathlib import Path
+     from oe.sdk import sdk_list_installed_packages
+ 
+-    sdk_name = d.getVar("SDK_NAME") + "-" + sdk_type
++    sdk_name = d.getVar("TOOLCHAIN_OUTPUTNAME") + "-" + sdk_type
+     sdk_deploydir = Path(d.getVar("SDKDEPLOYDIR"))
+     sdk_spdxid = oe.sbom.get_sdk_spdxid(sdk_name)
+     sdk_packages = sdk_list_installed_packages(d, sdk_type == "target")
