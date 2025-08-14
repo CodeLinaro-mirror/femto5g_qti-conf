@@ -90,6 +90,24 @@ function build-sa8797-slt-image() {
   echo "Prepare qclinux build sa8797-slt image done"
 }
 
+function build-gen5-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  echo "====  qclinux yocto build in: `pwd`"
+
+  bitbake machine-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'gen5 qclinux build failed'. (${FUNCNAME[@]})"
+    return 1
+  fi
+}
+
+
 
 build-all-sa8797-image() {
   #This build entry is used for LEQCLinux1.0 yocto now
