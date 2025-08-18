@@ -301,77 +301,93 @@ build-all-sa8775-image() {
 function build-sa8775-flex-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8775-flex debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8775-flex -d auto -v debug
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8775-flex debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake machine-image
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
 }
 
 function build-sa8775-flex-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8775-flex perf
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8775-flex -d auto -v perf
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8775-flex perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake machine-image
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8775-flex-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8775-flex-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf
+  export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8775-flex-automotive-perf
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8775-flex-automotive-perf/
+  echo "Prepare build-sa8775-flex-perf-image done"
 }
 
 function build-sa8775-flex-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa8775-flex debug
-    cdbitbake machine-image -c populate_sdk
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8775-flex -d auto -v debug
+    bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+
+    mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8775-flex
+    cp -r tmp-glibc/deploy/sdk-sa8775-flex/* ../poky/build/tmp-glibc/deploy/sdk-sa8775-flex
+    echo "Prepare build-sa8775-flex-sdk-image done"
 }
 
 build-all-sa8775-flex-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8775-flex-image
   if [ "$?" != "0" ]; then
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
   echo "==== Error run 'build-sa8775-flex-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive
+  mv tmp-glibc/deploy/images/sa8775-flex-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive
+  export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
+  mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+  mkdir -p ../poky/build/tmp-glibc/sysroots-components
+  cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8775-flex-automotive
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8775-flex-automotive/
 
+  echo "Prepare build-sa8775-flex-image done"
+
+  echo "Begin to build-sa8775-flex-sdk-image"
   build-sa8775-flex-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8775-flex-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  mv tmp-glibc/deploy/images/sa8775-flex-automotive tmp-glibc/deploy/images/sa8775-flex-automotive.bak
+  echo "Begin to build-sa8775-flex-perf-image"
   bitbake virtual/kernel -fc cleanall
   build-sa8775-flex-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8775-flex-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4`
-  rm -f tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
-  mv tmp-glibc/deploy/images/sa8775-flex-automotive.bak tmp-glibc/deploy/images/sa8775-flex-automotive
-
-  mv tmp-glibc/deploy/images/sa8775-flex-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
-  mv tmp-glibc/deploy/images/sa8775-flex-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
 }
 
 # sa8650-adas commands
