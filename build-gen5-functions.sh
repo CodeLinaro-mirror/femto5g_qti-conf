@@ -9,9 +9,9 @@ function build-sa8797-image() {
   #Suppose this command work after source poky/build/conf/set_bb_env.sh done.
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -25,9 +25,9 @@ function build-sa8797-image() {
 function build-sa8797-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v perf
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v perf
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v perf'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v perf'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -50,9 +50,9 @@ function build-sa8797-perf-image() {
 function build-sa8797-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
     if [ "$?" != "0" ]; then
-      echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug'. (${FUNCNAME[@]})"
+      echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
       return 1
     fi
     echo "====  qclinux yocto build in: `pwd`"
@@ -71,9 +71,9 @@ function build-sa8797-sdk-image() {
 function build-sa8797-slt-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797 -d auto-slt -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto-slt -v debug
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto-slt -v debug'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto-slt -v debug'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -142,9 +142,9 @@ build-all-sa8797-image() {
 function build-sa8797-minimal-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t sa8797 -d auto -v debug'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
