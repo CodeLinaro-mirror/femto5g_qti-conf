@@ -934,6 +934,23 @@ function build-quin-gvm-monaco-dpk-sdk-image() {
     fi
 }
 
+# gh-gvm-lemans-qcvirtio commands
+function build-gh-gvm-lemans-qcvirtio-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files gh-gvm-lemans-qcvirtio debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files gh-gvm-lemans-qcvirtio debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 # gh-gvm-lemans commands
 function build-gh-gvm-lemans-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
