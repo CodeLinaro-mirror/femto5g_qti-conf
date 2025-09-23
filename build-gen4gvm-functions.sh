@@ -1068,11 +1068,11 @@ build-all-quin-gvm-gen4-5-image() {
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-gvm-gen4-5-automotive/machine-image-quin-gvm-gen4-5.ext4`
     rm -f tmp-glibc/deploy/images/quin-gvm-gen4-5-automotive/machine-image-quin-gvm-gen4-5.ext4
 
-    #build-quin-gvm-gen4-5-sdk-image
-    #if [ "$?" != "0" ]; then
-    #echo "==== Error run 'build-quin-gvm-gen4-5-sdk-image'. (${FUNCNAME[@]})"
-    #return 1
-    #fi
+    build-quin-gvm-gen4-5-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-quin-gvm-gen4-5-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
 
     mv tmp-glibc/deploy/images/quin-gvm-gen4-5-automotive tmp-glibc/deploy/images/quin-gvm-gen4-5-automotive.bak
     bitbake virtual/kernel -fc cleanall
@@ -1098,4 +1098,7 @@ function build-quin-gvm-gen4-5-sdk-image() {
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+    cd ${WS}/kernel/kernel-6.*/kernel_platform
+    rm -rf bazel-cache
+    cd ${WS}/poky/build
 }
