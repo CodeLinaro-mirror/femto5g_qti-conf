@@ -86,7 +86,7 @@ function build-sa8797-fts-image() {
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive
   cp -r tmp-glibc/deploy/images/sa8797-fts-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive
   export MACHINE_IMAGE_FTS=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/machine-image-sa8797-fts.ext4`
-  mv ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/$MACHINE_IMAGE_fts ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/machine-image-sa8797-fts.ext4
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/$MACHINE_IMAGE_FTS ../poky/build/tmp-glibc/deploy/images/sa8797-fts-automotive/machine-image-sa8797-fts.ext4
   echo "Prepare qclinux build sa8797-fts image done"
 }
 
