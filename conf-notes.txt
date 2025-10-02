@@ -15,6 +15,7 @@ Supported combinations are listed below.
       |sa8775-flex          |                 |                  |
       |sa8797               |                 |                  |
       |sa8775-flex          | auto-qcvirtio   | debug            |
+      |sa8255-ivi           | auto-qcvirtio   | debug            |
       +---------------------+-----------------+------------------+
       |quin-gvm-gen4        | auto-gvm        | debug perf       |
       |quin-gvm-monaco      |                 |                  |

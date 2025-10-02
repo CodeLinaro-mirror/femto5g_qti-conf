@@ -143,6 +143,9 @@ elif TARGET == "sa8775-ubuntu" :
 elif TARGET == "sa8255-ivi" :
     DISTRO = "auto"
     MACHINE = "sa8255-ivi"
+elif TARGET == "sa8255-ivi-qcvirtio" :
+    DISTRO = "auto-qcvirtio"
+    MACHINE = "sa8255-ivi"
 elif TARGET == "sa8255-slt" :
     DISTRO = "auto-slt"
     MACHINE = "sa8255-ivi"
