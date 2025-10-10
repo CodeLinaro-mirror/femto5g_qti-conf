@@ -248,7 +248,7 @@ BUILDNAME=$(cd ${WS}/.repo/manifests; git describe --always 2>&1 )
 BUILDVERSION=$( echo "${BUILDNAME}" |rev |cut -d. -f1| rev )
 
 # Get the kernel target name from the kernel build directory
-if [[ ${MACHINE} =~ "trustedvm" ]] ; then
+if [[ ${MACHINE} =~ "trustedvm" || ${MACHINE} =~ "canoe" ]] ; then
    cd $BUILDDIR/../src/kernel-*/out/
    kernel_dirs=$(find . -maxdepth 1 -name \*msm-kernel\* -type d)
    for dir in $kernel_dirs; do
