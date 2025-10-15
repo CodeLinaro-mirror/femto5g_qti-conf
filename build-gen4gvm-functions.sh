@@ -1165,13 +1165,13 @@ build-all-gvm-gen4-5-hl-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     build-gvm-gen4-5-hl-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive/machine-image-gvm-gen4-5-hl.ext4`
-    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive/machine-image-gvm-gen4-5-hl.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
     echo "==== Error run 'build-gvm-gen4-5-hl-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive/machine-image-gvm-gen4-5-hl.ext4`
-    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive/machine-image-gvm-gen4-5-hl.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
 
     #build-gvm-gen4-5-hl-sdk-image
     #if [ "$?" != "0" ]; then
@@ -1179,19 +1179,19 @@ build-all-gvm-gen4-5-hl-image() {
     #return 1
     #fi
 
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive.bak
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl tmp-glibc/deploy/images/gvm-gen4-5-hl.bak
     bitbake virtual/kernel -fc cleanall
     build-gvm-gen4-5-hl-perf-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-gvm-gen4-5-hl-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive-perf/machine-image-gvm-gen4-5-hl.ext4`
-    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive-perf/machine-image-gvm-gen4-5-hl.ext4
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive.bak tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl.bak tmp-glibc/deploy/images/gvm-gen4-5-hl
 
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive/machine-image-gvm-gen4-5-hl.ext4
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/gvm-gen4-5-hl-automotive-perf/machine-image-gvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl/$MACHINE_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
 }
 
 function build-gvm-gen4-5-hl-sdk-image() {
