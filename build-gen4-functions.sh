@@ -777,15 +777,15 @@ build-all-sa7255-image() {
 function build-sa7255-ivi-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa7255-ivi debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa7255-ivi -d auto -v debug
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa7255-ivi debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake machine-image
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa7255-ivi-image'. (${FUNCNAME[@]})"
   return 1
   fi
 }
@@ -793,60 +793,76 @@ function build-sa7255-ivi-image() {
 function build-sa7255-ivi-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa7255-ivi perf
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa7255-ivi -d auto -v perf
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa7255-ivi perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake machine-image
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa7255-ivi-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
+  
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf
+  export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa7255-ivi-automotive-perf
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa7255-ivi-automotive-perf/
+  echo "Prepare build-sa7255-ivi-perf-image done"
 }
 
 function build-sa7255-ivi-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa7255-ivi debug
-    cdbitbake machine-image -c populate_sdk
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa7255-ivi -d auto -v debug
+    bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+    
+    mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa7255-ivi
+    cp -r tmp-glibc/deploy/sdk-sa7255-ivi/* ../poky/build/tmp-glibc/deploy/sdk-sa7255-ivi
+    echo "Prepare build-sa7255-ivi-sdk-image done"
 }
 
 build-all-sa7255-ivi-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa7255-ivi-image
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4`
-  rm -f tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-image'. (${FUNCNAME[@]})"
   return 1
   fi
+  
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive
+  mv tmp-glibc/deploy/images/sa7255-ivi-automotive/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive
+  export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
+  mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+  mkdir -p ../poky/build/tmp-glibc/sysroots-components
+  cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa7255-ivi-automotive
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa7255-ivi-automotive/
+  echo "Prepare build-sa7255-ivi-image done"
 
+  echo "Begin to build-sa7255-ivi-sdk-image"
   build-sa7255-ivi-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  mv tmp-glibc/deploy/images/sa7255-ivi-automotive tmp-glibc/deploy/images/sa7255-ivi-automotive.bak
-
+  echo "Begin to build-sa7255-ivi-perf-image"
+  bitbake virtual/kernel -fc cleanall
   build-sa7255-ivi-perf-image
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4`
-  rm -f tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-
-  mv tmp-glibc/deploy/images/sa7255-ivi-automotive.bak tmp-glibc/deploy/images/sa7255-ivi-automotive
-
-  mv tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4
-  mv tmp-glibc/deploy/images/sa7255-ivi-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
 }
 
 # SA8620-adas commands
