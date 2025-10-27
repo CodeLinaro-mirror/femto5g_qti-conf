@@ -124,9 +124,9 @@ elif TARGET == "sa8775-flex-cb0" :
 elif TARGET == "sa8775-flex-cb1" :
     DISTRO = "auto"
     MACHINE = "sa8775-flex-cb1"
-elif TARGET == "sa8650-adas" :
+elif TARGET == "9100" :
     DISTRO = "auto"
-    MACHINE = "sa8650-adas"
+    MACHINE = "9100"
 elif TARGET == "sa8650-adas-ubuntu" :
     DISTRO = "auto-lxc-ubuntu"
     MACHINE = "sa8650-adas"

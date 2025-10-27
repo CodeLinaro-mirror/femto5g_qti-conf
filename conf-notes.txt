@@ -11,7 +11,7 @@ Supported combinations are listed below.
       |sa7255-ivi           |                 |                  |
       |sa8620-adas          |                 |                  |
       |sa8255-ivi           |                 |                  |
-      |sa8650-adas          |                 |                  |
+      |9100          |                 |                  |
       |sa8775-flex          |                 |                  |
       |sa8797               |                 |                  |
       +---------------------+-----------------+------------------+

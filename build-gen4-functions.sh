@@ -569,13 +569,13 @@ build-all-sa8775-flex-image() {
   mv tmp-glibc/deploy/images/sa8775-flex-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
 }
 
-# sa8650-adas commands
-function build-sa8650-adas-image() {
+# 9100 commands
+function build-9100-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650-adas debug
+  init-configure-files 9100 debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8650-adas debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files 9100 debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -586,12 +586,12 @@ function build-sa8650-adas-image() {
   fi
 }
 
-function build-sa8650-adas-perf-image() {
+function build-9100-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650-adas perf
+  init-configure-files 9100 perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files sa8650-adas perf'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files 9100 perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -602,10 +602,10 @@ function build-sa8650-adas-perf-image() {
   fi
 }
 
-function build-sa8650-adas-sdk-image() {
+function build-9100-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa8650-adas debug
+    init-configure-files 9100 debug
     cdbitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
@@ -613,37 +613,37 @@ function build-sa8650-adas-sdk-image() {
     fi
 }
 
-build-all-sa8650-adas-image() {
+build-all-9100-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-  build-sa8650-adas-image
+  build-9100-image
   if [ "$?" != "0" ]; then
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
-  echo "==== Error run 'build-sa8650-adas-image'. (${FUNCNAME[@]})"
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/9100-automotive/machine-image-9100.ext4`
+  rm -f tmp-glibc/deploy/images/9100-automotive/machine-image-9100.ext4
+  echo "==== Error run 'build-9100-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/9100-automotive/machine-image-9100.ext4`
+  rm -f tmp-glibc/deploy/images/9100-automotive/machine-image-9100.ext4
 
-  build-sa8650-adas-sdk-image
+  build-9100-sdk-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8650-adas-sdk-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-9100-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive tmp-glibc/deploy/images/sa8650-adas-automotive.bak
+  mv tmp-glibc/deploy/images/9100-automotive tmp-glibc/deploy/images/9100-automotive.bak
   bitbake virtual/kernel -fc cleanall
-  build-sa8650-adas-perf-image
+  build-9100-perf-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8650-adas-perf-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-9100-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive.bak tmp-glibc/deploy/images/sa8650-adas-automotive
+  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/9100-automotive-perf/machine-image-9100.ext4`
+  rm -f tmp-glibc/deploy/images/9100-automotive-perf/machine-image-9100.ext4
+  mv tmp-glibc/deploy/images/9100-automotive.bak tmp-glibc/deploy/images/9100-automotive
 
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
+  mv tmp-glibc/deploy/images/9100-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/9100-automotive/machine-image-9100.ext4
+  mv tmp-glibc/deploy/images/9100-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/9100-automotive-perf/machine-image-9100.ext4
 }
 
 # sa8650-adas-ubuntu commands
