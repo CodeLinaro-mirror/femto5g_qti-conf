@@ -304,6 +304,62 @@ for layer in ${layerstring//\"}; do
   fi
 done
 
+###########################
+if [[ ${MACHINE} =~ "trustedvm-v3" ]] ; then
+  if [[ -d "${WS}/src/kernel-6.7/kernel_platform/soc-repo" ]]; then
+
+    echo "**** SOC repo based build"
+    DISPLAY_DRIVERS_VERSION="2.0"
+    TOUCH_DRIVERS_VERSION="2.0"
+    PREFERREDPROVIDER_KERNEL="linux-soc-repo"
+    CLANGVERSION="r536225"
+    PREFERREDVERSION_MSM_HEADERS="6.11"
+    KERNEL_USE_MUSLC="True"
+    KPSTRIPVERSION="11.5.0"
+    DDKBUILD="true"
+    KERNELBUILDCONFIG="soc-repo/${KERNEL_CONFIG}"
+    TARGETBOARDPLATFORM="sun-tuivm"
+    KERNELBUILD="soc-repo"
+    KERNEL_DTB_NAMES="sun-vm-*.dtb sun-oemvm-*.dtb"
+    KERNEL_HEADERS_VERSION="6.11"
+    SAT_MODULE_VERSION="6.10"
+  else
+    DISPLAY_DRIVERS_VERSION="1.0"
+    TOUCH_DRIVERS_VERSION="1.0"
+    PREFERREDPROVIDER_KERNEL="linux-msm"
+    CLANGVERSION="r510928"
+    PREFERREDVERSION_MSM_HEADERS="6.4"
+    KERNEL_USE_MUSLC="False"
+    KPSTRIPVERSION="11.4.0"
+    DDKBUILD="false"
+    KERNELBUILDCONFIG="msm-kernel/${KERNEL_CONFIG}"
+    TARGETBOARDPLATFORM="sun-vms"
+    KERNELBUILD="msm-kernel"
+    KERNEL_DTB_NAMES="sun-vm-rumi.dtb sun-oemvm-rumi.dtb sun-vm-cdp.dtb sun-vm-mtp.dtb sun-oemvm-cdp.dtb sun-oemvm-mtp.dtb sun-vm-qrd.dtb sun-oemvm-qrd.dtb sun-vm-rcm.dtb sun-oemvm-rcm.dtb sun-vm-mtp-v8.dtb sun-oemvm-mtp-v8.dtb sunp-vm-hdk.dtb sunp-oemvm-hdk.dtb tuna-oemvm-atp.dtb tuna-oemvm-cdp.dtb tuna-oemvm-mtp.dtb tuna-oemvm-qrd.dtb tuna-oemvm-rcm.dtb tuna-oemvm-rcm-kiwi.dtb tuna-oemvm-rumi.dtb tuna7-oemvm.dtb tunap-vm.dtb tuna-vm-atp.dtb tuna-vm-cdp.dtb tuna-vm-mtp.dtb tuna-vm-mtp-kiwi.dtb tuna-vm-qrd.dtb tuna-vm-rcm.dtb tuna-vm-rcm-kiwi.dtb tuna-vm-rumi.dtb tuna-vm-mtp-qmp1000.dtb tuna7-vm.dtb tunap-vm.dtb tuna-oemvm-mtp-kiwi.dtb tuna-oemvm-mtp-qmp1000.dtb kera-oemvm-atp.dtb kera-oemvm-cdp-qca6750.dtb kera-oemvm-mtp-qca6750.dtb kera-oemvm-mtp-wcn7750.dtb kera-oemvm-qrd-wcn7750.dtb kera-oemvm-rcm-qca6750.dtb kera-oemvm-rcm-wcn7750.dtb kera-vm-atp.dtb kera-vm-cdp-qca6750.dtb kera-vm-mtp-qca6750.dtb kera-vm-mtp-wcn7750.dtb kera-vm-qrd-wcn7750.dtb kera-vm-rcm-qca6750.dtb kera-vm-rcm-wcn7750.dtb"
+    KERNEL_HEADERS_VERSION="6.4"
+    SAT_MODULE_VERSION="4.1"
+  fi
+fi
+
+
+if [[ ${MACHINE} =~ "trustedvm-v3" ]] ; then
+cat >> ${BUILDDIR}/conf/auto.conf <<EOF
+DISPLAY_DRIVERS_VERSION="${DISPLAY_DRIVERS_VERSION}"
+TOUCH_DRIVERS_VERSION="${TOUCH_DRIVERS_VERSION}"
+PREFERREDPROVIDER_KERNEL="${PREFERREDPROVIDER_KERNEL}"
+CLANGVERSION="${CLANGVERSION}"
+PREFERREDVERSION_MSM_HEADERS = "${PREFERREDVERSION_MSM_HEADERS}"
+KERNEL_USE_MUSLC = "${KERNEL_USE_MUSLC}"
+KPSTRIPVERSION = "${KPSTRIPVERSION}"
+DDKBUILD = "${DDKBUILD}"
+KERNELBUILDCONFIG = "${KERNELBUILDCONFIG}"
+TARGETBOARDPLATFORM = "${TARGETBOARDPLATFORM}"
+KERNELBUILD = "${KERNELBUILD}"
+KERNELDTBNAMES = "${KERNEL_DTB_NAMES}"
+KERNELHEADERSVERSION = "${KERNEL_HEADERS_VERSION}"
+SATMODULEVERSION = "${SAT_MODULE_VERSION}"
+EOF
+fi
 
 # Finalize
 init_build_env
