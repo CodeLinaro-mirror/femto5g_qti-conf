@@ -276,7 +276,14 @@ sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qti-internal\/generate_pre
 sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
 sed -i '/0001-Add-fetch-extra-refs-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
 
-MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
+BUILD_DIR_ARG=$(realpath --relative-to="$WSQC" "$BUILD_DIR")
+if [ -z "$BUILD_DIR_ARG" ]; then
+    echo "Failed to get relative build directory path, use default build directory"
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
+else
+    echo "BUILD_DIR_ARG is $BUILD_DIR_ARG"
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh ${BUILD_DIR_ARG}
+fi
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
