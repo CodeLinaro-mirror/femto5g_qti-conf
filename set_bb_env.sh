@@ -273,8 +273,13 @@ cd ${WSQC}
 #Bypass generate_prebuilt_confs.sh as don't depend on any CSE's prebuilt layers. Remove it once depend on CSE's qprebuilt.
 sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qti-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
 #Delete the patch in the meta-qti-internal layer that conflicts with yocto5.0
-sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
-sed -i '/0001-Add-fetch-extra-refs-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
+if [ -f "${WSQC}/layers/meta-qti-internal/poky_patches/series" ]; then
+    sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
+    sed -i '/0001-Add-fetch-extra-refs-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
+    sed -i '/0001-fetch2-__init__.py-convert-missing-checksum-error-to.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
+else
+    echo "Warning: poky_patches/series file not found, skipping patch removal"
+fi
 
 BUILD_DIR_ARG=$(realpath --relative-to="$WSQC" "$BUILD_DIR")
 if [ -z "$BUILD_DIR_ARG" ]; then
