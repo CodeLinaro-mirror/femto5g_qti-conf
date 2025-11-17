@@ -5,7 +5,7 @@
 # Set the build environement
 
 umask 022
-unset DISTRO MACHINE VARIANT QTARGET QVARIANT BUILD_DIR QTI_SETUP_HELP QTI_SETUP_ERROR
+unset DISTRO MACHINE VARIANT QTARGET QDISTRO QVARIANT BUILD_DIR BUILD_DIR_ARG RELATIVE_BUILD_DIR QTI_SETUP_HELP QTI_SETUP_ERROR
 
 usage()
 {
@@ -35,6 +35,7 @@ do
            echo "Input QVARIANT: $QVARIANT"
            ;;
         b) BUILD_DIR="$OPTARG";
+           BUILD_DIR_ARG="$OPTARG"
            echo "Input build directory is $BUILD_DIR"
            ;;
         h) QTI_SETUP_HELP='true';
@@ -281,13 +282,22 @@ else
     echo "Warning: poky_patches/series file not found, skipping patch removal"
 fi
 
-BUILD_DIR_ARG=$(realpath --relative-to="$WSQC" "$BUILD_DIR")
 if [ -z "$BUILD_DIR_ARG" ]; then
-    echo "Failed to get relative build directory path, use default build directory"
     MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
 else
-    echo "BUILD_DIR_ARG is $BUILD_DIR_ARG"
-    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh ${BUILD_DIR_ARG}
+    echo "Input BUILD_DIR_ARG is $BUILD_DIR_ARG"
+    RELATIVE_BUILD_DIR=$(realpath --relative-to="$WSQC" "$BUILD_DIR")
+    if [ -z "$RELATIVE_BUILD_DIR" ]; then
+        echo "Error: Failed to compute relative build directory path"
+        return 1
+    fi
+    echo "Realtive BUILD_DIR_ARG to Workspace is $RELATIVE_BUILD_DIR"
+
+    if [ -f "${BUILD_DIR}/conf/auto.conf" ]; then
+        echo "Deleting existing ${BUILD_DIR}/conf/auto.conf, generate a new auto.conf"
+        rm -f "${BUILD_DIR}/conf/auto.conf"
+    fi
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh ${RELATIVE_BUILD_DIR}
 fi
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
