@@ -139,6 +139,29 @@ build-all-sa8797-image() {
 
 }
 
+build-sa8797-flex-image() {
+  #This build entry is used for LEQCLinux1.0 yocto now
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+
+  build-sa8797-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8797-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-flex
+  mv tmp-glibc/deploy/images/sa8797-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-flex
+  export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-flex/machine-image-sa8797.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-flex/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8797-automotive-flex/machine-image-sa8797.ext4
+  mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+  mkdir -p ../poky/build/tmp-glibc/sysroots-components
+  cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive-flex
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive-flex/
+  echo "Prepare sa8797-automotive-flex-image done"
+
+}
+
 function build-sa8797-minimal-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
