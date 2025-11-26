@@ -63,7 +63,6 @@ def generatePathString ( pathList ):
             retList += [TracingFile]
     return retList
 
-
 # Analyze 'TARGET' variable, initialize 'DISTRO' & 'MACHINE'
 DISTRO = "auto"
 MACHINE = TARGET
@@ -85,6 +84,9 @@ elif TARGET == "quin-gvm-gen4-headless" :
 elif TARGET == "gvm-gen4-5-hl" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "quin-gvm-gen4-5"
+elif TARGET == "quin-gvm-gen4-5-hl" :
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "quin-tgvm-gen4-5"
 elif TARGET == "quin-gvm-gen4-2" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-gen4-2"
