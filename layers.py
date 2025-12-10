@@ -38,7 +38,6 @@ def initLayersList(TARGET):
     dicLayersWithSubLayers = { \
         "poky": { "meta":1, "meta-poky":1 }, \
         "meta-qt5": 1, \
-        "meta-gplv2": 1, \
         "meta-openembedded": { "meta-networking":1, "meta-python":1, "meta-oe":1, "meta-filesystems":1, "meta-multimedia":1, "meta-perl":1 }, \
         "meta-qti-bsp-prop": {"meta-qti-base-prop":1, "meta-qti-extra-prop":1 }, \
         "meta-qti-bsp": {"meta-qti-base":1 , "meta-qti-extra":1, "meta-qti-upstream":1, "meta-qti-distro":1 }, \
@@ -121,7 +120,6 @@ def initLayersList(TARGET):
     elif TARGET in ['sa8775', 'sa7255', 'sa8255-mos', 'sa8775-flex','sa8775-flex-cb0','sa8775-flex-cb1', 'sa8650-adas', 'sa8255-ivi', 'sa8620-adas', 'sa7255-ivi', 'sa8775-slt', 'sa7255-slt', 'sa8255-slt']:
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
-        dicLayersWithSubLayers["meta-rust"] = 1
         dicLayersWithSubLayers["meta-selinux"] = 1
         dicLayersWithSubLayers["meta-qti-auto-kernel"] = 1
     elif TARGET in ['sa8540']:
@@ -136,4 +134,3 @@ def initLayersList(TARGET):
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         del dicLayersWithSubLayers["meta-qt5"]
-        del dicLayersWithSubLayers["meta-gplv2"]
