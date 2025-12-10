@@ -285,7 +285,7 @@ fi
 unset BT
 
 # Find build templates from qti meta layer.
-export TEMPLATECONF="${WS}/poky/build/conf"
+#export TEMPLATECONF="${WS}/poky/build/conf"
 
 # Yocto/OE-core works a bit differently than OE-classic so we're
 # going to source the OE build environment setup script they provided.
