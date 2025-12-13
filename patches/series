@@ -26,3 +26,4 @@
 0020-create-spdx-2.2-combine-spdx-can-try-to-write-before.patch
 0021-classes-create-spdx-2.2-Fix-SPDX-Namespace-Prefix.patch
 0022-create-sdpx-2.2.bbclass-Switch-from-exists-to-isfile.patch
+0023-bitbake-runqueue-Pass-hashfn-in-taskdep-data.patch
