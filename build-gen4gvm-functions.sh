@@ -705,6 +705,9 @@ build-all-quin-gvm-gen4-5-hl-image() {
 
     mv tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
     mv tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
+
+    cp tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/vmlinux tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/quin-tgvm-gen4-5-hl-vmlinux
+    cp tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/vmlinux tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/quin-tgvm-gen4-5-hl-vmlinux
 }
 
 # quin-gvm-gen4-2 commands
@@ -1275,6 +1278,9 @@ build-all-gvm-gen4-5-hl-image() {
 
     mv tmp-glibc/deploy/images/gvm-gen4-5-hl/$MACHINE_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
     mv tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
+
+    cp tmp-glibc/deploy/images/gvm-gen4-5-hl/vmlinux tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-vmlinux
+    cp tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/vmlinux tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-vmlinux
 }
 
 function build-gvm-gen4-5-hl-sdk-image() {
