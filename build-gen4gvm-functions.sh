@@ -710,6 +710,138 @@ build-all-quin-gvm-gen4-5-hl-image() {
     cp tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/vmlinux tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/quin-tgvm-gen4-5-hl-vmlinux
 }
 
+# quin-tgvm-gen4-5-hl commands
+function build-quin-tgvm-gen4-5-hl-image() {
+  KERNEL_VARIANT="debug_defconfig"
+  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm debug-defconfig"
+  echo "building kernel"
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  $KERNEL_BUILDCMD
+  find out/bazel -type d -exec chmod 0755 {} +
+  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
+      echo "Kernel compilation failed !!"
+      exit 1
+  fi
+  cd ${WS}/poky/build
+
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-tgvm-gen4-5-hl debug
+  if [ "$?" != "0" ]; then
+      echo "==== Error run 'init-configure-files quin-tgvm-gen4-5-hl debug'. (${FUNCNAME[@]})"
+      return 1
+  fi
+
+  cdbitbake qti-image-headless
+  if [ "$?" != "0" ]; then
+      echo "==== Error run 'cdbitbake qti-image-headless'. (${FUNCNAME[@]})"
+      return 1
+  fi
+
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  rm -rf bazel-cache
+  cd ${WS}/poky/build
+}
+
+function build-quin-tgvm-gen4-5-hl-perf-image() {
+  KERNEL_VARIANT="defconfig"
+  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm defconfig"
+  echo "building kernel"
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  $KERNEL_BUILDCMD
+  find out/bazel -type d -exec chmod 0755 {} +
+  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
+      echo "Kernel compilation failed !!"
+      exit 1
+  fi
+  cd ${WS}/poky/build
+
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files quin-tgvm-gen4-5-hl perf
+  cdbitbake qti-image-headless
+  if [ "$?" != "0" ]; then
+      echo "==== Error run 'cdbitbake qti-image-headless'. (${FUNCNAME[@]})"
+      return 1
+  fi
+
+  cd ${WS}/kernel/kernel-6.*/kernel_platform
+  rm -rf bazel-cache
+  cd ${WS}/poky/build
+}
+
+build-all-quin-tgvm-gen4-5-hl-image() {
+
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    build-quin-tgvm-gen4-5-hl-image
+    if [ "$?" != "0" ]; then
+        rm -f tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
+        echo "==== Error run 'build-quin-tgvm-gen4-5-hl-image'. (${FUNCNAME[@]})"
+        return 1
+    fi
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/qti-image-headless-quin-tgvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
+
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive.bak
+    bitbake virtual/kernel -fc cleanall
+    build-quin-tgvm-gen4-5-hl-perf-image
+    if [ "$?" != "0" ]; then
+        echo "==== Error run 'build-quin-tgvm-gen4-5-hl-perf-image'. (${FUNCNAME[@]})"
+        return 1
+    fi
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/qti-image-headless-quin-tgvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive.bak tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive
+
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/qti-image-headless-quin-tgvm-gen4-5-hl.ext4
+
+    bitbake virtual/kernel -fc cleanall
+    build-gvm-gen4-5-hl-image
+    if [ "$?" != "0" ]; then
+        rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
+        echo "==== Error run 'build-gvm-gen4-5-hl-image'. (${FUNCNAME[@]})"
+        return 1
+    fi
+    export GVM_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
+
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl tmp-glibc/deploy/images/gvm-gen4-5-hl.bak
+    bitbake virtual/kernel -fc cleanall
+
+    build-gvm-gen4-5-hl-perf-image
+    if [ "$?" != "0" ]; then
+        echo "==== Error run 'build-gvm-gen4-5-hl-perf-image'. (${FUNCNAME[@]})"
+        return 1
+    fi
+    export GVM_IMAGE_PERF=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
+
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl.bak tmp-glibc/deploy/images/gvm-gen4-5-hl
+
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl/$GVM_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/$GVM_IMAGE_PERF tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
+
+# Copy debug version files
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4 tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-boot.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-usrfs.ext4 tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-persist.ext4 tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-vbmeta.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-dtbo.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-bootloader.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl/vmlinux tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive/gvm-gen4-5-hl-vmlinux
+# Copy perf version files
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4 tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-boot.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-usrfs.ext4 tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-persist.ext4 tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-vbmeta.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-dtbo.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-bootloader.img tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/
+    cp -v tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/vmlinux tmp-glibc/deploy/images/quin-tgvm-gen4-5-hl-automotive-perf/gvm-gen4-5-hl-vmlinux
+}
+
 # quin-gvm-gen4-2 commands
 function build-quin-gvm-gen4-2-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"

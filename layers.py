@@ -87,7 +87,7 @@ def initLayersList(TARGET):
     elif TARGET == 'quin-gvm-gen4-5' :
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-selinux"] = 1
-    elif TARGET in ['quin-gvm-gen4-headless', 'quin-gvm-gen4-5-hl'] :
+    elif TARGET in ['quin-gvm-gen4-headless', 'quin-gvm-gen4-5-hl', 'quin-tgvm-gen4-5-hl'] :
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-base"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-upstream"]
         del dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-extra"]
