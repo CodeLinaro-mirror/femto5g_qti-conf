@@ -1259,11 +1259,11 @@ build-all-gvm-gen4-5-hl-image() {
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4`
     rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
 
-    #build-gvm-gen4-5-hl-sdk-image
-    #if [ "$?" != "0" ]; then
-    #echo "==== Error run 'build-gvm-gen4-5-hl-sdk-image'. (${FUNCNAME[@]})"
-    #return 1
-    #fi
+    build-gvm-gen4-5-hl-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-gvm-gen4-5-hl-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
 
     mv tmp-glibc/deploy/images/gvm-gen4-5-hl tmp-glibc/deploy/images/gvm-gen4-5-hl.bak
     bitbake virtual/kernel -fc cleanall
@@ -1292,4 +1292,9 @@ function build-gvm-gen4-5-hl-sdk-image() {
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+
+    cd ${WS}/kernel/kernel-6.*/kernel_platform
+    rm -rf bazel-cache
+    cd ${WS}/poky/build
+
 }
