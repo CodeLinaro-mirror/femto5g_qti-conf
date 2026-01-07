@@ -63,7 +63,6 @@ def generatePathString ( pathList ):
             retList += [TracingFile]
     return retList
 
-
 # Analyze 'TARGET' variable, initialize 'DISTRO' & 'MACHINE'
 DISTRO = "auto"
 MACHINE = TARGET
@@ -84,7 +83,10 @@ elif TARGET == "quin-gvm-gen4-headless" :
     MACHINE = "quin-tgvm-gen4"
 elif TARGET == "gvm-gen4-5-hl" :
     DISTRO = "auto-gvm-headless"
-    MACHINE = "quin-gvm-gen4-5"
+    MACHINE = "gvm-gen4-5"
+elif TARGET == "quin-gvm-gen4-5-hl" :
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "quin-tgvm-gen4-5"
 elif TARGET == "quin-gvm-gen4-2" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-gen4-2"
@@ -188,8 +190,3 @@ if DISTRO != "bg":
     for dl in DistroList:
         print ("DISTRO_INC_FILES += \"%s\"" % dl)
 print ("")
-
-print ("# Specify the path of the sectools tool and the security file required for lemans signature")
-print ("SECTOOLS_V1_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V1_DIR", "/pkg/sectools/int/latest") )
-print ("SECTOOLS_V2_DIR ??= \"%s\"" % os.getenv("SECTOOLS_V2_DIR", "/pkg/sectools/v2/1.21/Linux") )
-print ("SECTOOLS_SECURITY_PROFILE ??= \"%s\"" % os.getenv("SECTOOLS_SECURITY_PROFILE", "${BSPDIR}/security/securemsm/security_profiles/lemans_tz_security_profile.xml") )
