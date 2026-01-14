@@ -56,7 +56,7 @@ function build-sa8797dc-image() {
 function build-sa8797dc-hlos() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797dc -d auto -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797dc -d auto -v debug $BUILD_MODE_FLAG $BUILD_DIR_FLAG
   if [ "$?" != "0" ]; then
   echo "==== Error run 'source poky/build/conf/set_bb_env.sh sa8797dc debug'. (${FUNCNAME[@]})"
   return 1
