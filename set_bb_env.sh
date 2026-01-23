@@ -218,7 +218,7 @@ mkdir -p "${BUILDDIR}"/conf
 if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" ]] ; then
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
 elif [[ ${MACHINE} =~ "trustedvm" ]] ; then
-    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary >| ${BUILDDIR}/conf/bblayers.conf
+    python $scriptdir/get_bblayers.py \"meta*\"  --lookup-paths ${WS}/poky >| ${BUILDDIR}/conf/bblayers.conf
 else
    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky >| ${BUILDDIR}/conf/bblayers.conf
 fi
