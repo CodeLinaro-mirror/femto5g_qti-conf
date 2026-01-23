@@ -250,6 +250,7 @@ echo "cd $WSQC"
 cd ${WSQC}
 #Bypass generate_prebuilt_confs.sh as don't depend on any CSE's prebuilt layers. Remove it once depend on CSE's qprebuilt.
 sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qti-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
+sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qcom-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
 #Delete the patch in the meta-qti-internal layer that conflicts with yocto5.0
 if [ -f "${WSQC}/layers/meta-qti-internal/poky_patches/series" ]; then
     sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
@@ -259,8 +260,16 @@ else
     echo "Warning: poky_patches/series file not found, skipping patch removal"
 fi
 
+if [ -d  ./layers/meta-qcom-auto-distro/ ]; then
+	distro_layer="./layers/meta-qcom-auto-distro/"
+fi
+
+if [ -d  ./layers/meta-qti-automotive-distro/ ]; then
+        distro_layer="./layers/meta-qti-automotive-distro/"
+fi
+
 if [ -z "$BUILD_DIR_ARG" ]; then
-    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ${distro_layer}/set_bb_env_internal.sh
 else
     echo "Input BUILD_DIR_ARG is $BUILD_DIR_ARG"
     RELATIVE_BUILD_DIR=$(realpath --relative-to="$WSQC" "$BUILD_DIR")
@@ -274,7 +283,7 @@ else
         echo "Deleting existing ${BUILD_DIR}/conf/auto.conf, generate a new auto.conf"
         rm -f "${BUILD_DIR}/conf/auto.conf"
     fi
-    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh ${RELATIVE_BUILD_DIR}
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ${distro_layer}/set_bb_env_internal.sh ${RELATIVE_BUILD_DIR}
 fi
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
