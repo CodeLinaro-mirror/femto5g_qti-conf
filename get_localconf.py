@@ -87,6 +87,9 @@ elif TARGET == "gvm-gen4-5-hl" :
 elif TARGET == "quin-gvm-gen4-5-hl" :
     DISTRO = "auto-gvm-headless"
     MACHINE = "quin-tgvm-gen4-5"
+elif TARGET == "quin-tgvm-gen4-5-hl" :
+    DISTRO = "auto-gvm-headless"
+    MACHINE = "quin-tgvm-gen4-5"
 elif TARGET == "quin-gvm-gen4-2" :
     DISTRO = "auto-gvm"
     MACHINE = "quin-gvm-gen4-2"
