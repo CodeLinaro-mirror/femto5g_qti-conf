@@ -619,6 +619,97 @@ build-all-sa8255-ivi-image() {
   fi
 }
 
+# sa8255-ivi-qcvirtio commands
+function build-sa8255-ivi-qcvirtio-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8255-ivi-qcvirtio -d auto-qcvirtio -v debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8255-ivi-qcvirtio debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  bitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-qcvirtio-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8255-ivi-qcvirtio-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8255-ivi-qcvirtio -d auto-qcvirtio -v perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8255-ivi-qcvirtio perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  bitbake machine-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-qcvirtio-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive-perf
+  export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive-perf/machine-image-sa8255-ivi-qcvirtio.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive-perf/machine-image-sa8255-ivi-qcvirtio.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8255-ivi-qcvirtio-automotive-perf
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8255-ivi-qcvirtio-automotive-perf/
+  echo "Prepare build-sa8255-ivi-qcvirtio-perf-image done"
+}
+
+function build-sa8255-ivi-qcvirtio-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8255-ivi-qcvirtio -d auto-qcvirtio -v debug
+    bitbake machine-image -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
+
+    mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8255-ivi-qcvirtio
+    cp -r tmp-glibc/deploy/sdk-sa8255-ivi-qcvirtio/* ../poky/build/tmp-glibc/deploy/sdk-sa8255-ivi-qcvirtio
+    echo "Prepare build-sa8255-ivi-qcvirtio-sdk-image done"
+}
+
+build-all-sa8255-ivi-qcvirtio-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  build-sa8255-ivi-qcvirtio-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-qcvirtio-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive
+  mv tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive
+  export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive/machine-image-sa8255-ivi-qcvirtio.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-qcvirtio-automotive/machine-image-sa8255-ivi-qcvirtio.ext4
+  mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+  mkdir -p ../poky/build/tmp-glibc/sysroots-components
+  cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8255-ivi-qcvirtio-automotive
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8255-ivi-qcvirtio-automotive/
+  echo "Prepare build-sa8255-ivi-qcvirtio-image done"
+  echo "Begin to build-sa8255-ivi-qcvirtio-sdk-image"
+  build-sa8255-ivi-qcvirtio-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-qcvirtio-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  echo "Begin to build-sa8255-ivi-qcvirtio-perf-image"
+  bitbake virtual/kernel -fc cleanall
+  build-sa8255-ivi-qcvirtio-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-qcvirtio-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
 # SA8255-mos commands
 function build-sa8255-mos-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
