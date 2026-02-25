@@ -309,6 +309,8 @@ function build-all-coqos-function() {
 
     mv tmp-glibc/deploy/images/$1-automotive tmp-glibc/deploy/images/$1-automotive.bak
     bitbake virtual/kernel -fc cleanall
+
+    buildclean-retaindeploy
     build-$1-perf-image
     if [ "$?" != "0" ]; then
     echo "==== Error run 'build-$1-perf-image'. (${FUNCNAME[@]})"
