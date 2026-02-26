@@ -815,6 +815,7 @@ function build-coqos-sa81x5agl-sdk-image() {
 
 build-all-coqos-sa81x5agl-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    buildclean
     build-all-coqos-function coqos-sa81x5agl
     return $?
 }
