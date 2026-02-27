@@ -820,6 +820,16 @@ build-all-sa8255-ivi-image() {
   export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4`
   rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
 
+  build-sa8255-ivi-lagvm-image
+  if [ "$?" != "0" ]; then
+  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4
+  echo "==== Error run 'build-sa8255-ivi-lagvm-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_LAGVM=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4
+
   build-sa8255-ivi-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8255-ivi-sdk-image'. (${FUNCNAME[@]})"
@@ -835,10 +845,64 @@ build-all-sa8255-ivi-image() {
   fi
   export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4`
   rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4
+
+  build-sa8255-ivi-lagvm-perf-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-lagvm-perf-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+  export MACHINE_IMAGE_LAGVM_PERF=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4`
+  rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4
   mv tmp-glibc/deploy/images/sa8255-ivi-automotive.bak tmp-glibc/deploy/images/sa8255-ivi-automotive
 
   mv tmp-glibc/deploy/images/sa8255-ivi-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive/$MACHINE_IMAGE_LAGVM tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4
   mv tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/$MACHINE_IMAGE_LAGVM_PERF tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4
+}
+
+# sa8255-ivi-lagvm commands
+function build-sa8255-ivi-lagvm-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8255-ivi debug
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8255-ivi debug'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image-lagvm
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image-lagvm'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8255-ivi-lagvm-perf-image() {
+  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+  unset_bb_env
+  init-configure-files sa8255-ivi perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files sa8255-ivi perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
+  cdbitbake machine-image-lagvm
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'cdbitbake machine-image-lagvm'. (${FUNCNAME[@]})"
+  return 1
+  fi
+}
+
+function build-sa8255-ivi-lagvm-sdk-image() {
+    echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
+    unset_bb_env
+    init-configure-files sa8255-ivi debug
+    cdbitbake machine-image-lagvm -c populate_sdk
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'cdbitbake machine-image-lagvm -c populate_sdk'. (${FUNCNAME[@]})"
+    return 1
+    fi
 }
 
 # SA8255-mos commands
