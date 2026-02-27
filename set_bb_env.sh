@@ -256,8 +256,7 @@ if [ -f "${WSQC}/layers/meta-qti-internal/poky_patches/series" ]; then
     sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
     sed -i '/0001-Add-fetch-extra-refs-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
     sed -i '/0001-fetch2-__init__.py-convert-missing-checksum-error-to.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
-else
-    echo "Warning: poky_patches/series file not found, skipping patch removal"
+    echo " poky_patches/series file  found, patch removal successful"
 fi
 
 if [ -d  ./layers/meta-qcom-auto-distro/ ]; then
