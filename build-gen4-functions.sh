@@ -394,77 +394,93 @@ build-all-sa8775-flex-image() {
 function build-sa8650-adas-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650-adas debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8650-adas -d auto -v debug
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8650-adas debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake machine-image
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8650-adas-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
 }
 
 function build-sa8650-adas-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  init-configure-files sa8650-adas perf
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8650-adas -d auto -v perf
   if [ "$?" != "0" ]; then
   echo "==== Error run 'init-configure-files sa8650-adas perf'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cdbitbake machine-image
+  bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'build-sa8650-adas-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
+
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8650-adas-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive-perf
+  export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8650-adas-automotive-perf
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8650-adas-automotive-perf/
+  echo "Prepare build-sa8650-adas-perf-image done"
 }
 
 function build-sa8650-adas-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    init-configure-files sa8650-adas debug
-    cdbitbake machine-image -c populate_sdk
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8650-adas -d auto -v debug
+    bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
+
+    mkdir -p ../poky/build/tmp-glibc/deploy/sdk-sa8650-adas
+    cp -r tmp-glibc/deploy/sdk-sa8650-adas/* ../poky/build/tmp-glibc/deploy/sdk-sa8650-adas
+    echo "Prepare build-sa8650-adas-sdk-image done"
 }
 
 build-all-sa8650-adas-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-sa8650-adas-image
   if [ "$?" != "0" ]; then
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
   echo "==== Error run 'build-sa8650-adas-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive
+  mv tmp-glibc/deploy/images/sa8650-adas-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive
+  export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
+  mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+  cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+  mkdir -p ../poky/build/tmp-glibc/sysroots-components
+  cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+  mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8650-adas-automotive
+  cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8650-adas-automotive/
 
+  echo "Prepare build-sa8650-adas-image done"
+
+  echo "Begin to build-sa8650-adas-sdk-image"
   build-sa8650-adas-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8650-adas-sdk-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive tmp-glibc/deploy/images/sa8650-adas-automotive.bak
+  echo "Begin to build-sa8650-adas-perf-image"
   bitbake virtual/kernel -fc cleanall
   build-sa8650-adas-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8650-adas-perf-image'. (${FUNCNAME[@]})"
   return 1
   fi
-  export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4`
-  rm -f tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive.bak tmp-glibc/deploy/images/sa8650-adas-automotive
-
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
-  mv tmp-glibc/deploy/images/sa8650-adas-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4
 }
 
 # sa8650-adas-ubuntu commands

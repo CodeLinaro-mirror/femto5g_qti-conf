@@ -1,3 +1,6 @@
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+
 # set_bb_env.sh
 # Define macros for build targets.
 # Generate bblayers.conf from get_bblayers.py.
@@ -5,16 +8,17 @@
 # Set the build environement
 
 umask 022
-unset DISTRO MACHINE VARIANT QTARGET QDISTRO QVARIANT BUILD_DIR BUILD_DIR_ARG RELATIVE_BUILD_DIR QTI_SETUP_HELP QTI_SETUP_ERROR
+unset DISTRO MACHINE VARIANT QTARGET QDISTRO QVARIANT BUILD_DIR BUILD_DIR_ARG RELATIVE_BUILD_DIR QTI_SETUP_HELP QTI_SETUP_ERROR CLOUDAI_BUILD_MODE  BUILD_MODE_FLAG BUILD_DIR_ARG BUILD_DIR_FLAG
 
 usage()
 {
     echo -e "************************************** \n
     Usage: source build/conf/set_bb_env.sh \n
-    Optional parameters: [-t target] [-v variant] [-b build-dir] [-h] \n
+    Optional parameters: [-t target] [-v variant] [-b build-dir] [-m mode] [-h] \n
     * [-t target]: Customized target, use sa81x5 as default \n
+    * [-d distro]: Customized distro, use auto as default \n
     * [-v variant]: Customized variant, use debug as default \n
-    * [-d variant]: Customized distro, use auto as default \n
+    * [-m mode]: Customized mode, use dev as default \n
     * [-b build-dir]: Customized absolute build directory, use 'workspace/poky/build' as default \n
     * [-h]: Help \n
     Compatibility: bash, zsh \n
@@ -22,7 +26,7 @@ usage()
 }
 
 OPTIND="1"
-while getopts "t:d:v:b:h" qti_setup_flag
+while getopts "t:d:v:m:b:h" qti_setup_flag
 do
     case $qti_setup_flag in
         t) QTARGET="$OPTARG";
@@ -33,6 +37,9 @@ do
            ;;
         v) QVARIANT="$OPTARG";
            echo "Input QVARIANT: $QVARIANT"
+           ;;
+        m) CLOUDAI_BUILD_MODE="$OPTARG";
+           echo "Input CLOUDAI_BUILD_MODE: $CLOUDAI_BUILD_MODE"
            ;;
         b) BUILD_DIR="$OPTARG";
            BUILD_DIR_ARG="$OPTARG"
@@ -76,8 +83,26 @@ if [ -z "$QDISTRO" ]; then
     export QDISTRO="auto"
 fi
 
+# Get MACHINE value from -m <machine>, default is sa8797dc
+if [ -z "$QTARGET" ]; then
+    export QTARGET="sa8797dc"
+fi
+
+# Get VARIANT value from -v <variant>, default is debug
+if [ -z "$QVARIANT" ]; then
+    export QVARIANT="debug"
+fi
+
+if [ -z "$CLOUDAI_BUILD_MODE" ]; then
+    export CLOUDAI_BUILD_MODE="dev"
+else
+    export CLOUDAI_BUILD_MODE=${CLOUDAI_BUILD_MODE}
+fi
+
+export BUILD_MODE_FLAG="-m ${CLOUDAI_BUILD_MODE}"
+
 if [ -z "$BUILD_DIR" ]; then
-    BUILD_DIR="${WSQC}/build-${QDISTRO}"
+    BUILD_DIR="${WSQC}/build-${QDISTRO}-${CLOUDAI_BUILD_MODE}"
 else
     if [ "$BUILD_DIR" = "/" ]; then
         echo "Error: $BUILD_DIR is not supported!"
@@ -94,6 +119,10 @@ else
 
 fi
 echo "Build directory is $BUILD_DIR"
+
+export BUILD_DIR_ARG=$(basename "$BUILD_DIR")
+export BUILD_DIR_FLAG="-b $BUILD_DIR_ARG"
+
 # Add a few helpful shortcuts
 # Go to root of workspace
 alias croot='cd $WSQC'
@@ -221,20 +250,10 @@ rebake() {
 }
 
 unset_bb_env() {
-  unset DISTRO MACHINE VARIANT DEBUG_BUILD KERNEL_ROOTDEVICE
+  unset DISTRO MACHINE VARIANT DEBUG_BUILD KERNEL_ROOTDEVICE CLOUDAI_BUILD_MODE
 }
 
 # Initialize bblayers.conf and local.conf
-# Get MACHINE value from -m <machine>, default is sa81x5
-if [ -z "$QTARGET" ]; then
-    export QTARGET="sa8797"
-fi
-
-# Get VARIANT value from -v <variant>, default is debug
-if [ -z "$QVARIANT" ]; then
-    export QVARIANT="debug"
-fi
-
 # Find build templates from qti meta layer.
 #export TEMPLATECONF="${WSQC}/poky/build/conf"
 
@@ -246,11 +265,11 @@ fi
 echo "QTARGET: $QTARGET"
 echo "QDISTRO: $QDISTRO"
 echo "QVARIANT: $QVARIANT"
+echo "CLOUDAI_BUILD_MODE: $CLOUDAI_BUILD_MODE"
 echo "cd $WSQC"
 cd ${WSQC}
 #Bypass generate_prebuilt_confs.sh as don't depend on any CSE's prebuilt layers. Remove it once depend on CSE's qprebuilt.
 sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qti-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
-sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qcom-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
 #Delete the patch in the meta-qti-internal layer that conflicts with yocto5.0
 if [ -f "${WSQC}/layers/meta-qti-internal/poky_patches/series" ]; then
     sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
@@ -260,16 +279,8 @@ else
     echo "Warning: poky_patches/series file not found, skipping patch removal"
 fi
 
-if [ -d  ./layers/meta-qcom-auto-distro/ ]; then
-	distro_layer="./layers/meta-qcom-auto-distro/"
-fi
-
-if [ -d  ./layers/meta-qti-automotive-distro/ ]; then
-        distro_layer="./layers/meta-qti-automotive-distro/"
-fi
-
 if [ -z "$BUILD_DIR_ARG" ]; then
-    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ${distro_layer}/set_bb_env_internal.sh
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} CLOUDAI_BUILD_MODE=${CLOUDAI_BUILD_MODE} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh ${BUILD_DIR_ARG}
 else
     echo "Input BUILD_DIR_ARG is $BUILD_DIR_ARG"
     RELATIVE_BUILD_DIR=$(realpath --relative-to="$WSQC" "$BUILD_DIR")
@@ -283,11 +294,11 @@ else
         echo "Deleting existing ${BUILD_DIR}/conf/auto.conf, generate a new auto.conf"
         rm -f "${BUILD_DIR}/conf/auto.conf"
     fi
-    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ${distro_layer}/set_bb_env_internal.sh ${RELATIVE_BUILD_DIR}
+    MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} CLOUDAI_BUILD_MODE=${CLOUDAI_BUILD_MODE} source ./layers/meta-qti-automotive-distro/set_bb_env_internal.sh ${RELATIVE_BUILD_DIR}
 fi
 
 # Let bitbake use the following env-vars as if they were pre-set bitbake ones.
 # (BBLAYERS is explicitly blocked from this within OE-Core itself, though...)
 # oe-init-build-env calls oe-buildenv-internal which sets
 # BB_ENV_PASSTHROUGH_ADDITIONS, append our vars to the list
-export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD"
+export BB_ENV_PASSTHROUGH_ADDITIONS="${BB_ENV_PASSTHROUGH_ADDITIONS} DL_DIR VARIANT SSTATE_LOCAL_MIRROR DEBUG_BUILD CLOUDAI_BUILD_MODE"
