@@ -820,6 +820,12 @@ build-all-sa8255-ivi-image() {
   export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4`
   rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
 
+  build-sa8255-ivi-sdk-image
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'build-sa8255-ivi-sdk-image'. (${FUNCNAME[@]})"
+  return 1
+  fi
+
   build-sa8255-ivi-lagvm-image
   if [ "$?" != "0" ]; then
   export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4`
@@ -830,14 +836,9 @@ build-all-sa8255-ivi-image() {
   export MACHINE_IMAGE_LAGVM=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4`
   rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4
 
-  build-sa8255-ivi-sdk-image
-  if [ "$?" != "0" ]; then
-  echo "==== Error run 'build-sa8255-ivi-sdk-image'. (${FUNCNAME[@]})"
-  return 1
-  fi
-
-  mv tmp-glibc/deploy/images/sa8255-ivi-automotive tmp-glibc/deploy/images/sa8255-ivi-automotive.bak
-  bitbake virtual/kernel -fc cleanall
+  mv tmp-glibc/deploy/sdk-sa8255-ivi sdk-sa8255-ivi.bak
+  mv tmp-glibc/deploy/images/sa8255-ivi-automotive sa8255-ivi-automotive.bak
+  buildclean
   build-sa8255-ivi-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8255-ivi-perf-image'. (${FUNCNAME[@]})"
@@ -853,7 +854,8 @@ build-all-sa8255-ivi-image() {
   fi
   export MACHINE_IMAGE_LAGVM_PERF=`readlink tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4`
   rm -f tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4
-  mv tmp-glibc/deploy/images/sa8255-ivi-automotive.bak tmp-glibc/deploy/images/sa8255-ivi-automotive
+  mv sdk-sa8255-ivi.bak tmp-glibc/deploy/sdk-sa8255-ivi
+  mv sa8255-ivi-automotive.bak tmp-glibc/deploy/images/sa8255-ivi-automotive
 
   mv tmp-glibc/deploy/images/sa8255-ivi-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
   mv tmp-glibc/deploy/images/sa8255-ivi-automotive/$MACHINE_IMAGE_LAGVM tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-lagvm-sa8255-ivi.ext4
