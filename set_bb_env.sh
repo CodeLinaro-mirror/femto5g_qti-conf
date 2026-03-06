@@ -246,18 +246,29 @@ fi
 echo "QTARGET: $QTARGET"
 echo "QDISTRO: $QDISTRO"
 echo "QVARIANT: $QVARIANT"
-echo "cd $WSQC"
 cd ${WSQC}
+
+#required for SRC_URI HY11 Builds
+if [ ! -L "${WSQC}/setup-environment" ] && [ -f "${WSQC}/layers/meta-qcom-distro/set_bb_env.sh" ]; then
+    ln -s "${WSQC}/layers/meta-qcom-distro/set_bb_env.sh" "${WSQC}/setup-environment"
+fi
+
+
 #Bypass generate_prebuilt_confs.sh as don't depend on any CSE's prebuilt layers. Remove it once depend on CSE's qprebuilt.
 sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qti-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
 sed --follow-symlinks -i '/source "\$WS\/layers\/meta-qcom-internal\/generate_prebuilt_confs.sh"/s/^/#/' setup-environment
+
+if [ -d "${WSQC}/layers/meta-qti-internal" ]; then
+  internalLayer="layers/meta-qti-internal"
+elif [ -d "${WSQC}/layers/meta-qcom-internal" ]; then
+  internalLayer="layers/meta-qcom-internal"
+fi
+
 #Delete the patch in the meta-qti-internal layer that conflicts with yocto5.0
-if [ -f "${WSQC}/layers/meta-qti-internal/poky_patches/series" ]; then
-    sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
-    sed -i '/0001-Add-fetch-extra-refs-support.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
-    sed -i '/0001-fetch2-__init__.py-convert-missing-checksum-error-to.patch/d' ${WSQC}/layers/meta-qti-internal/poky_patches/series
-else
-    echo "Warning: poky_patches/series file not found, skipping patch removal"
+if [ -f "${WSQC}/${internalLayer}/poky_patches/series" ]; then
+    sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' "${WSQC}/${internalLayer}/poky_patches/series"
+    sed -i '/0001-Add-fetch-extra-refs-support.patch/d' "${WSQC}/${internalLayer}/poky_patches/series"
+    sed -i '/0001-fetch2-__init__.py-convert-missing-checksum-error-to.patch/d' "${WSQC}/${internalLayer}/poky_patches/series"
 fi
 
 if [ -d  ./layers/meta-qcom-auto-distro/ ]; then
@@ -267,6 +278,7 @@ fi
 if [ -d  ./layers/meta-qti-automotive-distro/ ]; then
         distro_layer="./layers/meta-qti-automotive-distro/"
 fi
+
 
 if [ -z "$BUILD_DIR_ARG" ]; then
     MACHINE=${QTARGET} DISTRO=${QDISTRO} VARIANT=${QVARIANT} source ${distro_layer}/set_bb_env_internal.sh
