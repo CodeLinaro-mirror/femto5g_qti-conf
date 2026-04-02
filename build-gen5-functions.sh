@@ -95,6 +95,10 @@ build-all-sa8797-image() {
   #This build entry is used for LEQCLinux1.0 yocto now
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
 
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+  touch ../poky/build/tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4
+  return
+
   build-sa8797-image
   if [ "$?" != "0" ]; then
     echo "==== Error run 'build-sa8797-image'. (${FUNCNAME[@]})"
