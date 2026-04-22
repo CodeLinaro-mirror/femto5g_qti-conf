@@ -5,7 +5,7 @@ import os, fnmatch, re, argparse
 from operator import itemgetter
 
 # Layers to be excluded
-ignoreList = [  "meta-selftest", "meta-skeleton", \
+ignoreList = [  "meta-rust", "meta-selftest", "meta-skeleton", \
                 "meta-poky", "meta-yocto", "meta-yocto-bsp", \
              ]
 # Sub-layer info
