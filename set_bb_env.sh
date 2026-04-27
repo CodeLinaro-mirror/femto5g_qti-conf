@@ -108,6 +108,14 @@ alias goback='cd $CUR_DIR'
 #Go to OUT directory
 alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
+# crates.io 403 due to https://crates.io/api/v1/crates/<name>/<version>/download not available
+function update_crate_download_path() {
+    echo "Workaround: update crates download source."
+    sed -i "70s/crates.io\/api\/v1/static.crates.io/" ${WSQC}/layers/poky/bitbake/lib/bb/fetch2/crate.py >> /dev/null 2>&1
+}
+
+update_crate_download_path
+
 #init local git if it does not exist
 function init_localgit() {
 if [ -f "${WSQC}/localgit" ]
