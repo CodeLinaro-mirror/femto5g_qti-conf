@@ -244,9 +244,9 @@ BB_HASHSERVE = "auto"
 #BUILDHISTORY_COMMIT = "1"
 
 # Add --retry-connrefused to the wget execution.
-FETCHCMD_wget      = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate"
-FETCHCOMMAND_wget  = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate -P ${DL_DIR} ${URI}"
-RESUMECOMMAND_wget = "/usr/bin/env wget -c --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate -P ${DL_DIR} ${URI}"
+FETCHCMD_wget      = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate --user-agent='Mozilla/5.0 (compatible; BitBake/Yocto)'"
+FETCHCOMMAND_wget  = "/usr/bin/env wget    --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate -P ${DL_DIR} ${URI} --user-agent='Mozilla/5.0 (compatible; BitBake/Yocto)'"
+RESUMECOMMAND_wget = "/usr/bin/env wget -c --retry-connrefused -t 5 -T 30 -nv --passive-ftp --no-check-certificate -P ${DL_DIR} ${URI} --user-agent='Mozilla/5.0 (compatible; BitBake/Yocto)'"
 
 export userfsdatadir = "${base_prefix}/data"
 
