@@ -131,6 +131,14 @@ function revert_python_ast_commit_in_yp4019() {
 revert_python_ast_commit_in_yp4019
 
 
+# crates.io 403 due to https://crates.io/api/v1/crates/<name>/<version>/download not available
+function update_crate_download_path() {
+    echo "Workaround: update crates download source."
+    sed -i "70s/crates.io\/api\/v1/static.crates.io/" ${WSQC}/layers/poky/bitbake/lib/bb/fetch2/crate.py >> /dev/null 2>&1
+}
+
+update_crate_download_path
+
 #init local git if it does not exist
 function init_localgit() {
 if [ -f "${WSQC}/localgit" ]
