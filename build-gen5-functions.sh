@@ -5,6 +5,22 @@
 #           $1 -- Target name, as: sa8797
 # SA8797 qclinux commands
 
+
+function build-sa8797-debug-image() {
+    build-sa8797-image
+    mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+    mv tmp-glibc/deploy/images/sa8797-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8797-automotive
+    export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4`
+    mv ../poky/build/tmp-glibc/deploy/images/sa8797-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8797-automotive/machine-image-sa8797.ext4
+    mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
+    cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
+    mkdir -p ../poky/build/tmp-glibc/sysroots-components
+    cp -r tmp-glibc/sysroots-components/* ../poky/build/tmp-glibc/sysroots-components
+    mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive
+    cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8797-automotive/
+    echo "Prepare build-sa8797-image done"
+
+}
 function build-sa8797-image() {
   #Suppose this command work after source poky/build/conf/set_bb_env.sh done.
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"

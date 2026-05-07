@@ -277,6 +277,7 @@ if [ -f "${WSQC}/${internalLayer}/poky_patches/series" ]; then
     sed -i '/0001-fetch2-git-Add-verbose-logging-support.patch/d' "${WSQC}/${internalLayer}/poky_patches/series"
     sed -i '/0001-Add-fetch-extra-refs-support.patch/d' "${WSQC}/${internalLayer}/poky_patches/series"
     sed -i '/0001-fetch2-__init__.py-convert-missing-checksum-error-to.patch/d' "${WSQC}/${internalLayer}/poky_patches/series"
+    echo " poky_patches/series file  found, patch removal successful"
 fi
 
 if [ -d  ./layers/meta-qcom-auto-distro/ ]; then
