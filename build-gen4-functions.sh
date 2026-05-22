@@ -378,6 +378,7 @@ build-all-sa8775-flex-image() {
   build-sa8775-flex-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8775-flex-sdk-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
   return 1
   fi
 
@@ -386,6 +387,7 @@ build-all-sa8775-flex-image() {
   build-sa8775-flex-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8775-flex-perf-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
   return 1
   fi
 }
@@ -449,6 +451,7 @@ build-all-sa8650-adas-image() {
   build-sa8650-adas-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8650-adas-sdk-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
   return 1
   fi
 
@@ -457,6 +460,7 @@ build-all-sa8650-adas-image() {
   build-sa8650-adas-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8650-adas-perf-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa8650-adas-automotive/machine-image-sa8650-adas.ext4
   return 1
   fi
   export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/sa8650-adas-automotive-perf/machine-image-sa8650-adas.ext4`
@@ -607,6 +611,7 @@ build-all-sa8255-ivi-image() {
   build-sa8255-ivi-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8255-ivi-sdk-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
   return 1
   fi
 
@@ -615,6 +620,7 @@ build-all-sa8255-ivi-image() {
   build-sa8255-ivi-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8255-ivi-perf-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
   return 1
   fi
 }
@@ -853,6 +859,7 @@ build-all-sa7255-ivi-image() {
   build-sa7255-ivi-sdk-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-sdk-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
   return 1
   fi
 
@@ -861,6 +868,7 @@ build-all-sa7255-ivi-image() {
   build-sa7255-ivi-perf-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-perf-image'. (${FUNCNAME[@]})"
+  rm -f ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
   return 1
   fi
 }
