@@ -164,6 +164,8 @@ function build-image() {
 source ${WSQC}/poky/build/conf/build-gen5-functions.sh
 source ${WSQC}/poky/build/conf/build-gen5-dc-functions.sh
 source ${WSQC}/poky/build/conf/build-gen4-functions.sh
+source ${WSQC}/poky/build/conf/build-gen4gvm-functions.sh
+source ${WSQC}/poky/build/conf/build-gen5gvm-functions.sh
 
 # Utility commands
 buildclean-retaindeploy() {
