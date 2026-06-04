@@ -1520,17 +1520,6 @@ function build-all-gvm-gen4-5-virtio-image() {
 }
 # gvm-gen4-5-virtio commands
 function build-gvm-gen4-5-virtio-image() {
-  KERNEL_VARIANT="debug_defconfig"
-  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm debug-defconfig"
-  echo "building kernel"
-  cd ${WS}/kernel/kernel-6.*/kernel_platform
-  $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
-  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
-      echo "Kernel compilation failed !!"
-      exit 1
-  fi
-  cd ${WS}/poky/build
 
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
@@ -1546,8 +1535,5 @@ function build-gvm-gen4-5-virtio-image() {
   return 1
   fi
 
-  cd ${WS}/kernel/kernel-6.*/kernel_platform
-  rm -rf bazel-cache
-  cd ${WS}/poky/build
 }
 
