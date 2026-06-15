@@ -3,18 +3,6 @@
 
 # gvm-gen5 commands
 function build-gvm-gen5-image() {
-  KERNEL_VARIANT="debug_defconfig"
-  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm debug-defconfig"
-  echo "building kernel"
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
-  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
-      echo "Kernel compilation failed !!"
-      exit 1
-  fi
-
-  echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd ${WSQC}/poky
   source build/conf/set_bb_env.sh -t gvm-gen5 -d auto-gvm -b build -v debug
@@ -25,26 +13,13 @@ function build-gvm-gen5-image() {
 
   bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  rm -rf bazel-cache
-  cd ${WSQC}/poky/build
 }
 
 function build-gvm-gen5-perf-image() {
-  KERNEL_VARIANT="defconfig"
-  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm defconfig"
-  echo "building kernel"
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
-  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
-      echo "Kernel compilation failed !!"
-      exit 1
-  fi
 
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
@@ -52,13 +27,10 @@ function build-gvm-gen5-perf-image() {
   source build/conf/set_bb_env.sh -t gvn-gen5 -d auto-gvm -b build -v perf
   bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  rm -rf bazel-cache
-  cd ${WSQC}/poky/build
 }
 
 build-all-gvm-gen5-image() {
@@ -100,9 +72,9 @@ function build-gvm-gen5-sdk-image() {
     unset_bb_env
     cd ${WSQC}/poky
     source build/conf/set_bb_env.sh -t gvn-gen5 -d auto-gvm -b build -v debug
-    cdbitbake machine-image -c populate_sdk
+    bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
 }
@@ -121,7 +93,7 @@ function build-qclinux-gvm-gen5-image() {
 
   bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -132,10 +104,14 @@ function build-qclinux-gvm-gen5-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd ${WSQC}/poky
-  source build/conf/set_bb_env.sh -t qclinux-gvn-gen5 -d auto-gvm -b build -v perf
+  source build/conf/set_bb_env.sh -t qclinux-gvm-gen5 -d auto-gvm -b build -v perf
+  if [ "$?" != "0" ]; then
+  echo "==== Error run 'init-configure-files qclinux-gvm-gen5 perf'. (${FUNCNAME[@]})"
+  return 1
+  fi
   bitbake machine-image
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
+  echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -160,7 +136,7 @@ build-all-qclinux-gvm-gen5-image() {
     #return 1
     #fi
 
-    mv tmp-glibc/deploy/images/qclnux-gvm-gen5-automotive tmp-glibc/deploy/images/qclinux-gvm-gen5-automotive.bak
+    mv tmp-glibc/deploy/images/qclinux-gvm-gen5-automotive tmp-glibc/deploy/images/qclinux-gvm-gen5-automotive.bak
     bitbake virtual/kernel -fc cleanall
     build-qclinux-gvm-gen5-perf-image
     if [ "$?" != "0" ]; then
@@ -180,9 +156,9 @@ function build-qclinux-gvm-gen5-sdk-image() {
     unset_bb_env
     cd ${WSQC}/poky
     source build/conf/set_bb_env.sh -t qclinux-gvn-gen5 -d auto-gvm -b build -v debug
-    cdbitbake machine-image -c populate_sdk
+    bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
+    echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
 }
