@@ -40,9 +40,9 @@ function build-all-gen5-function() {
 function build-sa8797dc-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797dc -d auto -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env_dc.sh -t sa8797dc -d auto -v debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'source poky/build/conf/set_bb_env.sh sa8797dc debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'source poky/build/conf/set_bb_env_dc.sh sa8797dc debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -56,9 +56,9 @@ function build-sa8797dc-image() {
 function build-sa8797dc-hlos() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797dc -d auto -v debug $BUILD_MODE_FLAG $BUILD_DIR_FLAG
+  source ${WSQC}/poky/build/conf/set_bb_env_dc.sh -t sa8797dc -d auto -v debug $BUILD_MODE_FLAG
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'source poky/build/conf/set_bb_env.sh sa8797dc debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'source poky/build/conf/set_bb_env_dc.sh sa8797dc debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -72,9 +72,9 @@ function build-sa8797dc-hlos() {
 function build-sa8797dc-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797dc -d auto -v perf
+  source ${WSQC}/poky/build/conf/set_bb_env_dc.sh -t sa8797dc -d auto -v perf
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'source poky/build/conf/set_bb_env.sh sa8797dc debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'source poky/build/conf/set_bb_env_dc.sh sa8797dc debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -88,7 +88,7 @@ function build-sa8797dc-perf-image() {
 function build-sa8797dc-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    source ${WSQC}/poky/build/conf/set_bb_env.sh -t sa8797dc -d auto -v debug
+    source ${WSQC}/poky/build/conf/set_bb_env_dc.sh -t sa8797dc -d auto -v debug
     bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
