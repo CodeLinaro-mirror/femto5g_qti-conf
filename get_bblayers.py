@@ -6,22 +6,37 @@ from operator import itemgetter
 
 # Layers to be excluded
 ignoreList = [  "meta-selftest", "meta-skeleton", \
-                "meta-poky", "meta-yocto", "meta-yocto-bsp", \
+                "meta-gplv2", \
+                "meta-rust", \
+                "meta-qcom-dpk", \
+                "meta-qti-touch", \
+                "meta-qti-voiceai", \
+                "meta-qti-dpk", \
+                "meta-qti-dpk-audio", \
+                "meta-qti-dpk-camera", \
+                "meta-qti-dpk-display", \
+                "meta-qti-dpk-graphics", \
              ]
-# Sub-layer info
-QtiBspSubLayers = [ "meta-qti-customizations" ]
-OeSubLayers     = [ "meta-networking", "meta-python", "meta-oe", \
-                    "meta-filesystems", "meta-multimedia" , \
-                    "meta-virtualization"]
-RosSubLayers    = [ "meta-ros-common", "meta-ros2", \
-                    "meta-ros2-foxy", "meta-ros2-humble" ]
-QtiRosSubLayer  = [ "meta-ros-common", "meta-ros1", "meta-ros1-noetic", \
-                    "meta-ros2", "meta-ros2-foxy" ]
 
-dicLayersWithSubLayers = { "meta-qti-bsp": QtiBspSubLayers, \
-                           "meta-openembedded": OeSubLayers, \
-                           "meta-qti-ros-oss": QtiRosSubLayer, \
-                           "meta-ros":RosSubLayers }
+# Sub-layer info
+MetaOeSubLayers        = [ "meta-networking", "meta-python", "meta-oe", \
+                           "meta-filesystems", "meta-perl" , "meta-gnome", \
+                           "meta-webserver", "meta-multimedia" ]
+
+MetaSecuritySubLayers  = [ "meta-tpm" ]
+
+MetaYoctoSubLayers     = [ "meta-poky" , "meta-yocto-bsp" ]
+
+PokySubLayers          = [ "meta" , "meta-poky" ]
+
+OeSubLayers            = [ "meta" ]
+
+dicLayersWithSubLayers = { "meta-openembedded": MetaOeSubLayers, \
+                           "meta-security": MetaSecuritySubLayers, \
+                           "meta-yocto": MetaYoctoSubLayers, \
+                           "openembedded-core": OeSubLayers, \
+                           "poky": PokySubLayers, \
+                         }
 
 def getLayerCollections (layerConfPath) :
     # Open layer.conf file and find names of configured layer.
@@ -30,25 +45,20 @@ def getLayerCollections (layerConfPath) :
         for line in confFile :
             fields = line.split()
             if (len(fields) > 0 and re.match("BBFILE_COLLECTIONS",  fields[0])) :
-                bbfileCollection=fields[2].strip("\"")
+                #return name
+                return fields[2].strip("\"")
     confFile.close()
-    #return name
-    return bbfileCollection
 
 def getLayerPriority (layerConfPath) :
     # Open layer.conf file and find the priority for it...
     confFile = open(layerConfPath, "r")
     if (confFile != None) :
-        # Set default layerPriorityValue as 5
-        layerPriorityValue = 5
         for line in confFile :
             fields = line.split()
             if (len(fields) > 0 and re.match("BBFILE_PRIORITY",  fields[0])) :
-                layerPriorityValue = int(fields[2].strip("\""))
-                break
+                #return priority
+                return int(fields[2].strip("\""))
     confFile.close()
-    #return priority
-    return layerPriorityValue
 
 # Trawl the OEROOT as passed to us and find all the layer files that meet our
 # metadata directory criteria...
@@ -84,7 +94,7 @@ def getLayerPaths(lookup,  fnexpr, checkname) :
 
 # Just spool the tuple list's paths out in order to a string...
 def generatePathString ( pathList ):
-    retString = ""
+    retString = " \\\n"
     for path, priority in pathList:
         retString = retString + "\t" + path + " \\\n"
     return retString
@@ -102,10 +112,7 @@ args = parser.parse_args()
 print ("# This configuration file is dynamically generated every time")
 print ("# set_bb_env.sh is sourced to set up a workspace.  DO NOT EDIT.")
 print ("#--------------------------------------------------------------")
-print ("LCONF_VERSION = \"6\"\n")
-print ("export WORKSPACE := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../src/'))}\"")
-print ("export WORKSPACEROOT := \"${@os.path.abspath(os.path.join(os.path.dirname(d.getVar('FILE', True)),'../../'))}\"\n")
-print ("BBPATH = \"${TOPDIR}\"")
-print ("BBFILES ?= \"\"")
-print ("EXTRALAYERS ?= \" \\\n\"")
-print ("BBLAYERS = \" \\\n\t${EXTRALAYERS} \\\n" + generatePathString(getLayerPaths(args.lookup_paths, args.layers.strip("\""), args.check_layers)) + "\"")
+print ("LCONF_VERSION = \"7\"\n")
+print ("BBPATH = \"${TOPDIR}\"\n")
+print ("BBFILES ?= \"\"\n")
+print ("BBLAYERS = \"" + generatePathString(getLayerPaths(args.lookup_paths, args.layers.strip("\""), args.check_layers)) + "\"")
