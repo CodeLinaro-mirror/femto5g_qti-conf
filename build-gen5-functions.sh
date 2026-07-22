@@ -191,9 +191,9 @@ function build-sa8797-minimal-image() {
 function build-gen5-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -208,9 +208,9 @@ function build-gen5-image() {
 function build-gen5-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v perf
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v perf
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d sod -v perf'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v perf'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -232,7 +232,7 @@ function build-gen5-perf-image() {
 function build-gen5-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
     if [ "$?" != "0" ]; then
       echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
       return 1
@@ -303,7 +303,7 @@ build-all-gen5-image() {
 function build-gen5-minimal-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
   if [ "$?" != "0" ]; then
     echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
     return 1
