@@ -99,6 +99,11 @@ alias goback='cd $CUR_DIR'
 alias goout='croot && cd ${BUILD_DIR}/tmp-glibc/deploy/images/$MACHINE'
 
 
+# Fix SELinux SRC_URI branch: master -> main
+if [ -d "${WS}/meta-selinux" ]; then
+    sed -i 's/;branch=master;/;branch=main;/g' "${WS}/meta-selinux/recipes-security/selinux/selinux_common.inc"
+fi
+
 #init local git if it does not exist
 function init_localgit() {
 if [ -f "${WS}/localgit" ]
