@@ -115,6 +115,10 @@ function revert_python_ast_commit_in_yp4019() {
 
 revert_python_ast_commit_in_yp4019
 
+# Fix SELinux SRC_URI branch: master -> main
+if [ -d "${WS}/meta-selinux" ]; then
+    sed -i 's/;branch=master;/;branch=main;/g' "${WS}/meta-selinux/recipes-security/selinux/selinux_common.inc"
+fi
 
 #init local git if it does not exist
 function init_localgit() {
