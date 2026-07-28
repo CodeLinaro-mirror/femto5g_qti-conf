@@ -130,11 +130,18 @@ build-all-sa8797-image() {
 
   echo "Begin to build-sa8797-sdk-image"
   build-sa8797-sdk-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8797-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
 
   echo "Begin to build-sa8797-perf-image"
   bitbake virtual/kernel -fc cleanall
   build-sa8797-perf-image
-
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
 }
 
 build-sa8797-flex-image() {
