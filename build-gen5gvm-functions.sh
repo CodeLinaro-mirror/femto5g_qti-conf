@@ -24,7 +24,7 @@ function build-gvm-gen5-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd ${WSQC}/poky
-  source build/conf/set_bb_env.sh -t gvn-gen5 -d auto-gvm -b build -v perf
+  source build/conf/set_bb_env.sh -t gvm-gen5 -d auto-gvm -b build -v perf
   bitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'bitbake machine-image'. (${FUNCNAME[@]})"
@@ -46,11 +46,11 @@ build-all-gvm-gen5-image() {
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen5-automotive/machine-image-gvm-gen5.ext4`
     rm -f tmp-glibc/deploy/images/gvm-gen5-automotive/machine-image-gvm-gen5.ext4
 
-    #build-gvm-gen5-sdk-image
-    #if [ "$?" != "0" ]; then
-    #echo "==== Error run 'build-gvm-gen5-sdk-image'. (${FUNCNAME[@]})"
-    #return 1
-    #fi
+    build-gvm-gen5-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-gvm-gen5-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
 
     mv tmp-glibc/deploy/images/gvm-gen5-automotive tmp-glibc/deploy/images/gvm-gen5-automotive.bak
     bitbake virtual/kernel -fc cleanall
@@ -71,7 +71,7 @@ function build-gvm-gen5-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     cd ${WSQC}/poky
-    source build/conf/set_bb_env.sh -t gvn-gen5 -d auto-gvm -b build -v debug
+    source build/conf/set_bb_env.sh -t gvm-gen5 -d auto-gvm -b build -v debug
     bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
@@ -155,7 +155,7 @@ function build-qclinux-gvm-gen5-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     cd ${WSQC}/poky
-    source build/conf/set_bb_env.sh -t qclinux-gvn-gen5 -d auto-gvm -b build -v debug
+    source build/conf/set_bb_env.sh -t qclinux-gvm-gen5 -d auto-gvm -b build -v debug
     bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'bitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"

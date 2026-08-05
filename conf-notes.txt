@@ -14,7 +14,7 @@ Supported combinations are listed below.
       +---------------------+-----------------+------------------+
       |qclinux-gvm-gen5     | auto-gvm        | debug perf       |
       +---------------------+-----------------+------------------+
-      |gvm-gen4-5           |auto-gvm-headless| debug perf       |
+      |gvm-gen4-5           | auto-gvm        | debug perf       |
       +---------------------+-----------------+------------------+
 
 Once ready run 'bitbake <pkg-name>' to build required package or
