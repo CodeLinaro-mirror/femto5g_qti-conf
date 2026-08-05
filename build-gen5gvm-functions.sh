@@ -46,11 +46,11 @@ build-all-gvm-gen5-image() {
     export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen5-automotive/machine-image-gvm-gen5.ext4`
     rm -f tmp-glibc/deploy/images/gvm-gen5-automotive/machine-image-gvm-gen5.ext4
 
-    #build-gvm-gen5-sdk-image
-    #if [ "$?" != "0" ]; then
-    #echo "==== Error run 'build-gvm-gen5-sdk-image'. (${FUNCNAME[@]})"
-    #return 1
-    #fi
+    build-gvm-gen5-sdk-image
+    if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-gvm-gen5-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+    fi
 
     mv tmp-glibc/deploy/images/gvm-gen5-automotive tmp-glibc/deploy/images/gvm-gen5-automotive.bak
     bitbake virtual/kernel -fc cleanall
