@@ -307,7 +307,7 @@ function build-sa8775-flex-image() {
   return 1
   fi
 
-  bitbake machine-image
+  bitbake machine-image-pvm machine-image-lagvm machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8775-flex-image'. (${FUNCNAME[@]})"
   return 1
@@ -324,7 +324,7 @@ function build-sa8775-flex-perf-image() {
   return 1
   fi
 
-  bitbake machine-image
+  bitbake machine-image-pvm machine-image-lagvm machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8775-flex-perf-image'. (${FUNCNAME[@]})"
   return 1
@@ -332,8 +332,16 @@ function build-sa8775-flex-perf-image() {
 
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf
   cp -r tmp-glibc/deploy/images/sa8775-flex-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8775-flex-pvm-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive-perf
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive-perf
   export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive-perf/machine-image-sa8775-flex.ext4
+  export MACHINE_IMAGE_PVM_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive-perf/machine-image-pvm-sa8775-flex.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive-perf/$MACHINE_IMAGE_PVM_PERF ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive-perf/machine-image-pvm-sa8775-flex.ext4
+  export MACHINE_IMAGE_LAGVM_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive-perf/machine-image-lagvm-sa8775-flex.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive-perf/$MACHINE_IMAGE_LAGVM_PERF ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive-perf/machine-image-lagvm-sa8775-flex.ext4
   mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8775-flex-automotive-perf
   cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8775-flex-automotive-perf/
   echo "Prepare build-sa8775-flex-perf-image done"
@@ -363,8 +371,16 @@ build-all-sa8775-flex-image() {
   fi
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive
   mv tmp-glibc/deploy/images/sa8775-flex-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive
+  mv tmp-glibc/deploy/images/sa8775-flex-pvm-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive
+  mv tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive
   export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8775-flex-automotive/machine-image-sa8775-flex.ext4
+  export MACHINE_IMAGE_PVM=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive/machine-image-pvm-sa8775-flex.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive/$MACHINE_IMAGE_PVM ../poky/build/tmp-glibc/deploy/images/sa8775-flex-pvm-automotive/machine-image-pvm-sa8775-flex.ext4
+  export MACHINE_IMAGE_LAGVM=`readlink ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive/machine-image-lagvm-sa8775-flex.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive/$MACHINE_IMAGE_LAGVM ../poky/build/tmp-glibc/deploy/images/sa8775-flex-lagvm-automotive/machine-image-lagvm-sa8775-flex.ext4
   mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   mkdir -p ../poky/build/tmp-glibc/sysroots-components
@@ -554,7 +570,7 @@ function build-sa8255-ivi-image() {
   return 1
   fi
 
-  bitbake machine-image
+  bitbake machine-image-pvm machine-image-lagvm machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8255-ivi-image'. (${FUNCNAME[@]})"
   return 1
@@ -570,7 +586,7 @@ function build-sa8255-ivi-perf-image() {
   return 1
   fi
 
-  bitbake machine-image
+  bitbake machine-image-pvm machine-image-lagvm machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa8255-ivi-perf-image'. (${FUNCNAME[@]})"
   return 1
@@ -578,8 +594,16 @@ function build-sa8255-ivi-perf-image() {
 
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive-perf
   cp -r tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive-perf
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive-perf
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive-perf
   export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive-perf/machine-image-sa8255-ivi.ext4
+  export MACHINE_IMAGE_PVM_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive-perf/machine-image-pvm-sa8255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive-perf/$MACHINE_IMAGE_PVM_PERF ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive-perf/machine-image-pvm-sa8255-ivi.ext4
+  export MACHINE_IMAGE_LAGVM_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive-perf/$MACHINE_IMAGE_LAGVM_PERF ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive-perf/machine-image-lagvm-sa8255-ivi.ext4
   mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa8255-ivi-automotive-perf
   cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa8255-ivi-automotive-perf/
   echo "Prepare build-sa8255-ivi-perf-image done"
@@ -610,8 +634,16 @@ build-all-sa8255-ivi-image() {
 
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive
   mv tmp-glibc/deploy/images/sa8255-ivi-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive
+  mv tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive
+  mv tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive/* ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive
   export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-automotive/machine-image-sa8255-ivi.ext4
+  export MACHINE_IMAGE_PVM=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive/machine-image-pvm-sa8255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive/$MACHINE_IMAGE_PVM ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-pvm-automotive/machine-image-pvm-sa8255-ivi.ext4
+  export MACHINE_IMAGE_LAGVM=`readlink ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive/machine-image-lagvm-sa8255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive/$MACHINE_IMAGE_LAGVM ../poky/build/tmp-glibc/deploy/images/sa8255-ivi-lagvm-automotive/machine-image-lagvm-sa8255-ivi.ext4
   mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   mkdir -p ../poky/build/tmp-glibc/sysroots-components
@@ -890,7 +922,7 @@ function build-sa7255-ivi-image() {
   return 1
   fi
 
-  bitbake machine-image
+  bitbake machine-image-pvm machine-image-lagvm machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-image'. (${FUNCNAME[@]})"
   return 1
@@ -906,7 +938,7 @@ function build-sa7255-ivi-perf-image() {
   return 1
   fi
 
-  bitbake machine-image
+  bitbake machine-image-pvm machine-image-lagvm machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'build-sa7255-ivi-perf-image'. (${FUNCNAME[@]})"
   return 1
@@ -914,8 +946,16 @@ function build-sa7255-ivi-perf-image() {
   
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf
   cp -r tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive-perf
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive-perf
+  cp -r tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive-perf/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive-perf
   export MACHINE_IMAGE_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/$MACHINE_IMAGE_PERF ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive-perf/machine-image-sa7255-ivi.ext4
+  export MACHINE_IMAGE_PVM_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive-perf/machine-image-pvm-sa7255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive-perf/$MACHINE_IMAGE_PVM_PERF ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive-perf/machine-image-pvm-sa7255-ivi.ext4
+  export MACHINE_IMAGE_LAGVM_PERF=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive-perf/machine-image-lagvm-sa7255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive-perf/$MACHINE_IMAGE_LAGVM_PERF ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive-perf/machine-image-lagvm-sa7255-ivi.ext4
   mkdir -p ../poky/build/tmp-glibc/deploy/ipk/sa7255-ivi-automotive-perf
   cp tmp-glibc/deploy/ipk/*/*-dbg*.ipk ../poky/build/tmp-glibc/deploy/ipk/sa7255-ivi-automotive-perf/
   echo "Prepare build-sa7255-ivi-perf-image done"
@@ -946,8 +986,16 @@ build-all-sa7255-ivi-image() {
   
   mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive
   mv tmp-glibc/deploy/images/sa7255-ivi-automotive/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive
+  mv tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive
+  mkdir -p ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive
+  mv tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive/* ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive
   export MACHINE_IMAGE=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4`
   mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/$MACHINE_IMAGE ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-automotive/machine-image-sa7255-ivi.ext4
+  export MACHINE_IMAGE_PVM=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive/machine-image-pvm-sa7255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive/$MACHINE_IMAGE_PVM ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-pvm-automotive/machine-image-pvm-sa7255-ivi.ext4
+  export MACHINE_IMAGE_LAGVM=`readlink ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive/machine-image-lagvm-sa7255-ivi.ext4`
+  mv ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive/$MACHINE_IMAGE_LAGVM ../poky/build/tmp-glibc/deploy/images/sa7255-ivi-lagvm-automotive/machine-image-lagvm-sa7255-ivi.ext4
   mkdir -p ../poky/build/tmp-glibc/prebuilt_debug
   cp -r tmp-glibc/prebuilt_debug/* ../poky/build/tmp-glibc/prebuilt_debug
   mkdir -p ../poky/build/tmp-glibc/sysroots-components

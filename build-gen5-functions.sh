@@ -130,11 +130,18 @@ build-all-sa8797-image() {
 
   echo "Begin to build-sa8797-sdk-image"
   build-sa8797-sdk-image
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8797-sdk-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
 
   echo "Begin to build-sa8797-perf-image"
   bitbake virtual/kernel -fc cleanall
   build-sa8797-perf-image
-
+  if [ "$?" != "0" ]; then
+    echo "==== Error run 'build-sa8797-perf-image'. (${FUNCNAME[@]})"
+    return 1
+  fi
 }
 
 build-sa8797-flex-image() {
@@ -184,9 +191,9 @@ function build-sa8797-minimal-image() {
 function build-gen5-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -201,9 +208,9 @@ function build-gen5-image() {
 function build-gen5-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v perf
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v perf
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d sod -v perf'. (${FUNCNAME[@]})"
+    echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v perf'. (${FUNCNAME[@]})"
     return 1
   fi
   echo "====  qclinux yocto build in: `pwd`"
@@ -225,7 +232,7 @@ function build-gen5-perf-image() {
 function build-gen5-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
-    source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug
+    source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
     if [ "$?" != "0" ]; then
       echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
       return 1
@@ -296,7 +303,7 @@ build-all-gen5-image() {
 function build-gen5-minimal-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
-  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d sod -v debug
+  source ${WSQC}/poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug
   if [ "$?" != "0" ]; then
     echo "==== Error run 'poky/build/conf/set_bb_env.sh -t gen5 -d auto -v debug'. (${FUNCNAME[@]})"
     return 1
