@@ -1,22 +1,11 @@
-# gvm-gen4-5-hl commands
-function build-gvm-gen4-5-hl-image() {
-  KERNEL_VARIANT="debug_defconfig"
-  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm debug-defconfig"
-  echo "building kernel"
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
-  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
-      echo "Kernel compilation failed !!"
-      exit 1
-  fi
-
+# gvm-gen4-5 commands
+function build-gvm-gen4-5-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd ${WSQC}/poky
-  source build/conf/set_bb_env.sh -t gvm-gen4-5 -d auto-gvm-headless -b build -v debug
+  source build/conf/set_bb_env.sh -t gvm-gen4-5 -d auto-gvm -b build -v debug
   if [ "$?" != "0" ]; then
-  echo "==== Error run 'init-configure-files gvm-gen4-5-hl debug'. (${FUNCNAME[@]})"
+  echo "==== Error run 'init-configure-files gvm-gen4-5 debug'. (${FUNCNAME[@]})"
   return 1
   fi
 
@@ -25,89 +14,65 @@ function build-gvm-gen4-5-hl-image() {
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
-
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  rm -rf bazel-cache
-  cd ${WSQC}/poky/build
 }
 
-function build-gvm-gen4-5-hl-perf-image() {
-  KERNEL_VARIANT="defconfig"
-  KERNEL_BUILDCMD="./build_with_bazel.py -t autogvm defconfig"
-  echo "building kernel"
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
-  if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
-      echo "Kernel compilation failed !!"
-            exit 1
-  fi
-
+function build-gvm-gen4-5-perf-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   unset_bb_env
   cd ${WSQC}/poky
-  source build/conf/set_bb_env.sh -t gvm-gen4-5 -d auto-gvm-headless -b build -v perf
+  source build/conf/set_bb_env.sh -t gvm-gen4-5 -d auto-gvm -b build -v perf
   bitbake machine-image
   if [ "$?" != "0" ]; then
   echo "==== Error run 'cdbitbake machine-image'. (${FUNCNAME[@]})"
   return 1
   fi
 
-  cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-  rm -rf bazel-cache
-  cd ${WSQC}/poky/build
 }
 
-build-all-gvm-gen4-5-hl-image() {
+build-all-gvm-gen4-5-image() {
 
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
-    build-gvm-gen4-5-hl-image
+    build-gvm-gen4-5-image
     if [ "$?" != "0" ]; then
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4`
-    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
-    echo "==== Error run 'build-gvm-gen4-5-hl-image'. (${FUNCNAME[@]})"
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5/machine-image-gvm-gen4-5.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-automotive/machine-image-gvm-gen4-5.ext4
+    echo "==== Error run 'build-gvm-gen4-5-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4`
-    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
+    export MACHINE_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-automotive/machine-image-gvm-gen4-5.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-automotive/machine-image-gvm-gen4-5.ext4
 
-    build-gvm-gen4-5-hl-sdk-image
+    build-gvm-gen4-5-sdk-image
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-gvm-gen4-5-hl-sdk-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-gvm-gen4-5-sdk-image'. (${FUNCNAME[@]})"
     return 1
     fi
 
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl tmp-glibc/deploy/images/gvm-gen4-5-hl.bak
+    mv tmp-glibc/deploy/images/gvm-gen4-5-automotive tmp-glibc/deploy/images/gvm-gen4-5-automotive.bak
     bitbake virtual/kernel -fc cleanall
-    build-gvm-gen4-5-hl-perf-image
+    build-gvm-gen4-5-perf-image
     if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-gvm-gen4-5-hl-perf-image'. (${FUNCNAME[@]})"
+    echo "==== Error run 'build-gvm-gen4-5-perf-image'. (${FUNCNAME[@]})"
     return 1
     fi
-    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4`
-    rm -f tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl.bak tmp-glibc/deploy/images/gvm-gen4-5-hl
+    export MACHINE_IMAGE_PERF=`readlink tmp-glibc/deploy/images/gvm-gen4-5-automotive-perf/machine-image-gvm-gen4-5.ext4`
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-automotive-perf/machine-image-gvm-gen4-5.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-automotive.bak tmp-glibc/deploy/images/gvm-gen4-5-automotive
 
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl/$MACHINE_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-hl/machine-image-gvm-gen4-5-hl.ext4
-    mv tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/machine-image-gvm-gen4-5-hl.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-automotive/$MACHINE_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-automotive/machine-image-gvm-gen4-5.ext4
+    mv tmp-glibc/deploy/images/gvm-gen4-5-automotive-perf/$MACHINE_IMAGE_PERF tmp-glibc/deploy/images/gvm-gen4-5-automotive-perf/machine-image-gvm-gen4-5.ext4
 
-    cp tmp-glibc/deploy/images/gvm-gen4-5-hl/vmlinux tmp-glibc/deploy/images/gvm-gen4-5-hl/gvm-gen4-5-hl-vmlinux
-    cp tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/vmlinux tmp-glibc/deploy/images/gvm-gen4-5-hl-perf/gvm-gen4-5-hl-vmlinux
 }
 
-function build-gvm-gen4-5-hl-sdk-image() {
+function build-gvm-gen4-5-sdk-image() {
     echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
     unset_bb_env
     cd ${WSQC}/poky
-    source build/conf/set_bb_env.sh -t gvm-gen4-5 -d auto-gvm-headless -b build -v debug
+    source build/conf/set_bb_env.sh -t gvm-gen4-5 -d auto-gvm -b build -v debug
     bitbake machine-image -c populate_sdk
     if [ "$?" != "0" ]; then
     echo "==== Error run 'cdbitbake machine-image -c populate_sdk'. (${FUNCNAME[@]})"
     return 1
     fi
-
-    cd ${WSQC}/kernel/kernel-6.*/kernel_platform
-    rm -rf bazel-cache
-    cd ${WSQC}/poky/build
 
 }
