@@ -37,7 +37,7 @@ WS=$(readlink -f $scriptdir/../..)
 add_kirkstone_patch(){
    PATCH_LINE="0024-old-override-syntax-issue-in-Kirkstone-build.patch"
    SERIES_FILE="${scriptdir}/patches/series"
-   if [ "${MACHINE}" = "echo" ] &&
+   if [[ "${MACHINE}" = "echo" || "${MACHINE}" = "echo-ab" ]] &&
       [ -f "${SERIES_FILE}" ] &&
       ! grep -Fxq "${PATCH_LINE}" "${SERIES_FILE}"; then
       echo "${PATCH_LINE}" >> "${SERIES_FILE}"
