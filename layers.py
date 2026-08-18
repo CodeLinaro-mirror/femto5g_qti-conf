@@ -96,6 +96,8 @@ def initLayersList(TARGET):
         # Enable headless
         dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-headless"] = 1
         dicLayersWithSubLayers["meta-qti-bsp-prop"]["meta-qti-headless-prop"] = 1
+        if TARGET == "gvm-gen4-5-virtio":
+            dicLayersWithSubLayers["meta-qti-bsp"]["meta-qti-qcvirtio"] = 1
         # Enable upsteam llvm
         dicLayersWithSubLayers["meta-clang"] = 1
         dicLayersWithSubLayers["meta-selinux"] = 1
