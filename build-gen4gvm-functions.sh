@@ -1185,7 +1185,7 @@ function build-quin-gvm-gen4-5-image() {
   echo "building kernel"
   cd ${WS}/kernel/kernel-6.*/kernel_platform
   $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
+  find bazel-cache -type d -exec chmod 0755 {} +
   if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
       echo "Kernel compilation failed !!"
       exit 1
@@ -1217,7 +1217,7 @@ function build-quin-gvm-gen4-5-perf-image() {
   echo "building kernel"
   cd ${WS}/kernel/kernel-6.*/kernel_platform
   $KERNEL_BUILDCMD
-  find out/bazel -type d -exec chmod 0755 {} +
+  find bazel-cache -type d -exec chmod 0755 {} +
   if [ ! -f out/msm-kernel-autogvm-$KERNEL_VARIANT/dist/Image ]; then
       echo "Kernel compilation failed !!"
       exit 1
