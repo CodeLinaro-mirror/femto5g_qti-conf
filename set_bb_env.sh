@@ -74,11 +74,39 @@ If BUILDDIR is set and is already configured it is used as-is
 EOF
 }
 
+apply_console_recipe_masks () {
+    local mask_file="${WS}/poky/qti-conf/console-recipe-mask.inc"
+    local auto_conf="${BUILDDIR}/conf/auto.conf"
+    local mask_require="require ${mask_file}"
+
+    if [ ! -f "${mask_file}" ]; then
+        echo "WARNING: Console recipe-mask file not found: ${mask_file}"
+        return 0
+    fi
+
+    mkdir -p "${BUILDDIR}/conf"
+    touch "${auto_conf}"
+
+    # Idempotent: do not add another require line every time the script is sourced.
+    if ! grep -Fqx "${mask_require}" "${auto_conf}"; then
+        {
+            echo ""
+            echo "# Wrynose persistent console recipe masks"
+            echo "${mask_require}"
+        } >> "${auto_conf}"
+    fi
+}
+
+
+
 # Eventually we need to call oe-init-build-env to finalize the configuration
 # of the newly created build folder
 init_build_env () {
     # Patch poky with qti modifications
     apply_poky_patches
+
+    # Ensure masks are active for both new and existing build directories.
+    apply_console_recipe_masks
 
     # Show conf notes
     confnote
@@ -91,7 +119,7 @@ init_build_env () {
     # going to source the OE build environment setup script they provided.
     # This will dump the user in ${WS}/yocto/build, ready to run the
     # convienence function or straight up bitbake commands.
-    . ${WS}/poky/oe-init-build-env ${BUILDDIR}
+     . ${WS}/layers/openembedded-core/oe-init-build-env ${BUILDDIR}
 
     # Clean up environment.
     unset MACHINE DISTRO WS usage confnote PREBUILT_SRC_DIR TEMPLATECONF THIS_SCRIPT
@@ -216,12 +244,38 @@ mkdir -p "${BUILDDIR}"/conf
 # BBLAYERS (by OE-Core class policy...Bitbake understands it...) to support
 # dynamic workspace layer functionality.
 if [[ ${MACHINE} =~ "sxrneo" || ${MACHINE} =~ "sxrneo-ar-sg1" ]] ; then
-   python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
+    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/layers ${WS}/src/display --with-layer-check >| ${BUILDDIR}/conf/bblayers.conf
 elif [[ ${MACHINE} =~ "trustedvm" ]] ; then
-    python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary  ${WS}/src/display/layers  >| ${BUILDDIR}/conf/bblayers.conf
+   python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/layers ${WS}/src/display ${WS}/src/display/vendor/qcom/proprietary  ${WS}/src/d
+isplay/layers  >| ${BUILDDIR}/conf/bblayers.conf
 else
-   python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky >| ${BUILDDIR}/conf/bblayers.conf
+   python $scriptdir/get_bblayers.py \"meta*\" --lookup-paths ${WS}/poky ${WS}/layers >| ${BUILDDIR}/conf/bblayers.conf
 fi
+
+# Wrynose core layer must be explicitly present for BitBake layer parsing.
+WRYNOSE_CORE_LAYER="${WS}/layers/openembedded-core/meta"
+WRYNOSE_TELEMATICS_LAYER="${WS}/layers/meta-qti-telematics"
+
+if [ -f "${WRYNOSE_CORE_LAYER}/conf/layer.conf" ] && \
+   ! grep -Fq "${WRYNOSE_CORE_LAYER}" "${BUILDDIR}/conf/bblayers.conf"; then
+    sed -i "/^BBLAYERS = \"/a\\        ${WRYNOSE_CORE_LAYER} \\\\" \
+        "${BUILDDIR}/conf/bblayers.conf"
+fi
+
+
+
+# meta-qti-bsp-prop provides sdllvm.bbclass.
+WRYNOSE_BSP_PROP_LAYER="${WS}/poky/meta-qti-bsp-prop"
+
+if [ -f "${WRYNOSE_BSP_PROP_LAYER}/conf/layer.conf" ] && \
+   ! grep -Fq "${WRYNOSE_BSP_PROP_LAYER}" "${BUILDDIR}/conf/bblayers.conf"; then
+    sed -i "/^BBLAYERS = \"/a\\        ${WRYNOSE_BSP_PROP_LAYER} \\\\" \
+        "${BUILDDIR}/conf/bblayers.conf"
+fi
+
+
+
+
 
 ##### bblayers.conf EXTRALAYERS #####
 # If EXTRALAYERS are avilable update them
