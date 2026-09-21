@@ -367,6 +367,8 @@ build-all-sa2150p-images() {
 #EMMC build commands
 build-sa2150p-emmc-images() {
   build-sa2150p-perf-image
+  buildclean-retaindeploy
+  build-sa2150p-image
 }
 
 #NAND build commands
