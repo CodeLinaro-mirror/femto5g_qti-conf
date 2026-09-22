@@ -1481,10 +1481,14 @@ function build-all-gvm-gen4-5-virtio-image() {
   echo "==== Function: $FUNCNAME (${FUNCNAME[@]})"
   build-gvm-gen4-5-virtio-image
   if [ "$?" != "0" ]; then
-    echo "==== Error run 'build-quin-gvm-gen4-5-virtio-image'. (${FUNCNAME[@]})"
+    rm -f tmp-glibc/deploy/images/gvm-gen4-5-virtio/qti-image-virtio-gvm-gen4-5-virtio.ext4
+    echo "==== Error run 'build-gvm-gen4-5-virtio-image'. (${FUNCNAME[@]})"
     return 1
   fi
+  export VIRTIO_IMAGE=`readlink tmp-glibc/deploy/images/gvm-gen4-5-virtio/qti-image-virtio-gvm-gen4-5-virtio.ext4`
+  rm -f tmp-glibc/deploy/images/gvm-gen4-5-virtio/qti-image-virtio-gvm-gen4-5-virtio.ext4
 
+  mv tmp-glibc/deploy/images/gvm-gen4-5-virtio/$VIRTIO_IMAGE tmp-glibc/deploy/images/gvm-gen4-5-virtio/qti-image-virtio-gvm-gen4-5-virtio.ext4
 }
 # gvm-gen4-5-virtio commands
 function build-gvm-gen4-5-virtio-image() {
