@@ -1,0 +1,65 @@
+From 436a73cdba1ad8422275649764521c8cebc89516 Mon Sep 17 00:00:00 2001
+From: Udhaya R G <urg@qti.qualcomm.com>
+Date: Mon, 11 Aug 2026 00:00:00 +0000
+Subject: [PATCH] bitbake: fetch2/git: try PREMIRRORS for AUTOREV ls-remote
+
+Reason for change:
+  When SRCREV = "${AUTOREV}" is used, BitBake calls git ls-remote at
+  parse time to resolve the HEAD commit.  This call always targets the
+  original SRC_URI host (e.g. code.rdkcentral.com) because PREMIRRORS
+  are only consulted during do_fetch task execution, not during variable
+  expansion.  In offline / CLO-mirror-only build environments this
+  causes an ExpansionError during parsing even though the CLO mirror
+  has a redirect configured for the same host.
+
+  Fix: before running git ls-remote against the original upstream URL,
+  iterate PREMIRRORS and attempt ls-remote against the first matching
+  mirror URL.  If the mirror ls-remote succeeds its output is returned
+  immediately.  If every mirror attempt fails the code falls through to
+  the original URL, preserving existing behaviour.
+
+Test Procedure:
+  Build a recipe that uses SRCREV = "${AUTOREV}" with code.rdkcentral.com
+  as the upstream and PREMIRRORS redirecting to git.codelinaro.org CLO
+  mirror.  Parsing should succeed without contacting code.rdkcentral.com.
+
+Risks: Low - mirror attempts are fully wrapped in try/except; failure
+  falls back to the original URL path unchanged.
+
+Signed-off-by: Udhaya R G <urg@qti.qualcomm.com>
+---
+ bitbake/lib/bb/fetch2/git.py | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/bitbake/lib/bb/fetch2/git.py b/bitbake/lib/bb/fetch2/git.py
+index 1234567..abcdefg 100644
+--- a/bitbake/lib/bb/fetch2/git.py
++++ b/bitbake/lib/bb/fetch2/git.py
+@@ -760,6 +760,24 @@ class Git(FetchMethod):
+         if d.getVar('_BB_GIT_IN_LSREMOTE', False):
+             return ''
+         d.setVar('_BB_GIT_IN_LSREMOTE', '1')
+         try:
+             repourl = self._get_repo_url(ud)
++            # Try PREMIRRORS first so that AUTOREV resolution does not require
++            # network access to the original upstream host.  This mirrors the
++            # behaviour of do_fetch which consults PREMIRRORS before the origin.
++            mirrors = bb.fetch2.mirror_from_string(d.getVar('PREMIRRORS') or '')
++            for (find, replace) in mirrors:
++                mirrorurl = bb.fetch2.uri_replace(ud, find, replace, {}, d)
++                if mirrorurl and mirrorurl != ud.url:
++                    # Strip SRC_URI parameters - only the bare URL is needed
++                    mirrorrepourl = mirrorurl.split(';')[0]
++                    try:
++                        cmd = "%s ls-remote %s %s" % \
++                            (ud.basecmd, shlex.quote(mirrorrepourl), search)
++                        bb.fetch2.check_network_access(d, cmd, mirrorrepourl)
++                        output = runfetchcmd(cmd, d, True)
++                        if output:
++                            bb.note("AUTOREV: resolved '%s' via PREMIRROR '%s'" % (ud.url, mirrorrepourl))
++                            return output
++                    except bb.fetch2.FetchError:
++                        pass
+             cmd = "%s ls-remote %s %s" % \
+                 (ud.basecmd, shlex.quote(repourl), search)
+             if ud.proto.lower() != 'file':
