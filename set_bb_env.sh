@@ -317,7 +317,9 @@ SOURCE_MIRROR_URL ?= "file://${LOCAL_DOWNLOADS}/"
 INHERIT += "own-mirrors"
 EOF
 fi
-
+cat >> ${BUILDDIR}/conf/auto.conf <<EOF
+PREMIRRORS:prepend = "https://ftpmirror.gnu.org/gnu/ https://mirrors.hopbox.net/gnu/"
+EOF
 # Generate prebuilt conf by reading manifest.
 source "$WS/layers/meta-qti-telematics-internal/scripts/generate_prebuilt_confs.sh"
 
