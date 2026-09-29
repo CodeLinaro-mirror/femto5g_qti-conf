@@ -265,6 +265,21 @@ if [[ ${MACHINE} =~ "sxrneo" ]] ; then
    echo 'BB_DANGLINGAPPENDS_WARNONLY:forcevariable = "false"' >> ${BUILDDIR}/conf/auto.conf
 fi
 
+# Set module signing hash based on kernel version for trustedvm machines
+if [[ ${MACHINE} =~ "trustedvm" ]] ; then
+    SOC_MAKEFILE="${WS}/src/kernel-qcom/kernel_platform/soc-repo/Makefile"
+    if [ -f "${SOC_MAKEFILE}" ]; then
+        KVER_MAJOR=$(grep "^VERSION" "${SOC_MAKEFILE}" | awk '{print $3}')
+        KVER_MINOR=$(grep "^PATCHLEVEL" "${SOC_MAKEFILE}" | awk '{print $3}')
+        if [ "${KVER_MAJOR}" -gt 6 ] || ([ "${KVER_MAJOR}" -eq 6 ] && [ "${KVER_MINOR}" -ge 12 ]); then
+            SIGN_HASH="sha512"
+        else
+            SIGN_HASH="sha1"
+        fi
+        echo "MODULE_SIGN_HASH = \"${SIGN_HASH}\"" >> ${BUILDDIR}/conf/auto.conf
+    fi
+fi
+
 # Check and run pre-configs from enabled meta layers
 layerstring=$( \
 while read line; do \
