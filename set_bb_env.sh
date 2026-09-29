@@ -265,7 +265,10 @@ if [[ ${MACHINE} =~ "sxrneo" ]] ; then
    echo 'BB_DANGLINGAPPENDS_WARNONLY:forcevariable = "false"' >> ${BUILDDIR}/conf/auto.conf
 fi
 
-# Set module signing hash based on kernel version for trustedvm machines
+# Set module signing hash based on kernel version, and clang version based
+# on kernel source, for trustedvm machines. The machine conf hardcodes a
+# fixed CLANG_VERSION but kernel-qcom syncs to different clang prebuilts
+# (e.g. clang-r547379, clang-r596125) over time.
 if [[ ${MACHINE} =~ "trustedvm" ]] ; then
     SOC_MAKEFILE="${WS}/src/kernel-qcom/kernel_platform/soc-repo/Makefile"
     if [ -f "${SOC_MAKEFILE}" ]; then
@@ -277,6 +280,14 @@ if [[ ${MACHINE} =~ "trustedvm" ]] ; then
             SIGN_HASH="sha1"
         fi
         echo "MODULE_SIGN_HASH = \"${SIGN_HASH}\"" >> ${BUILDDIR}/conf/auto.conf
+    fi
+
+    CLANG_CONSTANTS="${WS}/src/kernel-qcom/kernel_platform/soc-repo/build.config.constants"
+    if [ -f "${CLANG_CONSTANTS}" ]; then
+        CLANG_VERSION=$(grep "^CLANG_VERSION=" "${CLANG_CONSTANTS}" | cut -d'"' -f2)
+        if [ -n "${CLANG_VERSION}" ]; then
+            echo "CLANG_VERSION:forcevariable = \"${CLANG_VERSION}\"" >> ${BUILDDIR}/conf/auto.conf
+        fi
     fi
 fi
 
