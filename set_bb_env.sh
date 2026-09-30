@@ -34,14 +34,18 @@ scriptdir="$(dirname "${THIS_SCRIPT}")"
 # Find where the workspace is...
 WS=$(readlink -f $scriptdir/../..)
 
-add_kirkstone_patch(){
-   PATCH_LINE="0024-old-override-syntax-issue-in-Kirkstone-build.patch"
+add_machine_specific_patches(){
+   PATCH_LINES=("0024-old-override-syntax-issue-in-Kirkstone-build.patch"
+                "0025-git.py-try-PREMIRRORS-for-AUTOREV-ls-remote.patch")
    SERIES_FILE="${scriptdir}/patches/series"
-   if [[ "${MACHINE}" == echo* ]] &&
-      [ -f "${SERIES_FILE}" ] &&
-      ! grep -Fxq "${PATCH_LINE}" "${SERIES_FILE}"; then
-      echo "${PATCH_LINE}" >> "${SERIES_FILE}"
+   if [[ "${MACHINE}" == echo* ]] && [ -f "${SERIES_FILE}" ]; then
+      for PATCH_LINE in "${PATCH_LINES[@]}"; do
+         if ! grep -Fxq "${PATCH_LINE}" "${SERIES_FILE}"; then
+            echo "${PATCH_LINE}" >> "${SERIES_FILE}"
+         fi
+      done
    fi
+   unset PATCH_LINES PATCH_LINE SERIES_FILE
 }
 
 # Patch poky with QTI optimizations which not part of thud branch.
@@ -87,8 +91,8 @@ EOF
 # Eventually we need to call oe-init-build-env to finalize the configuration
 # of the newly created build folder
 init_build_env () {
-    # patch required only for krikstone-build echo
-    add_kirkstone_patch
+    # patches required only for echo* machines
+    add_machine_specific_patches
     # Patch poky with qti modifications
     apply_poky_patches
 
